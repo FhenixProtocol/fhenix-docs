@@ -11,12 +11,12 @@ const config: Config = {
   url: 'https://docs.fhenix.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/fhenix-docs/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'FHE Labs', // Usually your GitHub org/user name.
-  projectName: 'Fhenix', // Usually your repo name.
+  organizationName: 'fhenixprotocol', // Usually your GitHub org/user name.
+  projectName: 'fhenix-docs', // Usually your repo name.
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
