@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfhenix_docs=self.webpackChunkfhenix_docs||[]).push([[9063],{6382:e=>{e.exports=JSON.parse('{"permalink":"/fhenix-docs/blog/tags/hola","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
