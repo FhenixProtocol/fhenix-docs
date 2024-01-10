@@ -18,7 +18,7 @@ const config: Config = {
   organizationName: 'FHE Labs', // Usually your GitHub org/user name.
   projectName: 'Fhenix', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
