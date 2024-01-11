@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Deploying
 
 Now that we have our completed WrappingERC20 token, the next step is to see if our code actually works!
@@ -67,17 +70,16 @@ func.tags = ["WrappingERC20"];
 
 Now we can use this task to deploy our contract to either LocalFhenix, or the Devnet chain.
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
 <Tabs>
   <TabItem value="localfhenix" label="LocalFhenix" default>
     ```bash
 # get tokens from localfhenix faucet
 pnpm faucet
-# if this doesn't work, try running it directly 
+# if this doesn't work, try running it directly
 # with "node getFromFaucet"
 # deploy the contract
-pnpm deploy:contracts 
+pnpm deploy:contracts
 ```
   </TabItem>
   <TabItem value="fhenix-frontier" label="Fhenix Frontier">
