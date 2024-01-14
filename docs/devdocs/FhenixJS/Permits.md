@@ -1,26 +1,20 @@
-# Permits & Access Control
+# Permits
 
-In a Fully Homomorphic Encryption (FHE) context, data stored in the contract's storage is encrypted. 
-Therefore, granting selective access to data becomes an essential part of access control. 
-This is done via the `sealoutput` function, which seals the data in a manner that only the intended 
-recipient can decrypt and view it (or the `decrypt` function, for less sensitive data). This approach ensures that 
-encrypted data remains confidential and only accessible to authorized users.
-
-Usually, Solidity contracts will expose their data using View functions. 
-However, in the context of permissioned data this is challenging for us since view functions do not come 
-with any kind of mechanism to allow the contract to cryptographically verify that the caller is who he says he is - 
-in the case of transactions this is done by verifying the signature on the data.
-
-This means that we have to create mechanisms that enable the contract to determine who can access the data and who can't.
-
-## Permits
+## Overview
 
 Permits are a mechanism that allows the contract to cryptographically verify that the caller is who he says he is.
 
 Simply, they are a signed message that contains the caller's public key, which the contract can then use to verify that the caller is who he says he is.
 
+## Usage
 
-#### Basic Access Control Using EIP712
+Permits are meant to be used together with the interfaces exposed by [`Permissioned.Sol`](). If a contract expects a `Signature`
+parameter, that's a good sign that we should use a `permit` to manage and create user permissions.
+
+
+
+
+-------------------
 
 Out-of-the-box, Fhenix Solidity libraries come with a basic access control scheme. This helps contracts perform a basic check for ownership of an account.
 
@@ -37,14 +31,14 @@ Below is a function from an EncryptedERC20 contract:
 ```solidity
 function balanceOf(
     bytes32 publicKey,
-    bytes calldata signature
+    Signature calldata signature
 )
     public
     view
-    onlySignedPublicKey(publicKey, signature)
+    onlySignedPublicKey(signature)
     returns (bytes memory)
 {
-    return TFHE.reencrypt(balances[msg.sender], publicKey);
+    return FHE.sealoutput(balances[msg.sender], signature.publicKey);
 }
 ```
 
@@ -53,24 +47,49 @@ In this function, `onlySignedPublicKey` is a modifier that verifies if the EIP71
 Here's what the `onlySignedPublicKey` modifier looks like:
 
 ```solidity
-modifier onlySignedPublicKey(bytes32 publicKey, bytes memory signature) {
-    bytes32 digest = _hashTypedDataV4(
-        keccak256(
-            abi.encode(keccak256("Reencrypt(bytes32 publicKey)"), publicKey)
-        )
-    );
-    address signer = ECDSA.recover(digest, signature);
-    require(
-        signer == msg.sender,
-        "EIP712 signer and transaction signer do not match"
-    );
+
+struct Signature {
+    bytes32 publicKey;
+    bytes sig;
+}
+
+modifier onlySignedPublicKey(Signature memory signature) {
+    bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(keccak256("Permissioned(bytes32 publicKey)"), signature.publicKey)));
+    address signer = ECDSA.recover(digest, signature.sig);
+    require(signer == msg.sender, "EIP712 signer and transaction signer do not match");
     _;
 }
 ```
 
-The `onlySignedPublicKey` modifier takes a `publicKey` and `signature`. It then calculates the `digest` from the `publicKey`. The signer's address is recovered from the `digest` using the `ECDSA.recover` function. If the recovered address matches `msg.sender`, it means that the caller is indeed the owner of the account and is allowed to access the data.
+The `onlySignedPublicKey` modifier takes a `Signature` `publicKey` and `sig`. It then calculates the `digest` from the `publicKey`. The signer's address is recovered from the `digest` using the `ECDSA.recover` function. If the recovered address matches `msg.sender`, it means that the caller is indeed the owner of the account and is allowed to access the data.
 
-fhEVM solidity library comes with a helper contract [EIP712WithModifier.sol](https://github.com/zama-ai/fhevm-solidity/blob/main/abstracts/EIP712WithModifier.sol) which includes the snippet above and can be easily imported to integrate into your contracts. See [EncryptedERC20.sol](https://github.com/FhenixProtocol/devnet-contracts/blob/main/EncryptedERC20.sol) for a full example how this is done.
+:::tip[Tip]
+The signature structure can be [easily created](../FhenixJS/Permissions.md) using fhenix.js.
+:::
+
+You can use this helpful contract out-of-the-box by importing it from `@fhenixprotocol/contracts` and can be easily imported to integrate into your contracts.
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@fhenixprotocol/contracts/Fhe.sol";
+import "@fhenixprotocol/contracts/access/Permissioned.sol";
+
+contract WrappingERC20 is ERC20, Permissioned {
+    
+    function balanceOfEncrypted(Signature memory signature) 
+    public 
+    view  
+    onlySignedPublicKey(signature)
+    returns (bytes memory) {
+        return FHE.sealoutput(_encBalances[msg.sender], signature.publicKey);
+    }
+}
+```
+
+For a full example what this looks like - see [EncryptedERC20.sol](https://github.com/FhenixProtocol/devnet-contracts/blob/main/EncryptedERC20.sol) or our [getting started tutorial](../../tutorial/intro.md) for a full example, including client-side integration.
 
 #### Advanced Access Control
 

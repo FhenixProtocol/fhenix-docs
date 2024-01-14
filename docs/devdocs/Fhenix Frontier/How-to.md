@@ -10,10 +10,10 @@ Fhenix Frontier, the first publicly available FHE-based blockchain, is now live!
 
 4. Fill out the network details form. To add a custom network you need the following details:
    1. **Network Name: Fhenix Frontier**
-   2. **New RPC URL: https://frontier.fhenix.zone**
-   3. **Chain ID:** 0000000
+   2. **New RPC URL: https://test01.fhenix.zone/evm**
+   3. **Chain ID:** 412346
    4. **Currency Symbol: tFHE**
-   5. **Block Explorer URL:** [https://demoexplorer.fhenix.io/](https://demoexplorer.fhenix.io/)
+   5. **Block Explorer URL:** TBD
 5. Once you fill out all the details, click **Save**.
 6. Now you can switch to Fhenix Frontier. Get some tokens using the testnet faucet and start building!
 
