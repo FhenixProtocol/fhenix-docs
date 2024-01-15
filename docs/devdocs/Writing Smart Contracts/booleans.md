@@ -1,3 +1,9 @@
+---
+sidebar_position: 99
+title: Comparisons and Booleans
+description: Comparisons on FHE data 
+---
+
 # Comparisons and Booleans
 
 ## Comparisons

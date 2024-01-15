@@ -1,6 +1,8 @@
-# 🔗 Connecting to Fhenix Frontier
+---
+sidebar_position: 3
+---
 
-Fhenix Frontier, the first publicly available FHE-based blockchain, is now live! You can connect to it using the following methods:
+# Connecting to Fhenix Frontier
 
 ## Configuring MetaMask 
 
@@ -30,11 +32,11 @@ Fhenix Frontier, the first publicly available FHE-based blockchain, is now live!
    <tbody>
       <tr>
          <td>JSON-RPC</td>
-         <td><a href="https://fhenode.fhenix.io/new/evm"><strong>https://fhenode.fhenix.io/new/evm</strong></a></td>
+         <td><a href="https://test01.fhenix.zone/evm"><strong>https://test01.fhenix.zone/evm</strong></a></td>
       </tr>
       <tr>
          <td>Chain ID</td>
-         <td>5432</td>
+         <td>412346</td>
       </tr>
    </tbody>
 </table>

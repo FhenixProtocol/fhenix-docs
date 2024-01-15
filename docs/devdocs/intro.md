@@ -11,9 +11,11 @@ Welcome to the Fhenix documents! These docs should have everything you need to g
 For questions & support [join our Discord](https://discord.gg/q4C5CzkdY7)!
 :::
 
-As part of the hackathon we are providing a multitude of tools to develop FHE-powered smart contracts, the highlight of which is the Devnet environment, which is a public network that supported encrypted smart contracts!&#x20;
+Here we'll explain everything about how to use Fhenix and how to use FHE to create privacy-preserving Web3 applications. We include an extension to the Ethereum Virtual Machine (EVM) that introduces operations on encrypted data using Fully Homomorphic Encryption (FHE). We've added special precompiles to the EVM that allow computations on encrypted data without the need for decryption.
 
-Use the links below to learn how to connect to the Devnet, how to set up your development environment and take your first steps with FHE!&#x20;
+The integration of the FHE with Solidity means you can continue to write your smart contracts with familiar syntax while leveraging the capabilities of FHE.
+
+In this documentation, you'll find guidance on operating on encrypted data, understanding patterns in FHE-friendly code writing, and access control in FHE-based smart contracts. Let's get started.
 
 ## Quick links
 

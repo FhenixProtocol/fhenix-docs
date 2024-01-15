@@ -1,3 +1,9 @@
+---
+sidebar_position: 4
+title: Select vs If...else
+description: Why if..else is not possible and what are the alternatives
+---
+
 # Select vs If...else
 
 Writing code with Fully Homomorphic Encryption (FHE) introduces a fundamental shift in how we handle conditionals or branches in our code. As you already know, with FHE, we're operating on encrypted data. This means we can't use typical `if...else` branching structures, because we don't have visibility into the actual values we're comparing.

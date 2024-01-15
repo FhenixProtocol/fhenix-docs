@@ -1,6 +1,7 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 title: Permissions
+description: Managing access to sensitive data & Permissioned contracts 
 ---
 
 ## Overview

@@ -1,3 +1,9 @@
+---
+sidebar_position: 3
+title: Returning FHE Data
+description: Sealing & Decryption - how data from a contract is returned 
+---
+
 # Decryption & Sealing
 
 When an app wants to read some piece of encrypted data from a Fhenix smart contract, that data must be converted from its encrypted form on chain to an encryption that the app can read and the user can decrypt.

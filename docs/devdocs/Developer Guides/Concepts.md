@@ -1,3 +1,0 @@
-# Concepts
-
-Start typing here...

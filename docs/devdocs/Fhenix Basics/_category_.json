@@ -1,8 +1,0 @@
-{
-  "label": "Fhenix - The Basics",
-  "position": 2,
-  "link": {
-    "type": "generated-index",
-    "description": "General Fhenix and TFHE concepts"
-  }
-}

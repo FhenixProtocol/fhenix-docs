@@ -1,3 +1,9 @@
+---
+sidebar_position: 4
+title: Permits
+---
+
+
 # Permits
 
 ## Overview
@@ -8,13 +14,9 @@ Simply, they are a signed message that contains the caller's public key, which t
 
 ## Usage
 
-Permits are meant to be used together with the interfaces exposed by [`Permissioned.Sol`](). If a contract expects a `Signature`
+Permits are meant to be used together with the interfaces exposed by [`Permissioned.Sol`](#overview). If a contract expects a `Signature`
 parameter, that's a good sign that we should use a `permit` to manage and create user permissions.
 
-
-
-
--------------------
 
 Out-of-the-box, Fhenix Solidity libraries come with a basic access control scheme. This helps contracts perform a basic check for ownership of an account.
 

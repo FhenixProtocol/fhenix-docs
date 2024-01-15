@@ -1,3 +1,9 @@
+---
+sidebar_position: 100
+title: Types and Operations
+description: List of supported types and different operations
+---
+
 # Supported Types and Operations
 
 The library exposes utility functions for FHE operations. The goal of the library is to provide a seamless developer experience for writing smart contracts that can operate on confidential data.
@@ -12,11 +18,14 @@ These encrypted integers behave as much as possible as Solidity's integer types.
 
 In the back-end, encrypted integers are FHE ciphertexts. The library abstracts away the ciphertexts and presents pointers to ciphertexts, or ciphertext handles, to the smart contract developer. The `euint` types are _wrappers_ over these handles.
 
-| name    | Bit Size | 
-|---------|----------|
-| euint8  | 8        |
-| euint16 | 16       |
-| euint32 | 32       |
+| name      | Bit Size | Usage   |
+|-----------|----------|---------|
+| euint8    | 8        | Compute |
+| euint16   | 16       | Compute |
+| euint32   | 32       | Compute |
+| inEuint8  | 8        | Input   |
+| inEuint16 | 16       | Input   |
+| inEuint32 | 32       | Input   |
 
 ## Operations
 

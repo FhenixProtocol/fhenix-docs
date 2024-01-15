@@ -1,3 +1,9 @@
+---
+sidebar_position: 2.5
+title: Receiving FHE data
+description: How to handle encrypted data coming from the user
+---
+
 # Handling Encrypted Inputs
 
 Fully Homomorphic Encryption (FHE) contracts handle encrypted data differently from standard Solidity contracts. Developers can receive encrypted inputs primarily in two ways:
