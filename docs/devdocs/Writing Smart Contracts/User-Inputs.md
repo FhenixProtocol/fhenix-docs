@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2.5
-title: Receiving FHE data
+title: 👉 Inputs
 description: How to handle encrypted data coming from the user
 ---
 

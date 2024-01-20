@@ -1,4 +1,4 @@
-# Hardhat
+# 👷 Hardhat
 
 ## Prerequisites
 

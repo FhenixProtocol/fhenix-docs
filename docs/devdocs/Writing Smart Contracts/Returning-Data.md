@@ -1,6 +1,6 @@
 ---
 sidebar_position: 3
-title: Returning FHE Data
+title: 👈 Outputs
 description: Sealing & Decryption - how data from a contract is returned 
 ---
 

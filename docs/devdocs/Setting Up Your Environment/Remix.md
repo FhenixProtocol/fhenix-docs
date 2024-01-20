@@ -1,9 +1,9 @@
-# Remix
+# 🎧 Remix
 
 To get up and running with Remix, all you need is to include the TFHE.sol solidity files to your project so the compiler knows what to do. You can do so by importing TFHE.sol from your contract directly -
 
 ```solidity
-import "fhevm/lib/TFHE.sol";
+import "@fhenixprotocol/contracts/FHE.sol";
 ```
 
 We also provide an example contract that can be loaded into Remix, using the "Load From Github"

@@ -1,3 +1,3 @@
-# Architecture
+# 🏗️ Architecture
 
 Start typing here...

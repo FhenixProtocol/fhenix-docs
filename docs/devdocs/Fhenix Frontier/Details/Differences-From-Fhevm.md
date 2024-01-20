@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Differences From Fhevm
+# 🔀 Differences From Fhevm
 
 You might be familiar with fhevm, which is a fork of the Ethereum Virtual Machine that supports homomorphic encryption by Zama.
 

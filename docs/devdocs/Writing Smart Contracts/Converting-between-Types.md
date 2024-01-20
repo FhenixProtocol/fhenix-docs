@@ -4,7 +4,7 @@ title: Type Conversions
 description: Converting between different FHE types
 ---
 
-# Converting Between Types
+# 🧙 Converting Between Types
 
 As a user of `FHE.sol`, you'll often need to convert between various encrypted types or from plaintext to encrypted form within your contracts. This documentation illustrates how you can leverage the type conversion functions provided in `FHE.sol` to manipulate encrypted data effectively.
 

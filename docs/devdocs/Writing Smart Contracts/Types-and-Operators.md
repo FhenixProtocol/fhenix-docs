@@ -4,7 +4,7 @@ title: Types and Operations
 description: List of supported types and different operations
 ---
 
-# Supported Types and Operations
+# 🧑‍⚕️ Supported Types and Operations
 
 The library exposes utility functions for FHE operations. The goal of the library is to provide a seamless developer experience for writing smart contracts that can operate on confidential data.
 

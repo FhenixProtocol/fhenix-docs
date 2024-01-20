@@ -1,4 +1,4 @@
-# Limitations
+# 🛑 Limitations
 
 ## Decryption Key
 

@@ -71,7 +71,7 @@ const config: Config = {
         },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/fhenixprotocol/',
           label: 'GitHub',
           position: 'right',
         },
@@ -81,11 +81,15 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Quick Links',
           items: [
             {
+              label: 'Dev Docs',
+              to: '/docs/devdocs/intro',
+            },
+            {
               label: 'Tutorial',
-              to: '/tutorial/intro',
+              to: '/docs/tutorial/intro',
             },
           ],
         },
@@ -93,8 +97,8 @@ const config: Config = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'Telegram',
+              href: 'https://example.com',
             },
             {
               label: 'Discord',
@@ -102,7 +106,7 @@ const config: Config = {
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              href: 'https://twitter.com/fhenix',
             },
           ],
         },
@@ -111,7 +115,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/fhenixprotocol',
             },
           ],
         },

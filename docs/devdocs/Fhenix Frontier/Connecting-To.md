@@ -2,7 +2,9 @@
 sidebar_position: 3
 ---
 
-# Connecting to Fhenix Frontier
+# 🔗 Connecting to Fhenix Frontier
+
+Fhenix Frontier, the first publicly available FHE-based blockchain, is now live! You can connect to it using the following methods:
 
 ## Configuring MetaMask 
 

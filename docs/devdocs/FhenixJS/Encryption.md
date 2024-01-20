@@ -29,15 +29,15 @@ Then, you can use the created client to encrypt
 
 import { FhenixClient, EncryptedType, EncryptedUint8 } from 'fhenixjs';
 
-const result: EncryptedUint8 = instance.encrypt(number, EncryptionTypes.uint8)
+const result: EncryptedUint8 = instance.encrypt(number, EncryptionTypes.uint8);
 ```
 
 Or, we can use the lower-level type specific functions
 
 ```javascript
-const resultUint8 = instance.encrypt_uint8(number)
-const resultUint16 = instance.encrypt_uint16(number)
-const resultUint32 = instance.encrypt_uint32(number)
+const resultUint8 = instance.encrypt_uint8(number);
+const resultUint16 = instance.encrypt_uint16(number);
+const resultUint32 = instance.encrypt_uint32(number);
 ```
 
 The returned types from the encrypt function will be of the type `EncryptedUint8`, `EncryptedUint16` or `EncryptedUint32` depending on the type you specified.
@@ -51,3 +51,6 @@ export interface EncryptedNumber {
 
 export interface EncryptedUint8 extends EncryptedNumber {}
 ```
+
+These types exist in order to enable type checking when interacting with Solidity contracts, and to make it easier to work with encrypted data.
+However, feel free to use the `data` field directly if you prefer.
