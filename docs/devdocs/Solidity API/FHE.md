@@ -1,4 +1,4 @@
-# FHE.Sol
+# FHE
 
 ### NIL8
 
@@ -45,7 +45,7 @@ function isInitialized(euint32 v) internal pure returns (bool)
 ### mathHelper
 
 ```solidity
-function mathHelper(uint256 lhs, uint256 rhs, function (bytes) pure external returns (bytes) impl) internal pure returns (uint256 result)
+function mathHelper(uint8 utype, uint256 lhs, uint256 rhs, function (uint8,bytes,bytes) pure external returns (bytes) impl) internal pure returns (uint256 result)
 ```
 
 ### add
@@ -2050,4 +2050,3 @@ only for mathematical operations, not to represent data that should be private_
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | ebool | A ciphertext representation of the input |
-
