@@ -2,7 +2,7 @@
   "position": 2.5,
   "label": "FHE Contracts",
   "collapsible": true,
-  "collapsed": false,
+  "collapsed": true,
   "className": "red",
   "link": {
     "type": "generated-index",

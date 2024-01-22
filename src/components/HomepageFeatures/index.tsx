@@ -11,7 +11,7 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: require('@site/static/img/clock.svg').default,
     description: (
       <>
         Fhenix Frontier solidity easy to use the best
@@ -20,16 +20,18 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'FHE Is the Best',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    Svg: require('@site/static/img/shield_check.svg').default,
     description: (
       <>
-        FHE next generation text the best stuff ever weeee
+        FHE next generation text the best stuff ever weeee<br />
+          lots of text seeing what we want to say here <br />
+          To make the page a little longer
       </>
     ),
   },
   {
     title: 'Powered by Solidity',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: require('@site/static/img/surface1.svg').default,
     description: (
       <>
         Solidity #1 fhe fhenix fronter winning

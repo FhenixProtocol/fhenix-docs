@@ -8,6 +8,14 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  background-image: url("/static/img/cover.png");
+
+}
+
+.container2 {
+  flex: 0 1 0;
+  margin-left: 10rem;
+  justify-content: center;
 }
 
 @media screen and (max-width: 996px) {
@@ -16,8 +24,26 @@
   }
 }
 
-.buttons {
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+/*@media screen and (min-width: 996px) {*/
+/*  .heroBanner {*/
+/*  }*/
+
+/*}*/
+
+.intro__buttons {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.intro__button {
+  flex: 1 1 0;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }

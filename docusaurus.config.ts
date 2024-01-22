@@ -3,9 +3,9 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Fhenix Docs',
-  tagline: 'Fhenix is cool',
-  favicon: 'img/favicon.ico',
+  title: 'Fhenix',
+  tagline: 'Build dApps with privacy in Solidity',
+  favicon: 'img/logo.svg',
 
   // Set the production url of your site here
   url: 'https://docs.fhenix.io',
@@ -50,6 +50,9 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
+    colorMode: {
+      defaultMode: 'dark',
+    },
     navbar: {
       title: 'Fhenix Docs',
       logo: {
@@ -97,16 +100,16 @@ const config: Config = {
           title: 'Community',
           items: [
             {
-              label: 'Telegram',
-              href: 'https://example.com',
+              label: 'Medium',
+              href: 'https://medium.com/@Fhenix',
             },
             {
               label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              href: 'https://discord.gg/FuVgxrvJMY',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/fhenix',
+              href: 'https://twitter.com/FhenixIO',
             },
           ],
         },
