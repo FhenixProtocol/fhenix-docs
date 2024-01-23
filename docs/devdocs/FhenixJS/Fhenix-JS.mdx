@@ -45,7 +45,7 @@ const provider = new JsonRpcProvider('http://localhost:8545');
 const client = new FhenixClient({provider});
 
 // to encrypt data for a Fhenix contract
-let encrypted = client.encrypt(5, EncryptionTypes.uint8);
+let encrypted = await client.encrypt(5, EncryptionTypes.uint8);
 
 // ...
 // contract logic goes here
