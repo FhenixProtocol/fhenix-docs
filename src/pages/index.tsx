@@ -8,66 +8,47 @@ import React, { FC } from 'react';
 
 import styles from './index.module.css';
 
-// interface HomepageSectionProps {
-//     header?: string;
-//     description?: string;
-//     className?: string;
-// }
-//
-// const HomepageSection: FC<HomepageSectionProps> = (props) => {
-//     const toKebabCase = (header) =>
-//         header &&
-//         header
-//             .match(
-//                 /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g,
-//             )
-//             .map((parts) => parts.toLowerCase())
-//             .join('-');
-//
-//     return (
-//         <div className={clsx('homepage__section', props.className)}>
-//             <div className='homepage__container'>
-//                 {props.header && (
-//                     <h2 className='homepage__header' id={toKebabCase(props.header)}>
-//                         {props.header}
-//                     </h2>
-//                 )}
-//                 {props.description && (
-//                     <p className='homepage__description'>{props.description}</p>
-//                 )}
-//                 {props.children}
-//             </div>
-//         </div>
-//     );
-// };
-
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
 
   return (
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
-
-          <div className={styles.container2}>
-
-              <Heading as="h1" className="hero__title">
-                  {siteConfig.title}
-              </Heading>
-              <p className="hero__subtitle">{siteConfig.tagline}</p>
-              <div className='intro__buttons'>
-                  <Link
-                      className='intro__button button button--outline button--primary'
-                      to={"https://github.com/fhenixprotocol"} target="_blank">
-                      View on Github
-                  </Link>
-                  <Link
-                      className='intro__button button button--primary'
-                      to="/docs/devdocs/intro">
-                      Start Building
-                  </Link>
+          <div className="container">
+              <div className="row">
+                  {/*<div className={styles.container2}>*/}
+                  <div className="col col--6">
+                      <div className="row">
+                          < Heading as="h1" className="hero__title col col--6 margin-left--md">
+                              {siteConfig.title}
+                          </Heading>
+                      </div>
+                      <div className="row">
+                          <p className="hero__subtitle">{siteConfig.tagline}</p>
+                      </div>
+                      <div className="row">
+                          {/*<div className='col col--3'>*/}
+                          <Link
+                              className='button button--lol margin-left--md'
+                              to={"https://github.com/fhenixprotocol"} target="_blank">
+                              View on Github
+                          </Link>
+                          {/*</div>*/}
+                          {/*<div className='col col--3'>*/}
+                          <Link
+                              className='button button--primary  col col--3  margin-left--md'
+                              to="/docs/devdocs/intro">
+                              Start Building
+                          </Link>
+                          {/*</div>*/}
+                      </div>
+                  </div>
+                  <div className="col col--6" style={{height: "200px", marginTop: "-175px"}}>
+                      <img alt="fhenix stuttershock image" style={{display: "block"}} src="img/image.png"/>
+                  </div>
               </div>
-          </div>
 
+          </div>
       </header>
   );
 }

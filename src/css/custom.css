@@ -14,7 +14,6 @@
   --ifm-color-primary-lighter: #359962;
   --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
-
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
@@ -32,11 +31,31 @@
 
 .hero {
   color: white;
-  font: 900 35vmin/5vh "Roboto Light";
-  filter: drop-shadow(0em .05em #f8d9a6);
-  mix-blend-mode: difference;
+
+  /*filter: drop-shadow(0em .05em #f8d9a6);*/
+  /*mix-blend-mode: difference;*/
 }
 
 .menu__link {
   font-size: 1em;
+}
+
+
+.button {
+  border-radius: 3em;
+  /*width: 10rem;*/
+  /*margin: 1rem;*/
+  color: white;
+}
+
+.button--lol {
+  border-color: black !important;
+}
+
+.button:hover {
+  background-color: var(--ifm-color-primary-lighter);
+}
+
+.button--primary {
+  background-color: var(--ifm-color-primary-lightest);
 }

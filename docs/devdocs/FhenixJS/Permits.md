@@ -4,7 +4,7 @@ title: Permits
 ---
 
 
-# Permits
+# Permits & Permissions
 
 ## Overview
 
@@ -32,44 +32,46 @@ Below is a function from an EncryptedERC20 contract:
 
 ```solidity
 function balanceOf(
-    bytes32 publicKey,
-    Signature calldata signature
+    Permission calldata perm
 )
     public
     view
-    onlySignedPublicKey(signature)
+    onlySender(perm)
     returns (bytes memory)
 {
-    return FHE.sealoutput(balances[msg.sender], signature.publicKey);
+    return FHE.sealoutput(balances[msg.sender], perm.publicKey);
 }
 ```
 
-In this function, `onlySignedPublicKey` is a modifier that verifies if the EIP712 signature is valid. If the signature corresponds to the account that is making the call (`msg.sender`), then the function will execute. If not, it will revert.
+In this function, `onlySender` is a modifier that verifies if the EIP712 signature is valid. If the signature corresponds to the account that is making the call (`msg.sender`), then the function will execute. If not, it will revert.
 
-Here's what the `onlySignedPublicKey` modifier looks like:
+Here's what the `onlySender` modifier looks like:
 
 ```solidity
-
-struct Signature {
+struct Permission {
     bytes32 publicKey;
-    bytes sig;
+    bytes signature;
 }
 
-modifier onlySignedPublicKey(Signature memory signature) {
-    bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(keccak256("Permissioned(bytes32 publicKey)"), signature.publicKey)));
-    address signer = ECDSA.recover(digest, signature.sig);
-    require(signer == msg.sender, "EIP712 signer and transaction signer do not match");
+modifier onlySender(Permission memory permission) {
+    bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
+        keccak256("Permissioned(bytes32 publicKey)"),
+        permission.publicKey
+    )));
+    address signer = ECDSA.recover(digest, permission.signature);
+    if (signer != msg.sender)
+        revert SignerNotMessageSender();
     _;
-}
+    }
 ```
 
-The `onlySignedPublicKey` modifier takes a `Signature` `publicKey` and `sig`. It then calculates the `digest` from the `publicKey`. The signer's address is recovered from the `digest` using the `ECDSA.recover` function. If the recovered address matches `msg.sender`, it means that the caller is indeed the owner of the account and is allowed to access the data.
+The `onlySender` modifier takes a `Permission`. It then calculates the `digest` from the `publicKey`. The signer's address is recovered from the `digest` using the `ECDSA.recover` function. If the recovered address matches `msg.sender`, it means that the caller is indeed the owner of the account and is allowed to access the data.
 
 :::tip[Tip]
-The signature structure can be [easily created](../FhenixJS/Permissions.md) using fhenix.js.
+The `Permission` structure can be [easily created](../FhenixJS/Permissions.md) using fhenix.js.
 :::
 
-You can use this helpful contract out-of-the-box by importing it from `@fhenixprotocol/contracts` and can be easily imported to integrate into your contracts.
+You can use this helpful contract out-of-the-box by importing it from `@fhenixprotocol/contracts/access` and can be easily imported to integrate into your contracts.
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -77,16 +79,16 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@fhenixprotocol/contracts/Fhe.sol";
-import "@fhenixprotocol/contracts/access/Permissioned.sol";
+import { Permissioned } from "@fhenixprotocol/contracts/access/Permissioned.sol";
 
-contract WrappingERC20 is ERC20, Permissioned {
+contract WrappingERC20 is Permissioned, ERC20 {
     
-    function balanceOfEncrypted(Signature memory signature) 
+    function balanceOfEncrypted(Permission memory perm) 
     public 
     view  
-    onlySignedPublicKey(signature)
+    onlySender(signature)
     returns (bytes memory) {
-        return FHE.sealoutput(_encBalances[msg.sender], signature.publicKey);
+        return FHE.sealoutput(_encBalances[msg.sender], perm.publicKey);
     }
 }
 ```

@@ -86,6 +86,10 @@ console.log(`My Balance: ${plaintext.toString()}`)
 
 Both the encryption and authentication standards here are not Fhenix-specific, so you can use a number of 3rd party libraries to achieve the same result. Some apps may want to avoid directly using FhenixJS in specific scenarios, so an example is provided here as well, using `ethers.js` and `libsodium`
 
+:::danger
+outdated
+:::
+
 ```typescript
 async function unseal(contract: ethers.Contract,
                       provider: BrowserProvider): bigint {

@@ -14,6 +14,10 @@ Let's assume we have a deployed ERC20 contract, only this one uses encrypted inp
 
 1. **Import fhenixjs and ethers**
 
+:::danger
+OUTDATED
+:::
+
 ```javascript
 import * as fhenixjs from 'fhenixjs';
 import ethers from 'ethers';

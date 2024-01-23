@@ -42,7 +42,7 @@ import { JsonRpcProvider } from 'ethers';
 const provider = new JsonRpcProvider('http://localhost:8545');
 
 // initialize Fhenix Client
-const client = await FhenixClient.Create({provider});
+const client = new FhenixClient({provider});
 
 // to encrypt data for a Fhenix contract
 let encrypted = client.encrypt(5, EncryptionTypes.uint8);
