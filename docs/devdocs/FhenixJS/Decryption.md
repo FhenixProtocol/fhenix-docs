@@ -17,22 +17,25 @@ You can read more about how to do this [here](#../).
 
 ### Encrypted Values & Permits
 
-When reading encrypted values we can do one of two things. TBD: finish this
+When reading encrypted values we can do one of two things:
+* Receiving it as bytes calldata: 0x04000.... 
+* RECOMENDED: Receiving it as inEuint*: ["0x04000"]
 
-A `Permit` is a data structure that helps contracts know who is trying to call a specific function.
+The main difference with inEuint* is that you can be explicit with what is the exact parameter that you are looking for.
 
-The fhenix.js Javascript library includes methods to support creating parameters for values that require [EIP-712 authentication](../fhevm-solidity/access-control.md). These methods can help creating ephemeral transaction keys, which are used by the smart contract to create a secure encryption channel to the caller.
-Similarly to decryption, this usage can be implemented by any compliant library, but we include direct support in FhenixJS.&#x20;
+A `Permit` is a data structure that helps contracts know who is trying to call a specific function. 
+
+The fhenix.js Javascript library includes methods to support creating parameters for values that require [Permits & Access Control](../Encryption and Privacy/Permits-Access-Control.md). These methods can help creating ephemeral transaction keys, which are used by the smart contract to create a secure encryption channel to the caller.
+Similarly to decryption, this usage can be implemented by any compliant library, but we include direct support in fhenix.js.&#x20;
 
 This is done in 3 steps: generating a permit, querying the contract and unsealing the data.
 
 #### 1. Creating a Permit
 
 ```javascript
-const provider = new ethers.JsonRpcProvider('http://demo.fhenix.zone:8545');
-const client = FhenixClient.Create({provider});
+const provider = new ethers.JsonRpcProvider('https://test01.fhenix.zone/evm');
 
-const permit = await client.getPermit(contractAddress);
+const permit = await getPermit(contractAddress, provider);
 ```
 
 :::tip[Did you know?]
@@ -45,7 +48,7 @@ We recommend that contracts implement the Permit/Permission interfaces (though t
 In this case, we can easily inject our permit into the function call.
 
 ```javascript
-const permission = client.getPermission(contractAddress);
+const permission = client.extractPermitPermission(permit);
 const response = await contract.balanceOf(permission);
 ```
 
@@ -69,84 +72,19 @@ Permits are currently limited to support a single contract
 import { FhenixClient } from 'fhenixjs';
 import { JsonRpcProvider } from 'ethers';
 
-const provider = new ethers.JsonRpcProvider('http://demo.fhenix.zone:8545');
-const client = FhenixClient.Create({provider});
+const provider = new ethers.JsonRpcProvider('https://test01.fhenix.zone/evm');
+const client = new FhenixClient({provider});
 
-const permit = await client.getPermit(contractAddress);
+const permit = await getPermit(contractAddress);
 
-const permission = client.getPermission(contractAddress);
+const permission = client.extractPermitPermission(permit);
 const response = await contract.balanceOf(permission);
 
-const plaintext: bigint = client.unseal(contractAddress, response)
+const plaintext = client.unseal(contractAddress, response)
 
-console.log(`My Balance: ${plaintext.toString()}`)
+console.log(`My Balance: ${plaintext}`)
 ```
-
-#### Advanced: Without Using FhenixJS
-
-Both the encryption and authentication standards here are not Fhenix-specific, so you can use a number of 3rd party libraries to achieve the same result. Some apps may want to avoid directly using FhenixJS in specific scenarios, so an example is provided here as well, using `ethers.js` and `libsodium`
-
-:::danger
-outdated
+:::tip[Did you know?]
+You have tools that can ease the process of interacting with the contract and decrypting values. If you want to use them please refer to [Tools and Utilities](../Tools and Utilities/) 
 :::
 
-```typescript
-async function unseal(contract: ethers.Contract,
-                      provider: BrowserProvider): bigint {
-  // instantiate sodium library
-  await _sodium.ready;
-  const sodium = _sodium;
-  
-  // generate keys
-  let keypair = sodium.crypto_box_keypair('hex');
-  let publicKey = keypair.publicKey;
-
-  let contractAddress = await contract.getAddress();
-  const signer = await provider.getSigner()
-
-  // create token
-  let domain = {
-    name: 'Authorization token',
-    version: '1',
-    chainId: 9000,
-    verifyingContract: contractAddress
-  };
-
-  let typedData = {
-    types: {
-      Reencrypt: [{
-        name: 'publicKey',
-        type: 'bytes32'
-      }]
-    },
-    domain: domain,
-    primaryType: 'Reencrypt',
-    message: {
-      publicKey: `0x${publicKey}`
-    }
-  };
-
-  // Sign token
-  let msgSig = await signer.signTypedData(typedData.domain, typedData.types, typedData.message);
-
-  // Query balance - assuming that the contract is already connected with the signer (wallet)
-  let msg = await contract.balanceOf(`0x${publicKey}`, msgSig);
-
-  // decrypt
-  const plaintext = sodium.crypto_box_seal_open(fromHexString(msg), fromHexString(keypair.publicKey), fromHexString(keypair.privateKey));
-
-  // todo: this is here from a previous library, need to check if this works
-  if (!plaintext) {
-    return ethers.toBigInt(0);
-  }
-
-  // big endian bytes to big int 
-  return ethers.toBigInt(plaintext)
-}
-
-export const fromHexString = (hexString: string): Uint8Array => {
-  const arr = hexString.replace(/^(0x)/, '').match(/.{1,2}/g);
-  if (!arr) return new Uint8Array();
-  return Uint8Array.from(arr.map((byte) => parseInt(byte, 16)));
-};
-```

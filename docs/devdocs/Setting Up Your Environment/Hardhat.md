@@ -5,7 +5,7 @@
 * [Docker](https://www.docker.com/)
 * [pnpm](https://pnpm.io/installation)
 
-LocalFhenix is a complete Fhenix devnet and ecosystem containerized with Docker. It simplifies the way contract developers test their contracts in a sandbox before they deploy them on a testnet or mainnet - similar to Ganache, or other local network environments.
+LocalFhenix is a complete Fhenix local testnet and ecosystem containerized with Docker. It simplifies the way contract developers test their contracts in a sandbox before they deploy them on a testnet or mainnet - similar to Ganache, or other local network environments.
 
 LocalFhenix comes preconfigured with opinionated, sensible (hopefully) defaults for standard testing environments.
 
@@ -28,37 +28,28 @@ cp .env.example .env
 Start the local dev environment in a separate tab using:
 
 ```
-pnpm start:localfhenix
+docker run [-d] -p 8547:8547 -p 3000:3000 -it ghcr.io/fhenixprotocol/nitro/localfhenix:latest
 ```
 
-Note that you can run LocalFhenix without using the template directly as a docker image using the command
-
-#### Want to run LocalFhenix without the template?
-
-```bash
-docker run -it -p 8545:8545 -p 6000:6000 \
-  --name localfhenix ghcr.io/fhenixprotocol/fhenix-devnet:0.1.6
-```
+You can choose if you want to use the `-d` for detached run or not
 
 
 :::note
-In this example port 8545 will be exposed as the JSON-RPC port, and port 6000 is used for the built-in faucet
+In this example port 8547 will be exposed as the JSON-RPC port, and port 3000 is used for fauct.
 :::
 
-You've now officially created a local Fhenix devnet with chain-id `5432`. 🎉
+You've now officially created a local Fhenix testnet with chain-id `412346`. 🎉
 
 ### Faucet
 
 To start developing on LocalFhenix, we'll need to send some FHE to a new address. For this, we can use the built-in faucet.
 
-```bash
-pnpm faucet
+You can use it by accessing the following url:
+```
+http://localhost:3000/faucet?address={YOUR_WALLET_ADDRESS}
 ```
 
-#### Want to call the faucet manually?
-
-The faucet sends 100 FHE every call. The pnpm command uses the mnemonics from your .env file. If you want to use a different address, you can directly call the faucet API:
-
+You can also use curl:
 ```bash
-curl "http://localhost:3000/faucet?address=${ADDRESS}"
+curl "http://localhost:3000/faucet?address={YOUR_WALLET_ADDRESS}"
 ```

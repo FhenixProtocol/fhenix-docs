@@ -67,10 +67,6 @@ modifier onlySender(Permission memory permission) {
 
 The `onlySender` modifier takes a `Permission`. It then calculates the `digest` from the `publicKey`. The signer's address is recovered from the `digest` using the `ECDSA.recover` function. If the recovered address matches `msg.sender`, it means that the caller is indeed the owner of the account and is allowed to access the data.
 
-:::tip[Tip]
-The `Permission` structure can be [easily created](../FhenixJS/Permissions.md) using fhenix.js.
-:::
-
 You can use this helpful contract out-of-the-box by importing it from `@fhenixprotocol/contracts/access` and can be easily imported to integrate into your contracts.
 
 ```solidity
