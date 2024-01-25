@@ -49,4 +49,4 @@ Fhenix Frontier, the first publicly available FHE-based blockchain, is now live!
 
 ## Faucet
 
-To get some test tokens, use the faucet at [https://faucet.fhenix.io/](https://faucet.fhenix.io/). 
+To get some test tokens, use the faucet at [https://faucet.fhenix.zone/](https://faucet.fhenix.zone/). 
