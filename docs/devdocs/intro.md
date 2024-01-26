@@ -19,9 +19,9 @@ In this documentation, you'll find guidance on operating on encrypted data, unde
 
 ## Quick links
 
-[fhenix-and-t-fhe.md](overview/fhenix-and-t-fhe.md)
+[fhenix-and-t-fhe.md](Fhenix Frontier/Fhenix-T-FHE.md)
 
-[connecting-to-the-testnet.md](overview/connecting-to-the-testnet.md)
+[connecting-to-the-testnet.md](Fhenix Frontier/Connecting-To.md)
 
 ## Get Started
 

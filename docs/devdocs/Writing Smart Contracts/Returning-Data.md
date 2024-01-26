@@ -47,4 +47,4 @@ function sealoutputExample() public pure returns (bytes memory reencrypted) {
 }
 ```
 
-You can see full examples of how to use these functions in our [examples and dApps](/Examples-fheDapps.md) section.
+You can see full examples of how to use these functions in our [examples and dApps](../Examples%20and%20References/Examples-fheDapps.md) section.

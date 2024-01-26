@@ -48,7 +48,7 @@ const permit = await getPermit(contractAddress);
 
 #### What is a Permission?
 
-In the context of Fhenix, a permission is the part of a permit that supplies the proof that the caller is who he says he is. A permission contains the signature and the corresponding public key. In order to see how to verify a permission in your solidity contract please refer to our [Permissioned](../Solidity API/Permissioned.md).
+In the context of Fhenix, a permission is the part of a permit that supplies the proof that the caller is who he says he is. A permission contains the signature and the corresponding public key. In order to see how to verify a permission in your solidity contract please refer to our [Permissioned](../Solidity%20API/Permissioned.md).
 
 #### How to Generate a Permission
 ```javascript
