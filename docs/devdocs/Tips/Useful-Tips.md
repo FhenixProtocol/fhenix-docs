@@ -4,13 +4,12 @@ This section will list some useful tips and good practices for you to be able to
 
 #### Trivial Encryption
 
-When we are using FHE.asEuint*(PLAINTEXT_NUMBER) we are actually using a trivial encrpytion of our FHE scheme. Unlike normal FHE encryption trivial encryption is a deterministic encryption. The meaning is that if you will do it twice you will still get the same result
+When we are using `FHE.asEuint*(PLAINTEXT_NUMBER)` we are actually using a trivial encrpytion of our FHE scheme. Unlike normal FHE encryption trivial encryption is a deterministic encryption. The meaning is that if you will do it twice you will still get the same result
 
+#### Default Value of a Euint
 
-#### Default Value of a Euint 
-When having a euint* variable uninitialized it will be considered as 0. Every FHE function that will receive an unitialized euint* will assume it is FHE.asEuint*(0).
-You can assume now that FHE.asEuint*(0) is quite oftenly used - Luckily we realized this and decided to have the values of FHE.asEuint*(0) pre-calculated on node initialization so when you use FHE.asEuint*(0) we will just return those values.
-
+When having a `euint*` variable uninitialized it will be considered as 0. Every FHE function that will receive an unitialized euint* will assume it is `FHE.asEuint*(0)`.
+You can assume now that `FHE.asEuint*(0)`is quite oftenly used - Luckily we realized this and decided to have the values of`FHE.asEuint*(0)`pre-calculated on node initialization so when you use`FHE.asEuint\*(0)` we will just return those values.
 
 #### Re-encrypting a Value
 
@@ -28,6 +27,6 @@ All of the operations are supported both in TXs and in Queries. That being said 
 
 Currently we are supporting a lot of FHE operations. Some of them might take a lot of time to compute, some good examples are: Div (5 seconds for euint32), Mul, Rem, and the time will grow depends on the value types you are using.
 When writing FHE code we encourage you to use the operations wisely and choose what opeation should be used.
-Example: Instead of FHE.mul(ENCRYPTED_UINT_32, FHE.asEuint32(2)) you can use FHE.shl(ENCRYPTED_UINT_32, FHE.asEuint32(1)) in some cases FHE.div(ENCRYPTED_UINT_32, FHE.asEuint32(2)) can be replaced by FHE.shr(ENCRYPTED_UINT_32, FHE.asEuint32(1)) 
+Example: Instead of `FHE.mul(ENCRYPTED_UINT_32, FHE.asEuint32(2))` you can use `FHE.shl(ENCRYPTED_UINT_32, FHE.asEuint32(1))` in some cases `FHE.div(ENCRYPTED_UINT_32, FHE.asEuint32(2))` can be replaced by `FHE.shr(ENCRYPTED_UINT_32, FHE.asEuint32(1))`
 
 For more detailed banchmarks please refer to: TBD

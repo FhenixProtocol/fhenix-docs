@@ -19,23 +19,18 @@ In this documentation, you'll find guidance on operating on encrypted data, unde
 
 ## Quick links
 
-[fhenix-and-t-fhe.md](Fhenix Frontier/Fhenix-T-FHE.md)
+[fhenix-and-t-fhe.md](Fhenix%20Frontier/Fhenix-T-FHE.md)
 
-[connecting-to-the-testnet.md](Fhenix Frontier/Connecting-To.md)
+[connecting-to-the-testnet.md](Fhenix%20Frontier/Connecting-To.md)
 
 ## Get Started
 
 We've put together some helpful guides for you to get setup quickly and easily.
 
-[//]: # ({% content-ref url="developer-guides/getting-started.md" %})
-
-[//]: # ([getting-started.md]&#40;developer-guides/getting-started.md&#41;)
-
-[//]: # ({% endcontent-ref %})
-
-[//]: # ()
-[//]: # ({% content-ref url="developer-guides/fhenix-by-example/" %})
-
-[//]: # ([fhenix-by-example]&#40;developer-guides/fhenix-by-example/&#41;)
-
-[//]: # ({% endcontent-ref %})
+[//]: # '{% content-ref url="developer-guides/getting-started.md" %}'
+[//]: # "[getting-started.md](developer-guides/getting-started.md)"
+[//]: # "{% endcontent-ref %}"
+[//]: #
+[//]: # '{% content-ref url="developer-guides/fhenix-by-example/" %}'
+[//]: # "[fhenix-by-example](developer-guides/fhenix-by-example/)"
+[//]: # "{% endcontent-ref %}"
