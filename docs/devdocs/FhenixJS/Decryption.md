@@ -33,9 +33,14 @@ This is done in 3 steps: generating a permit, querying the contract and unsealin
 #### 1. Creating a Permit
 
 ```javascript
+import { FhenixClient, getPermit } from 'fhenixjs';
+
 const provider = new ethers.JsonRpcProvider('https://test01.fhenix.zone/evm');
+const client = new FhenixClient({ provider });
+
 
 const permit = await getPermit(contractAddress, provider);
+client.storePermit(permit);
 ```
 
 :::tip[Did you know?]
@@ -69,22 +74,24 @@ Permits are currently limited to support a single contract
 #### Putting it all Together
 
 ```typescript
-import { FhenixClient } from 'fhenixjs';
+import { FhenixClient, getPermit } from 'fhenixjs';
 import { JsonRpcProvider } from 'ethers';
 
 const provider = new ethers.JsonRpcProvider('https://test01.fhenix.zone/evm');
 const client = new FhenixClient({provider});
 
-const permit = await getPermit(contractAddress);
+const permit = await getPermit(contractAddress, provider);
+client.storePermit(permit);
 
 const permission = client.extractPermitPermission(permit);
 const response = await contract.balanceOf(permission);
 
-const plaintext = client.unseal(contractAddress, response)
+const plaintext = client.unseal(contractAddress, response);
 
 console.log(`My Balance: ${plaintext}`)
 ```
 :::tip[Did you know?]
-You have tools that can ease the process of interacting with the contract and decrypting values. If you want to use them please refer to [Tools and Utilities](../Tools and Utilities/) 
+You have tools that can ease the process of interacting with the contract and decrypting values. If you want to use them please refer to
+[Tools and Utilities](../Tools%20and%20Utilities/Fhenix-Encryption-UI) 
 :::
 

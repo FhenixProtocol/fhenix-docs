@@ -14,7 +14,7 @@ Simply, they are a signed message that contains the caller's public key, which t
 
 ## Usage
 
-Permits are meant to be used together with the interfaces exposed by [`Permissioned.Sol`](#overview). If a contract expects a `Signature`
+Permits are meant to be used together with the interfaces exposed by [`Permissioned.Sol`](../Solidity%20API/Permissioned). If a contract expects a `Signature`
 parameter, that's a good sign that we should use a `permit` to manage and create user permissions.
 
 
@@ -30,7 +30,7 @@ Let's see this concept in action using an example. In an encrypted ERC20 token c
 
 Below is a function from an EncryptedERC20 contract:
 
-```solidity
+```javascript
 function balanceOf(
     Permission calldata perm
 )
@@ -47,7 +47,7 @@ In this function, `onlySender` is a modifier that verifies if the EIP712 signatu
 
 Here's what the `onlySender` modifier looks like:
 
-```solidity
+```javascript
 struct Permission {
     bytes32 publicKey;
     bytes signature;
@@ -69,7 +69,7 @@ The `onlySender` modifier takes a `Permission`. It then calculates the `digest` 
 
 You can use this helpful contract out-of-the-box by importing it from `@fhenixprotocol/contracts/access` and can be easily imported to integrate into your contracts.
 
-```solidity
+```javascript
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -82,7 +82,7 @@ contract WrappingERC20 is Permissioned, ERC20 {
     function balanceOfEncrypted(Permission memory perm) 
     public 
     view  
-    onlySender(signature)
+    onlySender(perm)
     returns (bytes memory) {
         return FHE.sealoutput(_encBalances[msg.sender], perm.publicKey);
     }

@@ -18,8 +18,8 @@ To utilize the `Permissioned` contract, you would inherit it in your own contrac
 
 1. Define a view function in your contract. For example, to retrieve sensitive data:
 
-    ```solidity
-    function getSensitiveData(Signature memory signature) public view onlySignedPublicKey(signature) returns (string memory) {
+    ```javascript
+    function getSensitiveData(Permission calldata perm) public view onlySender(perm) returns (string memory) {
         // Logic to return sensitive data
     }
     ```
@@ -32,7 +32,7 @@ To utilize the `Permissioned` contract, you would inherit it in your own contrac
 
 Imagine a contract holding medical records. You want to create a secure method for patients to view their records:
 
-```solidity
+```javascript
 pragma solidity ^0.8.20;
 
 import "@fhenixprotocol/contracts/access/Permissioned.sol";
@@ -41,7 +41,7 @@ contract MedicalRecords is Permissioned {
     
     mapping(address => string) private records;
 
-    function viewMedicalRecord(Signature memory signature) public view onlySignedPublicKey(signature) returns (string memory) {
+    function viewMedicalRecord(Permission calldata perm) public view onlySender(perm) returns (string memory) {
         return records[msg.sender];
     }
 }
