@@ -5,11 +5,10 @@ description: Installation of contracts and creating a basic contract
 
 # 🐤 Getting Started
 
-A core component of the Fhenix ecosystem is the FHE.sol solidity library. It serves as the bridge from the public to the private EVM. 
-It is a Solidity library that provides a set of functions that can be used to encrypt and decrypt data. 
+A core component of the Fhenix ecosystem is the FHE.sol solidity library. It serves as the bridge from the public to the private EVM.
+It is a Solidity library that provides a set of functions that can be used to encrypt and decrypt data.
 
-To find a full list of functions and their descriptions, please refer to the [FHE.sol documentation](https://docs.fhenix.io/developer-guides/fhe-by-example/fhe-sol).
-
+To find a full list of functions and their descriptions, please refer to the [FHE.sol documentation](../Solidity%20API/FHE.md).
 
 ## Installation
 
@@ -20,7 +19,6 @@ import {FHE} from "@fhenixprotocol/contracts/FHE.sol";
 ```
 
 ## Usage
-
 
 ### Calling a Contract with Encrypted Inputs
 

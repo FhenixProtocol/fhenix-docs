@@ -6,8 +6,8 @@ This is done via the `sealoutput` function, which seals the data in a manner tha
 recipient can decrypt and view it (or the `decrypt` function, for less sensitive data). This approach ensures that
 encrypted data remains confidential and only accessible to authorized users.
 
-Usually, Solidity contracts will expose their data using View functions.
-However, in the context of permissioned data this is challenging for us since view functions do not come
+Usually, Solidity contracts will expose their data using view functions.
+However, in the context of permissioned data this is challenging since view functions do not come
 with any kind of mechanism to allow the contract to cryptographically verify that the caller is who he says he is -
 in the case of transactions this is done by verifying the signature on the data.
 
@@ -27,71 +27,47 @@ Simply, they are a signed message that contains the caller's public key, which t
 
 Out-of-the-box, Fhenix Solidity libraries come with a basic access control scheme. This helps contracts perform a basic check for ownership of an account.
 
-This makes it easy for contracts to add authentication & authorization to specific view functions, without having to reinvent the wheel every time. To learn more about why this can be important, and what EIP712 is, refer to our [fundamentals section on Access Control](../fhevm-solidity/access-control.md).
+This makes it easy for contracts to add authentication & authorization to specific view functions, without having to reinvent the wheel every time.
 
-This page will cover how access tokens are created and used in FhenixJS.
+This page will cover how access permits and permissions that are created and used in fhenix.js.
 
 #### What is a Permit?
 
-In the context of Fhenix and blockchain, an access token refers to a signed JSON object that follows the EIP-712 standard. This token contains the necessary information, including a public key, that allows data reencryption in a smart contract environment. The inclusion of this public key into the access token enables a secure process of data re-encryption within a smart contract once the JSON object is signed by the user.
+In the context of Fhenix and blockchain, a permit refers to a signed JSON object that follows the EIP-712 standard. This permit contains the necessary information, including a public key, that allows data re-sealing in a smart contract environment. The inclusion of this public key into the permit enables a secure process of data re-sealing within a smart contract once the JSON object is signed by the user.
 
 #### How to Generate a Permit
 
-Access tokens are generated using the `FhevmInstance.generateToken` method. This method requires a few parameters:
+Permits are generated using the `getPermit` method. This method requires a the following parameter:
 
-* `options` (required): An object containing the following properties:
-    * `verifyingContract` (required, string): The address of the contract.
-    * `name` (optional, string): The name used in the EIP712 token.
-    * `version` (optional, string): The version used in the EIP712 token.
-
-The `generateToken` method returns an object containing a keypair (publicKey and privateKey) and a token (EIP712 formatted).
+* `contractAddress` (required, string): The address of the contract.
+* `provider` (required): Note that if you want to unseal data using your wallet's encryption key you can't use "JsonRpcProvider" you will need to use a provider that can sign.
 
 ```javascript
-const instance = await createInstance({ chainId, publicKey });
-const encryptedParam = instance.generateToken({
-  name: 'Authentication',
-  verifyingContract: '0x1c786b8ca49D932AFaDCEc00827352B503edf16c',
-});
+const permit = await getPermit(contractAddress);
 ```
 
-Behind the scenes, this function not only creates an access token, but also generates an ephemeral key that is used for decryption of the responses.&#x20;
+#### What is a Permission?
 
-#### Using an Access Token
+In the context of Fhenix, a permission is the part of a permit that supplies the proof that the caller is who he says he is. A permission contains the signature and the corresponding public key. In order to see how to verify a permission in your solidity contract please refer to our [Permissioned](../Solidity%20API/Permissioned.md).
 
-Once generated, the access token can be used in a variety of ways, such as being signed for data re-encryption in a smart contract or to retrieve balance information of a contract. Here's an example of using an access token for getting balance:
-
+#### How to Generate a Permission
 ```javascript
-const instance = await createInstance({ chainId, publicKey });
-const token = instance.generateToken({
-  name: 'Authentication',
-  verifyingContract: '0x1c786b8ca49D932AFaDCEc00827352B503edf16c',
-});
-const params = [userAddress, JSON.stringify(generatedToken.token)];
-const sign = await window.ethereum.request({ method: 'eth_signTypedData_v4', params });
-const response = await contract.balanceOf(token.publicKey, sign);
+const permission = client.extractPermitPermissions(permit);
 ```
 
-#### Storing and Loading Access Tokens
+#### Using an Permission
 
-Tokens can be stored for later use by using the `FhevmInstance.setTokenSignature` method. This method allows you to store the signature of a public key for a specific contract. The `FhevmInstance.getTokenSignature` method can then be used to fetch the stored public key and signature later.
-
-```javascript
-// Store signature
-instance.setTokenSignature(contractAddress, sign);
-
-// Fetch public key and signature
-const { publicKey, signature } = instance.getTokenSignature();
-```
-
-For batch operations or caching purposes, the `FhevmInstance.serializeKeypairs` method is useful as it allows you to store contract keypairs in the user's LocalStorage. The method returns a mapping of contract addresses to their associated keypairs and signatures.
+Once generated, you can use the permission and send it to the contract. You can also unseal the outputs of "sealoutput" assuming it was sealed using your permission. 
 
 ```javascript
-const keypairs = instance.serializeKeypairs();
-console.log(keypairs);
-```
+import { BrowserProvider } from "ethers";
+import { FhenixClient, getPermit } from "fhenixjs";
 
-This structure can then be used when reloading the instance
-
-```javascript
-const instance = await createInstance({ chainId, publicKey, keypairs });
+const provider = new BrowserProvider(window.ethereum);
+const client = new FhenixClient({ provider });
+const permit = await getPermit(contractAddress, provider);
+const permission = client.extractPemitPermissions(permit);
+client.storePermit(permit); // Stores a permit for a specific contract address.
+const response = await contract.connect(owner).getValue(permission); // Calling "getValue" which is a view function in "contract"
+const plaintext = await client.unseal(contractAddress, response);
 ```

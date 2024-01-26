@@ -16,7 +16,7 @@ Fhenix Frontier, the first publicly available FHE-based blockchain, is now live!
    1. **Network Name: Fhenix Frontier**
    2. **New RPC URL: https://test01.fhenix.zone/evm**
    3. **Chain ID:** 412346
-   4. **Currency Symbol: tFHE**
+   4. **Currency Symbol: FHNX**
    5. **Block Explorer URL:** TBD
 5. Once you fill out all the details, click **Save**.
 6. Now you can switch to Fhenix Frontier. Get some tokens using the testnet faucet and start building!
@@ -49,4 +49,5 @@ Fhenix Frontier, the first publicly available FHE-based blockchain, is now live!
 
 ## Faucet
 
-To get some test tokens, use the faucet at [https://faucet.fhenix.zone/](https://faucet.fhenix.zone/). 
+To get some test tokens, use the faucet at [https://faucet.fhenix.zone/](https://faucet.fhenix.zone/).
+You can get 0.1 tokens once per 5 minutes. 
