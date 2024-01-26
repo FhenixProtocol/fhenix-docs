@@ -20,15 +20,15 @@ if (a.lt(b)) {
 
 When writing Solidity contracts for our blockchain, you'll need to consider all possible branches of a conditional at the same time. It's somewhat akin to writing constant-time cryptographic code, where you want to avoid timing attacks that could leak information about secret data.
 
-To handle these conditionals, we use a concept called a "selector". 
+To handle these conditionals, we use a concept called a "selector".
 A selector is a function that takes in a control and two branches, and returns the result of the branch that corresponds to the condition. A selector is like a traffic signal that decides which traffic to let through based on the color of the light (control signal).
 
 In Fhenix, we utilize this by calling the `select` function. It's a function that takes in a condition and two inputs, and returns the input that corresponds to the state of the condition. You can think of this like a ternary boolean conditional (`condition ? "yes" : "no"`), but for encrypted data.
 
-Let's take a look at an example of `select` usage from a [Blind Auction Smart Contract](../../examples/reference-dapps/blind-auction/):
+Let's take a look at an example of `select` usage from a Blind Auction Smart Contract: TBD(ADD LINK):
 
 ```Javascript
-ebool isHigher = existingBid.lt(value); 
+ebool isHigher = existingBid.lt(value);
 bids[msg.sender] = FHE.select(isHigher, value, existingBid);
 ```
 

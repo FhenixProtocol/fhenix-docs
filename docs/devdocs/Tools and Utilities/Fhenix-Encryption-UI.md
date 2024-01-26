@@ -1,16 +1,17 @@
 # 🎧 Fhenix Encryption UI
 
 Fhenix encryption UI can be found in the following [link](https://encrypt.fhenix.zone/)
-This UI is useful for those who are not using remix or using remix without using the [plugin]("./Fhenix-Remix-Plugin.md")
+This UI is useful for those who are not using remix or using remix without using the [plugin](Fhenix-Remix-Plugin.md)
 
-![]("../../../../../static/img/encui.png")
+![](encui.png)
 
 #### Encryption
 
-In order to encrypt a number you can simply write the number you want to encrypt instead of the "Enter a number" text. 
-You can choouse what Euint* type you want as an output and evantually you can choose one of the two options:
+In order to encrypt a number you can simply write the number you want to encrypt instead of the "Enter a number" text.
+You can choouse what Euint\* type you want as an output and evantually you can choose one of the two options:
+
 1. Encrypt (Plain) - Will output hex encoded bytes (`0x04000...`) that can be used as "bytes calldata" input or as the input for the remix plugin
-2. Encrypt (InEuint) - Will output hex encoded bytes in a square brackets (`[0x04000...]`) that can be used in remix (not with the plugin) for function that receive inEuint* 
+2. Encrypt (InEuint) - Will output hex encoded bytes in a square brackets (`[0x04000...]`) that can be used in remix (not with the plugin) for function that receive inEuint\*
 
 All output will be copied to your clipboard and a notification will pop telling you that the output was coppied.
 
