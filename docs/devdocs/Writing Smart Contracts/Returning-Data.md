@@ -41,7 +41,7 @@ function sealoutputExample(bytes32 pubkey) public pure returns (bytes memory ree
 ```Javascript
 import {FHE} from "@fhenixprotocol/contracts";
 
-function sealoutputExample() public pure returns (bytes memory reencrypted) {
+function sealoutputExample() public pure returns (uint8 decrypted) {
     euint8 memory foo = asEuint8(100);
     return FHE.decrypt(foo);
 }
