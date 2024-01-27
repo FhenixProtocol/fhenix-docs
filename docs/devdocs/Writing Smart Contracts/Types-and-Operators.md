@@ -86,3 +86,7 @@ Note that all functions are supported in both direct function calls and library 
 | Negative              | neg              | n/a      |
 | Not                   | not              | n/a      |
 
+:::danger
+At the moment it is not possible to do `ebool result = (lhs == rhs)` and others that return a boolean result. This is because FHE.sol expects a `ebool`, while Solidity only allows overloading to return a regular boolean.
+Instead, we recommend `ebool result = lhs.eq(rhs)`.
+:::
