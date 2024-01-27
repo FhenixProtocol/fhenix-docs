@@ -29,7 +29,41 @@ In the back-end, encrypted integers are FHE ciphertexts. The library abstracts a
 
 ## Operations
 
-Fhenix exposes utility functions for operations on FHE ciphertexts. The list of supported operations is presented below.
+There are three ways to perform operations with FHE.sol:
+
+### Using Direct Function Calls
+Direct function calls are the most straightforward way to perform operations with FHE.sol. For example, if you want to add two encrypted 8-bit integers (euint8), you can do so as follows:
+
+```javascript
+euint8 result = FHE.add(lhs, rhs);
+```
+
+Here, lhs and rhs are your euint8 variables, and result will store the outcome of the addition.
+
+### Using Library Bindings
+FHE.sol also provides library bindings, allowing for a more natural syntax. To use this, you first need to include the library for your specific data type. For euint8, the usage would look like this:
+
+```javascript
+euint8 result = lhs.add(rhs);
+```
+
+In this example, lhs.add(rhs) performs the addition, using the library function implicitly.
+
+### Utilizing Operator Overloading
+
+For an even more intuitive approach, FHE.sol supports operator overloading. This means you can use standard arithmetic operators like +, -, *, etc., directly on encrypted types. Here's how you can use it for adding two euint8 values:
+
+```
+euint8 result = lhs + rhs;
+```
+
+With operator overloading, lhs + rhs performs the addition seamlessly.
+
+## Supported Operations
+
+All operations supported by FHE.sol are listed in the table below:
+
+Note that all functions are supported in both direct function calls and library bindings. However, operator overloading is only supported for the operations listed in the table (solidity please support operator overloading for boolean return types!).
 
 | name                  | FHE.sol function | Operator |
 |-----------------------|------------------|----------|
