@@ -14,14 +14,17 @@ To find a full list of functions and their descriptions, please refer to the [FH
 
 To get started with FHE.sol, you need to install it as a dependency in your Solidity project. You can do this using npm (Node Package Manager) or Yarn. Open your terminal and navigate to your project's directory, then run the following:
 
-```Javascript
-import {FHE} from "@fhenixprotocol/contracts/FHE.sol";
+```bash
+npm install @fhenixprotocol/contracts;
+```
+
+Or
+
+```bash
+yarn install @fhenixprotocol/contracts;
 ```
 
 ## Usage
 
-### Calling a Contract with Encrypted Inputs
-
 ### Operations Example
-
-### Decrypting Outputs
+For operation examples please refer to [FHE.sol operation testers](https://github.com/FhenixProtocol/fheos/tree/master/solidity/tests/contracts)
