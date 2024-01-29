@@ -27,7 +27,7 @@ There are two ways to return encrypted data to the user:
 
 ### Sealed Box Encryption
 
-```Javascript
+```solidity
 import {FHE} from "@fhenixprotocol/contracts";
 
 function sealoutputExample(bytes32 pubkey) public pure returns (bytes memory reencrypted) {

@@ -9,7 +9,8 @@ description: Comparisons on FHE data
 ## Comparisons
 
 Unlike other operations in FHE.sol, comparison operations do not support their respective operators (e.g. `>`, `<` etc.). 
-This is because solidity expects these operators to return a boolean value, which is not possible with FHE. Intuitively, this is because returning a boolean value would leak information about the encrypted data.
+This is because solidity expects these operators to return a boolean value, which is not possible with FHE.
+Intuitively, this is because returning a boolean value would leak information about the encrypted data.
 
 Instead, comparison operations are implemented as functions that return an `ebool` type. 
 
