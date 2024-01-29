@@ -37,7 +37,7 @@ In the context of Fhenix and blockchain, a permit refers to a signed JSON object
 
 #### How to Generate a Permit
 
-Permits are generated using the `getPermit` method. This method requires a the following parameter:
+Permits are generated using the `getPermit` method. This method requires the following parameter:
 
 * `contractAddress` (required, string): The address of the contract.
 * `provider` (required): Note that if you want to unseal data using your wallet's encryption key you can't use "JsonRpcProvider" you will need to use a provider that can sign.
@@ -55,7 +55,7 @@ In the context of Fhenix, a permission is the part of a permit that supplies the
 const permission = client.extractPermitPermissions(permit);
 ```
 
-#### Using an Permission
+#### Using a Permission
 
 Once generated, you can use the permission and send it to the contract. You can also unseal the outputs of "sealoutput" assuming it was sealed using your permission. 
 
