@@ -16,17 +16,20 @@ You can assume now that `FHE.asEuint*(0)`is used quite often - Luckily we realiz
 To explain this tip we will use an example. Let's assume we want to develop a confidential voting and let's say we have 4 candidates.
 Assuming that on each vote we increase (cryptographically with FHE.add) the tally, one can just monitor the key in the DB that represents this specific tally and once the key was changes he will know who we voted for.
 An ideal solution for this issue is to change all keys no matter who we voted for, but how?!
+
 In order to understand how we will first need to understand that FHE encryption is a non-deterministic encryption means that encrypting (non-trivial encryption) a number twice will result with 2 different encrypted outputs.
+
 Now that we know that, we can add 0 (cryptographically with FHE.add) to all of those tallies that shouldn't be changed and they will be changed in the DB!
 
 #### FHE.req() in TXs
 
-All of the operations are supported both in TXs and in Queries. That being said we strongly advice to think twice before you use those operations inside a TX. FHE.req() is actually exposing the value of your encrypted data. Assuming we will send the transaction and monitor the gas usage we can probably identify whether the FHE.req() condition met or not and understand a lot about what the encrypted values represent
+All of the operations are supported both in TXs and in Queries. That being said we strongly advise to think twice before you use those operations inside a TX. FHE.req() is actually exposing the value of your encrypted data. Assuming we will send the transaction and monitor the gas usage we can probably identify whether the FHE.req() condition met or not and understand a lot about what the encrypted values represent.
 
 #### Performance and Gas Usage
 
-Currently, we are supporting a lot of FHE operations. Some of them might take a lot of time to compute, some good examples are: Div (5 seconds for euint32), Mul, Rem, and the time will grow depends on the value types you are using.
+Currently we support many FHE operations. Some of them might take a lot of time to compute, some good examples are: Div (5 seconds for euint32), Mul, Rem, and the time will grow depends on the value types you are using.
+
 When writing FHE code we encourage you to use the operations wisely and choose what operation should be used.
 Example: Instead of `FHE.mul(ENCRYPTED_UINT_32, FHE.asEuint32(2))` you can use `FHE.shl(ENCRYPTED_UINT_32, FHE.asEuint32(1))` in some cases `FHE.div(ENCRYPTED_UINT_32, FHE.asEuint32(2))` can be replaced by `FHE.shr(ENCRYPTED_UINT_32, FHE.asEuint32(1))`
 
-For more detailed banchmarks please refer to: TBD
+For more detailed benchmarks please refer to: TBD
