@@ -39,8 +39,9 @@ Here you can find a list of some of cool apps that you can use as a reference
 <td>This examples will need to be updated when using Fhenix's FHE.sol</td>
 </tr>
 <tr>
-<td>Private Voting</td>
-<td><a href="https://www.fhenix.io">TO BE ADDED</a></td>
+<td>Confidential Voting</td>
+<td><a href="https://github.com/FhenixProtocol/confidential-voting">https://github.com/FhenixProtocol/confidential-voting</a></td>
+<td></td>
 <td></td>
 </tr>
 <tr>
@@ -55,4 +56,3 @@ Here you can find a list of some of cool apps that you can use as a reference
 </tr>
 </tbody>
 </table>
-
