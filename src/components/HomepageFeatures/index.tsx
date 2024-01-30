@@ -2,12 +2,15 @@ import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 import React from "react";
+import { useColorMode  } from '@docusaurus/theme-common';
 
 type FeatureItem = {
   title: string;
   Svg: React.ComponentType<React.ComponentProps<'svg'>>;
   description: JSX.Element;
 };
+
+
 
 const FeatureList: FeatureItem[] = [
   {
@@ -42,10 +45,13 @@ const FeatureList: FeatureItem[] = [
 ];
 
 function Feature({title, Svg, description}: FeatureItem) {
+  const { colorMode  } = useColorMode();
+  const svgClassName = colorMode === 'dark' ? `${styles.featureSvg} white-image` : styles.featureSvg;
+
   return (
       <div className="card margin-left--xl" style={{borderRadius: "20px", border: "1px solid var(--ifm-color-primary)"}}>
         <div className="card__header text--center">
-          <Svg className={styles.featureSvg} role="img"/>
+          <Svg className={svgClassName} role="img"/>
         </div>
         <div className="card__body text--center" >
           <Heading as="h3">{title}</Heading>

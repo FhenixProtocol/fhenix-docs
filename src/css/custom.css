@@ -59,3 +59,7 @@
 .button--primary {
   background-color: var(--ifm-color-primary-lightest);
 }
+
+.white-image {
+  filter: invert(100%) brightness(200%);
+}
