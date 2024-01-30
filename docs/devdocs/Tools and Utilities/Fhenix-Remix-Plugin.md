@@ -7,7 +7,7 @@ Fhenix created a plugin to ease the interaction with the contracts.
 In order to add the plugin you can simply click on the `Plugin Manager` button in remix (left bottom side), then click on the `Connect to a Local Plugin` link.
 Set the `Plugin Name` value to be `Fhenix` and the `URL` value to be `https://remix-plugin.fhenix.zone`
 
-![](install-plugin.webp)
+![](/img/install-plugin.webp)
 
 #### Key Features
 
@@ -21,7 +21,7 @@ Set the `Plugin Name` value to be `Fhenix` and the `URL` value to be `https://re
 After deploying a contract (the plugin is only aware of contracts that are deployed while it is active), MetaMask will request that you sign a message. This message is a permit that allowing you to interact with the contract from the plugin.  
 After the message is signed, the contract will be saved to the list.  
 
-![](interact-info-1.webp)
+![](/img/interact-info-1.webp)
 
 
 1. Select the contract you wish to interact with.
@@ -33,7 +33,7 @@ After the message is signed, the contract will be saved to the list.
 
 #### Additional Tools
 
-![](tools-info.webp)
+![](/img/tools-info.webp)
 
 1. Switch to the Fhenix network or add it to MetaMask if it is not already present.
 2. Select the desired encryption type.
