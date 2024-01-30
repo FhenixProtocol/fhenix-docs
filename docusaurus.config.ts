@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Fhenix',
   tagline: 'Build dApps with privacy in Solidity',
-  favicon: 'img/logo.svg',
+  favicon: 'img/logo-black.svg',
 
   // Set the production url of your site here
   url: 'https://docs.fhenix.io',
@@ -57,7 +57,8 @@ const config: Config = {
       title: 'Fhenix Docs',
       logo: {
         alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo-black.svg',
+        srcDark: 'img/logo-white.svg',
       },
       items: [
         {
