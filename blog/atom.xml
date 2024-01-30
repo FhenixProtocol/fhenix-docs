@@ -6,7 +6,7 @@
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://docs.fhenix.io/fhenix-docs/blog"/>
     <subtitle>Fhenix Blog</subtitle>
-    <icon>https://docs.fhenix.io/fhenix-docs/img/logo.svg</icon>
+    <icon>https://docs.fhenix.io/fhenix-docs/img/logo-black.svg</icon>
     <entry>
         <title type="html"><![CDATA[Welcome]]></title>
         <id>https://docs.fhenix.io/fhenix-docs/blog/welcome</id>
