@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Fhenix',
-  tagline: 'Build dApps with privacy in Solidity',
+  tagline: 'Programmable. Scalable. Encrypted',
   favicon: 'img/logo-black.svg',
 
   // Set the production url of your site here
@@ -54,7 +54,7 @@ const config: Config = {
       defaultMode: 'dark',
     },
     navbar: {
-      title: 'Fhenix Docs',
+      title: 'Fhenix',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo-black.svg',
@@ -82,7 +82,6 @@ const config: Config = {
       ],
     },
     footer: {
-      style: 'dark',
       links: [
         {
           title: 'Quick Links',
@@ -90,6 +89,14 @@ const config: Config = {
             {
               label: 'Dev Docs',
               to: '/docs/devdocs/intro',
+            },
+            {
+              label: 'Introduction',
+              to: '/docs/devdocs/intro',
+            },
+            {
+              label: 'Get Started',
+              to: '/docs/devdocs/Setting%20Up%20Your%20Environment/intro',
             },
             {
               label: 'Tutorial',

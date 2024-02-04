@@ -14,34 +14,43 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/clock.svg').default,
+    title: 'Fhenix Frontier',
+    Svg: require('@site/static/img/fhenix-logo-card-image.svg').default,
     description: (
       <>
-        Fhenix Frontier solidity easy to use the best
+          Fully Homomorphic Encryption (FHE) enables processing of encrypted data, addressing encryption concerns and making Web3 applications safer. Learn more!
       </>
     ),
   },
   {
-    title: 'FHE Is the Best',
-    Svg: require('@site/static/img/shield_check.svg').default,
-    description: (
+    title: 'FHE Contract',
+      Svg: require('@site/static/img/fhe-contract-card-image.svg').default,
+
+      description: (
       <>
-        FHE next generation text the best stuff ever weeee<br />
-          lots of text seeing what we want to say here <br />
-          To make the page a little longer
+          Run for the first time FHE-based smart contracts with on-chain confidential computation, providing unprecedented level of data encryption
       </>
     ),
   },
   {
-    title: 'Powered by Solidity',
-    Svg: require('@site/static/img/surface1.svg').default,
+    title: 'Fhenix Frontier2',
+      Svg: require('@site/static/img/fhenix-frontier-card-image.svg').default,
+
     description: (
       <>
-        Solidity #1 fhe fhenix fronter winning
+          Introducing end-to-end encryption to the EVM space, bringing on-chain confidentiality and enabling the next generation of dApps. I'm actually not saying anything here!
       </>
     ),
   },
+    {
+        title: 'EVM Compatible',
+        Svg: require('@site/static/img/evm-compatible-card-image.svg').default,
+        description: (
+            <>
+                Fhenix is fully EVM-compatible, allowing easy development of dApps using solidity. Bring your dApp ideas to life using our seamless integration with EVM!
+            </>
+        ),
+    }
 ];
 
 function Feature({title, Svg, description}: FeatureItem) {
@@ -49,29 +58,38 @@ function Feature({title, Svg, description}: FeatureItem) {
   const svgClassName = colorMode === 'dark' ? `${styles.featureSvg} white-image` : styles.featureSvg;
 
   return (
-      <div className="card margin-left--xl" style={{borderRadius: "20px", border: "1px solid var(--ifm-color-primary)"}}>
-        <div className="card__header text--center">
-          <Svg className={svgClassName} role="img"/>
-        </div>
-        <div className="card__body text--center" >
-          <Heading as="h3">{title}</Heading>
-          <p>{description}</p>
-        </div>
+      <div className={clsx("card", styles.custom__card)}>
+
+          <div className="card__body text--center">
+              <Heading as="h1">{title}</Heading>
+              <div className={clsx("text--center")}>
+                  <Svg className={svgClassName} role="img"/>
+              </div>
+              <p>{description}</p>
+          </div>
       </div>
   );
 }
 
 export default function HomepageFeatures(): JSX.Element {
-  return (
+    return (
     <section className={styles.features}>
       <div className="container">
+          <div className="row">
+              <Heading as="h1" className="text--center align--left margin-bottom--lg">
+                  Unleash the Fhenix
+              </Heading>
+          </div>
+
         <div className="row">
 
             {FeatureList.map((props, idx) => (
-                  <Feature key={idx} {...props} />
-            ))}
+                <div className="col col--3">
+                    <Feature key={idx} {...props} />
                 </div>
-              </div>
+                    ))}
+                </div>
+                </div>
     </section>
   );
 }

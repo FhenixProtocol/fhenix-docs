@@ -4,10 +4,11 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
+  /*padding: 4rem 0;*/
+  /*text-align: left;*/
+  /*position: relative;*/
   overflow: hidden;
+  background: var(--ifm-color-background);
   /*background-image: url("/static/img/cover.png");*/
 }
 
@@ -16,18 +17,31 @@
   width: 50%;
 }
 
-@media screen and (max-width: 996px) {
+@media (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
   }
+  .ButtonRow {
+    margin-left: 5rem;
+  }
 }
 
-/*@media screen and (min-width: 996px) {*/
-/*  .heroBanner {*/
-/*  }*/
+@media (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+  .ButtonRow {
+    width: 100%;
+    margin-left: 15rem;
+  }
+}
 
-/*}*/
-
+@media (max-width: 800px) {
+  .ButtonRow {
+    width: 40rem;
+    margin-left: 3rem;
+  }
+}
 /*.intro__buttons {*/
 /*  display: flex;*/
 /*  flex-wrap: wrap;*/

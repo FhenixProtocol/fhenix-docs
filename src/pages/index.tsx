@@ -7,6 +7,7 @@ import Heading from '@theme/Heading';
 import React, { FC } from 'react';
 
 import styles from './index.module.css';
+import AdditionalFeatures from "../components/AdditionalFeatures";
 
 
 function HomepageHeader() {
@@ -19,32 +20,40 @@ function HomepageHeader() {
                   {/*<div className={styles.container2}>*/}
                   <div className="col col--6">
                       <div className="row">
-                          < Heading as="h1" className="hero__title col col--6 margin-left--md">
+
+                          <Heading as="h1" className="hero__title">
                               {siteConfig.title}
                           </Heading>
                       </div>
                       <div className="row">
                           <p className="hero__subtitle">{siteConfig.tagline}</p>
+                          <p>
+                              Fhenix is the first Fully Homomorphic Encryption (FHE) powered L2 to bring computation over encrypted data to Ethereum.
+                              Through the use of its FHE rollups, Fhenix enables Ethereum developers to seamlessly deploy encrypted smart contracts to leverage end-to-end encryption  of their data.
+                          </p>
                       </div>
-                      <div className="row">
-                          {/*<div className='col col--3'>*/}
-                          <Link
-                              className='button button--lol margin-left--md'
-                              to={"https://github.com/fhenixprotocol"} target="_blank">
-                              View on Github
-                          </Link>
-                          {/*</div>*/}
-                          {/*<div className='col col--3'>*/}
-                          <Link
-                              className='button button--primary  col col--3  margin-left--md'
-                              to="/docs/devdocs/intro">
-                              Start Building
-                          </Link>
+                      <div className={clsx("row", styles.ButtonRow)}>
+                          <div className='col col--4'>
+                              <Link
+                                  className='button button--primary'
+                                  to="/docs/devdocs/intro">
+                                  Start Building
+                              </Link>
+                          </div>
+                          <div className='col col--4'>
+                              <Link
+                                  className='button button--lol'
+                                  to={"https://github.com/fhenixprotocol"} target="_blank">
+                                  Tutorial
+                              </Link>
+                          </div>
+
+
                           {/*</div>*/}
                       </div>
                   </div>
-                  <div className="col col--6" style={{height: "200px", marginTop: "-175px"}}>
-                      <img alt="fhenix stuttershock image" style={{display: "block"}} src="img/image.png"/>
+                  <div className="hide-small-width col col--6" style={{marginTop: "-100px"}}>
+                      <img alt="fhenix stuttershock image" src="img/hero-background-img.svg"/>
                   </div>
               </div>
 
@@ -60,7 +69,8 @@ export default function Home(): JSX.Element {
                 description="Description will go into a meta tag in <head />">
             <HomepageHeader/>
             <main>
-                <HomepageFeatures/>
+                <HomepageFeatures />
+                <AdditionalFeatures />
             </main>
         </Layout>
     );
