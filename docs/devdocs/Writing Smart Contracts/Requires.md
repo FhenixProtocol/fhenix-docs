@@ -1,6 +1,6 @@
 ---
 sidebar_position: 5
-title: Require Statements
+title: 🚦Require Statements
 description: How to perform assertions on Encrypted data
 ---
 

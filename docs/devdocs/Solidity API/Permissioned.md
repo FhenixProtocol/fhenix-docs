@@ -1,4 +1,4 @@
-# Permissioned.Sol Contract
+# Permissioned.Sol
 
 Abstract contract that provides EIP-712 based signature verification for access control. To learn more about why this can be important, and what EIP712 is, refer to our [Permits & Access Control](../Encryption%20and%20Privacy/Permits-Access-Control.md).
 

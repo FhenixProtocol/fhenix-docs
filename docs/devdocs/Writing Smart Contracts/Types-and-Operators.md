@@ -1,10 +1,10 @@
 ---
 sidebar_position: 100
-title: Types and Operations
+title: 🧑‍⚕️ Types and Operations
 description: List of supported types and different operations
 ---
 
-# 🧑‍⚕️ Supported Types and Operations
+# Supported Types and Operations
 
 The library exposes utility functions for FHE operations. The goal of the library is to provide a seamless developer experience for writing smart contracts that can operate on confidential data.
 
@@ -58,6 +58,18 @@ euint8 result = lhs + rhs;
 ```
 
 With operator overloading, lhs + rhs performs the addition seamlessly.
+
+## Comparisons
+
+Unlike other operations in FHE.sol, comparison operations do not support their respective operators (e.g. `>`, `<` etc.).
+This is because solidity expects these operators to return a boolean value, which is not possible with FHE.
+Intuitively, this is because returning a boolean value would leak information about the encrypted data.
+
+Instead, comparison operations are implemented as functions that return an `ebool` type.
+
+:::tip
+The `ebool` type is not a real boolean type. It is implemented as a `euint8`
+:::
 
 ## Supported Operations
 

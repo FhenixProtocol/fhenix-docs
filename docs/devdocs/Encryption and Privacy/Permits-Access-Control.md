@@ -1,4 +1,4 @@
-# Permits & Access Control
+# 🫷 Permits & Access Control
 
 In a Fully Homomorphic Encryption (FHE) context, data stored in the contract's storage is encrypted.
 Therefore, granting selective access to data becomes an essential part of access control.
