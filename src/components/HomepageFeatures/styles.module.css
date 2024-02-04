@@ -21,6 +21,11 @@
   justify-content: center;
 
 }
+@media  (max-width: 1440px) {
+  .custom__card {
+    height: 400px;
+  }
+}
 
 @media  (max-width: 996px) {
   .features {

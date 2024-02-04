@@ -16,13 +16,23 @@
   justify-content: center;
   width: 50%;
 }
+@media (min-width: 996px) {
+  .ButtonRowMobile {
+    display: none;
+  }
+}
+
 
 @media (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
   }
   .ButtonRow {
-    margin-left: 5rem;
+    display: none;
+  }
+  .ButtonRowMobile {
+    display: flex;
+    justify-content: center;
   }
 }
 
@@ -30,18 +40,21 @@
   .heroBanner {
     padding: 2rem;
   }
-  .ButtonRow {
-    width: 100%;
-    margin-left: 15rem;
-  }
+
 }
 
-@media (max-width: 800px) {
-  .ButtonRow {
-    width: 40rem;
-    margin-left: 3rem;
-  }
-}
+/*@media (max-width: 800px) {*/
+/*  .ButtonRow {*/
+/*    width: 40rem;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    !*margin-left: 1.5rem;*!*/
+/*  }*/
+/*}*/
+
+
+
+
 /*.intro__buttons {*/
 /*  display: flex;*/
 /*  flex-wrap: wrap;*/

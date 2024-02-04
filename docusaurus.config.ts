@@ -3,7 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Fhenix',
+  title: 'Fhenix Docs',
   tagline: 'Programmable. Scalable. Encrypted',
   favicon: 'img/logo-black.svg',
 
@@ -76,7 +76,17 @@ const config: Config = {
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/fhenixprotocol/',
-          label: 'GitHub',
+          className: 'header-github-link',
+          position: 'right',
+        },
+        {
+          href: 'https://discord.gg/FuVgxrvJMY',
+          className: 'header-discord-link',
+          position: 'right',
+        },
+        {
+          href: 'https://twitter.com/FhenixIO',
+          className: 'header-twitter-link',
           position: 'right',
         },
       ],

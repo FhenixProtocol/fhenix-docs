@@ -22,11 +22,13 @@ export default function AdditionalFeatures(): JSX.Element {
                       The power of Fully Homomorphic Encryption is unmatched!
                       It enables deployment of confidential smart contracts, ensuring that transaction inputs and states stay encrypted throughout the entire computation process, or in other words- end-to-end encryption for Web3 based applications
                   </p>
-                  <Link
-                      className='button button--primary'
-                      to="/docs/devdocs/intro">
-                      Start Building
-                  </Link>
+                  <div className={styles.secondaryButton}>
+                      <Link
+                          className={clsx('button button--primary', )}
+                          to="/docs/devdocs/intro">
+                          Start Building
+                      </Link>
+                  </div>
               </div>
 
           </div>

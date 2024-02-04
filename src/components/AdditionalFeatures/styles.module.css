@@ -6,48 +6,23 @@
   padding-bottom: 3rem;
 }
 
-.featureSvg {
-  height: 45px;
-  width: 45px;
-}
-
-.custom__card {
-  /* Rectangle 39 */
-  height: 308px;
-  box-sizing: border-box;
-  width: 100%;
-  background: var(--ifm-color-background);
-  border: 1.5px solid var(--ifm-color-text);
-  box-shadow: 0px 0px 85px rgba(255, 255, 255, 0.3);
-  border-radius: 20.2632px;
-  justify-content: center;
+.secondaryButton {
 
 }
 
 @media  (max-width: 996px) {
-  .features {
-    width: 75%;
-    margin-left: 5rem;
-  }
-  .featureSvg {
-    display: none;
-  }
-  .custom__card {
-    margin-top: 1rem;
-    height: 85%;
+  .secondaryButton {
+    display: flex;
     justify-content: center;
+
   }
 }
 
 @media (max-width: 800px) {
-  .features {
-    width: 75%;
-    margin-left: 3rem;
-  }
+
 
 }
 
 @media screen and (min-width: 996px) {
-  .features {
-  }
+
 }

@@ -28,12 +28,14 @@ function HomepageHeader() {
                       <div className="row">
                           <p className="hero__subtitle">{siteConfig.tagline}</p>
                           <p>
-                              Fhenix is the first Fully Homomorphic Encryption (FHE) powered L2 to bring computation over encrypted data to Ethereum.
-                              Through the use of its FHE rollups, Fhenix enables Ethereum developers to seamlessly deploy encrypted smart contracts to leverage end-to-end encryption  of their data.
+                              Fhenix is the first Fully Homomorphic Encryption (FHE) powered L2 to bring computation
+                              over encrypted data to Ethereum.
+                              Through the use of its FHE rollups, Fhenix enables Ethereum developers to seamlessly
+                              deploy encrypted smart contracts to leverage end-to-end encryption of their data.
                           </p>
                       </div>
                       <div className={clsx("row", styles.ButtonRow)}>
-                          <div className='col col--4'>
+                          <div className='col col--6'>
                               <Link
                                   className='button button--primary'
                                   to="/docs/devdocs/intro">
@@ -43,13 +45,27 @@ function HomepageHeader() {
                           <div className='col col--4'>
                               <Link
                                   className='button button--lol'
-                                  to={"https://github.com/fhenixprotocol"} target="_blank">
+                                  to={"/docs/tutorial/intro"}>
                                   Tutorial
                               </Link>
                           </div>
 
 
                           {/*</div>*/}
+                      </div>
+                      <div className={clsx("row", styles.ButtonRowMobile)}>
+                          <Link
+                              className='button button--primary'
+                              to="/docs/devdocs/intro">
+                              Start Building
+                          </Link>
+                      </div>
+                      <div className={clsx("row", styles.ButtonRowMobile)}>
+                          <Link
+                              className='button button--lol'
+                              to={"/docs/tutorial/intro"}>
+                              Tutorial
+                          </Link>
                       </div>
                   </div>
                   <div className="hide-small-width col col--6" style={{marginTop: "-100px"}}>
@@ -69,8 +85,8 @@ export default function Home(): JSX.Element {
                 description="Description will go into a meta tag in <head />">
             <HomepageHeader/>
             <main>
-                <HomepageFeatures />
-                <AdditionalFeatures />
+                <HomepageFeatures/>
+                <AdditionalFeatures/>
             </main>
         </Layout>
     );
