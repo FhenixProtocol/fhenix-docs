@@ -37,7 +37,7 @@ const FeatureList: FeatureItem[] = [
       linkTo: "/docs/devdocs/Writing%20Smart%20Contracts/FHE-sol"
   },
   {
-    title: 'Encrypted and Private',
+    title: 'Encrypted & Private',
       Svg: require('@site/static/img/fhenix-frontier-card-image.svg').default,
 
     description: (
@@ -72,7 +72,7 @@ function Feature({title, Svg, description, linkTo}: FeatureItem) {
 
 
           <div className="card__body text--center">
-              <Heading as="h1">{title}</Heading>
+              <Heading as="h2" className={clsx(styles.cardHeading)}>{title}</Heading>
               <div className={clsx("text--center")}>
                   <Svg className={svgClassName} role="img"/>
               </div>
