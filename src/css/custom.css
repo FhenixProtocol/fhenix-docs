@@ -25,7 +25,7 @@
   --ifm-code-font-size: 95%;
   --ifm-color-text: #000000;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-
+  --ifm-font-family-base: 'Roboto', sans-serif;
   --ifm-title-color-gradient-1: #17276b;
   --ifm-title-color-gradient-2: #252850;
 }
