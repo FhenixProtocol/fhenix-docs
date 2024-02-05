@@ -19,7 +19,7 @@ These encrypted integers behave as much as possible as Solidity's integer types.
 In the back-end, encrypted integers are FHE ciphertexts. The library abstracts away the ciphertexts and presents pointers to ciphertexts, or ciphertext handles, to the smart contract developer. The `euint` types are _wrappers_ over these handles.
 
 | name      | Bit Size | Usage   |
-|-----------|----------|---------|
+| --------- | -------- | ------- |
 | euint8    | 8        | Compute |
 | euint16   | 16       | Compute |
 | euint32   | 32       | Compute |
@@ -32,6 +32,7 @@ In the back-end, encrypted integers are FHE ciphertexts. The library abstracts a
 There are three ways to perform operations with FHE.sol:
 
 ### Using Direct Function Calls
+
 Direct function calls are the most straightforward way to perform operations with FHE.sol. For example, if you want to add two encrypted 8-bit integers (euint8), you can do so as follows:
 
 ```javascript
@@ -41,6 +42,7 @@ euint8 result = FHE.add(lhs, rhs);
 Here, lhs and rhs are your euint8 variables, and result will store the outcome of the addition.
 
 ### Using Library Bindings
+
 FHE.sol also provides library bindings, allowing for a more natural syntax. To use this, you first need to include the library for your specific data type. For euint8, the usage would look like this:
 
 ```javascript
@@ -51,9 +53,9 @@ In this example, lhs.add(rhs) performs the addition, using the library function 
 
 ### Utilizing Operator Overloading
 
-For an even more intuitive approach, FHE.sol supports operator overloading. This means you can use standard arithmetic operators like +, -, *, etc., directly on encrypted types. Here's how you can use it for adding two euint8 values:
+For an even more intuitive approach, FHE.sol supports operator overloading. This means you can use standard arithmetic operators like +, -, \*, etc., directly on encrypted types. Here's how you can use it for adding two euint8 values:
 
-```
+```javascript
 euint8 result = lhs + rhs;
 ```
 
@@ -73,19 +75,24 @@ The `ebool` type is not a real boolean type. It is implemented as a `euint8`
 
 ## Supported Operations
 
+:::tip
+A documented documentation of each and every function in FHE.sol (including inputs and outputs) can be found in [FHE.sol](../Solidity%20API/FHE.md)
+:::
+
 All operations supported by FHE.sol are listed in the table below:
 
 Note that all functions are supported in both direct function calls and library bindings. However, operator overloading is only supported for the operations listed in the table (solidity please support operator overloading for boolean return types!).
 
 | name                  | FHE.sol function | Operator |
-|-----------------------|------------------|----------|
+| --------------------- | ---------------- | -------- |
 | Addition              | add              | +        |
 | Subtraction           | sub              | -        |
-| Multiplication        | mul              | *        |
-| Division              | div              | /        |
+| Multiplication        | mul              | \*       |
 | Bitwise And           | and              | &        |
 | Bitwise Or            | or               | \|       |
 | Bitwise Xor           | xor              | ^        |
+| Division              | div              | /        |
+| Reminder              | rem              | %        |
 | Shift Right           | shr              | &gt;&gt; |
 | Shift Left            | shl              | &lt;&lt; |
 | Equal                 | eq               | n/a      |
@@ -98,8 +105,19 @@ Note that all functions are supported in both direct function calls and library 
 | Max                   | max              | n/a      |
 | Negative              | neg              | n/a      |
 | Not                   | not              | n/a      |
+| Require               | req              | n/a      |
+| Decrypt               | decrypt          | n/a      |
+| Seal Output           | sealOutput       | n/a      |
 
 :::danger
 At the moment it is not possible to do `ebool result = (lhs == rhs)` and others that return a boolean result. This is because FHE.sol expects a `ebool`, while Solidity only allows overloading to return a regular boolean.
 Instead, we recommend `ebool result = lhs.eq(rhs)`.
+:::
+
+:::danger
+Using require and decrypt in a TX is dangerous as it can break the confidentiality of the data. Please refer to [Useful-Tips](./Useful-Tips.md) to read some more
+:::
+
+:::tip
+Division and Reminder of devisions by `0` will output with an encrypted representation of the maximal value of the uint that is used (Ex. encrypted 255 for euint8)
 :::
