@@ -3,11 +3,13 @@ import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 import React from "react";
 import { useColorMode  } from '@docusaurus/theme-common';
+import Link from "@docusaurus/Link";
 
 type FeatureItem = {
   title: string;
   Svg: React.ComponentType<React.ComponentProps<'svg'>>;
   description: JSX.Element;
+  linkTo: string;
 };
 
 
@@ -21,6 +23,7 @@ const FeatureList: FeatureItem[] = [
           Fully Homomorphic Encryption (FHE) enables processing of encrypted data, addressing encryption concerns and making Web3 applications safer. Learn more!
       </>
     ),
+      linkTo: "/docs/devdocs/Fhenix%20Frontier/Connecting-To"
   },
   {
     title: 'FHE Contract',
@@ -31,9 +34,10 @@ const FeatureList: FeatureItem[] = [
           Run for the first time FHE-based smart contracts with on-chain confidential computation, providing unprecedented level of data encryption
       </>
     ),
+      linkTo: "/docs/devdocs/Writing%20Smart%20Contracts/FHE-sol"
   },
   {
-    title: 'Fhenix Frontier2',
+    title: 'Encrypted and Private',
       Svg: require('@site/static/img/fhenix-frontier-card-image.svg').default,
 
     description: (
@@ -41,6 +45,7 @@ const FeatureList: FeatureItem[] = [
           Introducing end-to-end encryption to the EVM space, bringing on-chain confidentiality and enabling the next generation of dApps. I'm actually not saying anything here!
       </>
     ),
+      linkTo: "/docs/devdocs/Fhenix%20Frontier/Fhenix-T-FHE"
   },
     {
         title: 'EVM Compatible',
@@ -50,15 +55,21 @@ const FeatureList: FeatureItem[] = [
                 Fhenix is fully EVM-compatible, allowing easy development of dApps using solidity. Bring your dApp ideas to life using our seamless integration with EVM!
             </>
         ),
+        linkTo: "/docs/tutorial/Basic/Writing-The-Contract"
     }
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({title, Svg, description, linkTo}: FeatureItem) {
   const { colorMode  } = useColorMode();
   const svgClassName = colorMode === 'dark' ? `${styles.featureSvg} white-image` : styles.featureSvg;
 
   return (
       <div className={clsx("card", styles.custom__card)}>
+          <Link
+              className={clsx(styles.link)}
+              to={linkTo}
+          >
+
 
           <div className="card__body text--center">
               <Heading as="h1">{title}</Heading>
@@ -67,6 +78,7 @@ function Feature({title, Svg, description}: FeatureItem) {
               </div>
               <p>{description}</p>
           </div>
+          </Link>
       </div>
   );
 }
@@ -76,7 +88,7 @@ export default function HomepageFeatures(): JSX.Element {
     <section className={styles.features}>
       <div className="container">
           <div className="row">
-              <Heading as="h1" className="text--center align--left margin-bottom--lg">
+              <Heading as="h1" className="text--center margin-bottom--lg margin-left--md">
                   Unleash the Fhenix
               </Heading>
           </div>

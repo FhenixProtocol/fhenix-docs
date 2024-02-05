@@ -21,11 +21,13 @@
   --ifm-color-secondary-lighter: #f1f2f5;
   --ifm-color-secondary-lightest: #f5f6f8;
   --ifm-color-background: #ffffff;
-  --ifm-color-glow: #2d66c3;
+  --ifm-color-glow: #ffffff;
   --ifm-code-font-size: 95%;
   --ifm-color-text: #000000;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
+  --ifm-title-color-gradient-1: #17276b;
+  --ifm-title-color-gradient-2: #252850;
 }
 
 /* //linear-gradient(180deg, #5764AA 0%, #8F98C5 100%); */
@@ -58,6 +60,9 @@
   /* hero background color */
   --ifm-color-background: #0c0c0c;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  --ifm-title-color-gradient-1: #5764AA;
+  --ifm-title-color-gradient-2: #9197a9;
 }
 
 @font-face {
@@ -85,12 +90,18 @@
 .hero__title {
   font-weight: 700;
   font-family: "Teko", sans-serif;
-  background-image: conic-gradient(#5764AA, #9197a9);
+  background-image: conic-gradient(var(--ifm-title-color-gradient-1), var(--ifm-title-color-gradient-2));
   text-shadow: var(--ifm-color-glow) 0 0 50px;
   -webkit-background-clip: text;
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
+}
+
+.hero__subtitle {
+  margin-top: -0.5rem;
+  font-weight: 700;
+  font-size: 24px;
 }
 
 .button {
@@ -100,6 +111,7 @@
   transition: box-shadow .3s;
   font-size: 18px;
   width: 165px;
+  margin-left: -1rem;
   /*width: 10rem;*/
   /*margin: 1rem;*/
   /*color: white;*/
@@ -108,12 +120,11 @@
 .button--lol {
   background-color: var(--ifm-background-color);
   border-color: var(--ifm-color-primary-lighter);
-  margin-left: 1rem;
 }
 
 .button:hover {
   background: linear-gradient(180deg, #5764AA 0%, #8F98C5 100%);
-  box-shadow: 0 0 14px rgba(87, 100, 170, 1);
+  box-shadow: 0 0 36px rgba(87, 100, 170, 1);
   color: white;
 }
 
@@ -126,6 +137,13 @@
 
 .white-image {
   filter: invert(100%) brightness(200%);
+}
+
+/* kind of a hack, but it works I think? */
+@media (max-width: 1140px) and (min-width: 996px) {
+  .button--lol {
+    margin-left: 1rem;
+  }
 }
 
 @media (max-width: 996px) {
@@ -142,7 +160,7 @@
     margin-top: 1rem;
   }
   .button--lol {
-    margin-left: 0;
+    /*margin-left: 0;*/
   }
 }
 

@@ -4,8 +4,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Fhenix Docs',
-  tagline: 'Programmable. Scalable. Encrypted',
-  favicon: 'img/logo-black.svg',
+  tagline: 'Programmable. Scalable. Encrypted.',
+  favicon: 'img/Favicon_Dark.svg',
 
   // Set the production url of your site here
   url: 'https://docs.fhenix.io',

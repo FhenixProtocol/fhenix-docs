@@ -7,14 +7,14 @@
 }
 
 .secondaryButton {
-
+  margin-left: 1rem;
 }
 
 @media  (max-width: 996px) {
   .secondaryButton {
     display: flex;
     justify-content: center;
-
+    margin-left: auto;
   }
 }
 

@@ -35,7 +35,7 @@ function HomepageHeader() {
                           </p>
                       </div>
                       <div className={clsx("row", styles.ButtonRow)}>
-                          <div className='col col--6'>
+                          <div className='col col--4'>
                               <Link
                                   className='button button--primary'
                                   to="/docs/devdocs/intro">
@@ -69,7 +69,7 @@ function HomepageHeader() {
                       </div>
                   </div>
                   <div className="hide-small-width col col--6" style={{marginTop: "-100px"}}>
-                      <img alt="fhenix stuttershock image" src="img/hero-background-img.svg"/>
+                      <img alt="fhenix stuttershock image" src="img/hero-background-img.webp"/>
                   </div>
               </div>
 
@@ -81,7 +81,7 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
     const {siteConfig} = useDocusaurusContext();
     return (
-        <Layout title={`Hello from ${siteConfig.title}`}
+        <Layout title={`${siteConfig.title}`}
                 description="Description will go into a meta tag in <head />">
             <HomepageHeader/>
             <main>

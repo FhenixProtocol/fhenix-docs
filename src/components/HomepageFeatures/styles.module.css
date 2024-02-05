@@ -9,10 +9,29 @@
   width: 45px;
 }
 
+.link {
+  color: var(--ifm-color-text);
+}
+.link:hover {
+  text-decoration: none;
+  color: var(--ifm-color-text);
+}
+.link:visited {
+  text-decoration: none;
+}
+
+.custom__card:hover {
+  background: linear-gradient(180deg, rgba(87, 100, 170, 0.5) 0%, rgba(143, 152, 197, 0.5) 100%);
+  box-shadow: 4px 4px 85px rgba(87, 100, 170, 1);
+  color: white;
+}
+
+
 .custom__card {
   /* Rectangle 39 */
   height: 308px;
   box-sizing: border-box;
+  transition: box-shadow .3s;
   width: 100%;
   background: var(--ifm-color-background);
   border: 1.5px solid var(--ifm-color-text);
