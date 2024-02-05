@@ -1,7 +1,7 @@
 # 🔥 Gas and Banchmarks
 
 This section will list the gas costs for every operation based on it's inputs.
-The way we decided how much gas will each and every operation consume was by checking how much time each operation takes in a QUERY. We decided to set the gas cost of `FHE.div` of `euint32` to be around 1 million gas units and set the price of other operations accordingly
+The gas prices are a subject to change based on usage and performance.
 
 :::tip
 The current gas limit for a tranasaction is set to be 50 million

@@ -55,7 +55,7 @@ In this example, lhs.add(rhs) performs the addition, using the library function 
 
 For an even more intuitive approach, FHE.sol supports operator overloading. This means you can use standard arithmetic operators like +, -, \*, etc., directly on encrypted types. Here's how you can use it for adding two euint8 values:
 
-```
+```javascript
 euint8 result = lhs + rhs;
 ```
 
