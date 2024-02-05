@@ -82,6 +82,7 @@ Note that all functions are supported in both direct function calls and library 
 | Addition              | add              | +        |
 | Subtraction           | sub              | -        |
 | Multiplication        | mul              | *        |
+| Division              | div              | /        |
 | Bitwise And           | and              | &        |
 | Bitwise Or            | or               | \|       |
 | Bitwise Xor           | xor              | ^        |
