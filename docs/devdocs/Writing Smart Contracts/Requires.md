@@ -13,8 +13,8 @@ Encrypted require statements (`req`) are analogous the usual Solidity `require` 
 ```Javascript
 // A transcation calling this function will revert.
 function failingRequire(euint8 a) public {
-    euint8 val = TFHE.asEuint8(4);
-    euint8 val2 = TFHE.asEuint8(5);
-    TFHE.req(TFHE.eq(val, val2));
+    euint8 val = FHE.asEuint8(4);
+    euint8 val2 = FHE.asEuint8(5);
+    FHE.req(FHE.eq(val, val2));
 }
 ```
