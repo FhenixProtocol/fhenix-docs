@@ -64,32 +64,62 @@ constructor(string memory name, string memory symbol) ERC20(name, symbol) {
 }
 ```
 
-#### Wrap and Unwrap
+#### Wrap
 
-The wrap and unwrap functions are unique to this contract.
-
-* `wrap(uint32 amount)` allows users to convert (wrap) their tokens into encrypted form. The function burns the specified amount from the user's balance and adds the same amount to their encrypted balance. Note the usage of TFHE.add() to perform addition between two encrypted numbers, which returns an encrypted response.
+First, let's define a function `wrap(uint32 amount)` that allows users to convert (wrap) their tokens into encrypted form. 
+The function will burn a specified amount from the user's balance and add the same amount to their encrypted balance.
 
 ```javascript
 function wrap(uint32 amount) public {
+    // Make sure that the sender has enough of the public balance
     require(balanceOf(msg.sender) >= amount);
+    // Burn public balance
     _burn(msg.sender, amount);
 
-    _encBalances[msg.sender] = TFHE.add(_encBalances[msg.sender], amount);
+    // convert public amount to shielded by encrypting it
+    euint32 shieldedAmount = FHE.asEuint32(amount);
+    // Add shielded balance to his current balance
+    _encBalances[msg.sender] = _encBalances[msg.sender] + shieldedAmount;
 }
 ```
 
-* `unwrap(uint32 amount)` allows users to convert (unwrap) their encrypted tokens back into regular tokens. The function removes the specified amount from the user's encrypted balance and mints the same amount of regular tokens. 
+Breaking this down, the following logic is performed:
 
-At this point, before performing the unwrapping we need to make sure that the caller has enough encrypted tokens to unwrap the requested amount. To do this, we use the special TFHE.req (require) functionality.
+1. Verify that the user has enough public tokens to wrap
+2. Burn public tokens
+3. Add shielded tokens to the caller's balance
+
+There are two main FHE operations that happened here:
+
+* `FHE.asEuint32(amount)` - this converted a standard, public `uint` to an FHE-encrypted number
+* `_encBalances[msg.sender] + shieldedAmount` - this performs homomorphic addition between the two encrypted numbers `shieldedAmount` and `_encBalances[msg.sender]`
+
+:::note
+Even though we called `FHE.asEuint32()` on a public value and encrypted it we did not actually hide any information - the plaintext value was already known beforehand
+:::
+
+#### Unwrap
+
+Next, let's define `unwrap(inEuint32 amount)`. This function will allow users to convert (unwrap) their encrypted tokens back into public tokens. 
+The function will remove the specified amount from the user's encrypted balance and add the same amount to the user's public balance.  
 
 ```javascript
-function unwrap(uint32 amount) public { 
-    TFHE.req(TFHE.gt(_encBalances[msg.sender], amount));
-    _encBalances[msg.sender] = TFHE.sub(_encBalances[msg.sender], amount);
-    _mint(msg.sender, amount);
+function unwrap(inEuint32 memory amount) public {
+    euint32 _amount = FHE.asEuint32(amount)
+    // verify that our shielded balance is greater or equal than the requested amount 
+    FHE.req(_encBalances[msg.sender].gte(_amount));
+    // subtract amount from shielded balance
+    _encBalances[msg.sender] = _encBalances[msg.sender] - _amount;
+    // add amount to caller's public balance by calling the `mint` function
+    _mint(msg.sender, FHE.decrypt(_amount));
 }
 ```
+
+Here we can see a few interesting things:
+
+* `FHE.req` (or FHE require) verifies that a statement is true, or reverts the function. We use this to verify that we have enough shielded amount.
+* `_encBalances[msg.sender].gte(_amount)` checks that `_encBalances[msg.sender]` is **g**rea**t**er or **e**qual than `_amount`
+* `inEuint32` is a data type specifically for input parameters. You can read more about it [here]()
 
 #### Encrypted Transfers
 
