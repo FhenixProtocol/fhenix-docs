@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# ✨ Fhenix & (T)FHE
+# ✨ Fhenix & FHE
 
 Fhenix is revolutionizing the blockchain space by utilizing Fully Homomorphic Encryption for confidential smart contracts on public blockchains. One of the most pressing challenges in the blockchain space is ensuring privacy, and Fully Homomorphic Encryption (FHE) presents a promising solution. By leveraging FHE's ability to process encrypted data, we can effectively address privacy concerns, creating a safer environment for Web3 applications.
 
@@ -14,10 +14,11 @@ With data encrypted both in transit and during processing, everything we do onli
 
 FHE makes it possible to write private smart contracts to keep on-chain data encrypted. You can create decentralized, permissionless blockchains where everything is on-chain and auditable while not actually visible.
 
-## TFHE - FHE over the Torus
+## Fhenix Frontier
 
-Fully Homomorphic Encryption over the Torus (TFHE) represents an advanced method of Fully Homomorphic Encryption (FHE) that offers notable improvements over traditional FHE technologies.&#x20;
+Fhenix Frontier is the first public iteration of the Fhenix protocol. It is an early build, one that has a lot of bugs and missing features.
 
-Blockchains, at their core, primarily deal with integer operations—whether it's for handling the quantities of cryptocurrency transactions, managing smart contract states, or updating block indices. All these essential operations are based on integers. Therefore, the fact that TFHE can efficiently process computations on integers in their encrypted form is tremendously valuable.
+There are many challenges we still need to face, and many problems to solve. But we are excited to be working on this project, and we are excited to have you join us on this journey.
 
-Additionally, most blockchains operate on a consensus mechanism that involves numerous complex integer-based computations. TFHE's ability to handle these operations quickly and efficiently can significantly increase the blockchain's overall performance, reducing computational bottlenecks. This efficiency becomes crucial as blockchains scale and the volume of transactions and complexity of smart contracts increase. As a result, TFHE is not just a viable, but an ideal, encryption solution for maintaining privacy and optimizing performance in blockchain technologies.
+In no way is anything we write here set in stone. We are still figuring out what the best way to do things is, and we are still figuring out what the best way to do and explain things is.
+If you have any suggestions, ideas or feedback, please let us know. We are always looking for ways to improve and for people to contribute.

@@ -11,16 +11,16 @@ export default function AdditionalFeatures(): JSX.Element {
       <div className="container">
           <div className="row">
               <div className="col col--6">
-
+                  <img className={styles.randomImage} src={"/img/placeholder.png"} alt="Fhenix" />
               </div>
-              <div className="col col--6">
+              <div className="col col--6 margin-top--xl">
                   <Heading as="h1" className="align--left margin-bottom--lg">
-                      This Text is Really Cringe <br/>
-                      And Should be Replaced
+                      The Next Generation <br/>
+                      Of Smart Contracts
                   </Heading>
                   <p>
-                      The power of Fully Homomorphic Encryption is unmatched!
-                      It enables deployment of confidential smart contracts, ensuring that transaction inputs and states stay encrypted throughout the entire computation process, or in other words- end-to-end encryption for Web3 based applications
+                      Confidential smart contracts store and manage private data.
+                      Private Tokens, NFTs that hold encryption keys, confidential voting, social networks, decentralized identity, private DeFi, and more. What are you waiting for?
                   </p>
                   <div className={styles.secondaryButton}>
                       <Link

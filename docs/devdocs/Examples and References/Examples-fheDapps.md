@@ -1,6 +1,7 @@
-# Examples & fheDapps
-
-Example and reference apps
+---
+sidebar_position: 2
+title: Examples & fheDapps
+---
 
 Here you can find a list of some of cool apps that you can use as a reference
 
@@ -22,8 +23,8 @@ Here you can find a list of some of cool apps that you can use as a reference
 </tr>
 <tr>
 <td>Blind Auction</td>
-<td></td>
-<td></td>
+<td><a href="https://github.com/FhenixProtocol/blind-auction-example">View on Github</a></td>
+<td><a href="https://github.com/FhenixProtocol/blind-auction-example/tree/main/frontend">View on Github</a></td>
 <td></td>
 </tr>
 
@@ -49,6 +50,12 @@ Here you can find a list of some of cool apps that you can use as a reference
 <td><a href="https://github.com/FhenixProtocol/example-contracts/blob/master/lottery/Lottery.sol">View on Github</a></td>
 <td></td>
 <td></td>
+</tr>
+<tr>
+<td>Contract Playground</td>
+<td><a href="https://github.com/FhenixProtocol/contracts-playground">View on Github</a></td>
+<td></td>
+<td>A monorepo with multiple examples of contracts in the same place</td>
 </tr>
 <tr>
 <td>Fhevm Examples</td>

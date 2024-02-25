@@ -1,3 +1,0 @@
-# 🏗️ Architecture
-
-Start typing here...

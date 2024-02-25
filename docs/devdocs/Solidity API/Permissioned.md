@@ -1,5 +1,18 @@
 # Permissioned.Sol
 
+### Permission
+
+Used to pass both the public key and signature data within transactions
+
+_Should be used with Signature-based modifiers for access control_
+
+```solidity
+struct Permission {
+  bytes32 publicKey;
+  bytes signature;
+}
+```
+
 Abstract contract that provides EIP-712 based signature verification for access control. To learn more about why this can be important, and what EIP712 is, refer to our [Permits & Access Control](../Encryption%20and%20Privacy/Permits-Access-Control.md).
 
 _This contract should be inherited by other contracts to provide EIP-712 signature validated access control_

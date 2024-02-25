@@ -21,3 +21,8 @@ You can only unseal data that was sealed using your wallet public encryption key
 In order to get your wallets public encryption key you can click on "Get Public Key" that will use metamask in order to retrieve the key. The key will be shown as a notification on which you can click in order to copy the value to your clipboard.
 
 Decryption can be done by simply pasting the encrypted value instead of the "Enter sealed value" text and clicking on the Unseal button which will use metamask to decrypt the value.
+
+#### Permit Generation
+
+This tool can also be used to generate a permit for a contract. Enter a contract address, and click generate permit.
+The permit will be generated and copied to your clipboard. You can save the permit to fhenix.js, or use the signature field to interact with contracts using the [Permission structure](../Writing%20Smart%20Contracts/Permissions.md).

@@ -1,12 +1,13 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
+title: 🔀 Differences From Fhevm
 ---
-
-# 🔀 Differences From Fhevm
 
 You might be familiar with fhevm, which is a fork of the Ethereum Virtual Machine that supports homomorphic encryption by Zama.
 
-As the FHE blockchain ecosystem evolves, so will the number of ways that similar actions can be achieved. In this page, we try and document the differences users that are familiar with fhevm should be aware of.
+While Fhenix uses a similar FHE technology, it does not use fhevm. Still, the two are similar in many ways. If you are familiar with one, the other should be easy to pick up.  
+
+In this page, we try and document the differences users that are familiar with fhevm should be aware of.
 
 ## Differences
 
@@ -19,4 +20,5 @@ As the FHE blockchain ecosystem evolves, so will the number of ways that similar
 * In Fhenix, we recommend using the `inEuintXX` input types instead of raw bytes when receiving encrypted data.
 * Conversion to other encrypted types can be done using the `.toUxx` functions. E.g. `euint32 b = a.toU32();`
 * Division by zero will return a `MAX_UINT` value instead of throwing an error (e.g. `euint8(1) / euint8(0)` will return `euint8(255)` instead of throwing an error).
-* `Permits` and `Permissioned` contracts are the recommended way to handle permissioned requests in Fhenix. To read more about permits and access control, see [Access Control](../../Encryption%20and%20Privacy/Permits-Access-Control.md). 
+* `Permits` and `Permissioned` contracts are the recommended way to handle access to sensitive data in Fhenix. To read more about permits and access control, see [Access Control](../../Encryption%20and%20Privacy/Permits-Access-Control.md). 
+* Sealing and Decryption can be accessed using `.seal` and `.decrypt` respectively.
