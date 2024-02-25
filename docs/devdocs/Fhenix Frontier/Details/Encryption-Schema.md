@@ -1,6 +1,6 @@
 ---
 sidebar_position: 3
-title: 🛑 Encryption Schema
+title: 🔐 Encryption Schema
 ---
 
 In this section we will describe the encryption schema used in Fhenix. While the network itself is Schema agnostic - i.e. it can support any encryption schema - the current default schema is TFHE.
