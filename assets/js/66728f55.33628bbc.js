@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkfhenix_docs=self.webpackChunkfhenix_docs||[]).push([[3437],{824:s=>{s.exports=JSON.parse('{"label":"hola","permalink":"/fhenix-docs/blog/tags/hola","allTagsPath":"/fhenix-docs/blog/tags","count":1,"unlisted":false}')}}]);
