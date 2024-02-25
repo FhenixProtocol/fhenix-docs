@@ -1,6 +1,8 @@
-# ℹ️ Useful Tips
-
-This section will list some useful tips and good practices for you to be able to use them.
+---
+sidebar_position: 900
+title: 💯 Useful Tips
+description: Tidbits of wisdom for working with FHE
+---
 
 ## Trivial Encryption
 
