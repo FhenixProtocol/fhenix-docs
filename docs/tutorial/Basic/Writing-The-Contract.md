@@ -119,7 +119,7 @@ Here we can see a few interesting things:
 
 * `FHE.req` (or FHE require) verifies that a statement is true, or reverts the function. We use this to verify that we have enough shielded amount.
 * `_encBalances[msg.sender].gte(_amount)` checks that `_encBalances[msg.sender]` is **g**rea**t**er or **e**qual than `_amount`
-* `inEuint32` is a data type specifically for input parameters. You can read more about it [here]()
+* `inEuint32` is a data type specifically for input parameters. You can read more about it [here](../../devdocs/Writing%20Smart%20Contracts/User-Inputs.md).
 
 #### Encrypted Transfers
 
