@@ -27,8 +27,8 @@ After the message is signed, the contract will be saved to the list.
 1. Select the contract you wish to interact with.
 2. Remove the selected contract from the list
 3. Click to encrypt a number - If the field has a defined type (inEuint8, inEuint16, or inEuint32), it will automatically encrypt it correctly. If the field is of a generic bytes type, you will be prompted to select the required encryption.
-4. Auto-filled "permission" type - The field detects the unique type and fills it for you based on the created permit.
-5. Auto-filled "publicKey" - If a publicKey field is detected, it will be auto-filled with the public key from the permit.
+4. Autofilled "permission" type - The field detects the unique type and fills it for you based on the created permit.
+5. Autofilled "publicKey" - If a publicKey field is detected, it will be auto-filled with the public key from the permit.
 
 
 #### Additional Tools

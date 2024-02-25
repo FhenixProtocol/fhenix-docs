@@ -2,16 +2,16 @@
 sidebar_position: 2
 ---
 
-# Writing the Contract (WIP)
+# Writing the Contract
 
 Let's get started with writing our contract.
 
 We'll start by looking around the template, and noticing that we have a `Counter.sol` file in the `contracts/` folder. 
 
-Let's create a copy of that file, and call that `WrappingERC20.sol`:
+Let's create a new file, and call that `WrappingERC20.sol`.
 
 ```shell
-cp contracts/Counter.sol contracts/WrappingERC20.sol
+touch contracts/WrappingERC20.sol
 ```
 
 Our goal is to create an ERC20 contract that supports shielded balances. 
@@ -106,7 +106,7 @@ The function will remove the specified amount from the user's encrypted balance 
 ```javascript
 function unwrap(inEuint32 memory amount) public {
     euint32 _amount = FHE.asEuint32(amount)
-    // verify that our shielded balance is greater or equal than the requested amount 
+    // verify that our shielded balance is greater or equal than the requested amount. (gte = greater-than-or-equal)
     FHE.req(_encBalances[msg.sender].gte(_amount));
     // subtract amount from shielded balance
     _encBalances[msg.sender] = _encBalances[msg.sender] - _amount;
@@ -129,22 +129,73 @@ The function `_transferEncrypted(address to, euint32 amount)` is an internal fun
 
 ```javascript
 function transferEncrypted(address to, inEuint32 calldata encryptedAmount) public {
-    _transferEncrypted(to, FHE.asEuint32(encryptedAmount));
-}
+    euint32 amount = FHE.asEuint32(encryptedAmount);
+    // Make sure the sender has enough tokens. (lte = less-then-or-equal)
+    FHE.req(amount.lte(_encBalances[msg.sender]));
 
-// Transfers an amount from the message sender address to the `to` address.
-function _transferEncrypted(address to, euint32 amount) internal {
-    _transferImpl(msg.sender, to, amount);
-}
-
-    // Transfers an encrypted amount.
-function _transferImpl(address from, address to, euint32 amount) internal {
-    // Make sure the sender has enough tokens.
-    FHE.req(amount.le(_encBalances[from]));
-
-    // Add to the balance of `to` and subract from the balance of `from`.
+    // Add to the balance of `to` and subract from the balance of `msg.sender`.
     _encBalances[to] = _encBalances[to] + amount;
-    _encBalances[from] = _encBalances[from] - amount;
+    _encBalances[msg.sender] = _encBalances[msg.sender] - amount;
 }
 ```
 
+And that's it! To recap, we just created a contract that allows users to wrap and unwrap their tokens, and transfer them in encrypted form.
+
+Let's see what the entire code looks like:
+
+```javascript
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@fhenixprotocol/contracts/FHE.sol";
+
+contract WrappingERC20 is ERC20 {
+
+    mapping(address => euint32) internal _encBalances;
+
+    constructor(string memory name, string memory symbol) ERC20(name, symbol) {
+        _mint(msg.sender, 100 * 10 ** uint(decimals()));
+    }
+
+    function wrap(uint32 amount) public {
+        // Make sure that the sender has enough of the public balance
+        require(balanceOf(msg.sender) >= amount);
+        // Burn public balance
+        _burn(msg.sender, amount);
+
+        // convert public amount to shielded by encrypting it
+        euint32 shieldedAmount = FHE.asEuint32(amount);
+        // Add shielded balance to his current balance
+        _encBalances[msg.sender] = _encBalances[msg.sender] + shieldedAmount;
+    }
+
+    function unwrap(inEuint32 memory amount) public {
+        euint32 _amount = FHE.asEuint32(amount);
+        // verify that our shielded balance is greater or equal than the requested amount 
+        FHE.req(_encBalances[msg.sender].gte(_amount));
+        // subtract amount from shielded balance
+        _encBalances[msg.sender] = _encBalances[msg.sender] - _amount;
+        // add amount to caller's public balance by calling the `mint` function
+        _mint(msg.sender, FHE.decrypt(_amount));
+    }
+
+    function transferEncrypted(address to, inEuint32 calldata encryptedAmount) public {
+        euint32 amount = FHE.asEuint32(encryptedAmount);
+        // Make sure the sender has enough tokens.
+        FHE.req(amount.lte(_encBalances[msg.sender]));
+
+        // Add to the balance of `to` and subract from the balance of `from`.
+        _encBalances[to] = _encBalances[to] + amount;
+        _encBalances[msg.sender] = _encBalances[msg.sender] - amount;
+    }
+}
+```
+
+Note that in a real use case the actual code would include more functionality, and structure things a bit differently.
+If you want to see what such a contract looks like, you can check out the [FHERC20](https://github.com/FhenixProtocol/fhenix-contracts/blob/main/contracts/experimental/token/FHERC20/FHERC20.sol) contract in the Fhenix contracts repository.
+
+### Wait a second...
+
+But what about viewing the encrypted balances? Well, we'll cover that in the next section, where we'll be adding viewing 
+functionality to our contract, and see how we can utilize `Permissions` to manage access to encrypted data.
