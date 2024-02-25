@@ -49,7 +49,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/Splash.jpg',
+    image: 'img/Splash.webp',
     colorMode: {
       defaultMode: 'dark',
     },
