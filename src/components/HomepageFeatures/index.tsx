@@ -69,15 +69,13 @@ function Feature({title, Svg, description, linkTo}: FeatureItem) {
               className={clsx(styles.link)}
               to={linkTo}
           >
-
-
-          <div className="card__body text--center">
-              <Heading as="h2" className={clsx(styles.cardHeading)}>{title}</Heading>
-              <div className={clsx("text--center")}>
-                  <Svg className={svgClassName} role="img"/>
+              <div className="card__body text--center">
+                  <Heading as="h2" className={clsx(styles.cardHeading)}>{title}</Heading>
+                  <div className={clsx("text--center")}>
+                      <Svg className={svgClassName} role="img"/>
+                  </div>
+                  <p>{description}</p>
               </div>
-              <p>{description}</p>
-          </div>
           </Link>
       </div>
   );
