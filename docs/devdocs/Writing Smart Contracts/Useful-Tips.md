@@ -1,4 +1,4 @@
-# 🔥 Useful Tips
+# ℹ️ Useful Tips
 
 This section will list some useful tips and good practices for you to be able to use them.
 
@@ -21,9 +21,30 @@ In order to understand how we will first need to understand that FHE encryption 
 
 Now that we know that, we can add 0 (cryptographically with FHE.add) to all of those tallies that shouldn't be changed and they will be changed in the DB!
 
-## FHE.req() in TXs
+## FHE.req()
 
-All the operations are supported both in TXs and in Queries. That being said we strongly advise to think twice before you use those operations inside a TX. FHE.req() is actually exposing the value of your encrypted data. Assuming we will send the transaction and monitor the gas usage we can probably identify whether the FHE.req() condition met or not and understand a lot about what the encrypted values represent.
+All the operations are supported both in TXs and in Queries. That being said we strongly advise to think twice before you use those operations inside a TX. `FHE.req` is actually exposing the value of your encrypted data. Assuming we will send the transaction and monitor the gas usage we can probably identify whether the `FHE.req` condition met or not and understand a lot about what the encrypted values represent.
+Example:
+
+```javascript
+function f(euint8 a, euint8 b) public {
+    FHE.req(a.eq(b));
+    // Do some heavy logic
+}
+```
+
+In this case, if `a` and `b` won't be equal it will fail immediately and take less gas than the case when `a` and `b` are equal which means that one who checks the gas can easily know the equality of `a` and `b` it won't leak their values but it will leak confidential data.
+The rule of thumb that we are suggesting is to use `FHE.req` only in `view` functions while the logic of `FHE.req` in txs can be implemented using `FHE.select`
+
+## FHE.decrypt()
+
+Generally speaking, the idea of Fhenix and having FHE in place is the ability to have your values encrypted throughout the whole lifetime of the data (since you can operate on encrypted data). When using `FHE.decrypt` you should always consider the following:
+a. On mainnet (and future testnet versions) the decryption process will be done on a threshold network and the operation might not be fully deterministic (network issues for example)
+b. Assuming malicious node runner have DMA (direct memory access) or any other way to read the process' memory he can see what is the decrypted value while it is being executed and use MEV techniques.
+
+We recommended a rule of thumb to when to decrypt:
+a. In view functions
+b. In TXs when you are 100% confident that the data is not confidential anymore (For example in poker game when the transaction is a roundup transaction so you can reveal the cards without being afraid of data leakage)
 
 ## Performance and Gas Usage
 
@@ -32,7 +53,7 @@ Currently, we support many FHE operations. Some of them might take a lot of time
 When writing FHE code we encourage you to use the operations wisely and choose what operation should be used.
 Example: Instead of `ENCRYPTED_UINT_32 * FHE.asEuint32(2)` you can use `FHE.shl(ENCRYPTED_UINT_32, FHE.asEuint32(1))` in some cases `FHE.div(ENCRYPTED_UINT_32, FHE.asEuint32(2))` can be replaced by `FHE.shr(ENCRYPTED_UINT_32, FHE.asEuint32(1))`
 
-For more detailed benchmarks please refer to: TBD
+For more detailed benchmarks please refer to: [Gas-and-Banchmarks](./Gas-and-Banchmarks)
 
 ## Randomness
 
