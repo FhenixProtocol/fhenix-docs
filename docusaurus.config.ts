@@ -3,7 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Fhenix Docs',
+  title: 'Fhenix',
   tagline: 'Programmable. Scalable. Encrypted.',
   favicon: 'img/Favicon_Dark.svg',
 

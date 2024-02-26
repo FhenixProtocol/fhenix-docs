@@ -27,7 +27,7 @@ function HomepageHeader() {
                       </div>
                       <div className="row">
                           <p className="hero__subtitle">{siteConfig.tagline}</p>
-                          <p>
+                          <p className="home__description">
                               Fhenix is the first Fully Homomorphic Encryption (FHE) powered L2 to bring computation
                               over encrypted data to Ethereum.
                               Through the use of its FHE rollups, Fhenix enables Ethereum developers to seamlessly
@@ -69,7 +69,7 @@ function HomepageHeader() {
                       </div>
                   </div>
                   <div className="hide-small-width col col--6" style={{marginTop: "-100px"}}>
-                      <img alt="fhenix stuttershock image" src="img/hero-background-img.webp"/>
+                      <img alt="fhenix stuttershock image" src="img/hero-background-img.webp" style={{maxWidth: '600px'}}/>
                   </div>
               </div>
 
