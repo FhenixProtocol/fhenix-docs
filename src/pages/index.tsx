@@ -9,6 +9,14 @@ import React, { FC } from 'react';
 import styles from './index.module.css';
 import AdditionalFeatures from "../components/AdditionalFeatures";
 
+import TagManager from 'react-gtm-module'
+
+const tagManagerArgs = {
+  gtmId: 'GTM-PLL6DPHF'
+}
+
+TagManager.initialize(tagManagerArgs)
+console.log("v0.1");
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
