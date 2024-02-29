@@ -4,7 +4,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import styles from './index.module.css';
 import AdditionalFeatures from "../components/AdditionalFeatures";
@@ -15,7 +15,6 @@ const tagManagerArgs = {
   gtmId: 'GTM-PLL6DPHF'
 }
 
-TagManager.initialize(tagManagerArgs)
 console.log("v0.1");
 
 function HomepageHeader() {
@@ -88,6 +87,11 @@ function HomepageHeader() {
 
 export default function Home(): JSX.Element {
     const {siteConfig} = useDocusaurusContext();
+    useEffect(() => {
+      TagManager.initialize(tagManagerArgs)
+    });
+    
+
     return (
         <Layout title={`${siteConfig.title}`}
                 description="Description will go into a meta tag in <head />">
