@@ -143,6 +143,35 @@ const config: Config = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Fhe Labs.`,
     },
+    algolia: {
+      // The application ID provided by Algolia
+      appId: 'EMZX0TM6JC',
+
+      // Public API key: it is safe to commit it
+      apiKey: '351b32638e73f99bfc099624f971de54',
+      
+      indexName: 'fhenix',
+
+      // Optional: see doc section below
+      contextualSearch: true,
+
+      // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+      //externalUrlRegex: 'external\\.com|domain\\.com',
+
+      // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
+      // replaceSearchResultPathname: {
+      //   from: '/docs/', // or as RegExp: /\/docs\//
+      //   to: '/',
+      // },
+
+      // Optional: Algolia search parameters
+      //searchParameters: {},
+
+      // Optional: path for search page that enabled by default (`false` to disable it)
+      searchPagePath: 'search',
+
+      //... other Algolia params
+    },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
