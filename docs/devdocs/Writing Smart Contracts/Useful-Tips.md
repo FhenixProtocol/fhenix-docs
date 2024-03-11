@@ -55,7 +55,7 @@ Currently, we support many FHE operations. Some of them might take a lot of time
 When writing FHE code we encourage you to use the operations wisely and choose what operation should be used.
 Example: Instead of `ENCRYPTED_UINT_32 * FHE.asEuint32(2)` you can use `FHE.shl(ENCRYPTED_UINT_32, FHE.asEuint32(1))` in some cases `FHE.div(ENCRYPTED_UINT_32, FHE.asEuint32(2))` can be replaced by `FHE.shr(ENCRYPTED_UINT_32, FHE.asEuint32(1))`
 
-For more detailed benchmarks please refer to: [Gas-and-Banchmarks](./Gas-and-Banchmarks)
+For more detailed benchmarks please refer to: [Gas-and-Benchmarks](./Gas-and-Benchmarks)
 
 ## Randomness
 
