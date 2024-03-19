@@ -8,7 +8,7 @@ displayed_sidebar: docsSidebar
 Welcome to the Fhenix documents! These docs should have everything you need to get started and create smart contracts that use FHE with encrypted data!&#x20;
 
 :::tip[Tip]
-For questions & support [join our Discord](https://discord.gg/q4C5CzkdY7)!
+For questions & support [join our Discord](https://discord.com/invite/FuVgxrvJMY)!
 :::
 
 Here we'll explain everything about how to use Fhenix and how to use FHE to create privacy-preserving Web3 applications. We include an extension to the Ethereum Virtual Machine (EVM) that introduces operations on encrypted data using Fully Homomorphic Encryption (FHE). We've added special precompiles to the EVM that allow computations on encrypted data without the need for decryption.
