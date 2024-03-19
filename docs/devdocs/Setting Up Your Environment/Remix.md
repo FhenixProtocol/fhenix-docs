@@ -23,4 +23,4 @@ import "@fhenixprotocol/contracts/FHE.sol";
 
 The Fhenix Remix Plugin is a browser extension that adds Fhenix support to Remix. It allows you to encrypt and decrypt data in your contracts, and to interact with the Fhenix testnet.
 
-See the [Fhenix Remix Plugin](Fhenix-Remix-Plugin.md) for more information on how to install and use the plugin!
+See the [Fhenix Remix Plugin](../Tools%20and%20Utilities/Fhenix-Remix-Plugin.md) for more information on how to install and use the plugin!
