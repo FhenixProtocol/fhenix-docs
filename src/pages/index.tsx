@@ -94,7 +94,7 @@ export default function Home(): JSX.Element {
 
     return (
         <Layout title={`${siteConfig.title}`}
-                description="Description will go into a meta tag in <head />">
+                description="Documentation for Fhenix Blockchain - the first FHE-enabled L2 for the EVM">
             <HomepageHeader/>
             <main>
                 <HomepageFeatures/>
