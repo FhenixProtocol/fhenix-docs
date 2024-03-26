@@ -31,7 +31,7 @@ const FeatureList: FeatureItem[] = [
 
       description: (
       <>
-          Run for the first time FHE-based smart contracts with on-chain confidential computation, providing unprecedented level of data encryption
+          Run for the first time FHE-based smart contracts with on-chain confidential computation, providing unprecedented level of data encryption.
       </>
     ),
       linkTo: "/docs/devdocs/Writing%20Smart%20Contracts/FHE-sol"
@@ -42,7 +42,7 @@ const FeatureList: FeatureItem[] = [
 
     description: (
       <>
-          Fhenix incorporates FHE to enable confidential smart contracts on public blockchains, ensuring data privacy for Web3 applications.
+          Fhenix incorporates FHE to enable confidential smart contracts on public blockchains, ensuring data privacy for the next generation of Web3 applications.
       </>
     ),
       linkTo: "/docs/devdocs/Fhenix%20Frontier/Fhenix-T-FHE"
