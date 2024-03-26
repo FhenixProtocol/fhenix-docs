@@ -94,7 +94,7 @@ export default function Home(): JSX.Element {
 
     return (
         <Layout title={`${siteConfig.title}`}
-                description="Documentation for Fhenix Blockchain - the first FHE-enabled L2 for the EVM">
+                description="Documentation for Fhenix, the pioneering FHE-enabled L2. Explore how Fhenix is transforming privacy in Blockchain.">
             <HomepageHeader/>
             <main>
                 <HomepageFeatures/>
