@@ -42,7 +42,7 @@ const FeatureList: FeatureItem[] = [
 
     description: (
       <>
-          Introducing end-to-end encryption to the EVM space, bringing on-chain confidentiality and enabling the next generation of dApps.
+          Fhenix incorporates FHE to enable confidential smart contracts on public blockchains, ensuring data privacy for Web3 applications.
       </>
     ),
       linkTo: "/docs/devdocs/Fhenix%20Frontier/Fhenix-T-FHE"
