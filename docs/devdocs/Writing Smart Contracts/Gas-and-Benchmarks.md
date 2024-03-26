@@ -78,7 +78,7 @@ The current gas limit for a tranasaction is set to be 50 million
             <td>8,987</td>
         </tr>
          <tr>
-            <td rowspan="3">sbb</td>
+            <td rowspan="3">sub</td>
             <td>euint8</td>
            <td>35</td>
             <td>7,315</td>
