@@ -42,7 +42,7 @@ const FeatureList: FeatureItem[] = [
 
     description: (
       <>
-          Introducing end-to-end encryption to the EVM space, bringing on-chain confidentiality and enabling the next generation of dApps. I'm actually not saying anything here!
+          Introducing end-to-end encryption to the EVM space, bringing on-chain confidentiality and enabling the next generation of dApps.
       </>
     ),
       linkTo: "/docs/devdocs/Fhenix%20Frontier/Fhenix-T-FHE"
