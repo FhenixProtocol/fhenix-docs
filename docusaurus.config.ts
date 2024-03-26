@@ -48,6 +48,11 @@ const config: Config = {
   ],
 
   themeConfig: {
+    metadata: [
+      {name: 'keywords', content: 'Fhenix, Blockchain, FHE, Fully Homomorphic Encryption, Layer 2, L2, Coprocessor, Blockchain Technology, Secure Computing, Scalable Blockchain, Decentralized'},
+      {name: 'author', content: 'FHE Labs'},
+      {name: 'twitter:card', content: 'summary_large_image'}
+    ],
     // Replace with your project's social card
     image: 'img/Splash.webp',
     colorMode: {
