@@ -13,7 +13,7 @@ export default function AdditionalFeatures(): JSX.Element {
               <div className="col col--6">
                 <div className="youtube-section">
                   <div className="row">
-                    <div><a href="https://youtu.be/0s-37QpDHUY" target="_blank"><img className="youtube-video" alt="fhenix video" src="img/video-remix.jpg" style={{}}/></a></div>
+                    <div><a href="https://youtu.be/0s-37QpDHUY" target="_blank"><img className="youtube-video" alt="fhenix remix plugin tutorial" src="img/video-remix.jpg" style={{}}/></a></div>
                     <div className="subrow">
                       <div className="title">Fhenix Remix Plugin</div>
                       <div className="content">Learn how to use Fhenix Plugin for Remix.</div>
@@ -21,7 +21,7 @@ export default function AdditionalFeatures(): JSX.Element {
                   </div>
                   <div className="sep"></div>
                   <div className="row">
-                    <div><a href="https://youtu.be/HhEvo3-F0h4" target="_blank"><img className="youtube-video" alt="fhenix video" src="img/video-hardhat.jpg" style={{}}/></a></div>
+                    <div><a href="https://youtu.be/HhEvo3-F0h4" target="_blank"><img className="youtube-video" alt="fhenix hardhat plugin tutorial" src="img/video-hardhat.jpg" style={{}}/></a></div>
                     <div className="subrow">
                       <div className="title">Fhenix Hardhat Plugin - Getting Started</div>
                       <div className="content">Learn how to use Fhenix Hardhat Plugin.</div>
