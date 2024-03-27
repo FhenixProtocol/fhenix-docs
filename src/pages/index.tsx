@@ -32,7 +32,7 @@ function HomepageHeader() {
 
                           <Heading as="h1" className="hero__title">
                               { /* siteConfig.title */} 
-                              <img className="fhenix-logo" alt="fhenix image" src="img/fhenix-logo.svg" style={{maxWidth: '600px'}}/>
+                              <img className="fhenix-logo" alt="fhenix image" src="img/fhenix-logo.svg" />
                           </Heading>
                       </div>
                       <div className="row">
