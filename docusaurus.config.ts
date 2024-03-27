@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Fhenix',
-  tagline: 'Programmable. Scalable. Encrypted.',
+  tagline: 'Unlock Onchain Confidentiality on Ethereum',
   favicon: 'img/Favicon_Dark.svg',
 
   // Set the production url of your site here

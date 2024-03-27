@@ -8,6 +8,7 @@ import React, { FC, useEffect } from 'react';
 
 import styles from './index.module.css';
 import AdditionalFeatures from "../components/AdditionalFeatures";
+import { useColorMode  } from '@docusaurus/theme-common';
 
 import TagManager from 'react-gtm-module'
 
@@ -19,6 +20,7 @@ console.log("v0.1");
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
+  const { colorMode  } = useColorMode();
 
   return (
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
@@ -29,7 +31,8 @@ function HomepageHeader() {
                       <div className="row">
 
                           <Heading as="h1" className="hero__title">
-                              {siteConfig.title}
+                              { /* siteConfig.title */} 
+                              <img className="fhenix-logo" alt="fhenix image" src="img/fhenix-logo.svg" style={{maxWidth: '600px'}}/>
                           </Heading>
                       </div>
                       <div className="row">
@@ -75,8 +78,10 @@ function HomepageHeader() {
                           </Link>
                       </div>
                   </div>
+                  
+
                   <div className="hide-small-width col col--6" style={{marginTop: "-100px"}}>
-                      <img alt="fhenix stuttershock image" src="img/hero-background-img.webp" style={{maxWidth: '600px'}}/>
+                  { (colorMode === 'dark') ? <img className="page-cover-image" alt="fhenix stuttershock image" src="img/page-cover-dark.webp" style={{maxWidth: '600px'}}/> : <img className="page-cover-image" alt="fhenix stuttershock image" src="img/page-cover-light.webp" style={{maxWidth: '600px'}}/>}
                   </div>
               </div>
 
