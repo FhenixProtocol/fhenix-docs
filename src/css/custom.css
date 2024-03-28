@@ -338,6 +338,10 @@ html[data-theme='dark'] .header-github-link:before {
   no-repeat;
 }
 
+.fhenix-logo {
+  max-width: 60%;
+}
+
 html[data-theme='light'] .fhenix-logo  {
   filter: invert(100%);
 }
