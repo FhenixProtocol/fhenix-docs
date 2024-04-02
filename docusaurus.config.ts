@@ -159,7 +159,7 @@ const config: Config = {
       appId: 'EMZX0TM6JC',
 
       // Public API key: it is safe to commit it
-      apiKey: '351b32638e73f99bfc099624f971de54',
+      apiKey: '7053edb0c71f9da5171b05b1836adf78',
       
       indexName: 'fhenix',
 
