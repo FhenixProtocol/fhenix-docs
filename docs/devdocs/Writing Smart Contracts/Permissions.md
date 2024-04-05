@@ -53,6 +53,25 @@ The patient, after obtaining the appropriate signature using their private key, 
 In this example we are just showcasing the usage of permissions. `string` and `address` are still public data types and can be read directly from the chain!
 :::
 
+## Example Scenario 2
+
+pragma solidity ^0.8.20;
+import {FHE, euint8, inEuint8} from "@fhenixprotocol/contracts/FHE.sol";
+contract Test {
+    euint8 _output;
+
+    function setOutput(inEuint8 calldata _encryptedNumber) public  {
+        // convert inEuint8 type structure to euint8 
+        _output = FHE.asEuint8(_encryptedNumber);
+    }
+
+    function getSealedOutput(bytes32 publicKey) public view  returns (bytes memory) {
+        // Seal the output for a specific publicKey
+        return FHE.sealoutput(_output, publicKey);
+    }
+}
+
+
 ## Notes
 
 - Permissioned view functions only allow access upon successful signature verification, enhancing contract's data privacy.
