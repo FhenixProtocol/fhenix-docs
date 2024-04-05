@@ -55,6 +55,7 @@ In this example we are just showcasing the usage of permissions. `string` and `a
 
 ## Example Scenario 2
 
+```javascript
 pragma solidity ^0.8.20;
 import {FHE, euint8, inEuint8} from "@fhenixprotocol/contracts/FHE.sol";
 contract Test {
@@ -70,7 +71,7 @@ contract Test {
         return FHE.sealoutput(_output, publicKey);
     }
 }
-
+```
 
 ## Notes
 
