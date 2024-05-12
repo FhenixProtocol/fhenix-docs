@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # 🔗 Connecting to Fhenix Frontier
 
-Fhenix Frontier, the first publicly available FHE-based blockchain, is now live! You can connect to it using the following methods:
+Fhenix Frontier is the first publicly available FHE-based blockchain, and it is now live! Follow the instructions to connect to Fhenix Frontier.
 
 ## Configuring MetaMask 
 
@@ -12,14 +12,14 @@ Fhenix Frontier, the first publicly available FHE-based blockchain, is now live!
 2. Click **Add Network.**
 3. Click **Add a network manually**.
 
-4. Fill out the network details form. To add a custom network you need the following details:
+4. Fill out the network details form. To add a custom network, fill in the following fields:
    1. **Network Name: Fhenix Frontier**
    2. **New RPC URL: https://api.testnet.fhenix.zone:7747**
    3. **Chain ID:** 42069
    4. **Currency Symbol: tFHE**
    5. **Block Explorer URL: https://explorer.testnet.fhenix.zone**
 5. Once you fill out all the details, click **Save**.
-6. Now you can switch to Fhenix Frontier. Get some tokens using the testnet faucet and start building!
+6. Now you are ready to switch to Fhenix Frontier. Tokens are available from the testnet faucet. Start building!
 
 
 ## API endpoints
@@ -50,4 +50,4 @@ Fhenix Frontier, the first publicly available FHE-based blockchain, is now live!
 ## Faucet
 
 To get some test tokens, use the faucet at [https://faucet.fhenix.zone/](https://faucet.fhenix.zone/).
-You can get 0.5 tFHE once per 5 minutes. 
+You receive 0.1 tokens once every five minutes. 

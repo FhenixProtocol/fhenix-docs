@@ -4,21 +4,19 @@ sidebar_position: 1
 
 # ✨ Fhenix & FHE
 
-Fhenix is revolutionizing the blockchain space by utilizing Fully Homomorphic Encryption for confidential smart contracts on public blockchains. One of the most pressing challenges in the blockchain space is ensuring privacy, and Fully Homomorphic Encryption (FHE) presents a promising solution. By leveraging FHE's ability to process encrypted data, we can effectively address privacy concerns, creating a safer environment for Web3 applications.
-
+Fhenix is revolutionizing the blockchain space by utilizing Fully Homomorphic Encryption (FHE) for confidential smart contracts on public blockchains. An urgent blockchain challenge is ensuring privacy, and FHE is a promising solution. By leveraging FHE's ability to process encrypted data, privacy concerns are effectively addressed, thereby creating a safer environment for Web3 applications.
 ## FHE - Fully Homomorphic Encryption
 
-Fully Homomorphic Encryption — or FHE for short — is a technology that enables processing data without decrypting it. This means companies can offer their services without ever seeing their users’ data — and users will never notice a difference in functionality.
+FHE is a technology that enables processing data without decrypting it. With data encrypted both in transit and during processing, everything that is done online can now be encrypted end-to-end, not just digital messaging!
 
-With data encrypted both in transit and during processing, everything we do online could now be encrypted end-to-end, not just sending messages!
+This means that companies can offer services, including operating on customer data, while ensuring customer privacy (since user data remains encrypted). Users can be confident that their data is private, and they experience no difference in functionality.
 
-FHE makes it possible to write private smart contracts to keep on-chain data encrypted. You can create decentralized, permissionless blockchains where everything is on-chain and auditable while not actually visible.
+FHE makes it possible to write private smart contracts that keep on-chain data encrypted. You can create decentralized, permissionless blockchains with all data on-chain and auditable, while not actually visible.
 
 ## Fhenix Frontier
 
-Fhenix Frontier is the first public iteration of the Fhenix protocol. It is an early build, one that has a lot of bugs and missing features.
+The current Fhenix Frontier is the first public iteration of the Fhenix protocol. It is still an early build, and it has bugs (unfortunately) and many features that are still under development.
 
-There are many challenges we still need to face, and many problems to solve. But we are excited to be working on this project, and we are excited to have you join us on this journey.
+There are many challenges ahead and many problems to solve. However, we are excited to be working on this project, because it is potentially an innovative and disrupting technology in the blockchain space.
 
-In no way is anything we write here set in stone. We are still figuring out what the best way to do things is, and we are still figuring out what the best way to do and explain things is.
-If you have any suggestions, ideas or feedback, please let us know. We are always looking for ways to improve and for people to contribute.
+What we write here is not set in stone. We are still considering the best way to move forward, and we are excited to have you here with us as we embark on this journey. Please let us know if you have any suggestions, ideas or comments. Feedback is always welcome. We are looking for ways to improve and for people to join us and contribute.
