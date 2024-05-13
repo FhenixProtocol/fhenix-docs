@@ -4,9 +4,9 @@ title: 👈 Outputs
 description: Sealing & Decryption - how data from a contract is returned 
 ---
 
-# Decryption & Sealing
+# Sealing and Decrypting
 
-When an app wants to read some piece of encrypted data from a Fhenix smart contract, that data must be converted from its encrypted form on chain to an encryption that the app can read and the user can decrypt.
+When an application reads encrypted data from a Fhenix smart contract, that data must first be converted from its encrypted on-chain form to an encrypted form that the application can read and the user can decrypt.
 
 There are two ways to return encrypted data to the user:
 
@@ -14,9 +14,11 @@ There are two ways to return encrypted data to the user:
 
     The data is returned to the user using [sealed box encryption](https://bitbeans.gitbooks.io/libsodium-net/content/public-key\_cryptography/sealed\_boxes.html) from NaCL. The gist of it is that the user provides a public key to the contract during a view function call, which the contract then uses to encrypt the data in such a way that only the owner of the private key associated with the provided public key can decrypt and read the data.
 
-    From a contract perspective, this is done by using the `FHE.sealoutput` function, which takes the data to be sealed and the public key of the user, and returns an encrypted blob.
+    From a contract perspective, this is done by using the `FHE.sealoutput` (or `.seal`) function, which takes the data to be sealed and the public key of the user, and returns an encrypted blob.
 
-    This data can then be decrypted using fhenix.js, or manually by using the caller's private key.
+    The encrypted data is then stored in a JSON structure, which is described in a [later section](#metamask-compatability).
+
+    This data can then be decrypted using fhenix.js, manually by using the caller's private key or using Metamask or compatible APIs.
 
 2. **Standard Decryption**
 
@@ -25,11 +27,11 @@ There are two ways to return encrypted data to the user:
 
 ## Sealed Data Format
 
-If you are using `fhenixjs`, you don't have to worry about parsing the raw sealed data that is returned from `sealoutput` or `seal`.
+:::note
+If using `fhenixjs`, parsing the raw sealed data that is returned from sealoutput or seal is unnecessary.
+:::
 
-However, developers have the option to unseal this data manually. As we described above, the data is encrypted using [sealed box encryption](https://bitbeans.gitbooks.io/libsodium-net/content/public-key\_cryptography/sealed\_boxes.html).
-
-The data itself is encoded in the following format:
+The following JSON structure shows the components of the encrypted data returned by the `seal` function:
 
 ```json
 {
@@ -42,14 +44,13 @@ The data itself is encoded in the following format:
 
 ### Metamask Compatability
 
-The encryption schema and structure matches the one used by Metamask's [`eth_decrypt`](https://docs.metamask.io/wallet/reference/eth_decrypt/) function. This means that we can consume sealed data 
-directly from metamask, which can provide a more engaging experience for the user of a dApp - You can fetch an address's public key using the `eth_getencryptionpublickey` method,
-and seal data for that specific public key (either as a permit or by using the public key directly), and then use Metamask's `eth_decrypt` call to provided a
-guided decryption experience.
+The encryption schema and structure matches the one used by Metamask's eth_decrypt function. 
+This means that we can consume sealed data directly from Metamask, which provides a more engaging experience for a dApp user. 
+
+Fetch an address's public key using the `eth_getEncryptionPublicKey` method, seal the data for that specific public key (either as a permit or by using the public key directly), and then use Metamask's `eth_decrypt` call to provide a guided decryption experience.
 
 :::danger[Warning]
-Metamask's `eth_getencryptionpublickey` and `eth_decrypt` methods are deprecated. We provide this compatability to demonstrate compatability with native wallet encryption/decryption.
-We aim to maintain compatability as new standards for Encryption on Ethereum emerge 
+Metamask's `eth_getEncryptionPublicKey` and `eth_decrypt` methods are deprecated. We provide these examples to demonstrate compatibility with native wallet encryption/decryption procedures. We aim to maintain compatibility as new standards emerge for encryption on Ethereum.
 :::
 
 ## Examples
