@@ -25,6 +25,7 @@ Different types of encrypted data can be defined:
 - `inEuint64`: Encrypted unsigned 64-bit integer.
 - `inEuint128`: Encrypted unsigned 128-bit integer.
 - `inEuint256`: Encrypted unsigned 256-bit integer.
+- `inEaddress`: Encrypted address.
 
 ## Receiving Encrypted Inputs
 
@@ -49,8 +50,8 @@ The following code snippets show how to use the two methods for an encrypted tra
 
 As you can see, the advantage of using `inEuint` over raw bytes is that it ensures type safety and readability. It also provides a structured approach that integrates well with the FHE.sol and fhenix.js library's functions.
 
-## Advantages of `inEuint` Over Raw Bytes
-Fhenix strongly recommends using `inEuintxx` (and `inEbool`) structs instead of raw bytes to ensure type safety and readability. These structs provide a structured approach that integrates well with FHE.sol library functions. We believe that the advantages of `inEuintxx` and `inEbool` structs are more compatible with handling encrypted data and ensuring application safety, even though raw bytes may result in very slightly lower gas costs.
+## Advantages of `inEuint`, `inEbool` and `inEaddress` Over Raw Bytes
+Fhenix strongly recommends using `inEuintxx` (and/or `inEbool`, `inEaddress`) structs instead of raw bytes to ensure type safety and readability. These structs provide a structured approach that integrates well with FHE.sol library functions. We believe that the advantages of `inEuintxx`, `inEbool` and `inEaddress` structs are more compatible with handling encrypted data and ensuring application safety, even though raw bytes may result in very slightly lower gas costs.
 
 ### Examples
 
@@ -68,17 +69,16 @@ Fhenix strongly recommends using `inEuintxx` (and `inEbool`) structs instead of 
     }
  ```
 
-### `inEuint` vs. `euint` Types
-- `inEuint` (and inEbool) types are used for handling incoming encrypted data.
-- `euint` (and Ebool) types are used for already processed data within the contract.
-
+### `inExxx` vs. `exxx` Types
+- `inExxx` types, such as all of `inEuint` types, `inEbool` and `inEaddress` types are used for handling incoming encrypted data.
+- `exxx` types such as all of `euint` types, `ebool` and `eaddress` are used for data already processed and in use within the contract.
 ### Conversion Requirement
-Conversion from `inEuint` to `euint` is required to ensure that only correctly formatted encrypted data is processed.
+Conversion from `inEuint` (or `inEbool`, `inEaddress`) to `euint` (`ebool`, `eaddress`) is required to ensure that only correctly formatted encrypted data is processed.
 
-This is done using the `FHE.asEuintXX` function, where `XX` is the bit size of the encrypted data. The example above uses the `FHE.asEuint8` helper function.
+This is done using the `FHE.asEuintXX`, `FHE.asEbool` or `FHE.asEaddress` functions, where `XX` is the bit size of the encrypted data. The example above uses the `FHE.asEuint8` helper function.
 
 ### Gas Cost Implications
-Attempting to store `inEuint` types directly in storage can lead to prohibitively high gas costs due to the large quantity of encrypted data. It is recommended to avoid storing data and instead processing data as needed.
+Attempting to store `inEuint`, `inEbool` or `inEaddress types directly in storage can lead to prohibitively high gas costs due to the large size of encrypted data. It's generally recommended to avoid storing these directly and instead process them as needed.
 
 ### Best Practices – Use Structured Types
-Ensure data integrity and security of smart contract operation when handling encrypted input. Use inEuint structured types for clearer and safer code, and be mindful of gas costs when designing your contract's data handling strategies. Thorough testing and consideration of security implications are essential for maintaining the robustness and reliability of FHE-based smart contracts.
+Ensure data integrity and security of smart contract operation when handling encrypted input. Use the structured `inEuint`, `inEbool` or `inEaddress` types for clearer and safer code, and be mindful of gas costs when designing your contract's data handling strategies. Thorough testing and consideration of security implications are essential in maintaining the robustness and reliability of your FHE-based smart contracts.
