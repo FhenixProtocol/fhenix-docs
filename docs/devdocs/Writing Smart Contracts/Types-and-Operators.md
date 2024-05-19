@@ -20,12 +20,22 @@ In the back-end, encrypted integers are FHE ciphertexts. The library abstracts a
 
 | name      | Bit Size | Usage   |
 | --------- | -------- | ------- |
+| ebool     | 1        | Compute |
 | euint8    | 8        | Compute |
 | euint16   | 16       | Compute |
 | euint32   | 32       | Compute |
+| euint64   | 64       | Compute |
+| euint128  | 128      | Compute |
+| euint256  | 256      | Compute |
+| eaddress  | 160      | Compute |
+| inEbool   | 1        | Input   |
 | inEuint8  | 8        | Input   |
 | inEuint16 | 16       | Input   |
 | inEuint32 | 32       | Input   |
+| inEuint64 | 64       | Input   |
+| inEuint128| 128      | Input   |
+| inEuint256| 256      | Input   |
+| inEaddress| 160      | Input   |
 
 ## Operations
 

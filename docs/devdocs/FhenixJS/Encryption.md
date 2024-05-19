@@ -28,9 +28,13 @@ Then, you can use the created client to encrypt
 
 import { FhenixClient, EncryptedType, EncryptedUint8 } from 'fhenixjs';
 
-const result: EncryptedUint8 = await client.encrypt(number, EncryptionTypes.uint8);
-const result: EncryptedUint16 = await client.encrypt(number, EncryptionTypes.uint16);
-const result: EncryptedUint32 = await client.encrypt(number, EncryptionTypes.uint32);
+let result: EncryptedUint8 = await client.encrypt(number, EncryptionTypes.uint8);
+let result: EncryptedUint16 = await client.encrypt(number, EncryptionTypes.uint16);
+let result: EncryptedUint32 = await client.encrypt(number, EncryptionTypes.uint32);
+let result: EncryptedUint64 = await client.encrypt(number, EncryptionTypes.uint64);
+let result: EncryptedUint128 = await client.encrypt(number, EncryptionTypes.uint128);
+let result: EncryptedUint256 = await client.encrypt(number, EncryptionTypes.uint256);
+let result: EncryptedAddress = await client.encrypt(address, EncryptionTypes.address);
 
 ```
 
@@ -40,9 +44,13 @@ Or, we can use the lower-level type specific functions
 const resultUint8 = await client.encrypt_uint8(number);
 const resultUint16 = await client.encrypt_uint16(number);
 const resultUint32 = await client.encrypt_uint32(number);
+const resultUint64 = await client.encrypt_uint64(number);
+const resultUint128 = await client.encrypt_uint128(number);
+const resultUint256 = await client.encrypt_uint256(number);
+const resultAddress = await client.encrypt_address(address);
 ```
 
-The returned types from the encrypt function will be of the type `EncryptedUint8`, `EncryptedUint16` or `EncryptedUint32` depending on the type you specified.
+The returned types from the encrypt function will be of the type `EncryptedUint8`, `EncryptedUint16` or `EncryptedUint32` (or 64/128/256 etc.) depending on the type you specified.
 
 The `EncryptedUint` type sound scary, but are actually pretty simple. It's just a 
 
