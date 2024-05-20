@@ -43,25 +43,39 @@ pnpm install @fhenixprotocol/contracts;
 ### `euintxx` - Encrypted Unsigned Integers
 - **Description**: Represents an encrypted unsigned integer. This type is used for encrypted variables within smart contracts.
 The currently supported types are: `euint8`, `euint16`, `euint32`, `euint64`, `euint128` & `euint256`.
-- **Usage**: Stores and manipulates encrypted values within smart contracts.
+- **Usage**: Store and manipulate encrypted values within smart contracts.
+### `ebool` - Encrypted Boolean
+- **Description**: Represents an encrypted boolean value. This type can be used as an encrypted variable and for encrypted logical
+operations upon other encrypted variables e.g. by using `select`.
+- **Usage**: Store and manipulate encrypted values within smart contracts. Use in encrypted conditional statements.
+### `eaddress` - Encrypted Address
+- **Description**: Represents an encrypted address. This type can be used to hide the address variables within contracts.
+- **Usage**: Store and compare encrypted addresses.
 
 ### `inEuintxx` - Input Encrypted Unsigned Integers
 - **Description**: A type used for passing encrypted values as function arguments. It's the format in which encrypted data is input into the smart contract functions that process encrypted values.
-The currently supported types are `inEuint8`, `inEuint16`, `inEuint32`, `inEuint64`, `inEuint128`, `inEuint256`.
-- **Usage**: Passes typed encrypted values as function arguments.
+The currently supported types are `inEuint8`, `inEuint16`, `inEuint32`, `inEuint64`, `inEuint128` & `inEuint256`.
+- **Usage**: Pass typed encrypted values as function arguments.
 
-### `ebool` - Encrypted Unsigned Integers
-- **Description**: Represents an encrypted Boolean value. This type is used for encrypted variables within smart contracts
-The name of the type is `ebool`.
-- **Usage**: Stores and manipulates encrypted Boolean values within smart contracts.
+### `inEbool` - Input Encrypted Boolean
+- **Description**: Similarly as with `inEuint` the `inEbool` type is used for passing encrypted boolean values as function arguments.
+- **Usage**: Pass typed encrypted boolean values as function arguments.
+
+### `inEaddress` - Input Encrypted Address
+- **Description**: Similarly as with `inEuint` the `inEaddress` type is used for passing encrypted address values as function arguments
+- **Usage**: Pass typed encrypted address values as function arguments.
 
 ## Core Functions of FHE.sol
 
 ### `asEuint` - Convert to Encrypted Unsigned Integer
-- **Purpose**: Converts a plaintext number or an `inEuint` encrypted input into an `euint` type.
+- **Purpose**: Converts a plaintext number, encrypted variable or an `inEuint` encrypted input into an `euint` type.
+### `asEbool` - Convert to Encrypted Unsigned Integer
+- **Purpose**: Converts a plaintext number, encrypted variable or an `inEbool` encrypted input into an `ebool` type.
+### `asEaddress` - Convert to Encrypted Unsigned Integer
+- **Purpose**: Converts a plaintext number, encrypted variable or an `inEaddress` encrypted input into an `eaddress` type.
 
 ### `decrypt` - Decrypt Encrypted Data
-- **Purpose**: Decrypts an `euint` encrypted value back to its plaintext form. If the value should only be revealed to a specific address, the `sealoutput` function should be used instead. Learn more abut sealing [here](../Returning-Data.md).
+- **Purpose**: Decrypts `euint`, `ebool` or `eaddress` encrypted value back to its plaintext form. If the value should only be revealed to a specific address, the `sealoutput` function should be used instead. Learn more abut sealing [here](../Returning-Data.md).
 
 ### Arithmetic Operations
 FHE.sol supports encrypted arithmetic operations like addition and subtraction. These operations can be performed directly on `euint` types, enabling encrypted computations.
