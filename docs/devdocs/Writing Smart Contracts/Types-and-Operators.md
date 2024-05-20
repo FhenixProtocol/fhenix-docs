@@ -12,30 +12,38 @@ The library exposes utility functions for FHE operations. The goal of the librar
 
 The library provides a type system that is checked both at compile time and at run time. The structure and operations related to these types are described in this sections.
 
-We currently support encrypted integers of bit length up to 32 bits.
+We currently support encrypted integers of bit length up to 256 bits and special types such as `ebool` and `eaddress`.
 
-These encrypted integers behave as much as possible as Solidity's integer types. However, behaviour such as "revert on overflow" is not supported as this would leak some information of the encrypted integers. Therefore, arithmetic on `euint` types is [unchecked](https://docs.soliditylang.org/en/latest/control-structures.html#checked-or-unchecked-arithmetic), i.e. there is wrap-around on overlow.
+The encrypted integers behave as much as possible as Solidity's integer types. However, behaviour such as "revert on overflow" is not supported as this would leak some information of the encrypted integers. Therefore, arithmetic on `euint` types is [unchecked](https://docs.soliditylang.org/en/latest/control-structures.html#checked-or-unchecked-arithmetic), i.e. there is wrap-around on overlow.
 
-In the back-end, encrypted integers are FHE ciphertexts. The library abstracts away the ciphertexts and presents pointers to ciphertexts, or ciphertext handles, to the smart contract developer. The `euint` types are _wrappers_ over these handles.
+In the back-end, encrypted integers are FHE ciphertexts. The library abstracts away the ciphertexts and presents pointers to ciphertexts, or ciphertext handles, to the smart contract developer. The `euint`, `ebool` and `eaddress` types are _wrappers_ over these handles.
+<table>
+<tr><th colspan="2"> Supported types </th></tr>
+<tr><td>    
 
-| name      | Bit Size | Usage   |
-| --------- | -------- | ------- |
-| ebool     | 1        | Compute |
-| euint8    | 8        | Compute |
-| euint16   | 16       | Compute |
-| euint32   | 32       | Compute |
-| euint64   | 64       | Compute |
-| euint128  | 128      | Compute |
-| euint256  | 256      | Compute |
-| eaddress  | 160      | Compute |
-| inEbool   | 1        | Input   |
-| inEuint8  | 8        | Input   |
-| inEuint16 | 16       | Input   |
-| inEuint32 | 32       | Input   |
-| inEuint64 | 64       | Input   |
-| inEuint128| 128      | Input   |
-| inEuint256| 256      | Input   |
-| inEaddress| 160      | Input   |
+| name     | Bit Size | Usage   |
+|----------|----------| ------- |
+| euint8   | 8        | Compute |
+| euint16  | 16       | Compute |
+| euint32  | 32       | Compute |
+| euint64  | 64       | Compute |
+| euint128 | 128      | Compute |
+| euint256 | 256      | Compute |
+| ebool    | 8        | Compute |
+| eaddress | 160      | Compute |
+</td><td>    
+
+| name       | Bit Size | Usage   |
+|------------|----------| ------- |
+| inEuint8   | 8        | Input   |
+| inEuint16  | 16       | Input   |
+| inEuint32  | 32       | Input   |
+| inEuint64  | 64       | Input   |
+| inEuint128 | 128      | Input   |
+| inEuint256 | 256      | Input   |
+| inEbool    | 8        | Input   |
+| inEaddress | 160      | Input   |
+</td></tr> </table>
 
 ## Operations
 
