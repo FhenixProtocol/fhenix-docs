@@ -7,7 +7,7 @@ import TabItem from '@theme/TabItem';
 
 ## Dependencies
 
-In this guide we'll be using `docker` and `nodejs` and `whatever else I come up with`.
+In this guide we'll be using standard tools such as `git`, `docker`, `nodejs`, your favourite package manager such as `npm`, `yarn` or `pnpm` for NodeJS and your favourite IDE/Text editor.
 
 <details>
     <summary>Installing Dependencies</summary>
@@ -42,6 +42,7 @@ Go to our [hardhat template repository](https://github.com/fhenixprotocol/fhenix
 
 <details>
     <summary>Help, I can't find the button!</summary>
+    <TabItem>![Use this template](./images/use-this-template.png)</TabItem>
 </details>
 
 Now clone your new repository, or open a cloud-based environment such as Github Workspaces.
@@ -53,7 +54,7 @@ git clone https://github.com/your/repository.git
 Change directory into the repository and install the project dependencies
 
 
-<Tabs>
+<Tabs groupId="package-managers">
     <TabItem value="npm" label="npm">
         ```bash
         npm install
@@ -75,10 +76,45 @@ Change directory into the repository and install the project dependencies
 
 Alternative set up paths can be just cloning or forking the example repository, or starting from scratch using our [fhenix hardhat plugin](../../devdocs/docs/hardhat), [Gitpod environment](../../devdocs/docs/gitpod) or Github Workspaces
 
-## Starting Localfhenix
+## Configuring and Starting Localfhenix
+In order for us to locally deploy and test contracts we will need to run our own node, for this specific use-case we have a docker image named `localfhenix`.
+For ease of use and a simple setup we have hardhat task `localfhenix:start` that downloads and runs the image in a container for you.
 
-npm run hardhat localfhenix:start
+#### Set up your Mnemonic
 
+Hardhat uses an `.env` with mnemonics to deploy and interact with contracts. Copy the `.env.example` file to `.env` and set your mnemonics (you can use the default mnemonics if you just want to use LocalFhenix)
+
+```bash
+cp .env.example .env
+```
+This is the output of `cat .env`:
+```bash
+# obviously DO NOT USE IN PRODUCTION OR ANYWHERE OR WHATEVER
+# default wallet of localfhenix
+export MNEMONIC="demand hotel mass rally sphere tiger measure sick spoon evoke fashion comfort"
+export WALLET=""
+```
+#### Starting LocalFhenix.
+
+Use the following command:
+
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        ```bash
+        npm run localfhenix:start
+        ```
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        ```bash
+        yarn run hardhat localfhenix:start
+        ```
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        ```bash
+        pnpm run localfhenix:start
+        ```
+    </TabItem>
+</Tabs>
 You should see input similar to the following:
 
 ```
@@ -96,8 +132,28 @@ done!
 Started LocalFhenix successfully at 127.0.0.1:42069
 ```
 
-And now we have a fhenix blockchain environment running locally! Now we have everything ready, and we can move to coding :)
+We now have a fhenix blockchain environment running locally! Everything is setup and ready, and we can move on to coding :)
 
 :::note
 If you want to make sure the container is running, you can use `docker ps` to see the container, available ports, etc.
+:::
+:::note
+If you want to stop LocalFhenix you can issue the following command:
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        ```bash
+        npm run localfhenix:stop
+        ```
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        ```bash
+        yarn run hardhat localfhenix:stop
+        ```
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        ```bash
+        pnpm run localfhenix:stop
+        ```
+    </TabItem>
+</Tabs>
 :::
