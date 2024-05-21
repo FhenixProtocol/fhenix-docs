@@ -8,7 +8,9 @@ import TabItem from '@theme/TabItem';
 ## Dependencies
 
 In this guide we'll be using standard tools such as `git`, `docker`, `nodejs`, your favourite package manager such as `npm`, `yarn` or `pnpm` for NodeJS and your favourite IDE/Text editor.
-
+:::note
+Although you can use all the aforementioned package managers we primarily use, support and generally recommend **pnpm**.
+:::
 <details>
     <summary>Installing Dependencies</summary>
     <Tabs>
@@ -24,7 +26,11 @@ In this guide we'll be using standard tools such as `git`, `docker`, `nodejs`, y
             </p>
         </TabItem>
         <TabItem value="MacOS" label="MacOS">
-            Install git, make and node through Homebrew:
+            To install colima and docker through Homebrew:
+            ```bash
+            brew install colima && brew install docker docker-compose
+            ```
+            To install git, make and node through Homebrew:
             ```bash
             brew install git make && brew install node
             ```
