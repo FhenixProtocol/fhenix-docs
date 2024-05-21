@@ -97,35 +97,36 @@ The `ebool` type is not a real boolean type. It is implemented as a `euint8`
 A documented documentation of each and every function in FHE.sol (including inputs and outputs) can be found in [FHE.sol](../Solidity%20API/FHE.md)
 :::
 
-All operations supported by FHE.sol are listed in the table below:
+All operations supported by FHE.sol are listed in the table below. For performance reasons, not all operations are supported for all types.
+
+Please refer to the table below for a comprehensive list of supported operations. This list will evolve as the network matures.
 
 Note that all functions are supported in both direct function calls and library bindings. However, operator overloading is only supported for the operations listed in the table (solidity please support operator overloading for boolean return types!).
 
-| name                  | FHE.sol function | Operator |
-| --------------------- | ---------------- | -------- |
-| Addition              | add              | +        |
-| Subtraction           | sub              | -        |
-| Multiplication        | mul              | \*       |
-| Bitwise And           | and              | &        |
-| Bitwise Or            | or               | \|       |
-| Bitwise Xor           | xor              | ^        |
-| Division              | div              | /        |
-| Reminder              | rem              | %        |
-| Shift Right           | shr              | &gt;&gt; |
-| Shift Left            | shl              | &lt;&lt; |
-| Equal                 | eq               | n/a      |
-| Not equal             | ne               | n/a      |
-| Greater than or equal | gte              | n/a      |
-| Greater than          | gt               | n/a      |
-| Less than or equal    | lte              | n/a      |
-| Less than             | lt               | n/a      |
-| Min                   | min              | n/a      |
-| Max                   | max              | n/a      |
-| Negative              | neg              | n/a      |
-| Not                   | not              | n/a      |
-| Require               | req              | n/a      |
-| Decrypt               | decrypt          | n/a      |
-| Seal Output           | sealOutput       | n/a      |
+| name                  | FHE.sol function | Operator | euint8 | euint16 | euint32 | euint64 | euint128 | euint256 | ebool | eaddress |
+|-----------------------|------------------|----------|--------|---------|---------|---------|----------|----------|-------|----------|
+| Addition              | add              | +        | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Subtraction           | sub              | -        | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Multiplication        | mul              | \*       | ✓      | ✓       | ✓       | ✓       | x        | n/a      | n/a   | n/a      |
+| Bitwise And           | and              | &        | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
+| Bitwise Or            | or               | \|       | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
+| Bitwise Xor           | xor              | ^        | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
+| Division              | div              | /        | ✓      | ✓       | ✓       | x       | x        | n/a      | n/a   | n/a      |
+| Reminder              | rem              | %        | ✓      | ✓       | ✓       | x       | x        | n/a      | n/a   | n/a      |
+| Shift Right           | shr              | &gt;&gt; | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Shift Left            | shl              | &lt;&lt; | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Equal                 | eq               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
+| Not equal             | ne               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | ✓        |
+| Greater than or equal | gte              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Greater than          | gt               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Less than or equal    | lte              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Less than             | lt               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Min                   | min              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Max                   | max              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Not                   | not              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
+| Require               | req              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
+| Decrypt               | decrypt          | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
+| Seal Output           | sealOutput       | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
 
 :::danger
 At the moment it is not possible to do `ebool result = (lhs == rhs)` and others that return a boolean result. This is because FHE.sol expects a `ebool`, while Solidity only allows overloading to return a regular boolean.
@@ -137,5 +138,5 @@ Using require and decrypt in a TX is dangerous as it can break the confidentiali
 :::
 
 :::tip
-Division and Reminder of devisions by `0` will output with an encrypted representation of the maximal value of the uint that is used (Ex. encrypted 255 for euint8)
+Division and Reminder by `0` will output with an encrypted representation of the maximal value of the uint that is used (Ex. encrypted 255 for euint8)
 :::
