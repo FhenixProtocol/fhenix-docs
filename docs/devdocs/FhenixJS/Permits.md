@@ -89,7 +89,7 @@ contract WrappingERC20 is Permissioned, ERC20 {
 }
 ```
 
-For a full example what this looks like - see [EncryptedERC20.sol](https://github.com/FhenixProtocol/devnet-contracts/blob/main/EncryptedERC20.sol) or our [getting started tutorial](../../tutorial/intro.md) for a full example, including client-side integration.
+For a full example what this looks like - see [EncryptedERC20.sol](https://github.com/FhenixProtocol/fherc20-contract/blob/master/contracts/fherc20.sol) or our [getting started tutorial](../../tutorial/intro.md) for a full example, including client-side integration.
 
 #### Advanced Access Control
 
