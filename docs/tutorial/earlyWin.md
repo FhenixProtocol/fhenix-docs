@@ -51,3 +51,9 @@ We are able to import the FHE precompiles directly into the smart contract with 
         // Logic to return sensitive data
     }
     ```
+
+    ```solidity
+    function getSensitiveData(Permission calldata perm) public view onlySender(perm) returns (string memory) {
+        // Logic to return sensitive data
+    }
+    ```
