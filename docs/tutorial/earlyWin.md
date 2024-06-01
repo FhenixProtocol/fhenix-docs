@@ -10,33 +10,33 @@ In this short guide we’ll encrypt plaintext to ciphertext using FHE, demonstra
 1. Define a view function in your contract. For example, to retrieve sensitive data:
 
     ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
-
-import "@fhenixprotocol/contracts/FHE.sol";
-
-contract EarlyWin {
-  
-   uint8 _plaintext;
-   euint8 public _cipherText;
-
-
-   function setCipherText(inEuint8 calldata _encryptedNumber) public  {
-       // convert inEuint8 type structure to euint8
-       _cipherText = FHE.asEuint8(_encryptedNumber);
-   }
-
-
-   function setPlainText(uint8 _number) public {
-       //set standard plaintext
-       _plaintext = _number;
-   }
-
-
-   function decrypt() public view returns (uint8) {
-       return FHE.decrypt(_cipherText);
-   }
-}
+        // SPDX-License-Identifier: MIT
+        pragma solidity ^0.8.17;
+        
+        import "@fhenixprotocol/contracts/FHE.sol";
+        
+        contract EarlyWin {
+          
+           uint8 _plaintext;
+           euint8 public _cipherText;
+        
+        
+           function setCipherText(inEuint8 calldata _encryptedNumber) public  {
+               // convert inEuint8 type structure to euint8
+               _cipherText = FHE.asEuint8(_encryptedNumber);
+           }
+        
+        
+           function setPlainText(uint8 _number) public {
+               //set standard plaintext
+               _plaintext = _number;
+           }
+        
+        
+           function decrypt() public view returns (uint8) {
+               return FHE.decrypt(_cipherText);
+           }
+        }
 
     ```
 
