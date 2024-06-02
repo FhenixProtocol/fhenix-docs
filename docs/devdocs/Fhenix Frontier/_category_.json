@@ -1,8 +1,8 @@
 {
-  "label": "Fhenix Frontier",
+  "label": "Fhenix Helium Testnet",
   "position": 2,
   "link": {
     "type": "generated-index",
-    "description": "Fhenix Frontier (Testnet v1) Specific Information"
+    "description": "Fhenix Helium Testnet Specific Information"
   }
 }

@@ -1,6 +1,6 @@
 {
-  "label": "Your First FHE Contract",
-  "position": 2,
+  "label": "Creating an ERC20 token with privacy",
+  "position": 3,
   "link": {
     "type": "generated-index",
     "description": "Step-by-step tutorial in writing an Encrypted ERC20 contract"

@@ -16,14 +16,14 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Fhenix Frontier',
+    title: 'Fhenix Helium Testnet',
     Svg: require('@site/static/img/fhenix-logo-card-image.svg').default,
     description: (
       <>
           Fully Homomorphic Encryption (FHE) enables processing of encrypted data, addressing encryption concerns and making Web3 applications safer. Learn more!
       </>
     ),
-      linkTo: "/docs/devdocs/Fhenix%20Frontier/Connecting-To"
+      linkTo: "/docs/devdocs/Fhenix%20Helium%20Testnet/Connecting-To"
   },
   {
     title: 'FHE Contract',
@@ -45,7 +45,7 @@ const FeatureList: FeatureItem[] = [
           Fhenix incorporates FHE to enable confidential smart contracts on public blockchains, ensuring data privacy for the next generation of Web3 applications.
       </>
     ),
-      linkTo: "/docs/devdocs/Fhenix%20Frontier/Fhenix-T-FHE"
+      linkTo: "/docs/devdocs/Fhenix%20Helium%20Testnet/Fhenix-T-FHE"
   },
     {
         title: 'EVM Compatible',

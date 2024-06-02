@@ -50,7 +50,7 @@ The plugin automatically adds a `localfhenix` network configuration to your Hard
 
 To target this network, simply add `--network localfhenix` to your hardhat commands, or set it as the default.
 
-If you want to use Fhenix Frontier (or a custom Fhenix network), you can add a new network configuration to your `hardhat.config.js` file:
+If you want to use Fhenix Helium Testnet (or a custom Fhenix network), you can add a new network configuration to your `hardhat.config.js` file:
 
 ```typescript
 const config: HardhatUserConfig = {

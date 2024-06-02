@@ -7,7 +7,7 @@ displayed_sidebar: tutorialSidebar
 
 In this guide, we'll be creating a shielded ERC20 token using Solidity. Our token will be unique in that it will offer encrypted token balances, thereby enhancing privacy for token holders.
 
-We'll be making use of the FHE library and Fhenix Frontier to enable this functionality - it allows us to perform computations on encrypted data without first having to decrypt it, which is vital for preserving privacy.
+We'll be making use of the FHE library and Fhenix Helium Testnet to enable this functionality - it allows us to perform computations on encrypted data without first having to decrypt it, which is vital for preserving privacy.
 
 You can find all the completed code in our [example project repository](https://github.com/FhenixProtocol/werc20-example). You can just skip there if you just want to see the final code.
 
