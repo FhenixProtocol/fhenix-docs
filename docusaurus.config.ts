@@ -68,11 +68,19 @@ const config: Config = {
     navbar: {
       title: 'Fhenix',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Fhenix',
         src: 'img/logo-black.svg',
         srcDark: 'img/logo-white.svg',
+        href: 'https://fhenix.io',        
       },
       items: [
+        {
+          type: 'docSidebar',
+          sidebarId: 'docsSidebar',
+          position: 'left',
+          label: 'Home',
+          href: '/',
+        },
         {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
