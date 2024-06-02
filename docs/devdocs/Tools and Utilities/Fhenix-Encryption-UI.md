@@ -3,7 +3,7 @@
 Fhenix encryption UI can be found in the following [link](https://encrypt.fhenix.zone/)
 This UI is useful for those who are not using remix or using remix without using the [plugin](Fhenix-Remix-Plugin.md)
 
-![](encui.png)
+![](/img/encui.png)
 
 #### Encryption
 

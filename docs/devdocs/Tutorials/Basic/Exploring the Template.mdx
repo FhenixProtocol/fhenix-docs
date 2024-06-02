@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 import Tabs from '@theme/Tabs';
@@ -48,7 +48,7 @@ network dropdown button and add the localfhenix network.
 
 <details>
     <summary>Adding network details for localfhenix.</summary>
-    <TabItem>![Use this template](./images/localfhenix-metamask.png)</TabItem>
+    <TabItem>![Use this template](/img/localfhenix-metamask.png)</TabItem>
 </details>
 Let's now explore the predefined hardhat tasks, run:
 
@@ -107,17 +107,17 @@ Run:
 <Tabs groupId="package-managers">
     <TabItem value="npm" label="npm">
         ```bash
-        npx hardhat task:getFunds <YOUR_ACCOUNTS_PUBLIC_KEY>
+        npx run faucet
         ```
     </TabItem>
     <TabItem value="yarn" label="yarn">
         ```bash
-        yarn hardhat task:getFunds <YOUR_ACCOUNTS_PUBLIC_KEY>
+        yarn faucet
         ```
     </TabItem>
     <TabItem value="pnpm" label="pnpm">
         ```bash
-        pnpm hardhat task:getFunds <YOUR_ACCOUNTS_PUBLIC_KEY>
+        pnpm faucet
         ```
     </TabItem>
 </Tabs>

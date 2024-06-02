@@ -1,18 +1,18 @@
 ---
-sidebar_position: 100
+sidebar_position: 5
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Deploying (WIP)
+# Deploying
 
 Now that we have our completed WrappingERC20 token, the next step is to see if our code actually works!
 
-To do this, we'll be writing tests in typescript using hardhat, and deploying them on our [LocalFhenix ](../../devdocs/Setting%20Up%20Your%20Environment/Hardhat.md) environment which we set up earlier
+To do this, we'll be writing tests in typescript using hardhat, and deploying them on our [LocalFhenix](../Setting%20Up%20Your%20Environment/Hardhat.md) environment which we set up earlier.
 
 :::tip[Note]
-At this stage, using hardhat network is not supported, as Fhenix uses extensions to the EVM that enable FHE operations
+At this stage, using hardhat network is not supported, as Fhenix uses custom extensions to the EVM that enable FHE operations
 :::
 
 ### Compiling the Contract
@@ -55,26 +55,27 @@ Compiled 5 Solidity files successfully
 
 To help us deploy and perform actions you can make use of tasks. We'll add deployment and usage tasks for our new contract. We'll replace the deployment of the default contract with our WrappedERC20. Notice that the differences are mostly just the naming and constructor arguments that are different. Replace the `deploy/deploy.ts` with the following content:
 
-```typescript
+```javascript
 import { DeployFunction } from "hardhat-deploy/types";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
+const hre = require("hardhat");
 
-const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const { deployer } = await hre.getNamedAccounts();
+const func: DeployFunction = async function () {
+  const { ethers } = hre;
   const { deploy } = hre.deployments;
+  const [signer] = await ethers.getSigners();
 
-  const werc20 = await deploy("WrappingERC20", {
-    from: deployer,
-    args: ["TestShieldedToken", "TST"],
+  const counter = await deploy("WrappingERC20", {
+    from: signer.address,
+    args: ["Test Token", "TST"],
     log: true,
-    skipIfAlreadyDeployed: false,
+    skipIfAlreadyDeployed: false
   });
 
-  console.log(`WrappingERC20 contract: `, werc20.address);
+  console.log(`Counter contract: `, counter.address);
 };
 
 export default func;
-func.id = "deploy_werc20";
+func.id = "deploy_counter";
 func.tags = ["WrappingERC20"];
 ```
 

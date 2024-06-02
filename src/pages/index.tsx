@@ -32,7 +32,7 @@ function HomepageHeader() {
 
                           <Heading as="h1" className="hero__title">
                               { /* siteConfig.title */} 
-                              <img className="fhenix-logo" alt="fhenix image" src="img/fhenix-logo.svg" />
+                              <img className="fhenix-logo" alt="fhenix image" src="/img/fhenix-logo.svg" />
                           </Heading>
                       </div>
                       <div className="row">
@@ -55,7 +55,7 @@ function HomepageHeader() {
                           <div className='col col--4'>
                               <Link
                                   className='button button--lol'
-                                  to={"/docs/devdocs/Tutorials"}>
+                                  to={"/docs/devdocs/Tutorials/Your-First-FHE-Contract"}>
                                   Tutorials
                               </Link>
                           </div>

@@ -35,7 +35,7 @@ This is done in 3 steps: generating a permit, querying the contract and unsealin
 ```javascript
 import { FhenixClient, getPermit } from 'fhenixjs';
 
-const provider = new ethers.JsonRpcProvider('https://test01.fhenix.zone/evm');
+const provider = new ethers.JsonRpcProvider('https://api.helium.fhenix.zone/');
 const client = new FhenixClient({ provider });
 
 
@@ -77,7 +77,7 @@ Permits are currently limited to support a single contract
 import { FhenixClient, getPermit } from 'fhenixjs';
 import { JsonRpcProvider } from 'ethers';
 
-const provider = new ethers.JsonRpcProvider('https://test01.fhenix.zone/evm');
+const provider = new ethers.JsonRpcProvider('https://api.helium.fhenix.zone/');
 const client = new FhenixClient({provider});
 
 const permit = await getPermit(contractAddress, provider);

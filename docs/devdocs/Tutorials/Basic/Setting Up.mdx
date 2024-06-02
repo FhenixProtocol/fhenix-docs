@@ -26,9 +26,9 @@ Although you can use all the aforementioned package managers we primarily use, s
             </p>
         </TabItem>
         <TabItem value="MacOS" label="MacOS">
-            To install colima and docker through Homebrew:
+            To install Colima and docker through Homebrew:
             ```bash
-            brew install colima && brew install docker docker-compose
+            brew install Colima && brew install docker docker-compose
             ```
             To install git, make and node through Homebrew:
             ```bash
@@ -48,7 +48,7 @@ Go to our [hardhat template repository](https://github.com/fhenixprotocol/fhenix
 
 <details>
     <summary>Help, I can't find the button!</summary>
-    <TabItem>![Use this template](./images/use-this-template.png)</TabItem>
+    <TabItem>![Use this template](/img/use-this-template.png)</TabItem>
 </details>
 
 Now clone your new repository, or open a cloud-based environment such as Github Workspaces.
@@ -127,24 +127,27 @@ You should see input similar to the following:
 > fhenix-hardhat-example@1.0.0 localfhenix:start
 > hardhat localfhenix:start
 
-Downloading docker image ghcr.io/fhenixprotocol/localfhenix:v0.1.0-beta5...
+Downloading docker image ghcr.io/fhenixprotocol/localfhenix:v0.2.3...
 ```
+
+:::warning
+In case of an error in this step make sure docker is running, and you have the necessary permissions to run docker commands.
+:::
 
 Wait about a minute for the image to finish downloading, after which you should see a success message:
 
 ```
-Downloading docker image ghcr.io/fhenixprotocol/localfhenix:v0.1.0-beta5...
+Downloading docker image ghcr.io/fhenixprotocol/localfhenix:v0.2.3...
 done!
 Started LocalFhenix successfully at 127.0.0.1:42069
 ```
 
-We now have a fhenix blockchain environment running locally! Everything is setup and ready, and we can move on to coding :)
+We now have a Fhenix blockchain environment running locally! Everything is set up and ready, and we can move on to coding :)
 
-:::note
-If you want to make sure the container is running, you can use `docker ps` to see the container, available ports, etc.
-:::
-:::note
-If you want to stop LocalFhenix you can issue the following command:
+:::tip
+* If you want to make sure the container is running, you can use `docker ps` to see the container, available ports, etc.
+
+* If you want to stop LocalFhenix you can issue the following command:
 <Tabs groupId="package-managers">
     <TabItem value="npm" label="npm">
         ```bash

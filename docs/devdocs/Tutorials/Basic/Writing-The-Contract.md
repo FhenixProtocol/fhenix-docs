@@ -119,7 +119,7 @@ The function will remove the specified amount from the user's encrypted balance 
 
 ```javascript
 function unwrap(inEuint32 memory amount) public {
-    euint32 _amount = FHE.asEuint32(amount)
+    euint32 _amount = FHE.asEuint32(amount);
     // verify that our shielded balance is greater or equal than the requested amount. (gte = greater-than-or-equal)
     FHE.req(_encBalances[msg.sender].gte(_amount));
     // subtract amount from shielded balance
