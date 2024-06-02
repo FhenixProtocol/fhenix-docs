@@ -1,10 +1,15 @@
-# Encrypting Plaintext to Ciphertext Using FHE with Fhenix
+---
+sidebar_position: 2
+displayed_sidebar: docsSidebar
+---
+
+# Your First FHE Contract
 
 In this short guide, we'll demonstrate how simple it is to enable confidentiality in your smart contracts using Fhenix.
 
 *Link to Smart Contract*
 
-```solidity
+```javascript
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
@@ -38,7 +43,7 @@ First, FHE is imported directly into your contract with a single line of code. N
 
 1. **Importing FHE**
 
-   ```solidity
+   ```javascript
    import "@fhenixprotocol/contracts/FHE.sol";
    ```
 
@@ -46,7 +51,7 @@ First, FHE is imported directly into your contract with a single line of code. N
 
 2. **Declaring Variables**
 
-   ```solidity
+   ```javascript
    uint8 _plaintext;
    euint8 public _cipherText;
    ```
@@ -55,7 +60,7 @@ First, FHE is imported directly into your contract with a single line of code. N
 
 3. **Setting the Encrypted Number**
 
-   ```solidity
+   ```javascript
    function setCipherText(inEuint8 calldata _encryptedNumber) public {
        // convert inEuint8 type structure to euint8
        _cipherText = FHE.asEuint8(_encryptedNumber);
@@ -66,7 +71,7 @@ First, FHE is imported directly into your contract with a single line of code. N
 
 4. **Setting the Plaintext Number**
 
-   ```solidity
+   ```javascript
    function setPlainText(uint8 _number) public {
        // set standard plaintext
        _plaintext = _number;
@@ -77,7 +82,7 @@ First, FHE is imported directly into your contract with a single line of code. N
 
 5. **Decrypting the Encrypted Number**
 
-   ```solidity
+   ```javascript
    function decrypt() public view returns (uint8) {
        return FHE.decrypt(_cipherText);
    }
@@ -87,9 +92,9 @@ First, FHE is imported directly into your contract with a single line of code. N
 
 ## Next Steps
 
-If you want to learn more about working with Fhenix, please check out our [docs for a development tutorial](#). Here, you will learn how to set up your local dev environment and create an encrypted ERC-20 token!
+If you want to learn more about working with Fhenix, please check out [docs for a development tutorial](../Tutorials/Basic/intro). Here, you will learn how to set up your local dev environment and create an encrypted ERC-20 token!
 
-Or, [click here to check out part 2 of our easy win guide](#), where we go over Fhenix principles 101 on Remix. Learn how to handle operations, conditional logic, and permissions (viewing encrypted fields).
+[//]: # (Or, [click here to check out part 2 of our easy win guide]&#40;#&#41;, where we go over Fhenix principles 101 on Remix. Learn how to handle operations, conditional logic, and permissions &#40;viewing encrypted fields&#41;.)
 
 ### Have Questions?
 

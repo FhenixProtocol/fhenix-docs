@@ -54,14 +54,14 @@
   --ifm-color-text: #ffffff;
   --ifm-color-glow: #ffffff;
   /* main background color */
-  --ifm-background-color: #0c0c0c !important;
+  --ifm-background-color: #161b22 !important;
 
   --ifm-background-surface-color: var(--ifm-background-color) !important;
   --ifm-footer-background-color: var(--ifm-background-color) !important;
 
   --ifm-font-family-base: 'Roboto', sans-serif;
   /* hero background color */
-  --ifm-color-background: #0c0c0c;
+  --ifm-color-background: #161b22;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 
   --ifm-title-color-gradient-1: #5764AA;

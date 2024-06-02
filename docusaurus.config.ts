@@ -79,12 +79,12 @@ const config: Config = {
           position: 'left',
           label: 'Developer Docs',
         },
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Tutorial',
-        },
+        // {
+        //   type: 'docSidebar',
+        //   sidebarId: 'tutorialSidebar',
+        //   position: 'left',
+        //   label: 'Tutorial',
+        // },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/fhenixprotocol/',
@@ -120,10 +120,10 @@ const config: Config = {
               label: 'Get Started',
               to: '/docs/devdocs/Setting%20Up%20Your%20Environment/intro',
             },
-            {
-              label: 'Tutorial',
-              to: '/docs/tutorial/intro',
-            },
+            // {
+            //   label: 'Tutorial',
+            //   to: '/docs/tutorial/intro',
+            // },
           ],
         },
         {

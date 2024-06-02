@@ -4,13 +4,13 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import styles from './index.module.css';
 import AdditionalFeatures from "../components/AdditionalFeatures";
 import { useColorMode  } from '@docusaurus/theme-common';
 
-import TagManager from 'react-gtm-module'
+import TagManager from 'react-gtm-module';
 
 const tagManagerArgs = {
   gtmId: 'GTM-PLL6DPHF'
@@ -55,8 +55,8 @@ function HomepageHeader() {
                           <div className='col col--4'>
                               <Link
                                   className='button button--lol'
-                                  to={"/docs/tutorial/intro"}>
-                                  Tutorial
+                                  to={"/docs/devdocs/Tutorials"}>
+                                  Tutorials
                               </Link>
                           </div>
 
@@ -73,8 +73,8 @@ function HomepageHeader() {
                       <div className={clsx("row", styles.ButtonRowMobile)}>
                           <Link
                               className='button button--lol'
-                              to={"/docs/tutorial/intro"}>
-                              Tutorial
+                              to={"/docs/devdocs/tutorials/intro"}>
+                              Tutorials
                           </Link>
                       </div>
                   </div>

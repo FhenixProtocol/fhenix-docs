@@ -1,0 +1,165 @@
+---
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Dependencies
+
+In this guide we'll be using standard tools such as `git`, `docker`, `nodejs`, your favourite package manager such as `npm`, `yarn` or `pnpm` for NodeJS and your favourite IDE/Text editor.
+:::note
+Although you can use all the aforementioned package managers we primarily use, support and generally recommend **pnpm**.
+:::
+<details>
+    <summary>Installing Dependencies</summary>
+    <Tabs>
+        <TabItem value="Ubuntu/Debian" label="Ubuntu/Debian">
+            <p>
+                Install docker from: https://docs.docker.com/engine/install/ubuntu/
+
+                Install nodejs from nodesource: (other options are also okay)
+                ```sh
+                curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - &&\
+                sudo apt-get install -y nodejs
+                ```
+            </p>
+        </TabItem>
+        <TabItem value="MacOS" label="MacOS">
+            To install colima and docker through Homebrew:
+            ```bash
+            brew install colima && brew install docker docker-compose
+            ```
+            To install git, make and node through Homebrew:
+            ```bash
+            brew install git make && brew install node
+            ```
+        </TabItem>
+    </Tabs>
+
+</details>
+
+## Installation
+
+### Start From a Template
+
+First, let's clone our template project.
+Go to our [hardhat template repository](https://github.com/fhenixprotocol/fhenix-hardhat-example) and click "use this template". Choose your new project name and set up a repository.
+
+<details>
+    <summary>Help, I can't find the button!</summary>
+    <TabItem>![Use this template](./images/use-this-template.png)</TabItem>
+</details>
+
+Now clone your new repository, or open a cloud-based environment such as Github Workspaces.
+
+```bash
+git clone https://github.com/your/repository.git
+```
+
+Change directory into the repository and install the project dependencies
+
+
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        ```bash
+        npm install
+        ```
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        ```bash
+        yarn install
+        ```
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        ```bash
+        pnpm install
+        ```
+    </TabItem>
+</Tabs>
+
+### I'm more of a Free Spirit
+
+Alternative set up paths can be just cloning or forking the example repository, or starting from scratch using our [fhenix hardhat plugin](../../devdocs/docs/hardhat), [Gitpod environment](../../devdocs/docs/gitpod) or Github Workspaces
+
+## Configuring and Starting Localfhenix
+In order for us to locally deploy and test contracts we will need to run our own node, for this specific use-case we have a docker image named `localfhenix`.
+For ease of use and a simple setup we have hardhat task `localfhenix:start` that downloads and runs the image in a container for you.
+
+#### Set up your Mnemonic
+
+Hardhat uses an `.env` with mnemonics to deploy and interact with contracts. Copy the `.env.example` file to `.env` and set your mnemonics (you can use the default mnemonics if you just want to use LocalFhenix)
+
+```bash
+cp .env.example .env
+```
+This is the output of `cat .env`:
+```bash
+# obviously DO NOT USE IN PRODUCTION OR ANYWHERE OR WHATEVER
+# default wallet of localfhenix
+export MNEMONIC="demand hotel mass rally sphere tiger measure sick spoon evoke fashion comfort"
+export WALLET=""
+```
+#### Starting LocalFhenix.
+
+Use the following command:
+
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        ```bash
+        npm run localfhenix:start
+        ```
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        ```bash
+        yarn run hardhat localfhenix:start
+        ```
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        ```bash
+        pnpm run localfhenix:start
+        ```
+    </TabItem>
+</Tabs>
+You should see input similar to the following:
+
+```
+> fhenix-hardhat-example@1.0.0 localfhenix:start
+> hardhat localfhenix:start
+
+Downloading docker image ghcr.io/fhenixprotocol/localfhenix:v0.1.0-beta5...
+```
+
+Wait about a minute for the image to finish downloading, after which you should see a success message:
+
+```
+Downloading docker image ghcr.io/fhenixprotocol/localfhenix:v0.1.0-beta5...
+done!
+Started LocalFhenix successfully at 127.0.0.1:42069
+```
+
+We now have a fhenix blockchain environment running locally! Everything is setup and ready, and we can move on to coding :)
+
+:::note
+If you want to make sure the container is running, you can use `docker ps` to see the container, available ports, etc.
+:::
+:::note
+If you want to stop LocalFhenix you can issue the following command:
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        ```bash
+        npm run localfhenix:stop
+        ```
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        ```bash
+        yarn run hardhat localfhenix:stop
+        ```
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        ```bash
+        pnpm run localfhenix:stop
+        ```
+    </TabItem>
+</Tabs>
+:::

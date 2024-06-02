@@ -5,14 +5,14 @@ title: 🛑 Limitations
 
 ## Decryption Key
 
-Decryption key is stored locally on the machine - until the addition of a key management system which will be a part of 
-future versions, the decryption keys are stored locally on the node. This means that (obviously), you shouldn't store any 
+Decryption key is stored locally on each node - until the addition of a more complete solution which will be a part of 
+future versions, the decryption keys are stored by the node for ease of use. This means that (obviously), you shouldn't store any 
 real sensitive data or private keys on the testnet. 
 
 ## Security
 
 The current iteration of the network does not include multiple components (such as input knowledge proofs, threshold decryption, execution proofs, etc.) that are critical for the security of data and network keys.
-These features will be added iteratively as we move towards full release.
+These features will be added iteratively as we move towards full release - this should be obvious, but please **do not store any valuable information on the network as long as it is in the testnet phase**.
 
 ## Randomness
 
@@ -22,13 +22,7 @@ the use of external oracles, or usage of a [mock random number generator](../../
 
 ## Gas Costs
 
-All gas costs are subject to change, and are being evalutated for optimization. The current gas costs are not final, and may change.
-
-## L1 and Bridging
-
-Interacting with the L1 is not available in the current iteration of the network for the Denver Hackathon. This is expected to be included in the full testnet release.
-
-Currently, the network runs on a private L1 and not on a publicly available Ethereum testnet.
+All gas costs are subject to change, and are being evaluated for optimization. The current gas costs are not final, and may change.
 
 ## Stability
 
@@ -37,4 +31,5 @@ Expect that we might have to reboot the network and wipe everything on it at any
 
 ## Integer Bit Sizes
 
-At the moment, only 8, 16, 32, bit integers are supported. When we move to full public testnet, this will be expanded to include larger bit sizes.
+At the moment all integer bit sizes are supported, as well as `eaddress`, a 160-bit size for addresses. However, the instruction set is limited to a subset of operations for performance reasons.
+When we move to full public testnet and mainnet we expect to be able to support a wider range of operations. See [Types and Operators](../../Writing Smart Contracts/Types-and-Operators.md) for more information.

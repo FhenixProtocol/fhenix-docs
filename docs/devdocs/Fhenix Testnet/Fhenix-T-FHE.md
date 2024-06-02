@@ -5,6 +5,7 @@ sidebar_position: 1
 # ✨ Fhenix & FHE
 
 Fhenix is revolutionizing the blockchain space by utilizing Fully Homomorphic Encryption (FHE) for confidential smart contracts on public blockchains. An urgent blockchain challenge is ensuring privacy, and FHE is a promising solution. By leveraging FHE's ability to process encrypted data, privacy concerns are effectively addressed, thereby creating a safer environment for Web3 applications.
+
 ## FHE - Fully Homomorphic Encryption
 
 FHE is a technology that enables processing data without decrypting it. With data encrypted both in transit and during processing, everything that is done online can now be encrypted end-to-end, not just digital messaging!

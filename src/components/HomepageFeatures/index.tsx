@@ -23,7 +23,7 @@ const FeatureList: FeatureItem[] = [
           Fully Homomorphic Encryption (FHE) enables processing of encrypted data, addressing encryption concerns and making Web3 applications safer. Learn more!
       </>
     ),
-      linkTo: "/docs/devdocs/Fhenix%20Helium%20Testnet/Connecting-To"
+      linkTo: "/docs/devdocs/Fhenix%20Testnet/Connecting-To"
   },
   {
     title: 'FHE Contract',
@@ -45,7 +45,7 @@ const FeatureList: FeatureItem[] = [
           Fhenix incorporates FHE to enable confidential smart contracts on public blockchains, ensuring data privacy for the next generation of Web3 applications.
       </>
     ),
-      linkTo: "/docs/devdocs/Fhenix%20Helium%20Testnet/Fhenix-T-FHE"
+      linkTo: "/docs/devdocs/Fhenix%20Testnet/Fhenix-T-FHE"
   },
     {
         title: 'EVM Compatible',
@@ -83,23 +83,23 @@ function Feature({title, Svg, description, linkTo}: FeatureItem) {
 
 export default function HomepageFeatures(): JSX.Element {
     return (
-    <section className={styles.features}>
-      <div className="container">
-          <div className="row">
-              <Heading as="h1" className="text--center margin-bottom--lg margin-left--md">
-                  Unleash the Fhenix
-              </Heading>
-          </div>
+        <section className={styles.features}>
+          <div className="container">
+              <div className="row">
+                  <Heading as="h1" className="text--center margin-bottom--lg margin-left--md">
+                      Unleash the Fhenix
+                  </Heading>
+              </div>
 
-        <div className="row">
+            <div className="row">
 
-            {FeatureList.map((props, idx) => (
-                <div className="col col--3">
-                    <Feature key={idx} {...props} />
-                </div>
-                    ))}
-                </div>
-                </div>
-    </section>
+                {FeatureList.map((props, idx) => (
+                    <div className="col col--3">
+                        <Feature key={idx} {...props} />
+                    </div>
+                        ))}
+                    </div>
+                    </div>
+        </section>
   );
 }

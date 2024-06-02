@@ -38,7 +38,7 @@ Fhenix Helium is the first publicly available FHE-based blockchain, and it is no
       </tr>
       <tr>
          <td>Chain ID</td>
-         <td>42069</td>
+         <td>8008135</td>
       </tr>
    </tbody>
 </table>
@@ -50,7 +50,7 @@ Fhenix Helium is the first publicly available FHE-based blockchain, and it is no
 ## Faucet
 
 To get some test tokens, use the faucet at [https://get-helium.fhenix.zone/](https://faucet.fhenix.zone/).
-You receive 0.1 tokens once every five minutes. 
+You may receive 0.1 tokens once every five minutes. If you need more tokens, please reach out to us on Discord, or bridge some Sepolia!
 
 ## Bridge
 
