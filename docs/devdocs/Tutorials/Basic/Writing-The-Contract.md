@@ -1,14 +1,14 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Writing the Contract
 
-Let's get started with writing our contract.
+Let's get started with writing our first FHE powered contract.
 
-We'll start by looking around the template, and noticing that we have a `Counter.sol` file in the `contracts/` folder. 
-
-Let's create a new file, and call that `WrappingERC20.sol`.
+Let's create a new file in `contracts/`, and call that `WrappingERC20.sol`.
 
 ```shell
 touch contracts/WrappingERC20.sol
@@ -31,15 +31,29 @@ The OpenZeppelin ERC20 contract will provide the basic functionality of the ERC2
 
 We'll also have to install the OpenZeppelin contracts, since they are not part of the default template.
 
-```shell
-pnpm install @openzeppelin/contracts
-```
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        ```bash
+        npm install @openzeppelin/contracts
+        ```
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        ```bash
+        yarn install @openzeppelin/contracts
+        ```
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        ```bash
+        pnpm install @openzeppelin/contracts
+        ```
+    </TabItem>
+</Tabs>
 
 ### Creating the Contract
 
 #### Inherit from ERC20
 
-The contract WrappingERC20 is an ERC20 contract. It uses encryption from `FHE.sol` to keep balances private and only viewable by the holder of the correct decryption key.
+The contract WrappingERC20 is an ERC20 contract. It uses function calls from `FHE.sol` for encryption and to keep balances private and only viewable by the holder of the correct decryption key.
 
 ```javascript
 contract WrappingERC20 is ERC20 {
@@ -49,7 +63,7 @@ contract WrappingERC20 is ERC20 {
 
 #### Create Encrypted Balances
 
-An encrypted balance is initialized for each address, _encBalances, which will hold encrypted token balances for users. euints are encrypted data types that represent FHE-encrypted unsigned integers of various bit lengths.
+An encrypted balance is initialized for each address, `_encBalances`, which will hold encrypted token balances for users. The `euintXXX` are encrypted data types that represent FHE-encrypted unsigned integers of various bit lengths.
 ```javascript
 mapping(address => euint32) internal _encBalances;
 ```
@@ -117,7 +131,7 @@ function unwrap(inEuint32 memory amount) public {
 
 Here we can see a few interesting things:
 
-* `FHE.req` (or FHE require) verifies that a statement is true, or reverts the function. We use this to verify that we have enough shielded amount.
+* `FHE.req` (stands for FHE require) verifies that a statement is true, or reverts the function. We use this to verify that we have enough shielded amount.
 * `_encBalances[msg.sender].gte(_amount)` checks that `_encBalances[msg.sender]` is **g**rea**t**er or **e**qual than `_amount`
 * `inEuint32` is a data type specifically for input parameters. You can read more about it [here](../../devdocs/Writing%20Smart%20Contracts/User-Inputs.md).
 
@@ -192,7 +206,7 @@ contract WrappingERC20 is ERC20 {
 }
 ```
 
-Note that in a real use case the actual code would include more functionality, and structure things a bit differently.
+Note that in a real use case the actual code would include more functionality, and structure things a bit differently. 
 If you want to see what such a contract looks like, you can check out the [FHERC20](https://github.com/FhenixProtocol/fhenix-contracts/blob/main/contracts/experimental/token/FHERC20/FHERC20.sol) contract in the Fhenix contracts repository.
 
 ### Wait a second...
