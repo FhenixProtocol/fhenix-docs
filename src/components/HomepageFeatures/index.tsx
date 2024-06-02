@@ -10,71 +10,88 @@ type FeatureItem = {
   Svg: React.ComponentType<React.ComponentProps<'svg'>>;
   description: JSX.Element;
   linkTo: string;
+  buttonTitle: string;
 };
 
 
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Fhenix Helium Testnet',
-    Svg: require('@site/static/img/fhenix-logo-card-image.svg').default,
+    title: 'Write Your First FHE Contract',
+    Svg: require('@site/static/img/fhe-contract-card-image.svg').default,
     description: (
       <>
-          Fully Homomorphic Encryption (FHE) enables processing of encrypted data, addressing encryption concerns and making Web3 applications safer. Learn more!
+
       </>
     ),
-      linkTo: "/docs/devdocs/Fhenix%20Testnet/Connecting-To"
+      linkTo: "/docs/devdocs/Writing%20Smart%20Contracts/FHE-sol",
+      buttonTitle: "Build"
   },
   {
-    title: 'FHE Contract',
-      Svg: require('@site/static/img/fhe-contract-card-image.svg').default,
+    title: 'Dev Cheatsheet',
+      Svg: require('@site/static/img/dev.svg').default,
 
       description: (
       <>
-          Run for the first time FHE-based smart contracts with on-chain confidential computation, providing unprecedented level of data encryption.
+          This doc helps devs ramp up fast for hackathons
       </>
     ),
-      linkTo: "/docs/devdocs/Writing%20Smart%20Contracts/FHE-sol"
+      linkTo: "https://www.fhenix.io/cheat-sheet",
+      buttonTitle: "View"
   },
   {
-    title: 'Encrypted & Private',
-      Svg: require('@site/static/img/fhenix-frontier-card-image.svg').default,
+    title: 'Grant Program',
+      Svg: require('@site/static/img/grant.svg').default,
 
     description: (
       <>
-          Fhenix incorporates FHE to enable confidential smart contracts on public blockchains, ensuring data privacy for the next generation of Web3 applications.
+          Get funds to grow projects & communities in the Fhenix ecosystem
       </>
     ),
-      linkTo: "/docs/devdocs/Fhenix%20Testnet/Fhenix-T-FHE"
+      linkTo: "https://www.fhenix.io/grant-program",
+      buttonTitle: "Get Started"
   },
     {
-        title: 'EVM Compatible',
-        Svg: require('@site/static/img/evm-compatible-card-image.svg').default,
+        title: 'Bounty Program',
+        Svg: require('@site/static/img/coins.svg').default,
         description: (
             <>
-                Fhenix is fully EVM-compatible, allowing easy development of dApps using solidity. Bring your dApp ideas to life using our seamless integration with EVM!
+                Tackle challenges in the Fhenix ecosystem & earn monetary rewards
             </>
         ),
-        linkTo: "/docs/tutorial/Basic/Writing-The-Contract"
+        linkTo: "https://www.fhenix.io/bounty",
+        buttonTitle: "Learn More"
     }
 ];
 
-function Feature({title, Svg, description, linkTo}: FeatureItem) {
+function Feature({title, Svg, description, linkTo, buttonTitle}: FeatureItem) {
   const { colorMode  } = useColorMode();
   const svgClassName = colorMode === 'dark' ? `${styles.featureSvg} white-image` : styles.featureSvg;
 
   return (
-      <div className={clsx("card", styles.custom__card)}>
+      <div className={clsx("card", styles.custom__card)} style={{ height: '100%' }}>
           <Link
               className={clsx(styles.link)}
               to={linkTo}
+              style={{ height: '100%' }}
           >
-              <div className="card__body text--center">
-                  <Heading as="h2" className={clsx(styles.cardHeading)}>{title}</Heading>
-                  <div className={clsx("text--center")}>
-                      <Svg className={svgClassName} role="img"/>
+              <div className="card__body custom__body_flex">
+                  <div>
+                    <Svg className={svgClassName} role="img"/>
                   </div>
+
+                  <Heading as="h2" className="orb-font" style={{ fontSize: 24 }} >{title}</Heading>
                   <p>{description}</p>
+                  <div className="row" style={{ flex: 1 }}></div>
+                  <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <Link
+                        className='docs-button minimum'
+                        to={linkTo}>
+                        {buttonTitle}
+                    </Link>
+
+                  </div>
+
               </div>
           </Link>
       </div>
@@ -83,23 +100,24 @@ function Feature({title, Svg, description, linkTo}: FeatureItem) {
 
 export default function HomepageFeatures(): JSX.Element {
     return (
-        <section className={styles.features}>
-          <div className="container">
-              <div className="row">
-                  <Heading as="h1" className="text--center margin-bottom--lg margin-left--md">
-                      Unleash the Fhenix
-                  </Heading>
-              </div>
-
-            <div className="row">
-
-                {FeatureList.map((props, idx) => (
-                    <div className="col col--3">
-                        <Feature key={idx} {...props} />
-                    </div>
-                        ))}
-                    </div>
-                    </div>
-        </section>
+    <section className={styles.features}>
+      <div className="container">
+          <div className="row">
+              <Heading as="h1" className="text--center margin-bottom--lg margin-left--md orb-font" style={{ fontSize: 55, fontWeight: 'normal' }}>
+                Useful Links
+              </Heading>
+          </div>
+          <div className="row">
+            {FeatureList.map((props, idx) => (
+                <div className="col col--3">
+                    <Feature key={idx} {...props} />
+                </div>
+                    ))}
+          </div>
+          <div className="row" style={{ display: 'flex', justifyContent: 'center', marginTop: '40px'}}>
+            <img src="img/vertical-bullet.webp"/>
+          </div>
+      </div>
+    </section>
   );
 }
