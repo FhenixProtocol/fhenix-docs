@@ -78,7 +78,7 @@ function HomepageHeader() {
 
                   <div className="hide-small-width" style={{marginTop: "-100px"}}>
                   {/* <div className="" style={{marginTop: "-100px"}}> */}
-                  { (colorMode === 'dark') ? <img className="page-cover-image" alt="fhenix stuttershock image" src="img/page-cover-dark-2.webp" style={{maxWidth: '450px'}}/> : <img className="page-cover-image" alt="fhenix stuttershock image" src="img/page-cover-dark-2.webp" style={{maxWidth: '600px'}}/>}
+                  { (colorMode === 'dark') ? <img className="page-cover-image" alt="fhenix stuttershock image" src="img/page-cover-dark-2.webp" style={{maxWidth: '450px'}}/> : <img className="page-cover-image" alt="fhenix stuttershock image" src="img/page-cover-dark-2.webp" style={{maxWidth: '450px'}}/>}
                   </div>
               </div>
 

@@ -218,6 +218,11 @@
   font-family: Orbitron;
 }
 
+[data-theme='light'] .tutorial-button {
+  filter: invert(100%);
+}
+
+
 .tutorial-button.minimum {
   min-width: 150px;
 }
