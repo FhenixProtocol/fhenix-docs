@@ -115,8 +115,57 @@ export default function HomepageFeatures(): JSX.Element {
                     ))}
           </div>
           <div className="row" style={{ display: 'flex', justifyContent: 'center', marginTop: '40px'}}>
-            {/* <img src="img/vertical-bullet.webp"/> */}
+            <img src="img/vertical-bullet.webp"/>
           </div>
+          <div className="row" style={{ display: 'flex', justifyContent: 'center', marginTop: '40px'}}>
+              <Heading as="h1" className="text--center  orb-font" style={{ fontSize: 40, fontWeight: 'normal' }}>
+                Connect With US
+              </Heading>
+          </div>
+          <div className="row" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '40px', gap: '20px'}}>
+            <div className={clsx("card", styles.custom__card_1)} style={{ height: '200px', width: '500px', padding: '20px' }}>
+              <div className="orb-font" style={{ fontSize: 26, fontWeight: 'bold' }}>Fhenix Developer Updates</div>
+              <div>Stay up-to-date on the latest Fhenix developer news</div>
+              <div className="row" style={{ flex: 1 }}></div>
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                <Link
+                    className='docs-button minimum'
+                    to="https://cdn.forms-content-1.sg-form.com/bc6341d0-c9d3-11ee-8af0-8a5e6a16f9f5">
+                    Sign Up
+                </Link>
+              </div>
+
+            </div>
+            <div className={clsx("card", styles.custom__card_1)} style={{ height: '200px', width: '500px', padding: '20px' }}>
+            <div className="orb-font" style={{ fontSize: 26, fontWeight: 'bold' }}>Even More Resources</div>
+              <div>Hear from Fhenix co-founders, engineering and research teams, ecosystem projects, and more. Join us!</div>
+              <div className="row" style={{ flex: 1 }}></div>
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                
+              <div style={{ display: 'flex', gap: '20px' }}>
+                <Link
+                    className='tutorial-button'
+                    to={"https://twitter.com/FhenixIO"}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: "center", gap: '10px' }}> 
+                      X / Twitter <img src="img/x.svg" style={{ width: '15px'}}/>
+                    </div>
+                </Link>
+
+                <Link
+                    className='tutorial-button'
+                    to={"https://discord.gg/FuVgxrvJMY"}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: "center", gap: '10px' }}> 
+                      Discord <img src="img/discord.svg"  style={{ width: '20px'}}/>
+                    </div>
+                </Link>
+              </div>
+
+              </div>
+            </div>
+
+          </div>
+          
+
       </div>
     </section>
   );

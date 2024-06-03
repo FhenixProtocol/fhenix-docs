@@ -222,6 +222,10 @@
   filter: invert(100%);
 }
 
+[data-theme='dark'] .tutorial-button img {
+  filter: invert(100%);
+}
+
 
 .tutorial-button.minimum {
   min-width: 150px;
