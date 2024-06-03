@@ -101,7 +101,7 @@ function Feature({title, Svg, description, linkTo, buttonTitle}: FeatureItem) {
 export default function HomepageFeatures(): JSX.Element {
     return (
     <section className={styles.features}>
-      <div className="container">
+      <div className="container" style={{ marginBottom: "80px"}}>
           <div className="row">
               <Heading as="h1" className="text--center margin-bottom--lg margin-left--md orb-font" style={{ fontSize: 40, fontWeight: 'normal' }}>
                 Useful Links
