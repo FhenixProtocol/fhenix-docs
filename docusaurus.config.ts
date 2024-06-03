@@ -85,6 +85,13 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
           position: 'left',
+          label: 'Getting Started',
+          href: '/getting-started',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'docsSidebar',
+          position: 'left',
           label: 'Developer Docs',
         },
         // {

@@ -102,7 +102,7 @@ export default function Home(): JSX.Element {
             <main>
                 <div style={{ height: '100px' }}></div>
                 <HomepageFeatures/>
-                <GettingStartedFrame/>
+                {/* <GettingStartedFrame/> */}
             </main>
         </Layout>
     );

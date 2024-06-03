@@ -48,7 +48,7 @@ const FeatureList: FeatureItem[] = [
           Get funds to grow projects & communities in the Fhenix ecosystem
       </>
     ),
-      linkTo: "https://www.fhenix.io/grant-program",
+      linkTo: "https://4i0mu7f2ak1.typeform.com/to/MMmnaObu",
       buttonTitle: "Get Started"
   },
     {
@@ -59,7 +59,7 @@ const FeatureList: FeatureItem[] = [
                 Tackle challenges in the Fhenix ecosystem & earn monetary rewards
             </>
         ),
-        linkTo: "https://www.fhenix.io/bounty",
+        linkTo: "https://4i0mu7f2ak1.typeform.com/to/MMmnaObu",
         buttonTitle: "Learn More"
     }
 ];
@@ -80,7 +80,7 @@ function Feature({title, Svg, description, linkTo, buttonTitle}: FeatureItem) {
                     <Svg className={svgClassName} role="img"/>
                   </div>
 
-                  <Heading as="h2" className="orb-font" style={{ fontSize: 24 }} >{title}</Heading>
+                  <Heading as="h2" className="" style={{ fontSize: 22 }} >{title}</Heading>
                   <p>{description}</p>
                   <div className="row" style={{ flex: 1 }}></div>
                   <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
@@ -103,7 +103,7 @@ export default function HomepageFeatures(): JSX.Element {
     <section className={styles.features}>
       <div className="container">
           <div className="row">
-              <Heading as="h1" className="text--center margin-bottom--lg margin-left--md orb-font" style={{ fontSize: 55, fontWeight: 'normal' }}>
+              <Heading as="h1" className="text--center margin-bottom--lg margin-left--md orb-font" style={{ fontSize: 40, fontWeight: 'normal' }}>
                 Useful Links
               </Heading>
           </div>
@@ -115,7 +115,7 @@ export default function HomepageFeatures(): JSX.Element {
                     ))}
           </div>
           <div className="row" style={{ display: 'flex', justifyContent: 'center', marginTop: '40px'}}>
-            <img src="img/vertical-bullet.webp"/>
+            {/* <img src="img/vertical-bullet.webp"/> */}
           </div>
       </div>
     </section>
