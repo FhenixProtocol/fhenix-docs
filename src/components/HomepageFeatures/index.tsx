@@ -107,9 +107,10 @@ export default function HomepageFeatures(): JSX.Element {
                 Useful Links
               </Heading>
           </div>
-          <div className="row">
+          {/* style={{ gap: "20px"}} */}
+          <div className="row feature_container" >
             {FeatureList.map((props, idx) => (
-                <div className="col col--3">
+                <div className="col col--3"> 
                     <Feature key={idx} {...props} />
                 </div>
                     ))}
