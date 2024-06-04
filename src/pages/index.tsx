@@ -44,7 +44,7 @@ function HomepageHeader() {
                       <div className={clsx("row", styles.ButtonRow)} style={{ marginLeft: -30 }}>
                           <div className='col col--3'>
                               <Link
-                                  className='docs-button minimum'
+                                  className='tutorial-button minimum'
                                   to="/docs/devdocs/intro">
                                   Docs
                               </Link>

@@ -28,6 +28,17 @@ const FeatureList: FeatureItem[] = [
       buttonTitle: "Build"
   },
   {
+    title: 'Dev Quickstart',
+    Svg: require('@site/static/img/getting-started.svg').default,
+    description: (
+        <>
+            Start building Solidity Apps using your favorite tools
+        </>
+    ),
+    linkTo: "/getting-started",
+    buttonTitle: "Learn More"
+  },
+  {
     title: 'Dev Cheatsheet',
       Svg: require('@site/static/img/dev.svg').default,
 
@@ -40,7 +51,7 @@ const FeatureList: FeatureItem[] = [
       buttonTitle: "View"
   },
   {
-    title: 'Grant Program',
+    title: 'Grant and bounty program',
       Svg: require('@site/static/img/grant.svg').default,
 
     description: (
@@ -50,18 +61,7 @@ const FeatureList: FeatureItem[] = [
     ),
       linkTo: "https://4i0mu7f2ak1.typeform.com/to/MMmnaObu",
       buttonTitle: "Get Started"
-  },
-    {
-        title: 'Bounty Program',
-        Svg: require('@site/static/img/coins.svg').default,
-        description: (
-            <>
-                Tackle challenges in the Fhenix ecosystem & earn monetary rewards
-            </>
-        ),
-        linkTo: "https://4i0mu7f2ak1.typeform.com/to/MMmnaObu",
-        buttonTitle: "Learn More"
-    }
+  }
 ];
 
 function Feature({title, Svg, description, linkTo, buttonTitle}: FeatureItem) {
@@ -85,7 +85,7 @@ function Feature({title, Svg, description, linkTo, buttonTitle}: FeatureItem) {
                   <div className="row" style={{ flex: 1 }}></div>
                   <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                     <Link
-                        className='docs-button minimum'
+                        className='tutorial-button minimum'
                         to={linkTo}>
                         {buttonTitle}
                     </Link>
@@ -127,9 +127,9 @@ export default function HomepageFeatures(): JSX.Element {
               <div className="orb-font" style={{ fontSize: 26, fontWeight: 'bold' }}>Fhenix Developer Updates</div>
               <div>Stay up-to-date on the latest Fhenix developer news</div>
               <div className="row" style={{ flex: 1 }}></div>
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '10px' }}>
                 <Link
-                    className='docs-button minimum'
+                    className='tutorial-button minimum'
                     to="https://cdn.forms-content-1.sg-form.com/bc6341d0-c9d3-11ee-8af0-8a5e6a16f9f5">
                     Sign Up
                 </Link>
@@ -140,7 +140,7 @@ export default function HomepageFeatures(): JSX.Element {
             <div className="orb-font" style={{ fontSize: 26, fontWeight: 'bold' }}>Even More Resources</div>
               <div>Hear from Fhenix co-founders, engineering and research teams, ecosystem projects, and more. Join us!</div>
               <div className="row" style={{ flex: 1 }}></div>
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '10px' }}>
                 
               <div style={{ display: 'flex', gap: '20px' }}>
                 <Link
