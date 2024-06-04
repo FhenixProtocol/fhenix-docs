@@ -6,7 +6,7 @@ description: How to debug your contracts using Console.log
 
 ### Console.log in Fhenix's Localfhenix Environment
 
-In Fhenix's Localfhenix environment, the `console.log` function and its variants serve as essential debugging tools for Solidity developers. These logs are directed to the Docker log output, aiding in monitoring and troubleshooting smart contract execution in real-time.
+In Fhenix's Localfhenix environment, the `Console.log` function and its variants serve as essential debugging tools for Solidity developers. These logs are directed to the Docker log output, aiding in monitoring and troubleshooting smart contract execution in real-time.
 
 #### Public Functions
 
@@ -22,11 +22,11 @@ Here is how you can use these logging functions in your smart contracts:
 **Logging an Integer:**
 
 ```solidity
-import "./Console.sol";
+import { Console } from "@fhenixprotocol/contracts/utils/debug/Console.sol";
 
 contract ExampleContract {
     function logIntExample() public pure {
-        Console.log(123);  // Logs: "123"
+        Console.log(123);  // Contract Log: 123
     }
 }
 ```
@@ -34,12 +34,12 @@ contract ExampleContract {
 **Logging a Byte Array:**
 
 ```solidity
-import "./Console.sol";
+import { Console } from "@fhenixprotocol/contracts/utils/debug/Console.sol";
 
 contract ExampleContract {
     function logBytesExample() public pure {
         bytes memory data = "Hello, Fhenix!";
-        Console.logBytes(data);  // Logs: "Hello, Fhenix!"
+        Console.logBytes(data);  // Contract Log: Hello, Fhenix!
     }
 }
 ```
@@ -57,7 +57,7 @@ When working with encrypted numbers in smart contracts, having robust logging me
 Here's an example demonstrating how logging might be used in the context of encrypted number operations:
 
 ```solidity
-import "@fhenixprotocol/contracts/util/debug/Console.sol";
+import "@fhenixprotocol/contracts/utils/debug/Console.sol";
 import { FHE } from "@fhenixprotocol/contracts/FHE.sol";
 
 contract EncryptedNumberContract {
@@ -94,11 +94,11 @@ Logging is not available on the Fhenix Testnet or Mainnet. It is only available 
 If you are running Localfhenix using the Hardhat plugin, you can view the logs by running the following command:
 
 ```sh
-docker logs localfhenix_hh_plugin | grep "<TODO>"
+docker logs localfhenix_hh_plugin -f 2>&1 | grep "Contract Log:"
 ```
 
 If you are running LocalFhenix using the Docker image directly, you must first identify the container name using the `docker ps` command and then view the logs:
 
 ```sh
-docker logs <container_name> | grep "<TODO>"
+docker logs <container_name> -f 2>&1 | grep "Contract Log:"
 ```
