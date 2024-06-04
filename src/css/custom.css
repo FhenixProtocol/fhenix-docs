@@ -54,14 +54,14 @@
   --ifm-color-text: #ffffff;
   --ifm-color-glow: #ffffff;
   /* main background color */
-  --ifm-background-color: #0c0c0c !important;
+  --ifm-background-color: #161b22 !important;
 
   --ifm-background-surface-color: var(--ifm-background-color) !important;
   --ifm-footer-background-color: var(--ifm-background-color) !important;
 
   --ifm-font-family-base: 'Roboto', sans-serif;
   /* hero background color */
-  --ifm-color-background: #0c0c0c;
+  --ifm-color-background: #161b22;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 
   --ifm-title-color-gradient-1: #5764AA;
@@ -80,9 +80,17 @@
   src: url('../../static/fonts/Roboto-Regular.woff2') format('woff2');
 }
 
+@font-face {
+  font-family: 'Orbitron';
+  src: url('../../static/fonts/Orbitron-VariableFont.ttf');
+}
 
 .hero {
   color: var(--ifm-color-text);
+  padding-bottom: 0px;
+  margin-bottom: -40px;
+  background: none !important;
+
 
   /*filter: drop-shadow(0em .05em #f8d9a6);*/
   /*mix-blend-mode: difference;*/
@@ -150,9 +158,120 @@
 }
 
 
+.getting-started-iframe {
+  overflow: none;
+}
+
+.docs-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 10px; /* Adjust as necessary for the roundness */
+  border: 1px rgba(79, 79, 79, 0.5) solid;
+  background: radial-gradient(circle at 50% -220%, rgba(89, 255, 249, 0.5), transparent 70%),
+              radial-gradient(circle at 50% 220%, rgba(147, 130, 255, 0.5) 10%, transparent 100%),
+              #170d26; /* Base color */
+  
+  color: white; /* Text color */
+  font-size: 16px; /* Adjust as necessary */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-family: Orbitron;
+}
+
+.docs-button:hover {
+  background: radial-gradient(circle at 50% -220%, rgba(89, 255, 249, 0.7), transparent 70%),
+              radial-gradient(circle at 50% 220%, rgba(147, 130, 255, 0.7) 10%, transparent 100%),
+              #170d26; /* Base color */
+
+  box-shadow: 0 0 5px rgba(133, 121, 245, 0.3), /* Enhanced outer glow on hover */
+              0 0 5px rgba(133, 121, 245, 0.2), /* More diffuse glow */
+              inset 0 0 2px rgba(255, 255, 255, 0.3); /* Increased inner highlight */
+  /* transition: all  0.2s ease;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.5); */
+}
+
+.docs-button.minimum {
+  min-width: 150px;
+}
+
+.docs-button.padding {
+  margin: 10px;
+}
+
+
+.tutorial-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 10px; /* Adjust as necessary for the roundness */
+  border: 1px rgba(255, 255, 255, 0.75) solid;
+  
+  color: white; /* Text color */
+  font-size: 16px; /* Adjust as necessary */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-family: Orbitron;
+}
+
+[data-theme='light'] .tutorial-button {
+  filter: invert(100%);
+}
+
+[data-theme='dark'] .tutorial-button img {
+  filter: invert(100%);
+}
+
+
+.tutorial-button.minimum {
+  min-width: 150px;
+}
+
+.tutorial-button.padding {
+  margin: 10px;
+}
+
+.orb-font {
+  font-family: Orbitron;
+}
+
+
+.background-circle {
+  position: absolute; 
+  height: 300px; 
+  width: 300px; 
+  background: rgba(105, 57, 193, 0.60); 
+  border-radius: 50%; 
+  filter: blur(175px);
+
+  top: 50%;
+  left: 50%;  
+  transform: translate(-50%, -50%);  
+  z-index: -1;
+  
+}
+
 .menu__link {
   font-size: 1em;
 }
+
+
+.custom__body_flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  
+  height: 100%;
+  width: 100% !important;
+  
+  
+}
+
 
 /*  background-image: conic-gradient(rgba(226, 151, 75, 0.75), rgba(126, 139, 201, 0.75) , rgba(133, 118, 112, 0.75));*/
 .hero__title {
@@ -188,9 +307,8 @@
   leading-trim: both;
   text-edge: cap;
   font-size: 20px;
-  font-style: normal;
-  font-weight: 100;
   line-height: 35px; /* 145.833% */
+  margin-top: -20px;
 }
 
 .button {
@@ -339,7 +457,7 @@ html[data-theme='dark'] .header-github-link:before {
 }
 
 .fhenix-logo {
-  max-width: 60%;
+  max-width: 65%;
 }
 
 html[data-theme='light'] .fhenix-logo  {

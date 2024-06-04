@@ -68,23 +68,38 @@ const config: Config = {
     navbar: {
       title: 'Fhenix',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Fhenix',
         src: 'img/logo-black.svg',
         srcDark: 'img/logo-white.svg',
+        href: 'https://fhenix.io',        
       },
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Developer Docs',
+          label: 'Home',
+          href: '/',
         },
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Getting Started',
+          href: '/getting-started',
         },
+        {
+          type: 'docSidebar',
+          sidebarId: 'docsSidebar',
+          position: 'left',
+          label: 'Developer Docs',
+        },
+        // {
+        //   type: 'docSidebar',
+        //   sidebarId: 'tutorialSidebar',
+        //   position: 'left',
+        //   label: 'Tutorial',
+        // },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/fhenixprotocol/',
@@ -120,10 +135,10 @@ const config: Config = {
               label: 'Get Started',
               to: '/docs/devdocs/Setting%20Up%20Your%20Environment/intro',
             },
-            {
-              label: 'Tutorial',
-              to: '/docs/tutorial/intro',
-            },
+            // {
+            //   label: 'Tutorial',
+            //   to: '/docs/tutorial/intro',
+            // },
           ],
         },
         {

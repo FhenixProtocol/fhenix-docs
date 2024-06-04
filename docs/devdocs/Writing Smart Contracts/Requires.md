@@ -4,11 +4,13 @@ title: 🚦Require Statements
 description: How to perform assertions on Encrypted data
 ---
 
-# Requires
+# Require Statement
 
-Encrypted require statements (`req`) are analogous the usual Solidity `require` statements: given an encrypted boolean predicate `b`, the statement will force the transaction execution to halt if `b` evaluates to false. Evaluating the encrypted boolean predicate implies a (threshold) decryption.
+Encrypted require statements (`req`) are analogous to standard Solidity require statements. Given an encrypted Boolean predicate, the statement forces the transaction execution to halt if the predicate evaluates to false. Evaluating the encrypted Boolean predicate implies a (threshold) decryption.
 
-### Examples
+### Example
+
+In the following code, the function failingRequire is intended to revert the transaction if the equality condition between val and val2 is not met.
 
 ```Javascript
 // A transcation calling this function will revert.

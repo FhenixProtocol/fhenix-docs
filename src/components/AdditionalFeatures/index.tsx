@@ -5,7 +5,23 @@ import React from "react";
 import { useColorMode  } from '@docusaurus/theme-common';
 import Link from '@docusaurus/Link';
 
-export default function AdditionalFeatures(): JSX.Element {
+
+export function GettingStartedFrame(): JSX.Element {
+  const { colorMode  } = useColorMode();
+  const iframeSrc = "https://getting-started.helium.fhenix.zone" + (colorMode === 'light' ? "?isLight=1" : "");
+
+  return (
+    <section className={styles.additionalFeatures}>
+      <div className="container" style={{ marginTop: -40}}>
+          <div className="row" >
+            <iframe scrolling="no" className="getting-started-iframe" width="100%" height="1200px" src={iframeSrc}></iframe>
+          </div>  
+        </div>
+      </section>
+  );
+}
+
+export function AdditionalFeatures(): JSX.Element {
     return (
     <section className={styles.additionalFeatures}>
       <div className="container">

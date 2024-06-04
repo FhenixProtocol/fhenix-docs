@@ -4,13 +4,13 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import styles from './index.module.css';
-import AdditionalFeatures from "../components/AdditionalFeatures";
+import { GettingStartedFrame } from "../components/AdditionalFeatures";
 import { useColorMode  } from '@docusaurus/theme-common';
 
-import TagManager from 'react-gtm-module'
+import TagManager from 'react-gtm-module';
 
 const tagManagerArgs = {
   gtmId: 'GTM-PLL6DPHF'
@@ -23,40 +23,37 @@ function HomepageHeader() {
   const { colorMode  } = useColorMode();
 
   return (
-      <header className={clsx('hero hero--primary', styles.heroBanner)}>
+      <header style={{ zIndex: 2 }} className={clsx('hero hero--primary', styles.heroBanner)}>
           <div className="container">
-              <div className="row">
+              <div className="row" style={{ display: 'flex', justifyContent: 'space-between'}}>
                   {/*<div className={styles.container2}>*/}
                   <div className="col col--6">
                       <div className="row">
 
                           <Heading as="h1" className="hero__title">
                               { /* siteConfig.title */} 
-                              <img className="fhenix-logo" alt="fhenix image" src="img/fhenix-logo.svg" />
+                              <img className="fhenix-logo" alt="fhenix image" src="img/fhenix-logo-build.webp" />
                           </Heading>
                       </div>
                       <div className="row">
-                          <p className="hero__subtitle">{siteConfig.tagline}</p>
+                          {/* <p className="hero__subtitle">{siteConfig.tagline}</p> */}
                           <p className="home__description">
-                              Fhenix is the first Fully Homomorphic Encryption (FHE) powered L2 to bring computation
-                              over encrypted data to Ethereum.
-                              Through the use of its FHE rollups, Fhenix enables Ethereum developers to seamlessly
-                              deploy encrypted smart contracts to leverage end-to-end encryption of their data.
+                          Tools and resources to help you build, launch, and grow your app on Fhenix
                           </p>
                       </div>
-                      <div className={clsx("row", styles.ButtonRow)}>
-                          <div className='col col--4'>
+                      <div className={clsx("row", styles.ButtonRow)} style={{ marginLeft: -30 }}>
+                          <div className='col col--3'>
                               <Link
-                                  className='button button--primary'
+                                  className='tutorial-button minimum'
                                   to="/docs/devdocs/intro">
-                                  Start Building
+                                  Docs
                               </Link>
                           </div>
                           <div className='col col--4'>
                               <Link
-                                  className='button button--lol'
-                                  to={"/docs/tutorial/intro"}>
-                                  Tutorial
+                                  className='tutorial-button minimum'
+                                  to={"/docs/devdocs/Tutorials/Your-First-FHE-Contract"}>
+                                  Tutorials
                               </Link>
                           </div>
 
@@ -65,23 +62,23 @@ function HomepageHeader() {
                       </div>
                       <div className={clsx("row", styles.ButtonRowMobile)}>
                           <Link
-                              className='button button--primary'
+                              className='docs-button minimum padding'
                               to="/docs/devdocs/intro">
-                              Start Building
+                              Docs
                           </Link>
                       </div>
                       <div className={clsx("row", styles.ButtonRowMobile)}>
                           <Link
-                              className='button button--lol'
-                              to={"/docs/tutorial/intro"}>
-                              Tutorial
+                              className='tutorial-button minimum padding'
+                              to={"/docs/devdocs/Tutorials/Your-First-FHE-Contract"}>
+                              Tutorials
                           </Link>
                       </div>
                   </div>
-                  
 
-                  <div className="hide-small-width col col--6" style={{marginTop: "-100px"}}>
-                  { (colorMode === 'dark') ? <img className="page-cover-image" alt="fhenix stuttershock image" src="img/page-cover-dark.webp" style={{maxWidth: '600px'}}/> : <img className="page-cover-image" alt="fhenix stuttershock image" src="img/page-cover-light.webp" style={{maxWidth: '600px'}}/>}
+                  <div className="hide-small-width" style={{marginTop: "-100px"}}>
+                  {/* <div className="" style={{marginTop: "-100px"}}> */}
+                  { (colorMode === 'dark') ? <img className="page-cover-image" alt="fhenix stuttershock image" src="img/page-cover-dark-2.webp" style={{maxWidth: '450px'}}/> : <img className="page-cover-image" alt="fhenix stuttershock image" src="img/page-cover-dark-2.webp" style={{maxWidth: '450px'}}/>}
                   </div>
               </div>
 
@@ -100,10 +97,12 @@ export default function Home(): JSX.Element {
     return (
         <Layout title={`${siteConfig.title}`}
                 description="Documentation for Fhenix, the pioneering FHE-enabled L2. Explore how Fhenix is transforming privacy in Blockchain.">
-            <HomepageHeader/>
+            <div className="background-circle"></div>
+            <HomepageHeader />
             <main>
+                <div style={{ height: '100px' }}></div>
                 <HomepageFeatures/>
-                <AdditionalFeatures/>
+                {/* <GettingStartedFrame/> */}
             </main>
         </Layout>
     );

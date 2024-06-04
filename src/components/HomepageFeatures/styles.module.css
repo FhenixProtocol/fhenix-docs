@@ -34,13 +34,38 @@
   box-sizing: border-box;
   transition: box-shadow .3s;
   width: 100%;
-  background: var(--ifm-color-background);
+  /* background: var(--ifm-color-background); */
   border: 1.5px solid var(--ifm-color-text);
-  box-shadow: 0px 0px 85px 0px rgba(255, 255, 255, 0.30);
+  /* box-shadow: 0px 0px 25px 0px rgba(255, 255, 255, 0.10); */
   border-radius: 20.2632px;
-  justify-content: center;
+  /* justify-content: center; */
 
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(39.0119514465332px);
+
+  border: 1px solid #7040C832;
 }
+
+.custom__card_1 {
+  /* Rectangle 39 */
+  height: 308px;
+  box-sizing: border-box;
+  transition: box-shadow .3s;
+  width: 100%;
+  /* background: var(--ifm-color-background); */
+  border: 1.5px solid var(--ifm-color-text);
+  /* box-shadow: 0px 0px 25px 0px rgba(255, 255, 255, 0.10); */
+  border-radius: 20.2632px;
+  /* justify-content: center; */
+
+  background: rgba(28, 28, 28, 0.05);
+  backdrop-filter: blur(39.0119514465332px);
+
+  border: 1px solid #7040C832;
+}
+
+
+
 @media  (max-width: 1440px) {
   .custom__card {
     height: 400px;

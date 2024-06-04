@@ -1,10 +1,17 @@
-# 🤫 Privacy Pitfalls
+# 🤫 Development Tips – Ensuring Privacy
 
-Similar to any blockchain-based implementation, while smart contracts on Fhenix provide a secure and decentralized way of executing transactions on encrypted data, there exist potential security risks that developers should be mindful of. Although the computations themselves are encrypted, offering privacy, metadata can still inadvertently disclose confidential information.
+Fhenix provides a secure and decentralized way to execute smart contracts on encrypted data; transactions and computations are fully encrypted. As such, Fhenix offers superior on-chain privacy. However, developers still need to be vigilant, because all blockchain privacy platforms have their idiosyncrasies and potential privacy risks.
 
-For all blockchain privacy platforms, there exist a different set of potential issues that developers need to be mindful of. The specific scenarios depend on the implementation details of the chain, and the tools that the infrastructure provides to mitigate such issues. Fhenix is at a very early stage and constantly changing, so instead we'll keep this section light and give a simple example of metadata leakage - gas usage.
+##### Implement Best Practices
+Fhenix ensures end-to-end encryption, but developers should be careful not to become complacent on matters of privacy. Developers should always prioritize best practices to ensure privacy and confidentiality.
 
-For example, suppose a smart contract written in Solidity contains a conditional statement. In such cases, the path taken by the conditional, though encrypted, can leak information. A typical scenario is a conditional branch based on the value of a private variable, where gas usage, events, or other metadata could reveal the branch taken.
+##### Analyze Your Privacy Model
+We recommend that Fhenix developers carefully analyze their smart contract privacy model (this applies to any blockchain platform with privacy features). Distinguish between the type of information that, if “leaked,” can affect contract privacy on the one hand, and the type of information that, if compromised, will not affect contract operation and user privacy on the other. Special attention should be given to the type of information that must remain confidential.
+
+As a result of this analysis and the insights gained, structure your smart contracts in a way that safeguards the aspects that affect privacy, while ensuring that the smart contract continues to operate efficiently.
+
+##### A Simple Example
+A simple example of metadata leakage is gas usage. Consider a smart contract coded in Solidity that contains a conditional statement. In this case, the path taken by the condition, though encrypted, may still reveal information. A typical scenario is a conditional branch based on the value of a private variable, where gas usage, events, or other metadata could reveal the branch taken.
 
 ```Javascript
 function performActionBasedOnBalance(uint256 amount) public {
@@ -16,10 +23,12 @@ function performActionBasedOnBalance(uint256 amount) public {
 }
 ```
 
-In the above Solidity example, an observer could infer from the gas usage, emitted events, or other metadata, the branch that was executed, indirectly revealing whether the sender's balance was greater than or equal to the specified amount.
+In the above Solidity example, someone observing the transaction could potentially infer the chosen branch based on gas usage, events or metadata, which would, in turn, indirectly reveal whether the sender's balance was greater than or equal to the specified amount.
 
-While this example seems simple, it is important to remember that often transactions can be cheaply simulated with different input parameters. In the above example, performing logarithmic search would reveal the exact balance fairly quickly.  &#x20;
+This example might seem insignificant, but it is important to remember that transactions can often be cheaply simulated with different input parameters. In the above example, performing a logarithmic search would reveal the exact balance fairly quickly.
 
-Also, it's essential to mention the importance of adding access control to functions that handle sensitive data. For instance, a function that displays the balance of a user should only be accessible by the specific user. We expand on this in our sections about access control.
+##### Add Access Controls
+It is important to provide access controls to functions that handle sensitive data. For instance, a function revealing a user’s balance should only be accessible to that specific user. We discuss this issue further in the [section on access control](./Permits-Access-Control.md)
 
-Developers on Fhenix (and any chain that provides privacy or encryption) should analyse their contract's privacy model. Recognizing the type of information that should remain confidential and understanding what information, if leaked, won't affect the operation of the contract and its users, is critical. This helps in structuring your smart contracts in a way that safeguards the private aspects, while still operating efficiently. Despite the encryption provided by FHE, it is essential to understand and address these potential issues.
+##### In Conclusion
+Despite the embedded encryption protection provided by FHE, it is essential to understand and address potential risk areas that can compromise privacy. We will be updating this section and our other documentation as our product matures, so be sure to check back from time to time.

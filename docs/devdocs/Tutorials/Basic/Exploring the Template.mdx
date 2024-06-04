@@ -1,0 +1,157 @@
+---
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The directory resembles a standard hardhat project. If we look into the contracts folder,
+we can see an existing example FHE contract `calculator.sol`
+
+```bash
+.
+├── artifacts
+├── cache
+├── contracts
+│   └── counter.sol
+
+...
+
+├── hardhat.config.ts
+├── package.json
+├── README.md
+└── tsconfig.json
+```
+Let's use this contract to get familiar with the provided template. 
+
+If you haven't already, start your localfhenix instance by issuing the following command:
+<Tabs groupId="package-managers">
+<TabItem value="npm" label="npm">
+```bash
+npm run localfhenix:start
+```
+</TabItem>
+<TabItem value="yarn" label="yarn">
+```bash
+yarn run hardhat localfhenix:start
+```
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+```bash
+pnpm run localfhenix:start
+```
+</TabItem>
+</Tabs>
+
+Now let's connect our wallet to our local test network. If you are using Metamask then open it up, click on the
+network dropdown button and add the localfhenix network.
+
+<details>
+    <summary>Adding network details for localfhenix.</summary>
+    <TabItem>![Use this template](/img/localfhenix-metamask.png)</TabItem>
+</details>
+Let's now explore the predefined hardhat tasks, run:
+
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        ```bash
+        npx hardhat
+        ```
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        ```bash
+        yarn hardhat
+        ```
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        ```bash
+        pnpm hardhat
+        ```
+    </TabItem>
+</Tabs>
+
+You will see the following:
+
+```bash
+AVAILABLE TASKS:
+
+  check                	Check whatever you need
+  clean                	Clears the cache and deletes all artifacts
+  compile              	Compiles the entire project, building all artifacts
+  console              	Opens a hardhat console
+  coverage             	Generates a code coverage report for tests
+  deploy               	Deploy contracts
+  etherscan-verify     	submit contract source code to etherscan
+  export               	export contract deployment of the specified network into one file
+  export-artifacts
+  flatten              	Flattens and prints contracts and their dependencies. If no file is passed, all the contracts in the project will be flattened.
+  gas-reporter:merge
+  help                 	Prints this message
+  localfhenix:start    	Starts a LocalFhenix node
+  localfhenix:stop     	Stops a LocalFhenix node
+  node                 	Starts a JSON-RPC server on top of Hardhat EVM
+  run                  	Runs a user-defined script after compiling the project
+  sourcify             	submit contract source code to sourcify (https://sourcify.dev)
+  task:addCount
+  task:fhenix:usefaucet	Fund an account from the faucet
+  task:getCount
+  task:getFunds
+  test                 	Runs mocha tests
+  typechain            	Generate Typechain typings for compiled contracts
+  verify               	Verifies a contract on Etherscan or Sourcify
+```
+Apart from the standard `deploy` and `compile` tasks, notice the `task:getFunds`.
+We will use `task:getFunds` to get `tFHE` tokens for deploying and interacting with the contract.
+
+Run:
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        ```bash
+        npx run faucet
+        ```
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        ```bash
+        yarn faucet
+        ```
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        ```bash
+        pnpm faucet
+        ```
+    </TabItem>
+</Tabs>
+:::tip[If you configured your .env FILE]
+You can also use the predefined task `task:fhenix:usefaucet` by issuing the following command:
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        ```bash
+        npm run faucet
+        ```
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        ```bash
+        yarn faucet
+        ```
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        ```bash
+        pnpm faucet
+        ```
+    </TabItem>
+</Tabs>
+:::
+After a short while you should see the following message:
+```bash
+Done!
+```
+
+And if you will check your accounts balance, you will notice an increase by 10 tokens. This command is useful especially
+if you wish to develop using Remix via `WalletConnect`.
+
+From here on now, we can proceed in a standard fashion, we can run the `deploy` task to compile and deploy the `counter.sol`
+contract. And we can even interact with it by running `task:addCount`. Or we can use Remix IDE, we just need to import `FHE.sol`.
+
+```javascript
+import "@fhenixprotocol/contracts/FHE.sol";
+```

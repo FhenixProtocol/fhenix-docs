@@ -16,6 +16,8 @@ $ yarn start
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
+*Known Issue* - pnpm is bugged with react hooks and won't build properly without some workarounds (https://github.com/pnpm/pnpm/issues/6439) 
+
 ### Build
 
 ```

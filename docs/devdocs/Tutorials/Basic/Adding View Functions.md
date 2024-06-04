@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 ## Adding Encrypted Balance Retrieval
@@ -11,9 +11,13 @@ To enhance our contract with secure balance viewing, we're going to implement a 
 We'll start by adding a new function to our `WrappingERC20` contract. This function will use the `onlySender(perm)` modifier from the `Permissioned` contract to ensure that only the message sender, validated through a signature, can access their encrypted balance.
 
 ```solidity
-function getBalanceEncrypted(Permission calldata perm) public view onlySender(perm) returns (euint32) {
-    return _encBalances[msg.sender];
-}
+    function getBalanceEncrypted(Permission calldata perm)
+    public
+    view
+    onlySender(perm)
+    returns (uint256) {
+        return FHE.decrypt(_encBalances[msg.sender]);
+    }
 ```
 
 ### Off-Chain Signature Generation
