@@ -52,6 +52,7 @@
   box-sizing: border-box;
   transition: box-shadow .3s;
   width: 100%;
+  min-width: 325px;
   /* background: var(--ifm-color-background); */
   border: 1.5px solid var(--ifm-color-text);
   /* box-shadow: 0px 0px 25px 0px rgba(255, 255, 255, 0.10); */
