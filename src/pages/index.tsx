@@ -11,6 +11,7 @@ import { GettingStartedFrame } from "../components/AdditionalFeatures";
 import { useColorMode  } from '@docusaurus/theme-common';
 
 import TagManager from 'react-gtm-module';
+import ReactGA from "react-ga4";
 
 const tagManagerArgs = {
   gtmId: 'GTM-PLL6DPHF'
@@ -91,6 +92,7 @@ export default function Home(): JSX.Element {
     const {siteConfig} = useDocusaurusContext();
     useEffect(() => {
       TagManager.initialize(tagManagerArgs)
+      ReactGA.initialize("G-NKHXME4286");
     });
     
 

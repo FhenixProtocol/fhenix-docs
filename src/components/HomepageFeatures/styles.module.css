@@ -95,6 +95,17 @@
     margin-left: 3rem;
   }
 
+  .custom__card_1 {
+    /* Rectangle 39 */
+    height: 250px !important;
+  }  
+}
+
+@media (max-width: 450px) {
+  .custom__card_1 {
+    /* Rectangle 39 */
+    height: 270px !important;
+  }  
 }
 
 @media screen and (min-width: 996px) {
