@@ -7,7 +7,6 @@ displayed_sidebar: docsSidebar
 
 In this short guide, we'll demonstrate how simple it is to enable confidentiality in your smart contracts using Fhenix.
 
-*Link to Smart Contract*
 
 ```javascript
 // SPDX-License-Identifier: MIT

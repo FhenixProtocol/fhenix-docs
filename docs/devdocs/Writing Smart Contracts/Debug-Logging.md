@@ -1,3 +1,9 @@
+---
+sidebar_position: 8
+title: 🪵 Console.log
+description: How to debug your contracts using Console.log
+---
+
 ### Console.log in Fhenix's Localfhenix Environment
 
 In Fhenix's Localfhenix environment, the `console.log` function and its variants serve as essential debugging tools for Solidity developers. These logs are directed to the Docker log output, aiding in monitoring and troubleshooting smart contract execution in real-time.

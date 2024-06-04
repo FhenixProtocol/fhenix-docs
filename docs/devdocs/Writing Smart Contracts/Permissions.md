@@ -18,7 +18,7 @@ To utilize the `Permissioned` contract, you would inherit it in your own contrac
 
 1. Define a view function in your contract. For example, to retrieve sensitive data:
 
-    ```solidity
+    ```javascript
     function getSensitiveData(Permission calldata perm) public view onlySender(perm) returns (string memory) {
         // Logic to return sensitive data
     }
