@@ -36,7 +36,7 @@ const FeatureList: FeatureItem[] = [
         </>
     ),
     linkTo: "/getting-started",
-    buttonTitle: "Learn More"
+    buttonTitle: "Start"
   },
   {
     title: 'Dev Cheatsheet',
