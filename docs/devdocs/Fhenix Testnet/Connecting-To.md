@@ -45,11 +45,11 @@ Fhenix Helium is the first publicly available FHE-based blockchain, and it is no
 
 ## Explorer
 
-* [https://explorer.helium.fhenix.zone](https://explorer.testnet.fhenix.zone)
+* [https://explorer.helium.fhenix.zone](https://explorer.helium.fhenix.zone)
 
 ## Faucet
 
-To get some test tokens, use the faucet at [https://get-helium.fhenix.zone/](https://faucet.fhenix.zone/).
+To get some test tokens, use the faucet at [https://get-helium.fhenix.zone/](https://get-helium.fhenix.zone/).
 You may receive 0.1 tokens once every five minutes. If you need more tokens, please reach out to us on Discord, or bridge some Sepolia!
 
 ## Bridge
