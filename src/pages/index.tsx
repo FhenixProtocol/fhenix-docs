@@ -14,7 +14,7 @@ import TagManager from 'react-gtm-module';
 import ReactGA from "react-ga4";
 
 const tagManagerArgs = {
-  gtmId: 'GTM-PLL6DPHF'
+  gtmId: 'GTM-KH2NWDGM'
 }
 
 console.log("v0.1");
