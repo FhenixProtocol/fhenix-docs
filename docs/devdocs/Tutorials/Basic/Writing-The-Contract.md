@@ -15,7 +15,7 @@ touch contracts/WrappingERC20.sol
 ```
 
 Our goal is to create an ERC20 contract that supports shielded balances. 
-Let's run through the different functions, step-by-step and show how we can implement each. We'll also link to more detailed explanations about custom functionality we make use of.
+Let's run through the different functions, step-by-step and show how we can implement each. We'll also link to more detailed explanations about the custom functionality we make use of.
 
 ### Importing FHE Libraries
 
