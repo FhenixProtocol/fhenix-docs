@@ -14,7 +14,7 @@ One of the common use cases for such access control is in scenarios where sensit
 
 ## How to Use
 
-To utilize the `Permissioned` contract, you would inherit it in your own contract and apply the custom modifiers to the functions you want to protect. For implementing access-controlled view functions, follow these steps:
+To utilize the `Permissioned` contract, you would inherit it in your own contract and apply the custom modifiers to the functions you want to protect. To implement access-controlled view functions, follow these steps:
 
 1. Define a view function in your contract. For example, to retrieve sensitive data:
 
