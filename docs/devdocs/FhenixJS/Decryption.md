@@ -19,7 +19,7 @@ You can read more about how to do this [here](#../).
 
 When reading encrypted values we can do one of two things:
 * Receiving it as bytes calldata: 0x04000.... 
-* RECOMENDED: Receiving it as inEuint*: ["0x04000"]
+* RECOMMENDED: Receiving it as inEuint*: ["0x04000"]
 
 The main difference with inEuint* is that you can be explicit with what is the exact parameter that you are looking for.
 
