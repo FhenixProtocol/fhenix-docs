@@ -18,7 +18,7 @@ Set the `Plugin Name` value to be `Fhenix` and the `URL` value to be `https://re
 
 #### Using the Plugin
 
-After deploying a contract (the plugin is only aware of contracts that are deployed while it is active), MetaMask will request that you sign a message. This message is a permit that allowing you to interact with the contract from the plugin.  
+After deploying a contract (the plugin is only aware of contracts that are deployed while it is active), MetaMask will request that you sign a message. This message is a permit that allows you to interact with the contract from the plugin.  
 After the message is signed, the contract will be saved to the list.  
 
 ![](/img/interact-info-1.webp)
