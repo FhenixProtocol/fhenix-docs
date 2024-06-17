@@ -162,6 +162,30 @@
   overflow: none;
 }
 
+@media  (min-width: 1001px) {
+  .getting-started-iframe {
+    display: block;
+  }
+
+  .getting-started-iframe-info {
+    display: none;
+  }
+}
+
+@media  (max-width: 1000px) {
+  .getting-started-iframe {
+    display: none;
+  }
+
+  .getting-started-iframe-info {
+    display: block;
+    width: 100vw;
+    text-align: center;
+  }
+}
+
+
+
 .docs-button {
   padding: 5px 10px;
   border: none;
@@ -396,6 +420,12 @@
   .header-github-link {
     display: none;
   }
+
+  .feature_container {
+    gap: 20px !important;
+  }
+
+
 }
 
 .header-discord-link:hover {

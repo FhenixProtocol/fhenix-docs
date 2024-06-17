@@ -11,9 +11,9 @@ In order to encrypt a number you can simply write the number you want to encrypt
 You can choose what Euint\* type you want as an output and eventually you can choose one of the two options:
 
 1. Encrypt (Plain) - Will output hex encoded bytes (`0x04000...`) that can be used as "bytes calldata" input or as the input for the remix plugin
-2. Encrypt (InEuint) - Will output hex encoded bytes in a square brackets (`[0x04000...]`) that can be used in remix (not with the plugin) for function that receive inEuint\*
+2. Encrypt (InEuint) - Will output hex encoded bytes in square brackets (`[0x04000...]`) that can be used in remix (not with the plugin) for function that receive inEuint\*
 
-All output will be copied to your clipboard and a notification will pop telling you that the output was copied.
+All output will be copied to your clipboard and a notification will pop up telling you that the output was copied.
 
 #### Unsealing
 

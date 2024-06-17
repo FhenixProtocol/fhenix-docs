@@ -11,9 +11,10 @@ import { GettingStartedFrame } from "../components/AdditionalFeatures";
 import { useColorMode  } from '@docusaurus/theme-common';
 
 import TagManager from 'react-gtm-module';
+import ReactGA from "react-ga4";
 
 const tagManagerArgs = {
-  gtmId: 'GTM-PLL6DPHF'
+  gtmId: 'GTM-KH2NWDGM'
 }
 
 console.log("v0.1");
@@ -44,7 +45,7 @@ function HomepageHeader() {
                       <div className={clsx("row", styles.ButtonRow)} style={{ marginLeft: -30 }}>
                           <div className='col col--3'>
                               <Link
-                                  className='tutorial-button minimum'
+                                  className='docs-button minimum'
                                   to="/docs/devdocs/intro">
                                   Docs
                               </Link>
@@ -91,6 +92,7 @@ export default function Home(): JSX.Element {
     const {siteConfig} = useDocusaurusContext();
     useEffect(() => {
       TagManager.initialize(tagManagerArgs)
+      ReactGA.initialize("G-NKHXME4286");
     });
     
 

@@ -9,7 +9,7 @@ Fhenix handles this issue by implementing a `seal` function, which seals the dat
 
 Fhenix Solidity libraries (specifically, fhenix.js) are equipped with an in-built access control scheme. 
 This access control scheme enables contracts to perform a basic check of account ownership by adding authentication and authorization features to specific view functions. 
-(An added benefit of the Fhenix Solidity libraries is that developers are saved coding effort each time a project has cryptographic access control requirements.)
+(An added benefit of the Fhenix Solidity libraries is that developers save coding effort each time a project has cryptographic access control requirements.)
 
 #### What is a Permit?
 
@@ -17,7 +17,7 @@ A permit is a mechanism that allows the contract to verify cryptographically the
 
 In Fhenix, a permit is a signed message that contains the caller's public key, which the contract can use to verify the caller. The permit is a signed JSON object that follows the EIP-712 standard. 
 The permit contains the necessary information, including a public key, which allows data re-sealing in a smart contract environment. 
-Inclusion of this public key into the permit enables a secure process of data re-sealing within a smart contract after the JSON object is signed by the user.
+The inclusion of this public key into the permit enables a secure process of data re-sealing within a smart contract after the JSON object is signed by the user.
 
 #### How to Generate a Permit
 

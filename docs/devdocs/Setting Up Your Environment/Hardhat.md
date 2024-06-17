@@ -8,7 +8,7 @@
 
 ## Clone Hardhat Template
 
-We provide a hardhat template available that comes "batteries included", with everything you need to hit the ground running. The template is [available here](https://github.com/fhenixprotocol/hardhat-template). You can create a new repository, or clone it locally:
+We provide a hardhat template available that comes "batteries included", with everything you need to hit the ground running. The template is [available here](https://github.com/fhenixprotocol/fhenix-hardhat-example). You can create a new repository, or clone it locally:
 
 ```
 git clone https://github.com/fhenixprotocol/fhenix-hardhat-example

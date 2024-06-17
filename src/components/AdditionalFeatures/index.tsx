@@ -15,6 +15,9 @@ export function GettingStartedFrame(): JSX.Element {
       <div className="container" style={{ marginTop: -40}}>
           <div className="row" >
             <iframe scrolling="no" className="getting-started-iframe" width="100%" height="1200px" src={iframeSrc}></iframe>
+            <div className='getting-started-iframe-info'>
+            The page is not supported in mobile, please use a PC
+            </div>
           </div>  
         </div>
       </section>
