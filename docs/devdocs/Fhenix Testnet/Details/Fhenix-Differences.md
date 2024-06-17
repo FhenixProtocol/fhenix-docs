@@ -6,7 +6,7 @@ title: 🔀 Fhenix Differences For Developers
 You might be familiar with fhevm, which is a fork of the Ethereum Virtual Machine that supports homomorphic encryption by Zama.
 
 While Fhenix uses a similar FHE cryptography, it does not use fhevm. 
-However, in order to make the FHE ecosystem as accessible as possible, we have chosen to maintain compatability in most interfaces, 
+However, in order to make the FHE ecosystem as accessible as possible, we have chosen to maintain compatibility in most interfaces, 
 except when we felt that the developer experience was significantly improved by making changes.
 
 In this page, we try and document the differences that developers should be aware of.

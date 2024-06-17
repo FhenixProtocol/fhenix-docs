@@ -3,7 +3,7 @@ sidebar_position: 2
 title: Examples & fheDapps
 ---
 
-Here you can find a list of some of cool apps that you can use as a reference
+Here you can find a list of some cool apps that you can use as a reference
 
 <table>
     <thead>
