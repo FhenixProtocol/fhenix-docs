@@ -14,6 +14,8 @@ This means that companies can offer services, including operating on customer da
 
 FHE makes it possible to write private smart contracts that keep on-chain data encrypted. You can create decentralized, permissionless blockchains with all data on-chain and auditable, while not actually visible.
 
+To read more about different FHE schemes, see our [FHE Overview Section](./FHE-Overview).
+
 ## Fhenix Helium Testnet
 
 The current Fhenix Helium Testnet is the first public iteration of the Fhenix protocol. It is still an early build, and it has bugs (unfortunately) and many features that are still under development.
