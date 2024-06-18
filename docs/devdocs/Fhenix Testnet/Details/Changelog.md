@@ -1,4 +1,7 @@
-## Changelog
+---
+sidebar_position: 3
+title: 🆕 Changelog
+---
 
 Here you can find a list of changes between different versions of the Fhenix Testnet(s) as we evolve and grow.
 

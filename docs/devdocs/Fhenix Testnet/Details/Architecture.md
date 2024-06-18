@@ -1,4 +1,7 @@
-## Fhenix Architecture
+---
+sidebar_position: 2
+title: 📐 Fhenix Architecture
+---
 
 Our goal with Fhenix is not only to provide the first FHE-based L2 solution, but also to create a platform that is modular, flexible, and can easily be changed, extended or improved as we see
 traffic, use-cases and requirements evolve.
@@ -11,7 +14,7 @@ The Fhenix Protocol is composed of several components that work together to prov
 
 These components are layered together to provide a modular approach, that allows for a flexible architecture 
 
-[](/img/fhenix-stack.png)
+![](/img/fhenix-stack.webp)
 
 ### Core Chain
 
@@ -21,7 +24,7 @@ The Core Blockchain is responsible for processing transactions, executing smart 
 
 ### FheOS
 
-FheOS is the heart of the FHE operations. It's goal is to be a modular & extendable component that can plug into the underlying blockchain and provide FHE capabilities to smart contracts. 
+FheOS is the heart of the FHE operations. Its goal is to be a modular & extendable component that can plug into the underlying blockchain and provide FHE capabilities to smart contracts. 
 
 It includes the relevant FHE function calls (precompiles), as well as the Solidity functions & ciphertext management that is required to interact with the FHE layer.
 
@@ -34,5 +37,5 @@ This allows us to support multiple variants of FHE schemes, which can be used by
 
 Warp Drive includes multiple components, which work together using shared interfaces to be easy to use and extend.
 
-[](/img/warp-drive-schema.png)
+![](/img/warp-drive-schema.webp)
 

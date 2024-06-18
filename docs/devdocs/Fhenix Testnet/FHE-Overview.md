@@ -1,4 +1,7 @@
-# FHE Schemes Overview
+---
+sidebar_position: 4
+title: 🧮 FHE Schemes Overview
+---
 
 Fully Homomorphic Encryption (FHE) schemes are divided into three generations, each designed for different types of applications.
 
