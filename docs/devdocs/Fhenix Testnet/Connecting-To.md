@@ -40,6 +40,10 @@ Fhenix Helium is the first publicly available FHE-based blockchain, and it is no
          <td>Chain ID</td>
          <td>8008135</td>
       </tr>
+      <tr>
+         <td>Websocket</td>
+         <td>wss://api.helium.fhenix.zone:8548</td>
+      </tr>
    </tbody>
 </table>
 
