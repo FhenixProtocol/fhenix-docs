@@ -19,7 +19,7 @@ To explain this tip we will use an example. Let's assume we want to develop a co
 Assuming that on each vote we increase (cryptographically with FHE.add) the tally, one can just monitor the key in the DB that represents this specific tally and once the key is changed he will know who we voted for.
 An ideal solution for this issue is to change all keys no matter who we voted for, but how?!
 
-In order to understand how we will first need to understand that FHE encryption is a non-deterministic encryption means that encrypting (non-trivial encryption) a number twice will result with 2 different encrypted outputs.
+In order to understand how we will first need to understand that FHE encryption is a non-deterministic encryption means that encrypting (non-trivial encryption) a number twice will result in 2 different encrypted outputs.
 
 Now that we know that, we can add 0 (cryptographically with FHE.add) to all of those tallies that shouldn't be changed and they will be changed in the DB!
 
