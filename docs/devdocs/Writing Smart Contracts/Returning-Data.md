@@ -44,7 +44,7 @@ The following JSON structure shows the components of the encrypted data returned
 
 ### Metamask Compatability
 
-The encryption schema and structure matches the one used by Metamask's eth_decrypt function. 
+The encryption schema and structure match the one used by Metamask's eth_decrypt function. 
 This means that we can consume sealed data directly from Metamask, which provides a more engaging experience for a dApp user. 
 
 Fetch an address's public key using the `eth_getEncryptionPublicKey` method, seal the data for that specific public key (either as a permit or by using the public key directly), and then use Metamask's `eth_decrypt` call to provide a guided decryption experience.
