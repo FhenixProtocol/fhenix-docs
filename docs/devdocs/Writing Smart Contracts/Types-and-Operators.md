@@ -112,7 +112,7 @@ Note that all functions are supported in both direct function calls and library 
 | Bitwise Or            | or               | \|       | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
 | Bitwise Xor           | xor              | ^        | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
 | Division              | div              | /        | ✓      | ✓       | ✓       | x       | x        | n/a      | n/a   | n/a      |
-| Reminder              | rem              | %        | ✓      | ✓       | ✓       | x       | x        | n/a      | n/a   | n/a      |
+| Remainder             | rem              | %        | ✓      | ✓       | ✓       | x       | x        | n/a      | n/a   | n/a      |
 | Shift Right           | shr              | &gt;&gt; | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
 | Shift Left            | shl              | &lt;&lt; | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
 | Equal                 | eq               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
@@ -138,5 +138,5 @@ Using require and decrypt in a TX is dangerous as it can break the confidentiali
 :::
 
 :::tip
-Division and Reminder by `0` will output with an encrypted representation of the maximal value of the uint that is used (Ex. encrypted 255 for euint8)
+Division and Remainder by `0` will output with an encrypted representation of the maximal value of the uint that is used (Ex. encrypted 255 for euint8)
 :::

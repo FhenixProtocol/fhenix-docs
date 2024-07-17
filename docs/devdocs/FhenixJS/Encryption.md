@@ -52,7 +52,7 @@ const resultAddress = await client.encrypt_address(address);
 
 The returned types from the encrypt function will be of the type `EncryptedUint8`, `EncryptedUint16` or `EncryptedUint32` (or 64/128/256 etc.) depending on the type you specified.
 
-The `EncryptedUint` type sound scary, but are actually pretty simple. It's just a 
+The `EncryptedUint` types sound scary, but are actually pretty simple. It's just a
 
 ```typescript
 export interface EncryptedNumber {
