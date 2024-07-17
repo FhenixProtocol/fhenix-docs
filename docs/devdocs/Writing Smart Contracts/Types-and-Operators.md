@@ -124,6 +124,7 @@ Note that all functions are supported in both direct function calls and library 
 | Min                   | min              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
 | Max                   | max              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
 | Not                   | not              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
+| Select                | select           | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
 | Require               | req              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
 | Decrypt               | decrypt          | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
 | Seal Output           | sealOutput       | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
