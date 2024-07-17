@@ -116,7 +116,7 @@ Note that all functions are supported in both direct function calls and library 
 | Shift Right           | shr              | &gt;&gt; | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
 | Shift Left            | shl              | &lt;&lt; | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
 | Equal                 | eq               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
-| Not equal             | ne               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | ✓        |
+| Not equal             | ne               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
 | Greater than or equal | gte              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
 | Greater than          | gt               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
 | Less than or equal    | lte              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
