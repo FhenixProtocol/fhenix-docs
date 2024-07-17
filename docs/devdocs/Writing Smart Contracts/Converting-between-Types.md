@@ -43,12 +43,16 @@ If you're initializing an encrypted counter in a contract, you might start with 
 
 > Note that when converting from plaintext to encrypted, the value is still exposed in plaintext to the contract and on the public blockchain.
 > This pattern should only be used when the plaintext data is not sensitive and can be exposed publicly.
+>
+> After encrypting from plaintext, the resulting encrypted number should be considered public until it is involved in an FHE operation that
+> included an input which was sent encrypted to the contract.
 
 ### Conversion Functions
 
 #### Tips for Users
 
 - **Understand the Types:** Know the types you are working with and the implications of converting between them. Ensure the conversion is logical and secure.
+For example, you can only convert addresses to and from the `euint256` type.
 
 - **Monitor Gas Usage:** Be aware of the gas costs associated with type conversions, especially if they occur within functions that are called frequently.
 
