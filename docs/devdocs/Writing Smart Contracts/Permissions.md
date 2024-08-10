@@ -66,9 +66,9 @@ contract Test {
         _output = FHE.asEuint8(_encryptedNumber);
     }
 
-    function getSealedOutput(bytes32 publicKey) public view  returns (bytes memory) {
+    function getSealedOutput(Permission memory signature) public view  returns (string memory) {
         // Seal the output for a specific publicKey
-        return FHE.sealoutput(_output, publicKey);
+        return FHE.sealoutput(_output, signature.publicKey);
     }
 }
 ```
