@@ -113,8 +113,8 @@ Note that all functions are supported in both direct function calls and library 
 | Bitwise Xor           | xor              | ^        | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
 | Division              | div              | /        | ✓      | ✓       | ✓       | x       | x        | n/a      | n/a   | n/a      |
 | Remainder             | rem              | %        | ✓      | ✓       | ✓       | x       | x        | n/a      | n/a   | n/a      |
-| Shift Right           | shr              | &gt;&gt; | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Shift Left            | shl              | &lt;&lt; | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Shift Right           | shr              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
+| Shift Left            | shl              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
 | Equal                 | eq               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
 | Not equal             | ne               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
 | Greater than or equal | gte              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
