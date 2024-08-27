@@ -28,7 +28,7 @@ To utilize the `Permissioned` contract, you would inherit it in your own contrac
 
 3. Call the view function with the generated signature as one of the parameters. Only if the signature is verified and corresponds to the `msg.sender` will the view function execute and return the sensitive data.
 
-## Example Scenario
+## Example Scenario 1
 
 Imagine a contract holding medical records. You want to create a secure method for patients to view their records:
 
