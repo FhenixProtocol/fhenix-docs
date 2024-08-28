@@ -59,7 +59,7 @@ const FeatureList: FeatureItem[] = [
           Get funds to grow projects & communities in the Fhenix ecosystem
       </>
     ),
-      linkTo: "https://4i0mu7f2ak1.typeform.com/to/MMmnaObu",
+      linkTo: "https://www.fhenix.io/grant-program/",
       buttonTitle: "Get Started"
   }
 ];
