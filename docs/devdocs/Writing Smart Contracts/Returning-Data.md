@@ -98,4 +98,4 @@ async unseal() {
 }
 ```
 
-Taken from the [encryption & unsealing tool](https://github.com/FhenixProtocol/fhenix-enc-tool/blob/master/src/App.vue)
+Taken from the [encryption & unsealing tool](https://encrypt.fhenix.zone/)
