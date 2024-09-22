@@ -12,7 +12,7 @@ The data is returned to the user using [sealed box encryption ](https://bitbeans
 
 :::tip[Don't Want to Seal?]
 Fhenix supports standard decryption as well. Mostly suited for public data, an unsealed plaintext value can be returned from a contract.
-You can read more about how to do this [here](../Writing%20Smart%20Contracts/FHE-sol#decrypt---decrypt-encrypted-data).
+You can read more about how to do this [here](../Writing%20Smart%20Contracts/Returning-Data.md).
 :::
 
 ### Encrypted Values & Permits
@@ -49,7 +49,7 @@ When you create a permit it gets stored in `localstorage`. This makes permits ea
 
 #### 2. Querying the Contract
 
-We recommend that contracts implement the Permit/Permission interfaces (though this is not strictly required!).
+We recommend that contracts implement the Permit/Permission interfaces (though this is not strictly required).
 In this case, we can easily inject our permit into the function call.
 
 ```javascript
