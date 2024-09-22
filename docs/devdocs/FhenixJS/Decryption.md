@@ -25,7 +25,7 @@ The main difference with inEuint* is that you can be explicit with what is the e
 
 A `Permit` is a data structure that helps contracts know who is trying to call a specific function. 
 
-The fhenix.js Javascript library includes methods to support creating parameters for values that require [Permits & Access Control](../Encryption and Privacy/Permits-Access-Control.md). These methods can help creating ephemeral transaction keys, which are used by the smart contract to create a secure encryption channel to the caller.
+The fhenix.js Javascript library includes methods to support creating parameters for values that require [Permits & Access Control](../Encryption%20and%20Privacy/Permits-Access-Control.md). These methods can help creating ephemeral transaction keys, which are used by the smart contract to create a secure encryption channel to the caller.
 Similarly to decryption, this usage can be implemented by any compliant library, but we include direct support in fhenix.js.&#x20;
 
 This is done in 3 steps: generating a permit, querying the contract and unsealing the data.
