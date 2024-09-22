@@ -105,37 +105,37 @@ Please refer to the table below for a comprehensive list of supported operations
 Note that all functions are supported in both direct function calls and library bindings. However, operator overloading is only supported for the operations listed in the table (solidity please support operator overloading for boolean return types!).
 
 <style>
-r { color: Red }
-o { color: Orange }
-g { color: Green }
+r \{ color: Red \}
+o \{ color: Orange \}
+g \{ color: Green \}
 </style>
 
-| Name                  | FHE.sol function | Operator | euint8 | euint16 | euint32 | euint64 | euint128 | euint256 | ebool | eaddress |
-|-----------------------|------------------|:--------:|:------:|:-------:|:-------:|:-------:|:--------:|:--------:|:-----:|:--------:|
-| Addition              | add              |    +     |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
-| Subtraction           | sub              |    -     |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
-| Multiplication        | mul              |    \*    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <r>✘   |   <r>✘   |  n/a  |   n/a    |
-| Bitwise And           | and              |    &     |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   | <g>✔  |   n/a    |
-| Bitwise Or            | or               |    \|    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   | <g>✔  |   n/a    |
-| Bitwise Xor           | xor              |    ^     |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   | <g>✔  |   n/a    |
-| Division              | div              |    /     |  <g>✔  |  <g>✔   |  <g>✔   |  <r>✘   |   <r>✘   |   <r>✘   |  n/a  |   n/a    |
-| Remainder             | rem              |    %     |  <g>✔  |  <g>✔   |  <g>✔   |  <r>✘   |   <r>✘   |   <r>✘   |  n/a  |   n/a    |
-| Shift Right           | shr              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
-| Shift Left            | shl              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
-| Equal                 | eq               |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
-| Not equal             | ne               |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
-| Greater than or equal | gte              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
-| Greater than          | gt               |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
-| Less than or equal    | lte              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
-| Less than             | lt               |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
-| Min                   | min              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
-| Max                   | max              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
-| Not                   | not              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   | <g>✔  |   n/a    |
-| Select                | select           |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
-| Require               | req              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
-| Decrypt               | decrypt          |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
-| Seal Output           | sealOutput       |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
-| Random                | randomEuintX     |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <r>✘  |   <r>✘   |
+| Name                  | FHE.sol function | Operator |  euint8   |  euint16  |  euint32   |  euint64   |  euint128   |  euint256  |   ebool   | eaddress |
+|-----------------------|------------------|:--------:|:---------:|:---------:|:----------:|:----------:|:-----------:|:----------:|:---------:|:--------:|
+| Addition              | add              |    +     | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Subtraction           | sub              |    -     | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Multiplication        | mul              |    \*    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <r>✘</r>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Bitwise And           | and              |    &     | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  | <g>✔</g>  |   n/a    |
+| Bitwise Or            | or               |    \|    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  | <g>✔</g>  |   n/a    |
+| Bitwise Xor           | xor              |    ^     | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  | <g>✔</g>  |   n/a    |
+| Division              | div              |    /     | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <r>✘</r>  |  <r>✘</r>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Remainder             | rem              |    %     | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <r>✘</r>  |  <r>✘</r>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Shift Right           | shr              |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Shift Left            | shl              |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Equal                 | eq               |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <g>✔</g>  | <g>✔</g>  | <g>✔</g> |
+| Not equal             | ne               |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <g>✔</g>  | <g>✔</g>  | <g>✔</g> |
+| Greater than or equal | gte              |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Greater than          | gt               |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Less than or equal    | lte              |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Less than             | lt               |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Min                   | min              |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Max                   | max              |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  |    n/a    |   n/a    |
+| Not                   | not              |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <r>✘</r>  | <g>✔</g>  |   n/a    |
+| Select                | select           |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <g>✔</g>  | <g>✔</g>  | <g>✔</g> |
+| Require               | req              |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <g>✔</g>  | <g>✔</g>  | <g>✔</g> |
+| Decrypt               | decrypt          |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <g>✔</g>  | <g>✔</g>  | <g>✔</g> |
+| Seal Output           | sealOutput       |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <g>✔</g>  | <g>✔</g>  | <g>✔</g> |
+| Random                | randomEuintX     |   n/a    | <g>✔</g>  | <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>  |  <g>✔</g>   |  <g>✔</g>  | <r>✘</r>  | <r>✘</r> |
 
 :::danger
 At the moment it is not possible to do `ebool result = (lhs == rhs)` and others that return a boolean result. This is because FHE.sol expects a `ebool`, while Solidity only allows overloading to return a regular boolean.
