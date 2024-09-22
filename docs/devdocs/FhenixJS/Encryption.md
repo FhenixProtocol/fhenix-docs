@@ -12,7 +12,7 @@ Encryption in Fhenix is done using the global chain key. This key is loaded when
 
 When we perform encryption, we specify the type of `euint` (Encrypted Integer) we want to create. This should match the expected type in the Solidity contract we are working with.
 
-First, initialize the library -
+First, initialize the library:
 
 ```Typescript
 import { FhenixClient } from 'fhenixjs';

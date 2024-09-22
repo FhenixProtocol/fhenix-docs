@@ -12,7 +12,7 @@ The data is returned to the user using [sealed box encryption ](https://bitbeans
 
 :::tip[Don't Want to Seal?]
 Fhenix supports standard decryption as well. Mostly suited for public data, an unsealed plaintext value can be returned from a contract.
-You can read more about how to do this [here](#../).
+You can read more about how to do this [here](../Writing%20Smart%20Contracts/FHE-sol#decrypt---decrypt-encrypted-data).
 :::
 
 ### Encrypted Values & Permits

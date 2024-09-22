@@ -28,10 +28,9 @@ If this is your first time using Foundry, refer to the
 - Simulated FHE Operations: All FHE operations, including encryption, decryption, and encrypted data handling, are
   simulated to replicate their behavior in a network environment. This approach facilitates seamless development and
   testing without requiring a fully operational FHE network.
-- Permissions: The template includes utilities (PermissionHelper.sol) for creating permissions related to FHE
+- Permissions: The template includes utilities (`PermissionHelper.sol`) for creating permissions related to FHE
   operations. These utilities enable users to test and verify that contracts correctly implement access-controlled
-  actions, such as viewing balances of encrypted tokens. For more about permissions, see the [Fhenix Documentation](../Writing%20Smart%20Contracts/Permissions.md)
-  section.
+  actions, such as viewing balances of encrypted tokens. For more about permissions, see [here](../Writing%20Smart%20Contracts/Permissions.md).
 
 ## Writing Tests
 
