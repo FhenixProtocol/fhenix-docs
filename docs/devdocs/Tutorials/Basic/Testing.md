@@ -11,7 +11,7 @@ FhenixJS is injected by the Fhenix Hardhat plugin and can be used automatically 
 We will break down each step, providing code snippets and explanations to ensure you understand how to test the contract effectively.
 
 :::note
-This section describes testing in a Hardhat project. For instructions on testing with Foundry, check [this](../../Setting%20Up%20Your%20Environment/Foundry.md#Writing-Tests).
+This section describes testing in a Hardhat project. For instructions on testing with Foundry, check [this](../../Setting%20Up%20Your%20Environment/Foundry.md#writing-tests).
 :::
 
 ## Step-by-Step Guide
