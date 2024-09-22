@@ -21,16 +21,16 @@ In the back-end, encrypted integers are FHE ciphertexts. The library abstracts a
 <tr><th colspan="2"> Supported types </th></tr>
 <tr><td>    
 
-| name     | Bit Size | Usage   |
-|----------|----------| ------- |
-| euint8   | 8        | Compute |
-| euint16  | 16       | Compute |
-| euint32  | 32       | Compute |
-| euint64  | 64       | Compute |
-| euint128 | 128      | Compute |
-| euint256 | 256      | Compute |
-| ebool    | 8        | Compute |
-| eaddress | 160      | Compute |
+| name       | Bit Size | Usage   |
+|------------|----------| ------- |
+| `euint8`   | 8        | Compute |
+| `euint16`  | 16       | Compute |
+| `euint32`  | 32       | Compute |
+| `euint64`  | 64       | Compute |
+| `euint128` | 128      | Compute |
+| `euint256` | 256      | Compute |
+| `ebool`    | 8        | Compute |
+| `eaddress` | 160      | Compute |
 </td><td>    
 
 | name       | Bit Size | Usage   |
@@ -71,7 +71,7 @@ In this example, lhs.add(rhs) performs the addition, using the library function 
 
 ### Utilizing Operator Overloading
 
-For an even more intuitive approach, FHE.sol supports operator overloading. This means you can use standard arithmetic operators like +, -, \*, etc., directly on encrypted types. Here's how you can use it for adding two euint8 values:
+For an even more intuitive approach, FHE.sol supports operator overloading. This means you can use standard arithmetic operators like `+`, `-`, `*`, etc., directly on encrypted types. Here's how you can use it for adding two `euint8` values:
 
 ```javascript
 euint8 result = lhs + rhs;
@@ -104,11 +104,6 @@ Please refer to the table below for a comprehensive list of supported operations
 
 Note that all functions are supported in both direct function calls and library bindings. However, operator overloading is only supported for the operations listed in the table (solidity please support operator overloading for boolean return types!).
 
-<style>
-r \{ color: Red }
-o \{ color: Orange }
-g \{ color: Green }
-</style>
 
 | Name                  | FHE.sol function | Operator |  euint8   | euint16  | euint32  |  euint64  |  euint128   |   euint256    |  ebool   |  eaddress   |
 |-----------------------|------------------|:--------:|:---------:|:--------:|:--------:|:---------:|:-----------:|:-------------:|:--------:|:-----------:|
