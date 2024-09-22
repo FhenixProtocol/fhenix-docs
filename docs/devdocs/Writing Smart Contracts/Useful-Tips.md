@@ -56,38 +56,3 @@ When writing FHE code we encourage you to use the operations wisely and choose w
 Example: Instead of `ENCRYPTED_UINT_32 * FHE.asEuint32(2)` you can use `FHE.shl(ENCRYPTED_UINT_32, FHE.asEuint32(1))` in some cases `FHE.div(ENCRYPTED_UINT_32, FHE.asEuint32(2))` can be replaced by `FHE.shr(ENCRYPTED_UINT_32, FHE.asEuint32(1))`
 
 For more detailed benchmarks please refer to: [Gas-and-Benchmarks](./Gas-and-Benchmarks)
-
-## Randomness
-
-Confidentiality is a crucial step in order to achieve on-chain randomness. Fhenix, as a chain that implements confidentiality, is a great space to implement and use on-chain random numbers and this is part of our roadmap.
-We know that there are some #BUIDLers that are planning to implement dapps that leverage both confidentiality and random numbers so until we will have on-chain true random, we are suggesting to use the following implementation as a MOCKUP.
-
-:::danger
-PLEASE NOTE THAT THIS RANDOM NUMBER IS VERY PREDICTABLE AND SHOULD NOT BE USED IN PRODUCTION.
-:::
-
-```solidity
-library RandomMock {
-    function getFakeRandom() internal returns (uint256) {
-        uint blockNumber = block.number;
-        uint256 blockHash = uint256(blockhash(blockNumber));
-
-        return blockHash;
-    }
-
-    function getFakeRandomU8() public view returns (euint8) {
-        uint8 blockHash = uint8(getFakeRandom());
-        return FHE.asEuint8(blockHash);
-    }
-
-    function getFakeRandomU16() public view returns (euint16) {
-        uint16 blockHash = uint16(getFakeRandom());
-        return FHE.asEuint16(blockHash);
-    }
-
-    function getFakeRandomU32() public view returns (euint32) {
-        uint32 blockHash = uint32(getFakeRandom());
-        return FHE.asEuint32(blockHash);
-    }
-}
-```
