@@ -19,13 +19,13 @@ Here you can find a list of some cool apps that you can use as a reference
 <td>FHERC-20</td>
 <td><a href="https://github.com/FhenixProtocol/example-contracts/blob/master/wrapping-ERC20/WrappingERC20.sol">View on Github</a><br /></td>
 <td><a href="http://fhenix-demo.pages.dev/">FHERC-20 Demo</a></td>
-<td></td>
+<td>A token in which balances are encrypted and viewable only to the holder.</td>
 </tr>
 <tr>
 <td>Blind Auction</td>
 <td><a href="https://github.com/FhenixProtocol/blind-auction-example">View on Github</a></td>
 <td><a href="https://github.com/FhenixProtocol/blind-auction-example/tree/main/frontend">View on Github</a></td>
-<td></td>
+<td>An auction in which is bid is kept encrypted until the Auction ends and the winner is revealed.</td>
 </tr>
 
 [//]: # (<tr>)
@@ -43,13 +43,13 @@ Here you can find a list of some cool apps that you can use as a reference
 <td>Confidential Voting</td>
 <td><a href="https://github.com/FhenixProtocol/confidential-voting">View on Github</a></td>
 <td></td>
-<td></td>
+<td>A voting in which the individual votes are kept secret.</td>
 </tr>
 <tr>
 <td>Simple Lottery</td>
 <td><a href="https://github.com/FhenixProtocol/example-contracts/blob/master/lottery/Lottery.sol">View on Github</a></td>
 <td></td>
-<td></td>
+<td>A very simple game leveraging the fact that you can pick a winning number and keep it private.</td>
 </tr>
 <tr>
 <td>Contract Playground</td>
