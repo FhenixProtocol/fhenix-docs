@@ -93,6 +93,7 @@ The `ebool` type is not a real boolean type. It is implemented as a `euint8`
 
 ## Supported Operations
 
+
 :::tip
 A documented documentation of each and every function in FHE.sol (including inputs and outputs) can be found in [FHE.sol](../Solidity%20API/FHE.md)
 :::
@@ -103,31 +104,37 @@ Please refer to the table below for a comprehensive list of supported operations
 
 Note that all functions are supported in both direct function calls and library bindings. However, operator overloading is only supported for the operations listed in the table (solidity please support operator overloading for boolean return types!).
 
-| name                  | FHE.sol function | Operator | euint8 | euint16 | euint32 | euint64 | euint128 | euint256 | ebool | eaddress |
-|-----------------------|------------------|----------|--------|---------|---------|---------|----------|----------|-------|----------|
-| Addition              | add              | +        | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Subtraction           | sub              | -        | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Multiplication        | mul              | \*       | ✓      | ✓       | ✓       | ✓       | x        | n/a      | n/a   | n/a      |
-| Bitwise And           | and              | &        | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
-| Bitwise Or            | or               | \|       | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
-| Bitwise Xor           | xor              | ^        | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
-| Division              | div              | /        | ✓      | ✓       | ✓       | x       | x        | n/a      | n/a   | n/a      |
-| Remainder             | rem              | %        | ✓      | ✓       | ✓       | x       | x        | n/a      | n/a   | n/a      |
-| Shift Right           | shr              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Shift Left            | shl              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Equal                 | eq               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
-| Not equal             | ne               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
-| Greater than or equal | gte              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Greater than          | gt               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Less than or equal    | lte              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Less than             | lt               | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Min                   | min              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Max                   | max              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | n/a   | n/a      |
-| Not                   | not              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | n/a      | ✓     | n/a      |
-| Select                | select           | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
-| Require               | req              | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
-| Decrypt               | decrypt          | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
-| Seal Output           | sealOutput       | n/a      | ✓      | ✓       | ✓       | ✓       | ✓        | ✓        | ✓     | ✓        |
+<style>
+r { color: Red }
+o { color: Orange }
+g { color: Green }
+</style>
+
+| Name                  | FHE.sol function | Operator | euint8 | euint16 | euint32 | euint64 | euint128 | euint256 | ebool | eaddress |
+|-----------------------|------------------|:--------:|:------:|:-------:|:-------:|:-------:|:--------:|:--------:|:-----:|:--------:|
+| Addition              | add              |    +     |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
+| Subtraction           | sub              |    -     |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
+| Multiplication        | mul              |    \*    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <r>✘   |   <r>✘   |  n/a  |   n/a    |
+| Bitwise And           | and              |    &     |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   | <g>✔  |   n/a    |
+| Bitwise Or            | or               |    \|    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   | <g>✔  |   n/a    |
+| Bitwise Xor           | xor              |    ^     |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   | <g>✔  |   n/a    |
+| Division              | div              |    /     |  <g>✔  |  <g>✔   |  <g>✔   |  <r>✘   |   <r>✘   |   <r>✘   |  n/a  |   n/a    |
+| Remainder             | rem              |    %     |  <g>✔  |  <g>✔   |  <g>✔   |  <r>✘   |   <r>✘   |   <r>✘   |  n/a  |   n/a    |
+| Shift Right           | shr              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
+| Shift Left            | shl              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
+| Equal                 | eq               |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
+| Not equal             | ne               |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
+| Greater than or equal | gte              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
+| Greater than          | gt               |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
+| Less than or equal    | lte              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
+| Less than             | lt               |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
+| Min                   | min              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
+| Max                   | max              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   |  n/a  |   n/a    |
+| Not                   | not              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <r>✘   | <g>✔  |   n/a    |
+| Select                | select           |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
+| Require               | req              |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
+| Decrypt               | decrypt          |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
+| Seal Output           | sealOutput       |   n/a    |  <g>✔  |  <g>✔   |  <g>✔   |  <g>✔   |   <g>✔   |   <g>✔   | <g>✔  |   <g>✔   |
 
 :::danger
 At the moment it is not possible to do `ebool result = (lhs == rhs)` and others that return a boolean result. This is because FHE.sol expects a `ebool`, while Solidity only allows overloading to return a regular boolean.
