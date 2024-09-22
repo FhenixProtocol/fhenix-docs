@@ -1,4 +1,5 @@
-# 🫷 Permits & Access Control
+# 📜 Permits & Access Control
+
 
 In a Fully Homomorphic Encryption (FHE) framework, all data stored in a contract's storage is encrypted. Access control involves granting selective access to data by authorized parties while restricting access to unauthorized users.
 
