@@ -1,6 +1,3 @@
-todo: add "random" function to the list of operations under "Writing Smart Contracts/Types and operations"
-and specify it's available for all types except ebool and eaddress.
-
 # Randomness
 // todo (eshel)
 Randomness was introduced in Todo !
@@ -95,6 +92,8 @@ function play() callerIsUser {
 }
 ```
 
-# Randomness in View functions
+:::danger[Warning]
+### Randomness in View functions
 As it is currently implemented, Randomness depends on the state of the chain. This means the `eth_calls` will not receive new
 random numbers. When calling `random()` from a view function, then you will receive the previous random that was generated in a transaction that was committed to the state.
+:::
