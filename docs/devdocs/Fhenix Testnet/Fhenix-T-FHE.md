@@ -12,7 +12,7 @@ FHE is a technology that enables processing data without decrypting it. With dat
 
 This means that companies can offer services, including operating on customer data, while ensuring customer privacy (since user data remains encrypted). Users can be confident that their data is private, and they experience no difference in functionality.
 
-FHE makes it possible to write private smart contracts that keep on-chain data encrypted. You can create decentralized, permissionless blockchains with all data on-chain and auditable, while not actually visible.
+FHE makes it possible to write private smart contracts that keep on-chain data encrypted. This allows for the creation of decentralized, permissionless blockchains with all data on-chain and auditable, yet not actually visible.
 
 To read more about different FHE schemes, see our [FHE Overview Section](./FHE-Overview).
 
