@@ -32,4 +32,4 @@ Expect that we might have to reboot the network and wipe everything on it at any
 ## Integer Bit Sizes
 
 At the moment all integer bit sizes are supported, as well as `eaddress`, a 160-bit size for addresses. However, the instruction set is limited to a subset of operations for performance reasons.
-When we move to full public testnet and mainnet we expect to be able to support a wider range of operations. See [Types and Operators](../../Writing Smart Contracts/Types-and-Operators.md) for more information.
+When we move to full public testnet and mainnet we expect to be able to support a wider range of operations. See [Types and Operators](/../Writing%20Smart%20Contracts/Types-and-Operators.md) for more information.
