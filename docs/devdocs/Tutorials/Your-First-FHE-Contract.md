@@ -97,4 +97,4 @@ If you want to learn more about working with Fhenix, please check out [docs for 
 
 ### Have Questions?
 
-Hop into our [Discord](#) and ask questions in the #dev-general or #tech-questions channels!
+Hop into our [Discord](https://discord.gg/FuVgxrvJMY) and ask questions in the `#dev-general` or `#tech-questions` channels!
