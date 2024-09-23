@@ -25,22 +25,25 @@ The Public Key is constant for the lifetime of the network, but still has to be 
 <Tabs>
 <TabItem value="ethers.js" label="ethers.js">
 ```javascript
-const networkPkAbi = new Interface(["function getNetworkPublicKey(int32 securityZone)"]);
-const callData = networkPkAbi.encodeFunctionData("getNetworkPublicKey", [0]); // last param is the security zone, generally 0
+const networkPkAbi = new Interface(["function getNetworkPublicKey()"])
 let result = await provider.call({
   to: "0x0000000000000000000000000000000000000080",
-  data: callData
+  data: networkPkAbi.encodeFunctionData("getNetworkPublicKey");
 });
 ```
 </TabItem>
 <TabItem value="web3.js" label="Web3.js">
 ```javascript
-const networkPkSig = web3.eth.abi.encodeFunctionSignature("function getNetworkPublicKey(int32 securityZone)");
-const param = web3.eth.abi.encodeParameter("int32", 0); // last param is the security zone, generally 0
+const networkPkSig = web3.eth.abi.encodeFunctionSignature("getNetworkPublicKey()");
 let result = await web3.eth.call({
   to: "0x0000000000000000000000000000000000000080",
-  data: networkPkSig + param
+  data: networkPkSig
 });
+```
+</TabItem>
+<TabItem value="cast (Foundry)" label="cast (Foundry)">
+```shell
+cast call 0x0000000000000000000000000000000000000080 --rpc-url "https://api.helium.fhenix.zone" "getNetworkPublicKey()"
 ```
 </TabItem>
 </Tabs>
