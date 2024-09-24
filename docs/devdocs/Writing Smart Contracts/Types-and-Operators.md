@@ -115,8 +115,11 @@ Note that all functions are supported in both direct function calls and library 
 | Bitwise Xor           | `xor`             |    `^`    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    | <g>✔</g> |     n/a     |
 | Division              | `div`             |    `/`    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <r>✘</r>  |  <r>✘</r>   |   <r>✘</r>    |   n/a    |     n/a     |
 | Remainder             | `rem`             |    `%`    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <r>✘</r>  |  <r>✘</r>   |   <r>✘</r>    |   n/a    |     n/a     |
+| Square                | `square`          |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <r>✔</r>  |  <r>✘</r>   |   <r>✘</r>    |   n/a    |     n/a     |
 | Shift Right           | `shr`             |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
 | Shift Left            | `shl`             |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
+| Rotate Right          | `ror`             |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
+| Rotate Left           | `rol`             |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
 | Equal                 | `eq`              |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <g>✔</g>    | <g>✔</g> |  <g>✔</g>   |
 | Not equal             | `ne`              |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <g>✔</g>    | <g>✔</g> |  <g>✔</g>   |
 | Greater than or equal | `gte`             |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
