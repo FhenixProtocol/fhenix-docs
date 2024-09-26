@@ -3,7 +3,6 @@ sidebar_position: 2
 title: 📐 Fhenix Architecture
 ---
 
-hello I am yonatan
 Our goal with Fhenix is not only to provide the first FHE-based L2 solution, but also to create a platform that is modular, flexible, and can easily be changed, extended or improved as we see
 traffic, use-cases and requirements evolve.
 
