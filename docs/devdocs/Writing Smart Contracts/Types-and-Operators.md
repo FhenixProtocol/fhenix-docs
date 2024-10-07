@@ -6,17 +6,15 @@ description: List of supported types and different operations
 
 # Supported Types and Operations
 
-The library exposes utility functions for FHE operations. The goal of the library is to provide a seamless developer experience for writing smart contracts that can operate on confidential data.
+The Fhenix library provides utility functions for implementing FHE operations. The intention is to provide a seamless developer experience for writing smart contracts that can operate on confidential data.
 
 ## Types
 
-The library provides a type system that is checked both at compile time and at run time. The structure and operations related to these types are described in this sections.
+The library provides a type system that is checked both at compile time and at run time. Fhenix currently supports encrypted integers up to 256 bits and special types such as `ebool` and `eaddress`.
 
-We currently support encrypted integers of bit length up to 256 bits and special types such as `ebool` and `eaddress`.
+The encrypted integers behave as closely as possible to Solidity's integer types. However, behavior such as "revert on overflow" is not supported as this would leak some information about the encrypted integers. Therefore, arithmetic performed on `euint` types is unchecked, meaning there is wrap-around on overflow. In other words, if a calculation exceeds the maximum value that can be stored, it will start again from the minimum value, and vice versa.
 
-The encrypted integers behave as much as possible as Solidity's integer types. However, behaviour such as "revert on overflow" is not supported as this would leak some information of the encrypted integers. Therefore, arithmetic on `euint` types is [unchecked](https://docs.soliditylang.org/en/latest/control-structures.html#checked-or-unchecked-arithmetic), i.e. there is wrap-around on overlow.
-
-In the back-end, encrypted integers are FHE ciphertexts. The library abstracts away the ciphertexts and presents pointers to ciphertexts, or ciphertext handles, to the smart contract developer. The `euint`, `ebool` and `eaddress` types are _wrappers_ over these handles.
+In the backend, encrypted integers are FHE ciphertexts. The library abstracts away the ciphertexts and presents pointers to ciphertexts, or ciphertext handles, to the smart contract developer. The `euint`, `ebool` and `eaddress` types are wrappers over these handles.
 <table>
 <tr><th colspan="2"> Supported types </th></tr>
 <tr><td>    
@@ -51,39 +49,37 @@ There are three ways to perform operations with FHE.sol:
 
 ### Using Direct Function Calls
 
-Direct function calls are the most straightforward way to perform operations with FHE.sol. For example, if you want to add two encrypted 8-bit integers (euint8), you can do so as follows:
+Direct function calls are the most straightforward way to perform operations with FHE.sol. For example, to add two encrypted 8-bit integers (euint8), do the following:
 
 ```javascript
 euint8 result = FHE.add(lhs, rhs);
 ```
 
-Here, lhs and rhs are your euint8 variables, and result will store the outcome of the addition.
+Here, lhs and rhs are the relevant euint8 variables, and the result will store the outcome of the addition.
 
 ### Using Library Bindings
 
-FHE.sol also provides library bindings, allowing for a more natural syntax. To use this, you first need to include the library for your specific data type. For euint8, the usage would look like this:
+FHE.sol also provides library bindings, allowing for a more natural syntax. To use library bindings, include the library for your specific data type. For euint8, the syntax would be as follows:
 
 ```javascript
 euint8 result = lhs.add(rhs);
 ```
 
-In this example, lhs.add(rhs) performs the addition, using the library function implicitly.
+In this example, lhs.add(rhs) implicitly performs the addition using the library function.
 
 ### Utilizing Operator Overloading
 
-For an even more intuitive approach, FHE.sol supports operator overloading. This means you can use standard arithmetic operators like `+`, `-`, `*`, etc., directly on encrypted types. Here's how you can use it for adding two `euint8` values:
+For an even more intuitive approach, FHE.sol supports operator overloading. This means you can use standard arithmetic operators such as `+`, `-`, `*`, etc., directly on encrypted types. The following snippet shows how to add two `euint8` values:
 
 ```javascript
 euint8 result = lhs + rhs;
 ```
 
-With operator overloading, lhs + rhs performs the addition seamlessly.
+Operator overloading enables the addition of lhs + rhs to be seamlessly performed.
 
 ## Comparisons
 
-Unlike other operations in FHE.sol, comparison operations do not support their respective operators (e.g. `>`, `<` etc.).
-This is because solidity expects these operators to return a boolean value, which is not possible with FHE.
-Intuitively, this is because returning a boolean value would leak information about the encrypted data.
+Unlike other operations in FHE.sol, comparison operations do not support their respective operators (e.g., `>`, `<`, etc.). The reason is that Solidity expects these operators to return a Boolean value, which is not possible with FHE (because returning a Boolean value would leak information about the encrypted data).
 
 Instead, comparison operations are implemented as functions that return an `ebool` type.
 
@@ -95,14 +91,13 @@ The `ebool` type is not a real boolean type. It is implemented as a `euint8`
 
 
 :::tip
-A documented documentation of each and every function in FHE.sol (including inputs and outputs) can be found in [FHE.sol](../Solidity%20API/FHE.md)
+Documentation of all FHE.sol functions (including inputs and outputs) can be found in [FHE.sol](../Solidity%20API/FHE.md).
 :::
 
-All operations supported by FHE.sol are listed in the table below. For performance reasons, not all operations are supported for all types.
+A comprehensive list of operations supported by FHE.sol are listed in the table below. For performance reasons, not all operations are supported for all types. This list will evolve as the Fhenix network matures.
 
-Please refer to the table below for a comprehensive list of supported operations. This list will evolve as the network matures.
+Note that all functions are supported in both direct function calls and library bindings. However, operator overloading is only supported for the operations listed in the table (We are requesting that Solidity support operator overloading for Boolean return types!).
 
-Note that all functions are supported in both direct function calls and library bindings. However, operator overloading is only supported for the operations listed in the table (solidity please support operator overloading for boolean return types!).
 
 
 | Name                  | FHE.sol function  | Operator  |  euint8  | euint16  | euint32  |  euint64  |  euint128   |   euint256    |  ebool   |  eaddress   |
@@ -132,14 +127,13 @@ Note that all functions are supported in both direct function calls and library 
 | Seal Output           | `sealOutput`      |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <g>✔</g>    | <g>✔</g> |  <g>✔</g>   |
 
 :::danger[Caveat]
-At the moment it is not possible to do `ebool result = (lhs == rhs)` and others that return a boolean result. This is because FHE.sol expects a `ebool`, while Solidity only allows overloading to return a regular boolean.
-Instead, we recommend `ebool result = lhs.eq(rhs)`.
+As mentioned, it is currently not possible to perform `ebool result = (lhs == rhs)` and other operations that return a Boolean result. This is because FHE.sol expects `ebool`, while Solidity only allows overloading to return a regular Boolean. Instead, we recommend `ebool result = lhs.eq(rhs)`.
 :::
 
-:::danger
-Using require and decrypt in a TX is dangerous as it can break the confidentiality of the data. Please refer to [Useful-Tips](./Useful-Tips.md) to read some more
+:::Vulnerability
+Using require and decrypt in a transaction (TX) involves risk as data confidentiality can be compromised. Please refer to [Useful-Tips](./Useful-Tips.md) for more on privacy issues.
 :::
 
 :::tip
-Division and Remainder by `0` will output with an encrypted representation of the maximal value of the uint that is used (Ex. encrypted 255 for euint8)
+Dividing by `0` produces a result that is an encrypted version of the maximum value for the given uint type (e.g., encrypted 255 for `euint8`).
 :::
