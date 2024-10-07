@@ -2782,6 +2782,338 @@ Pure in this function is marked as a hack/workaround - note that this function i
 | ---- | ---- | ----------- |
 | [0] | euint128 | The result of the operation |
 
+### rol
+
+```solidity
+function rol(euint8 lhs, euint8 rhs) internal pure returns (euint8)
+```
+
+This function performs the rol operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lhs | euint8 | The first input |
+| rhs | euint8 | The second input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint8 | The result of the operation |
+
+### rol
+
+```solidity
+function rol(euint16 lhs, euint16 rhs) internal pure returns (euint16)
+```
+
+This function performs the rol operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lhs | euint16 | The first input |
+| rhs | euint16 | The second input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint16 | The result of the operation |
+
+### rol
+
+```solidity
+function rol(euint32 lhs, euint32 rhs) internal pure returns (euint32)
+```
+
+This function performs the rol operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lhs | euint32 | The first input |
+| rhs | euint32 | The second input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint32 | The result of the operation |
+
+### rol
+
+```solidity
+function rol(euint64 lhs, euint64 rhs) internal pure returns (euint64)
+```
+
+This functions performs the rol operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lhs | euint64 | The first input |
+| rhs | euint64 | The second input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint64 | The result of the operation |
+
+### rol
+
+```solidity
+function rol(euint128 lhs, euint128 rhs) internal pure returns (euint128)
+```
+
+This functions performs the rol operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lhs | euint128 | The first input |
+| rhs | euint128 | The second input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint128 | The result of the operation |
+
+### ror
+
+```solidity
+function ror(euint8 lhs, euint8 rhs) internal pure returns (euint8)
+```
+
+This function performs the ror operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lhs | euint8 | The first input |
+| rhs | euint8 | The second input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint8 | The result of the operation |
+
+### ror
+
+```solidity
+function ror(euint16 lhs, euint16 rhs) internal pure returns (euint16)
+```
+
+This function performs the ror operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lhs | euint16 | The first input |
+| rhs | euint16 | The second input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint16 | The result of the operation |
+
+### ror
+
+```solidity
+function ror(euint32 lhs, euint32 rhs) internal pure returns (euint32)
+```
+
+This function performs the ror operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lhs | euint32 | The first input |
+| rhs | euint32 | The second input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint32 | The result of the operation |
+
+### ror
+
+```solidity
+function ror(euint64 lhs, euint64 rhs) internal pure returns (euint64)
+```
+
+This functions performs the ror operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lhs | euint64 | The first input |
+| rhs | euint64 | The second input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint64 | The result of the operation |
+
+### ror
+
+```solidity
+function ror(euint128 lhs, euint128 rhs) internal pure returns (euint128)
+```
+
+This functions performs the ror operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lhs | euint128 | The first input |
+| rhs | euint128 | The second input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint128 | The result of the operation |
+
+### square
+
+```solidity
+function square(euint8 value) internal pure returns (euint8)
+```
+
+This function performs the square operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ------ | ------ | ----------- |
+| vaulue | euint8 | The input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint8 | The result of the operation |
+
+### square
+
+```solidity
+function square(euint16 value) internal pure returns (euint16)
+```
+
+This function performs the square operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ------ | ------- | ----------- |
+| vaulue | euint16 | The input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint16 | The result of the operation |
+
+### square
+
+```solidity
+function square(euint32 value) internal pure returns (euint32)
+```
+
+This function performs the square operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name | Type | Description |
+| ------ | ------- | ----------- |
+| vaulue | euint32 | The input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint32 | The result of the operation |
+
+### square
+
+```solidity
+function square(euint64 value) internal pure returns (euint64)
+```
+
+This functions performs the square operation
+
+_If any of the inputs are expected to be a ciphertext, it verifies that the value matches a valid ciphertext
+Pure in this function is marked as a hack/workaround - note that this function is NOT pure as fetches of ciphertexts require state access_
+
+#### Parameters
+
+| Name |  Type | Description |
+| ------ | ------- | ----------- |
+| vaulue | euint64 | The input |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | euint64 | The result of the operation |
+
 ### not
 
 ```solidity
