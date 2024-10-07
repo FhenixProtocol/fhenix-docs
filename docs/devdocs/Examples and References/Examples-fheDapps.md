@@ -63,6 +63,7 @@ Here you can find a list of some cool apps that you can use as a reference
 <td><a href="https://dapps.zama.ai/">https://dapps.zama.ai/</a><br /></td>
 <td>NOTE: These examples are not directly compatible with Fhenix and must be adapted</td>
 </tr>
+<tr>
 <td>Unique Bid Auction</td>
 <td><a href="https://github.com/Syndika-Corp/fhenix-contracts">View on Github</a></td>
 <td><a href="https://fhenix.netlify.app/">Bids_Party</a><br /></td>
