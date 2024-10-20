@@ -58,7 +58,7 @@ const config: HardhatUserConfig = {
   networks: {
     fhenixNitrogen: {
       url: "https://api.nitrogen.fhenix.zone",
-      chainId: 8008147,
+      chainId: 8008148,
       accounts: mnemonic,
     },
   },

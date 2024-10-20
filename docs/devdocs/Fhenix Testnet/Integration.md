@@ -37,7 +37,7 @@ We have public endpoints available for the Nitrogen Testnet, which can be used:
       </tr>
       <tr>
          <td>Chain ID</td>
-         <td>8008147</td>
+         <td>8008148</td>
       </tr>
       <tr>
          <td>Websocket</td>
