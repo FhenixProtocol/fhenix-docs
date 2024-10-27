@@ -128,7 +128,7 @@ operations:
 - Ciphertext Access – The mocked FHE operations do not enforce access control restrictions on ciphertexts, which allows
   any user to access any mocked "ciphertext." On a real network, such operations could fail.
 - Decrypts during Gas Estimations: When performing a decrypt (or other data revealing operations) during gas estimation
-  on the Helium testnet or Localfhenix, the operation returns a default value, as the gas estimation process does not
+  on the Nitrogen testnet or Localfhenix, the operation returns a default value, as the gas estimation process does not
   have access to the precise decrypted data. This can cause the transaction to fail at this stage, if the decrypted data
   is used in a way that would trigger a transaction revert (e.g., when a require statement depends on it).
 - Security – The security provided by the mocked FHE operations does not represent the high level of security offered by

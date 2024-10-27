@@ -5,7 +5,7 @@ Fhenix created a plugin to ease the interaction with the contracts.
 #### Adding the Plugin
 
 In order to add the plugin you can simply click on the `Plugin Manager` button in remix (left bottom side), then click on the `Connect to a Local Plugin` link.
-Set the `Plugin Name` value to be `Fhenix` and the `URL` value to be `https://remix.helium.fhenix.zone`
+Set the `Plugin Name` value to be `Fhenix` and the `URL` value to be `https://remix.nitrogen.fhenix.zone`
 
 ![](/img/install-plugin.webp)
 

@@ -9,7 +9,7 @@ Are you a developer looking to integrate Fhenix into your project, or support Fh
 
 ### APIs, RPCs and general compatibility
 
-Fhenix is based on Arbitrum, with the Helium Testnet based on Arbitrum Nitro version 2.3.4 (ArbOS 20). This means that everything that is natively supported 
+Fhenix is based on Arbitrum, with the Nitrogen Testnet based on Arbitrum Nitro version 2.3.4 (ArbOS 20). This means that everything that is natively supported 
 by Arbitrum Nitro is also supported by Fhenix (rpc calls, ABI, etc).
 
 Please refer to the [Arbitrum documentation](https://docs.arbitrum.io/build-decentralized-apps/arbitrum-vs-ethereum/comparison-overview) for more information and specifics.
@@ -21,7 +21,7 @@ This means that any contract that runs on Ethereum should run on Fhenix as well.
 
 ### Public Endpoints
 
-We have public endpoints available for the Helium Testnet, which can be used:
+We have public endpoints available for the Nitrogen Testnet, which can be used:
 
 <table>
    <thead>
@@ -33,7 +33,7 @@ We have public endpoints available for the Helium Testnet, which can be used:
    <tbody>
       <tr>
          <td>JSON-RPC</td>
-         <td><a href="https://api.helium.fhenix.zone"><strong>https://api.helium.fhenix.zone</strong></a></td>
+         <td><a href="https://api.nitrogen.fhenix.zone"><strong>https://api.nitrogen.fhenix.zone</strong></a></td>
       </tr>
       <tr>
          <td>Chain ID</td>
@@ -41,7 +41,7 @@ We have public endpoints available for the Helium Testnet, which can be used:
       </tr>
       <tr>
          <td>Websocket</td>
-         <td>wss://api.helium.fhenix.zone:8548</td>
+         <td>wss://api.nitrogen.fhenix.zone:8548</td>
       </tr>
    </tbody>
 </table>

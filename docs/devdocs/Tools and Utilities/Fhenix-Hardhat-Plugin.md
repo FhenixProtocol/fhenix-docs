@@ -51,13 +51,13 @@ The plugin automatically adds a `localfhenix` network configuration to your Hard
 This network is chosen as the default once the plugin is imported. 
 If you want to use a different network, simply add `--network <custom_network>` to your hardhat commands, or set it as the default.
 
-If you want to use Fhenix Helium Testnet (or a custom Fhenix network), you can add a new network configuration to your `hardhat.config.js` file:
+If you want to use Fhenix Nitrogen Testnet (or a custom Fhenix network), you can add a new network configuration to your `hardhat.config.js` file:
 
 ```typescript
 const config: HardhatUserConfig = {
     networks: {
-        fhenixHelium: {
-            url: "https://api.helium.fhenix.zone",
+        fhenixNitrogen: {
+            url: "https://api.nitrogen.fhenix.zone",
             chainId: 8008135,
             accounts: mnemonic,
         },
