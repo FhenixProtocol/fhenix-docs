@@ -6,12 +6,12 @@ description: Tidbits of wisdom for working with FHE
 
 ## Trivial Encryption
 
-When we are using `FHE.asEuint*(PLAINTEXT_NUMBER)` we are actually using a trivial encryption of our FHE scheme. Unlike normal FHE encryption trivial encryption is a deterministic encryption. The meaning is that if you will do it twice you will still get the same result
+When we are using `FHE.asEuintX(plaintext_number)` we are actually using a trivial encryption of our FHE scheme. Unlike normal FHE encryption trivial encryption is a deterministic encryption. The meaning is that if you will do it twice you will still get the same result
 
 ## Default Value of a Euint
 
-When having a `euint*` variable uninitialized it will be considered as 0. Every FHE function that will receive an uninitialized euint* will assume it is `FHE.asEuint*(0)`.
-You can assume now that `FHE.asEuint*(0)`is used quite often - Luckily we realized this and decided to have the values of`FHE.asEuint*(0)`pre-calculated on node initialization so when you use`FHE.asEuint\*(0)` we will just return those values.
+When having a `euintx` variable uninitialized it will be considered as 0. Every FHE function that will receive an uninitialized `euintx` will assume it is `FHE.asEuintX(0)`.
+You can assume now that `FHE.asEuintX(0)`is used quite often - Luckily we realized this and decided to have the values of `FHE.asEuintX(0)` pre-calculated on node initialization so when you use`FHE.asEuintX(0)` we will just return those values.
 
 ## Re-encrypting a Value
 
@@ -28,14 +28,14 @@ Now that we know that, we can add 0 (cryptographically with FHE.add) to all of t
 All the operations are supported both in TXs and in Queries. That being said we strongly advise to think twice before you use those operations inside a TX. `FHE.req` is actually exposing the value of your encrypted data. Assuming we will send the transaction and monitor the gas usage we can probably identify whether the `FHE.req` condition met or not and understand a lot about what the encrypted values represent.
 Example:
 
-```javascript
+```solidity
 function f(euint8 a, euint8 b) public {
     FHE.req(a.eq(b));
     // Do some heavy logic
 }
 ```
 
-In this case, if `a` and `b` won't be equal it will fail immediately and take less gas than the case when `a` and `b` are equal which means that one who checks the gas can easily know the equality of `a` and `b` it won't leak their values but it will leak confidential data.
+In this case, if `a` and `b` won't be equal it will fail immediately and take less gas than the case when `a` and `b` are equal which means that one who checks the gas can easily know the equality of `a` and `b` it won't leak their values, but it will leak confidential data.
 The rule of thumb that we are suggesting is to use `FHE.req` only in `view` functions while the logic of `FHE.req` in txs can be implemented using `FHE.select`
 
 ## FHE.decrypt()
@@ -55,4 +55,39 @@ Currently, we support many FHE operations. Some of them might take a lot of time
 When writing FHE code we encourage you to use the operations wisely and choose what operation should be used.
 Example: Instead of `ENCRYPTED_UINT_32 * FHE.asEuint32(2)` you can use `FHE.shl(ENCRYPTED_UINT_32, FHE.asEuint32(1))` in some cases `FHE.div(ENCRYPTED_UINT_32, FHE.asEuint32(2))` can be replaced by `FHE.shr(ENCRYPTED_UINT_32, FHE.asEuint32(1))`
 
-For more detailed benchmarks please refer to: [Gas-and-Benchmarks](./Gas-and-Benchmarks)
+For more detailed benchmarks please refer to: [Gas and Benchmarks](./Gas-and-Benchmarks)
+
+## Randomness
+
+Confidentiality is a crucial step in order to achieve on-chain randomness. Fhenix, as a chain that implements confidentiality, is a great space to implement and use on-chain random numbers and this is part of our roadmap.
+We know that there are some #BUIDLers that are planning to implement dapps that leverage both confidentiality and random numbers so until we will have on-chain true random, we are suggesting to use the following implementation as a MOCKUP.
+
+:::danger
+PLEASE NOTE THAT THIS RANDOM NUMBER IS VERY PREDICTABLE AND SHOULD NOT BE USED IN PRODUCTION.
+:::
+
+```solidity
+library RandomMock {
+    function getFakeRandom() internal returns (uint256) {
+        uint blockNumber = block.number;
+        uint256 blockHash = uint256(blockhash(blockNumber));
+
+        return blockHash;
+    }
+
+    function getFakeRandomU8() public view returns (euint8) {
+        uint8 blockHash = uint8(getFakeRandom());
+        return FHE.asEuint8(blockHash);
+    }
+
+    function getFakeRandomU16() public view returns (euint16) {
+        uint16 blockHash = uint16(getFakeRandom());
+        return FHE.asEuint16(blockHash);
+    }
+
+    function getFakeRandomU32() public view returns (euint32) {
+        uint32 blockHash = uint32(getFakeRandom());
+        return FHE.asEuint32(blockHash);
+    }
+}
+```

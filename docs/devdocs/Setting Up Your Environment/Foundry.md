@@ -4,11 +4,12 @@ This tool will allow you to simulate development on the Fhenix network including
 The tool uses Foundry Cheatcodes to represent the execution of our Fhenix native precompiles. 
 Please be aware that the operations performed by using this template only simulate the behavior of real FHE operations, and will probably not be a good representation of performance, gas, etc. 
 
-The code is pretty new, and may contain bugs or edge-cases that we have not tested, so your feedback is very important for us! If you have any issues, comments or requests please open an issue in the [Fhenix Hardhat Template Repository](https://github.com/FhenixProtocol/fhenix-foundry-template)
+The code is pretty new, and may contain bugs or edge-cases that we have not tested, so your feedback is very important for us! If you have any issues, comments or requests please open an issue
+in the Fhenix Foundry Template [Repository](https://github.com/FhenixProtocol/fhenix-foundry-template).
 
 ## Getting Started
 
-To create a new repository using our [Fhenix Hardhat Template](https://github.com/FhenixProtocol/fhenix-foundry-template), click the
+To create a new repository using our [Fhenix Foundry Template](https://github.com/FhenixProtocol/fhenix-foundry-template), click the
 [`Use this template`](https://github.com/fhenixprotocol/fhenix-foundry-template/generate) button.
 Alternatively, install the template manually as follows:
 
@@ -27,10 +28,9 @@ If this is your first time using Foundry, refer to the
 - Simulated FHE Operations: All FHE operations, including encryption, decryption, and encrypted data handling, are
   simulated to replicate their behavior in a network environment. This approach facilitates seamless development and
   testing without requiring a fully operational FHE network.
-- Permissions: The template includes utilities (PermissionHelper.sol) for creating permissions related to FHE
+- Permissions: The template includes utilities (`PermissionHelper.sol`) for creating permissions related to FHE
   operations. These utilities enable users to test and verify that contracts correctly implement access-controlled
-  actions, such as viewing balances of encrypted tokens. For more about permissions, see the [Fhenix Documentation] https://docs.fhenix.zone/docs/devdocs/Writing%20Smart%20Contracts/Permissions)
-  section.
+  actions, such as viewing balances of encrypted tokens. For more about permissions, see [here](../Writing%20Smart%20Contracts/Permissions.md).
 
 ## Writing Tests
 

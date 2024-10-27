@@ -18,7 +18,7 @@ To use FhenixJS in your Hardhat project, first install the plugin via npm (or yo
 pnpm install fhenix-hardhat-plugin
 ```
 
-If you wish to run your own local dev environment, please install the [fhenix-hardhat-docker](https://github.com/fhenixprotocol/fhenix-hardhat-docker) plugin as well.
+If you wish to run your own local dev environment, please install the [fhenix-hardhat-docker](https://www.npmjs.com/package/fhenix-hardhat-docker) plugin as well.
 
 ```sh
 pnpm install fhenix-hardhat-docker
