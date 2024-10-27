@@ -1,6 +1,6 @@
 # Randomness
-// todo (eshel)
-Randomness was introduced in Todo !
+
+Randomness was introduced in the Nitrogen testnet.
 Contracts in Fhenix can get random numbers by calling one of the randomness functions in `FHE.sol`.
 These functions are:
 ```solidity
