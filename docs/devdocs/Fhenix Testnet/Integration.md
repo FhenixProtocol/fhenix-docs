@@ -9,7 +9,7 @@ Are you a developer looking to integrate Fhenix into your project, or support Fh
 
 ### APIs, RPCs and general compatibility
 
-Fhenix is based on Arbitrum, with the Nitrogen Testnet based on Arbitrum Nitro version 2.3.4 (ArbOS 20). This means that everything that is natively supported 
+Fhenix is based on Arbitrum, with the Nitrogen Testnet based on Arbitrum Nitro version 3.2.1 (ArbOS 32). This means that everything that is natively supported 
 by Arbitrum Nitro is also supported by Fhenix (rpc calls, ABI, etc).
 
 Please refer to the [Arbitrum documentation](https://docs.arbitrum.io/build-decentralized-apps/arbitrum-vs-ethereum/comparison-overview) for more information and specifics.
