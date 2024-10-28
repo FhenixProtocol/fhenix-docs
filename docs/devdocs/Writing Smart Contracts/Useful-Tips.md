@@ -6,7 +6,13 @@ description: Tidbits of wisdom for working with FHE
 
 ## Trivial Encryption
 
-`FHE.asEuintX(plaintext_number)` is actually a trivial encryption of the FHE scheme. Unlike normal FHE encryption, trivial encryption is deterministic. This means that if you perform it more than once, the result is the same each time.
+Casting a plaintext number to an encrypted one in a contract (i.e. `FHE.asEuintX(plaintext_number)`) is called Trivial Encryption. Unlike [normal FHE encryption](../FhenixJS/Encryption.md), trivial encryption is deterministic. This means that if you perform it more than once, the resulting ciphertext will be the same every time.
+
+Despite being obviously weaker than normal FHE encrypted numbers, Trivial Encryption can often be very useful. For example, when you're tallying votes in a contract; the tally for the option "Yes" may be encrypted, but everyone knows that you need to increment it by `1` for every incoming vote. Meaning, you can do `tally = tally + FHE.asEuint32(1)`.
+
+Trivially encrypted numbers are more efficient and will result in quicker and cheaper execution - so it's beneficial to use them whenever possible **while being careful to not compromise your apps's security**.
+
+**Note:** to prevent improper use, Trivial Encryption is only available in contracts.
 
 ## Default Value of a Euint
 
