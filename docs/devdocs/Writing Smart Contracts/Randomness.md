@@ -94,6 +94,23 @@ function play() callerIsUser {
 
 :::danger[Warning]
 ### Randomness in View functions
-As it is currently implemented, Randomness depends on the state of the chain. This means the `eth_calls` will not receive new
-random numbers. When calling `random()` from a view function, then you will receive the previous random that was generated in a transaction that was committed to the state.
+Randomness is guaranteed to be unique for each transaction, but not for each `eth_call`.
+Specifically, two eth_calls to the same contract, on the same block may receive the same random value.
+
+Randomness 
+:::
+
+:::info[How does it work?]
+Random generation takes as input a seed, and returns a random number which is unique for each seed and key sets.
+
+To cause each random to be different for each transaction, the seed is created from a) the contract address, 
+b) the transaction hash, and c) a counter that gets incremented each transaction.
+```bash
+seed = hash(contract_address, tx_hash, counter)
+```
+For eth calls, which don't have a tx_hash nor can use a counter, we use the block hash instead, that's why two quick subsequent
+calls to the same contract may return the same random number.
+```bash
+seed = hash(contract_address, block_hash)
+```
 :::
