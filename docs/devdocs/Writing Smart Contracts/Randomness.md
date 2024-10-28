@@ -95,12 +95,12 @@ function play() callerIsUser {
 :::danger[Warning]
 ### Randomness in View functions
 Randomness is guaranteed to be unique for each transaction, but not for each `eth_call`.
-Specifically, two eth_calls to the same contract, on the same block may receive the same random value.
+Specifically, two eth_calls to the same contract, on the same block may receive the same random value (more on this below).
 
-Randomness 
 :::
 
 :::info[How does it work?]
+
 Random generation takes as input a seed, and returns a random number which is unique for each seed and key sets.
 
 To cause each random to be different for each transaction, the seed is created from a) the contract address, 
