@@ -58,15 +58,14 @@ If `a` and `b` are not equal, the function will fail immediately and consumes mu
 
 ## FHE.decrypt()
 
-The Fhenix implementation of Fully Homomorphic Encryption (FHE) intends to keep data encrypted throughout its entire lifecycle, while providing the capability to operate on the encrypted data. However, despite the inherent encrypted nature of FHE, there are risks, especially in situations where `FHE.decrypt` is used. To maximize security, consider the following:
+The Fhenix implementation of Fully Homomorphic Encryption (FHE) intends to keep data encrypted throughout its entire lifecycle, while providing the capability to operate on the encrypted data. However, eventually decrypting data (`FHE.decrypt`) is crucial in most use cases.
 
-### Vulnerability
-During the initial development of the Fhenix mainnet (and Fhenix testnet), the decryption process will be performed on a threshold network. Thus, operation may not be fully deterministic (the reason is potential network issues in the early development phase). Given this situation, there is a risk that a malicious node runner can gain direct memory access (DMA) or utilize other means to read a process's memory. Thus, a decrypted value might be viewed during execution and exploited by a malicious actor using Maximal Extractable Value (MEV) techniques. Therefore, it is best to implement best practices.
+Decrypting is a risky operation. You should always consider that a malicious node runner might have DMA (direct memory access) or any other way to read the process' memory. Always assume that a node runner can see what is the decrypted value while it is being executed (before it's committed to a block) and, for example, use it for MEV.
 
 ### Decryption – Best Practice
 Follow these guidelines to maintain data security and integrity when using FHE.decrypt:
-- **View functions**: Decrypt in view functions only when the data is being accessed for read-only purposes.
-- **Transactions**: Decrypt in transactions only when absolutely certain that the data is no longer confidential. For instance, in a poker game application, during the roundup transaction, cards can be revealed without data leakage risk.
+- **View functions**: preferably, decrypt in view functions only when possible, for example when the data is being accessed for read-only purposes.
+- **Transactions**: use decryption in transactions only when you are absolutely certain that the data is no longer confidential. For instance, in a poker game application, during the roundup transaction, cards can be revealed without data leakage risk.
 
 
 ## Performance and Gas Usage
