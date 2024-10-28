@@ -10,7 +10,7 @@ We'll be making use of the FHE library and Fhenix Nitrogen Testnet to enable thi
 
 You can find all the completed code in our [example project repository](https://github.com/FhenixProtocol/erc20-tutorial-code). You can just skip there if you just want to see the final code.
 
-[//]: # (This example focuses on Javascript. If you're more of a python fan, check out the workshop available here: [https://github.com/zama-ai/ethcc23-workshop]&#40;https://github.com/zama-ai/ethcc23-workshop&#41;)
+[//]: # "This example focuses on Javascript. If you're more of a python fan, check out the workshop available here: [https://github.com/zama-ai/ethcc23-workshop](https://github.com/zama-ai/ethcc23-workshop)"
 
 ## What We'll Be Building
 

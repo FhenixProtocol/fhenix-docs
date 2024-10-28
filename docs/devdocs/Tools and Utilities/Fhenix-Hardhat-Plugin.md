@@ -1,4 +1,4 @@
-# 👷 Fhenix Hardhat Plugin 
+# 👷 Fhenix Hardhat Plugin
 
 Fhenix Hardhat Plugin is designed to extend your Hardhat environment with additional capabilities focused on Fhenix. It integrates seamlessly with your Hardhat projects to provide a local Fhenix environment, including customized network configuration and utilities for managing funds and permits within your blockchain applications.
 
@@ -48,20 +48,20 @@ import "fhenix-hardhat-docker";
 
 The plugin automatically adds a `localfhenix` network configuration to your Hardhat project. This configuration is designed for local development and includes settings such as gas estimates, accounts, and the local network URL.
 
-This network is chosen as the default once the plugin is imported. 
+This network is chosen as the default once the plugin is imported.
 If you want to use a different network, simply add `--network <custom_network>` to your hardhat commands, or set it as the default.
 
 If you want to use Fhenix Nitrogen Testnet (or a custom Fhenix network), you can add a new network configuration to your `hardhat.config.js` file:
 
 ```typescript
 const config: HardhatUserConfig = {
-    networks: {
-        fhenixNitrogen: {
-            url: "https://api.nitrogen.fhenix.zone",
-            chainId: 8008135,
-            accounts: mnemonic,
-        },
+  networks: {
+    fhenixNitrogen: {
+      url: "https://api.nitrogen.fhenix.zone",
+      chainId: 8008148,
+      accounts: mnemonic,
     },
+  },
 };
 
 export default config;

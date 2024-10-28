@@ -16,7 +16,7 @@ Please refer to the [Arbitrum documentation](https://docs.arbitrum.io/build-dece
 
 ### EVM Compatibility
 
-Fhenix is fully EVM compatible, up to and including the Cancun Upgrade. 
+Fhenix is fully EVM compatible, up to and including the Cancun Upgrade.
 This means that any contract that runs on Ethereum should run on Fhenix as well. We support Solidity compiler 0.8.26.
 
 ### Public Endpoints
@@ -37,7 +37,7 @@ We have public endpoints available for the Nitrogen Testnet, which can be used:
       </tr>
       <tr>
          <td>Chain ID</td>
-         <td>8008135</td>
+         <td>8008148</td>
       </tr>
       <tr>
          <td>Websocket</td>
@@ -78,5 +78,3 @@ The following contracts are deployed on Ethereum Sepolia and may be used by deve
         </td>
     </tr>
 </table>
-
-

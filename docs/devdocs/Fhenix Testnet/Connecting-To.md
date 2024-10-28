@@ -6,7 +6,7 @@ sidebar_position: 3
 
 Fhenix Nitrogen is the first publicly available FHE-based blockchain, and it is now live! Follow the instructions to connect to Fhenix Nitrogen Testnet.
 
-## Configuring MetaMask 
+## Configuring MetaMask
 
 1. Open MetaMask in your browser and click on the Ethereum network.
 2. Click **Add Network.**
@@ -15,12 +15,11 @@ Fhenix Nitrogen is the first publicly available FHE-based blockchain, and it is 
 4. Fill out the network details form. To add a custom network, fill in the following fields:
    1. **Network Name: Fhenix Nitrogen**
    2. **New RPC URL: https://api.nitrogen.fhenix.zone**
-   3. **Chain ID:** 8008135
-   4. **Currency Symbol: tFHE**
+   3. **Chain ID:** 8008148
+   4. **Currency Symbol: FHE**
    5. **Block Explorer URL: https://explorer.nitrogen.fhenix.zone**
 5. Once you fill out all the details, click **Save**.
 6. Now you are ready to switch to Fhenix Nitrogen Testnet. Tokens are available from the testnet faucet. Start building!
-
 
 ## API endpoints
 
@@ -38,7 +37,7 @@ Fhenix Nitrogen is the first publicly available FHE-based blockchain, and it is 
       </tr>
       <tr>
          <td>Chain ID</td>
-         <td>8008135</td>
+         <td>8008148</td>
       </tr>
       <tr>
          <td>Websocket</td>
@@ -49,7 +48,7 @@ Fhenix Nitrogen is the first publicly available FHE-based blockchain, and it is 
 
 ## Explorer
 
-* [https://explorer.nitrogen.fhenix.zone](https://explorer.nitrogen.fhenix.zone)
+- [https://explorer.nitrogen.fhenix.zone](https://explorer.nitrogen.fhenix.zone)
 
 ## Faucet
 
@@ -61,4 +60,4 @@ You may receive 0.1 tokens once every five minutes. If you need more tokens, ple
 The Nitrogen testnet is connected to the Sepolia testnet. You can use the bridge to move tokens between the two networks.
 If you require more tokens, you can use the bridge to move tokens from Sepolia to Nitrogen.
 
-* [https://bridge.nitrogen.fhenix.zone/](https://bridge.nitrogen.fhenix.zone/)
+- [https://bridge.nitrogen.fhenix.zone/](https://bridge.nitrogen.fhenix.zone/)

@@ -18,8 +18,8 @@ To read more about different FHE schemes, see our [FHE Overview Section](./FHE-O
 
 ## Fhenix Nitrogen Testnet
 
-The current Fhenix Nitrogen Testnet is the first public iteration of the Fhenix protocol. It is still an early build, and it has bugs (unfortunately) and many features that are still under development.
+The current Fhenix Nitrogen Testnet is the second public iteration of the Fhenix protocol. It is still an early build, and it can potentialy has bugs (unfortunately) and there are still features that are still under development.
 
-There are many challenges ahead and many problems to solve. However, we are excited to be working on this project, because it is potentially an innovative and disruptive technology in the blockchain space.
+There are still challenges ahead. However, we are excited to be working on this project, because it is potentially an innovative and disruptive technology in the blockchain space.
 
 What we write here is not set in stone. We are still considering the best way to move forward, and we are excited to have you here with us as we embark on this journey. Please let us know if you have any suggestions, ideas or comments. Feedback is always welcome. We are looking for ways to improve and for people to join us and contribute.

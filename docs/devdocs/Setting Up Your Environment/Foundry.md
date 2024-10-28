@@ -1,8 +1,8 @@
 # 🛠️ Foundry
 
 This tool will allow you to simulate development on the Fhenix network including Solidity native testing.
-The tool uses Foundry Cheatcodes to represent the execution of our Fhenix native precompiles. 
-Please be aware that the operations performed by using this template only simulate the behavior of real FHE operations, and will probably not be a good representation of performance, gas, etc. 
+The tool uses Foundry Cheatcodes to represent the execution of our Fhenix native precompiles.
+Please be aware that the operations performed by using this template only simulate the behavior of real FHE operations, and will probably not be a good representation of performance, gas, etc.
 
 The code is pretty new, and may contain bugs or edge-cases that we have not tested, so your feedback is very important for us! If you have any issues, comments or requests please open an issue
 in the Fhenix Foundry Template [Repository](https://github.com/FhenixProtocol/fhenix-foundry-template).
