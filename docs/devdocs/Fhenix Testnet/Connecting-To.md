@@ -15,7 +15,7 @@ Fhenix Nitrogen is the first publicly available FHE-based blockchain, and it is 
 4. Fill out the network details form. To add a custom network, fill in the following fields:
    1. **Network Name: Fhenix Nitrogen**
    2. **New RPC URL: https://api.nitrogen.fhenix.zone**
-   3. **Chain ID:** 8008147
+   3. **Chain ID:** 8008148
    4. **Currency Symbol: FHE**
    5. **Block Explorer URL: https://explorer.nitrogen.fhenix.zone**
 5. Once you fill out all the details, click **Save**.
@@ -37,7 +37,7 @@ Fhenix Nitrogen is the first publicly available FHE-based blockchain, and it is 
       </tr>
       <tr>
          <td>Chain ID</td>
-         <td>8008147</td>
+         <td>8008148</td>
       </tr>
       <tr>
          <td>Websocket</td>
