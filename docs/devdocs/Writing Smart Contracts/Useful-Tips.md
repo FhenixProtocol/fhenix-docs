@@ -22,9 +22,22 @@ When the `euintx` variable is not initialized, it is considered to be 0. Every F
 
 ## Re-encrypting a Value
 
-Re-encrypting a value is sometimes necessary in smart contracts. For example, consider a confidential tender system with four candidates. Each vote increases the tally using FHE.add, which is a cryptographic operation. If unauthorized monitoring of the database key representing this tally is occurring, changes can provide enough information to deduce who voted for whom. The ideal solution is to change all the keys, regardless of the vote cast, but how do we achieve this solution?
+Re-encrypting a value is sometimes necessary in smart contracts. For example, consider a confidential voting system with four candidates. Each vote increases the respective tally (using FHE addition, which is a cryptographic operation). If one monitors the (public!) database keys representing these tallies, even though a tally value is encrypted, it's enough to notice a change in the value to deduce which option got voted for. One solution is to change all the values, regardless of the vote cast - so anyone monitoring would not be able to tell which option got voted for. But how do we do that?
 
-Now, FHE encryption is non-deterministic, meaning that encrypting the same number twice (using non-trivial encryption) results in two different encrypted outputs. We leverage this feature and cryptographically add 0 to all tallies that should not be changed using FHE.add. This operation re-encrypts those values, resulting in new encrypted outputs in the database, effectively updating all keys without altering the actual tallies.
+FHE encryption is non-deterministic, meaning that encrypting the same number twice (using non-trivial encryption) results in two different encrypted outputs. Similarly, a computation on an encrypted number, **even if the computations does not change the underlying plaintext value**, changes the ciphertext. Without decrypting the number, one would not be able to tell if it actually changed or not. We leverage this feature and cryptographically add 0 to all tallies that should not be changed using FHE.add. This operation re-encrypts those values (or - changes the ciphertext), resulting in new encrypted outputs in the database, effectively updating all keys without changing the actual tallies.
+
+Example (simplified pseudo code):
+```solidity
+// This is bad
+t = getTallyToIncrement(userInput);
+tallies[t] = FHE.add(tallies[t], FHE.asEuint32(1));
+
+// This is good
+for (int i = 0; i < len(tallies); i++) {
+    ebool b = toIncrement(userInput, i);
+    tallies[t] = FHE.add(tallies[t], b); // if `b` is true, this will translate to `tally + 1`, otherwise `tally + 0`
+}
+```
 
 ## FHE.req()
 
