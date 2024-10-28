@@ -10,13 +10,15 @@ Casting a plaintext number to an encrypted one in a contract (i.e. `FHE.asEuintX
 
 Despite being obviously weaker than normal FHE encrypted numbers, Trivial Encryption can often be very useful. For example, when you're tallying votes in a contract; the tally for the option "Yes" may be encrypted, but everyone knows that you need to increment it by `1` for every incoming vote. Meaning, you can do `tally = tally + FHE.asEuint32(1)`.
 
-Trivially encrypted numbers are more efficient and will result in quicker and cheaper execution - so it's beneficial to use them whenever possible **while being careful to not compromise your apps's security**.
+Using trivially encrypted numbers is more efficient and will result in faster and cheaper execution - so it's beneficial to use them whenever possible **while being careful to not compromise your apps's security**.
 
 **Note:** to prevent improper use, Trivial Encryption is only available in contracts.
 
 ## Default Value of a Euint
 
-When the `euintx` variable is not initialized, it is considered to be 0. Every FHE function that receives an uninitialized `euintx` assumes that it is identical to `FHE.asEuintX(0)`. Now, `FHE.asEuintX(0)` is actually used quite often. Fhenix takes this frequent use into consideration and pre-calculates the values of `FHE.asEuintX(0)` during node initialization. Therefore, when `FHE.asEuintX(0)` is used during operation, the pre-calculated values are returned (which saves computing resources and gas).
+When the `euintx` variable is not initialized, it is considered to be 0. Every FHE function that receives an uninitialized `euintx` assumes that it is `FHE.asEuintX(0)`.
+
+`FHE.asEuintX(0)` is actually used quite often. Fhenix takes this frequent use into consideration and pre-calculates the values of `FHE.asEuintX(0)` during node initialization. Therefore, when `FHE.asEuintX(0)` is used during operation, the pre-calculated values are returned (which saves computing resources and gas).
 
 ## Re-encrypting a Value
 
