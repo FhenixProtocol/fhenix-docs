@@ -24,7 +24,7 @@ was plaintext, then it would be possible to simulate the execution and predict t
 When acting upon the resulting random numbers, it is important to keep the following
 scenario in mind.
 
-Suppose we have a simple game contract that you can send funds to, and with a probability of half,
+Suppose we have a simple game contract that you can send funds to, and with a probability of `P=0.5` (or, 50% chance),
 you will receive double the funds back.
 
 ```solidity
