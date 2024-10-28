@@ -41,10 +41,10 @@ The following code shows initializing an encrypted counter in a smart contract, 
     }
     ```
 
-### Vulnerability
-Note that when converting from plaintext to encrypted, the value is still in plaintext and exposed to the contract, as well as on the public blockchain. This type of conversion should only be used when plaintext data is not sensitive, and it is safe to expose on a public blockchain.
+### :warning: Important Security Note
+When converting from plaintext to encrypted (also called [**Trivial Encryption**](./Useful-Tips.md#trivial-encryption), the value is still in plaintext and exposed to the contract, as well as on the public blockchain. This type of conversion should only be used when plaintext data is not sensitive, and it is safe to expose on a public blockchain.
 
-## Best Practices​
+## Final Tips​
 - **Understand the Data Types**: Know the data types that you are working with and the implications of converting between them. Ensure that the conversion is logical and secure.
 - **Monitor Gas Usage**: Be aware of the gas costs associated with specific types of conversions, especially when functions are frequently called.
 - **Test Thoroughly**: Always test contracts with various scenarios to ensure that type conversions are behaving as expected.
