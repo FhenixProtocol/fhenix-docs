@@ -3,30 +3,23 @@ sidebar_position: 1
 title: Installation & Basics
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 ## Installation
 
 To get started with fhenix.js, you need to install it as a dependency in your JavaScript project. You can do this using npm (Node Package Manager) or Yarn. Open your terminal and navigate to your project's directory, then run the following:
 
-
 <Tabs>
-    <TabItem value="yarn" label="yarn">
-        ```bash
-        yarn add fhenixjs
-        ```
-    </TabItem>
-    <TabItem value="npm" label="npm">
-        ```
-        npm install fhenixjs
-        ```
-    </TabItem>
-    <TabItem value="pnpm" label="pnpm">
-        ```
-        pnpm add fhenixjs
-        ```
-    </TabItem>
+  <TabItem value="yarn" label="yarn">
+    ```bash yarn add fhenixjs ```
+  </TabItem>
+  <TabItem value="npm" label="npm">
+    ``` npm install fhenixjs ```
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    ``` pnpm add fhenixjs ```
+  </TabItem>
 </Tabs>
 
 ## Usage
@@ -35,14 +28,14 @@ When initializing a new Fhenix Client we need to inject it with a provider - thi
 ethers, hardhat, web3js, etc.
 
 ```javascript
-import { FhenixClient } from 'fhenixjs';
-import { JsonRpcProvider } from 'ethers';
+import { FhenixClient } from "fhenixjs";
+import { JsonRpcProvider } from "ethers";
 
 // initialize your web3 provider
-const provider = new JsonRpcProvider('https://api.helium.fhenix.zone');
+const provider = new JsonRpcProvider("https://api.nitrogen.fhenix.zone");
 
 // initialize Fhenix Client
-const client = new FhenixClient({provider});
+const client = new FhenixClient({ provider });
 
 // to encrypt data for a Fhenix contract
 let encrypted = await client.encrypt(5, EncryptionTypes.uint8);
