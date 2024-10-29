@@ -139,7 +139,7 @@ Here we can see a few interesting things:
 
 `transferEncrypted(address to, bytes calldata encryptedAmount)` is a public function that transfers encrypted tokens from the function caller to the to address. It converts the encrypted amount into the encrypted integer form `euint32` using the `FHE.asEuint32(encryptedAmount)` function and then calls `_transferEncrypted`.
 The function `_transferEncrypted(address to, euint32 amount)` is an internal function that just calls _transferImpl.
-`_transferImpl(address from, address to, euint32 amount)` performs the actual transfer. It checks if the sender has enough tokens, then adds the amount to the to address encrypted balance and subtracts the same amount from the from address encrypted balance.
+`_transferImpl(address from, address to, euint32 amount)` performs the actual transfer. It checks if the sender has enough tokens, then adds the amount to the address encrypted balance and subtracts the same amount from the address encrypted balance.
 
 ```javascript
 function transferEncrypted(address to, inEuint32 calldata encryptedAmount) public {
