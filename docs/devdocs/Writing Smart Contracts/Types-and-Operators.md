@@ -95,7 +95,7 @@ The `ebool` type is not a real boolean type. It is implemented as a `euint8`
 
 
 :::tip
-A documented documentation of each and every function in FHE.sol (including inputs and outputs) can be found in [FHE.sol](../Solidity%20API/FHE.md)
+A documentation of every function in FHE.sol (including inputs and outputs) can be found in [FHE.sol](../Solidity%20API/FHE.md)
 :::
 
 All operations supported by FHE.sol are listed in the table below. For performance reasons, not all operations are supported for all types.
