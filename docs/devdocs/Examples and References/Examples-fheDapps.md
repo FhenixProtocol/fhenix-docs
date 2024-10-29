@@ -65,7 +65,7 @@ Here you can find a list of some cool apps that you can use as a reference
 </tr>
 <tr>
 <td>Unique Bid Auction</td>
-<td><a href="https://github.com/Syndika-Corp/fhenix-contracts">View on Github</a></td>
+<td><a href=""></a></td>
 <td><a href="https://fhenix.netlify.app/">Bids_Party</a><br /></td>
 <td>A showcase of a blind bid auction using a unique bidding mechanism</td>
 </tr>
