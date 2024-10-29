@@ -33,12 +33,14 @@ This is done in 3 steps: generating a permit, querying the contract and unsealin
 #### 1. Creating a Permit
 
 ```javascript
-import { FhenixClient, generatePermit } from 'fhenixjs';
+import { FhenixClient, getPermit } from 'fhenixjs';
 
 const provider = new ethers.JsonRpcProvider('https://api.helium.fhenix.zone/');
 const client = new FhenixClient({ provider });
 
-const permit = await generatePermit(contractAddress, provider);
+
+const permit = await getPermit(contractAddress, provider);
+client.storePermit(permit);
 ```
 
 :::tip[Did you know?]
@@ -72,16 +74,18 @@ Permits are currently limited to support a single contract
 #### Putting it all Together
 
 ```typescript
-import { FhenixClient, generatePermit } from 'fhenixjs';
+import { FhenixClient, getPermit } from 'fhenixjs';
 import { JsonRpcProvider } from 'ethers';
 
 const provider = new ethers.JsonRpcProvider('https://api.helium.fhenix.zone/');
 const client = new FhenixClient({provider});
 
-const permit = await generatePermit(contractAddress, provider);
-const permission = client.extractPermitPermission(permit);
+const permit = await getPermit(contractAddress, provider);
+client.storePermit(permit);
 
+const permission = client.extractPermitPermission(permit);
 const response = await contract.balanceOf(permission);
+
 const plaintext = client.unseal(contractAddress, response);
 
 console.log(`My Balance: ${plaintext}`)
