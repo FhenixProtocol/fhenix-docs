@@ -57,7 +57,6 @@ The `EncryptedUint` types sound scary, but are actually pretty simple. It's just
 ```typescript
 export interface EncryptedNumber {
   data: Uint8Array;
-  securityZone: number; // defaults to 0
 }
 
 export interface EncryptedUint8 extends EncryptedNumber {}
