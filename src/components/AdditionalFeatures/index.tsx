@@ -8,7 +8,7 @@ import Link from '@docusaurus/Link';
 
 export function GettingStartedFrame(): JSX.Element {
   const { colorMode  } = useColorMode();
-  const iframeSrc = "https://getting-started.helium.fhenix.zone" + (colorMode === 'light' ? "?isLight=1" : "");
+  const iframeSrc = "https://getting-started.nitrogen.fhenix.zone" + (colorMode === 'light' ? "?isLight=1" : "");
 
   return (
     <section className={styles.additionalFeatures}>

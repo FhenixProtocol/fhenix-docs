@@ -2,16 +2,15 @@
 sidebar_position: 5
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 #### Network Encryption Key
 
 Each Fhenix instance uses its own Encryption Key. This key is special, and allows users to encrypt their data in such a way that will match the encryption of all the other data on the network.
 
 :::note[**Did You Know?**]
- The public key we refer to here is a _**global key**_ that is used to encrypt data being sent to the network. It is not the same as the _transactional public key_ that is used by fhenix.js to unseal data!
+The public key we refer to here is a _**global key**_ that is used to encrypt data being sent to the network. It is not the same as the _transactional public key_ that is used by fhenix.js to unseal data!
 :::
 
 If you're using fhenix.js you don't need to worry about this, as the public key fetching is already done automatically by the library.
@@ -43,7 +42,7 @@ let result = await web3.eth.call({
 </TabItem>
 <TabItem value="cast (Foundry)" label="cast (Foundry)">
 ```shell
-cast call 0x0000000000000000000000000000000000000080 --rpc-url "https://api.helium.fhenix.zone" "getNetworkPublicKey()"
+cast call 0x0000000000000000000000000000000000000080 --rpc-url "https://api.nitrogen.fhenix.zone" "getNetworkPublicKey()"
 ```
 </TabItem>
 </Tabs>
