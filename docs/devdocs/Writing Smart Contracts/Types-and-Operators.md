@@ -104,7 +104,6 @@ Please refer to the table below for a comprehensive list of supported operations
 
 Note that all functions are supported in both direct function calls and library bindings. However, operator overloading is only supported for the operations listed in the table (solidity please support operator overloading for boolean return types!).
 
-
 | Name                  | FHE.sol function  | Operator  |  euint8  | euint16  | euint32  |  euint64  |  euint128   |   euint256    |  ebool   |  eaddress   |
 |-----------------------|-------------------|:---------:|:--------:|:--------:|:--------:|:---------:|:-----------:|:-------------:|:--------:|:-----------:|
 | Addition              | `add`             |    `+`    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
