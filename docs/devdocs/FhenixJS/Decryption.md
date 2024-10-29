@@ -12,7 +12,7 @@ The data is returned to the user using [sealed box encryption ](https://bitbeans
 
 :::tip[Don't Want to Seal?]
 Fhenix supports standard decryption as well. Mostly suited for public data, an unsealed plaintext value can be returned from a contract.
-You can read more about how to do this [here](#../).
+You can read more about how to do this [here](../Writing%20Smart%20Contracts/Returning-Data.md).
 :::
 
 ### Encrypted Values & Permits
@@ -25,7 +25,7 @@ The main difference with inEuint* is that you can be explicit with what is the e
 
 A `Permit` is a data structure that helps contracts know who is trying to call a specific function. 
 
-The fhenix.js Javascript library includes methods to support creating parameters for values that require [Permits & Access Control](../Encryption and Privacy/Permits-Access-Control.md). These methods can help creating ephemeral transaction keys, which are used by the smart contract to create a secure encryption channel to the caller.
+The fhenix.js Javascript library includes methods to support creating parameters for values that require [Permits & Access Control](../Encryption%20and%20Privacy/Permits-Access-Control.md). These methods can help creating ephemeral transaction keys, which are used by the smart contract to create a secure encryption channel to the caller.
 Similarly to decryption, this usage can be implemented by any compliant library, but we include direct support in fhenix.js.&#x20;
 
 This is done in 3 steps: generating a permit, querying the contract and unsealing the data.
@@ -33,14 +33,12 @@ This is done in 3 steps: generating a permit, querying the contract and unsealin
 #### 1. Creating a Permit
 
 ```javascript
-import { FhenixClient, getPermit } from 'fhenixjs';
+import { FhenixClient, generatePermit } from 'fhenixjs';
 
-const provider = new ethers.JsonRpcProvider('https://api.helium.fhenix.zone/');
+const provider = new ethers.JsonRpcProvider('https://api.nitrogen.fhenix.zone/');
 const client = new FhenixClient({ provider });
 
-
-const permit = await getPermit(contractAddress, provider);
-client.storePermit(permit);
+const permit = await generatePermit(contractAddress, provider);
 ```
 
 :::tip[Did you know?]
@@ -49,7 +47,7 @@ When you create a permit it gets stored in `localstorage`. This makes permits ea
 
 #### 2. Querying the Contract
 
-We recommend that contracts implement the Permit/Permission interfaces (though this is not strictly required!).
+We recommend that contracts implement the Permit/Permission interfaces (though this is not strictly required).
 In this case, we can easily inject our permit into the function call.
 
 ```javascript
@@ -74,18 +72,16 @@ Permits are currently limited to support a single contract
 #### Putting it all Together
 
 ```typescript
-import { FhenixClient, getPermit } from 'fhenixjs';
+import { FhenixClient, generatePermit } from 'fhenixjs';
 import { JsonRpcProvider } from 'ethers';
 
-const provider = new ethers.JsonRpcProvider('https://api.helium.fhenix.zone/');
+const provider = new ethers.JsonRpcProvider('https://api.nitrogen.fhenix.zone/');
 const client = new FhenixClient({provider});
 
-const permit = await getPermit(contractAddress, provider);
-client.storePermit(permit);
-
+const permit = await generatePermit(contractAddress, provider);
 const permission = client.extractPermitPermission(permit);
-const response = await contract.balanceOf(permission);
 
+const response = await contract.balanceOf(permission);
 const plaintext = client.unseal(contractAddress, response);
 
 console.log(`My Balance: ${plaintext}`)

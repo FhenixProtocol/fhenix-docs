@@ -11,8 +11,8 @@ description: How to handle encrypted data coming from the user
 Fhenix’s Fully Homomorphic Encryption (FHE) smart contracts handle encrypted data input differently from standard Solidity smart contracts.
 
 First, Fhenix has different data types: boolean, integer and user input.
-Second, inEuint and inEbool are used for handling input data, whereas euint and Ebool are used for already processed data within the contract.
-Third, conversion is required from inEuint to euint to ensure that only correctly formatted encrypted user input is processed. This is done using a helper function: `FHE.asEuintxx`.
+Second, `inEuint` and `inEbool` are used for handling input data, whereas `euint` and `ebool` are used for already processed data within the contract.
+Third, conversion is required from `inEuint` to `euint` to ensure that only correctly formatted encrypted user input is processed. This is done using a helper function: `FHE.asEuintxx`.
 Finally, follow best practices. Try to minimize storing large quantities of encrypted data on-chain & optimize computation to lower gas costs; process data as needed. Also, use structured types, and avoid using raw bytes to handle encrypted data input.
 
 ## Encrypted Data Types
@@ -78,7 +78,7 @@ Conversion from `inEuint` (or `inEbool`, `inEaddress`) to `euint` (`ebool`, `ead
 This is done using the `FHE.asEuintXX`, `FHE.asEbool` or `FHE.asEaddress` functions, where `XX` is the bit size of the encrypted data. The example above uses the `FHE.asEuint8` helper function.
 
 ### Gas Cost Implications
-Attempting to store `inEuint`, `inEbool` or `inEaddress types directly in storage can lead to prohibitively high gas costs due to the large size of encrypted data. It's generally recommended to avoid storing these directly and instead process them as needed.
+Attempting to store `inEuint`, `inEbool` or `inEaddress` types directly in storage can lead to prohibitively high gas costs due to the large size of encrypted data. It's generally recommended to avoid storing these directly and instead process them as needed.
 
 ### Best Practices – Use Structured Types
 Ensure data integrity and security of smart contract operation when handling encrypted input. Use the structured `inEuint`, `inEbool` or `inEaddress` types for clearer and safer code, and be mindful of gas costs when designing your contract's data handling strategies. Thorough testing and consideration of security implications are essential in maintaining the robustness and reliability of your FHE-based smart contracts.

@@ -13,6 +13,7 @@ The following environments are recommended for development on Fhenix:
 - [Fhenix Hardhat Example](./Hardhat.md)
 - [Fhenix with Remix](./Remix.md)
 - [Gitpod Environment](./Gitpod.mdx)
+- [Foundry](./Foundry.md)
 
 :::note[Note]
 The main developer tools are all based on Javascript & Solidity, but we have open bounties to add support for Python & Vyper!

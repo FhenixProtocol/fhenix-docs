@@ -1,4 +1,5 @@
-# 🫷 Permits & Access Control
+# 📜 Permits & Access Control
+
 
 In a Fully Homomorphic Encryption (FHE) framework, all data stored in a contract's storage is encrypted. Access control involves granting selective access to data by authorized parties while restricting access to unauthorized users.
 
@@ -21,13 +22,21 @@ The inclusion of this public key into the permit enables a secure process of dat
 
 #### How to Generate a Permit
 
-Permits are generated using the `getPermit` method in `fhenix.js`. This method requires the following parameters:
+Permits are generated using the `generatePermit` method in `fhenix.js`. This method receives the following parameters:
 
 * `contractAddress` (required, string): The address of the contract.
-* `provider` (required): An `ethers` (or compatible) object that can sign EIP-712 formatted data. (Note that if you want to unseal data using your wallet's encryption key you can't use "JsonRpcProvider")
+* `provider` (optional): An `ethers` (or compatible) object that can sign EIP-712 formatted data. (Note that if you want to unseal data using your wallet's encryption key you can't use "JsonRpcProvider")
+* `signer` (optional): Another `ethers` (or compatible) signer if you want to use a different signer than the one in the provider (chain-id requests are still made via the provider)
 
 ```javascript
-const permit = await getPermit(contractAddress);
+const permit = await generatePermit(contractAddress);
+
+// passing a custom signer
+let permit = await fhenixjs.generatePermit(
+    contractAddress,
+    undefined,         // use the internal provider
+    signer,            // created from, e.g. `ethers.getSigners()[0]`
+);
 ```
 
 #### What is a Permission?
@@ -56,9 +65,8 @@ import { FhenixClient, getPermit } from "fhenixjs";
 
 const provider = new BrowserProvider(window.ethereum);
 const client = new FhenixClient({ provider });
-const permit = await getPermit(contractAddress, provider);
+const permit = await generatePermit(contractAddress, provider);
 const permission = client.extractPemitPermissions(permit);
-client.storePermit(permit); // Stores a permit for a specific contract address.
 const response = await contract.connect(owner).getValue(permission); // Calling "getValue" which is a view function in "contract"
 const plaintext = await client.unseal(contractAddress, response);
 ```

@@ -49,7 +49,7 @@ This means that we can consume sealed data directly from Metamask, which provide
 
 Fetch an address's public key using the `eth_getEncryptionPublicKey` method, seal the data for that specific public key (either as a permit or by using the public key directly), and then use Metamask's `eth_decrypt` call to provide a guided decryption experience.
 
-:::danger[Warning]
+:::warning[Warning]
 Metamask's `eth_getEncryptionPublicKey` and `eth_decrypt` methods are deprecated. We provide these examples to demonstrate compatibility with native wallet encryption/decryption procedures. We aim to maintain compatibility as new standards emerge for encryption on Ethereum.
 :::
 
@@ -98,4 +98,4 @@ async unseal() {
 }
 ```
 
-Taken from the [encryption & unsealing tool](https://github.com/FhenixProtocol/fhenix-enc-tool/blob/master/src/App.vue)
+Taken from the [encryption & unsealing tool](https://encrypt.fhenix.zone/)

@@ -20,7 +20,7 @@ These components are layered together to provide a modular approach, that allows
 
 The Core Blockchain is the base layer of the Fhenix Protocol. It is based on Arbitrum Nitro, which is a Layer 2 scaling solution for Ethereum. Arbitrum Nitro is a rollup chain that uses a combination of fraud proofs and optimistic rollups to provide a scalable and secure environment for smart contracts.
 
-The Core Blockchain is responsible for processing transactions, executing smart contracts, and maintaining the state of the blockchain. It is also responsible for managing the Fhenix token, which is used to pay for gas fees and other services on the network.
+The Core Blockchain is responsible for processing transactions, executing smart contracts, and maintaining the state of the blockchain.
 
 ### FheOS
 
