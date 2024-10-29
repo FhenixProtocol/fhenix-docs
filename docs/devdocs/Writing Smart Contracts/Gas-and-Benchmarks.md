@@ -1,6 +1,6 @@
 # 🔥 Gas and Benchmarks
 
-This section will list the gas costs for every operation based on it's inputs.
+This section will list the gas costs for every operation based on its inputs.
 The gas prices are subject to change based on usage and performance.
 
 :::tip
