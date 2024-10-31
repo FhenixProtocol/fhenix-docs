@@ -9,7 +9,7 @@ We compiled a list of a few templates that you can use as a reference to build y
 
 https://github.com/FhenixProtocol/fhenix-hardhat-example
 
-Has a basic contract, some tasks and a simple frontend (TODO: copy over from playground).
+Has a basic contract, some tasks and a simple frontend.
 
 ### Nuxt 3 + Fhenixjs + Ethers.js + Bootstrap Starter
 

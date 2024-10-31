@@ -1,8 +1,8 @@
 # 🛠️ Foundry
 
 This tool will allow you to simulate development on the Fhenix network including Solidity native testing.
-The tool uses Foundry Cheatcodes to represent the execution of our Fhenix native precompiles. 
-Please be aware that the operations performed by using this template only simulate the behavior of real FHE operations, and will probably not be a good representation of performance, gas, etc. 
+The tool uses Foundry Cheatcodes to represent the execution of our Fhenix native precompiles.
+Please be aware that the operations performed by using this template only simulate the behavior of real FHE operations, and will probably not be a good representation of performance, gas, etc.
 
 The code is pretty new, and may contain bugs or edge-cases that we have not tested, so your feedback is very important for us! If you have any issues, comments or requests please open an issue
 in the Fhenix Foundry Template [Repository](https://github.com/FhenixProtocol/fhenix-foundry-template).
@@ -128,7 +128,7 @@ operations:
 - Ciphertext Access – The mocked FHE operations do not enforce access control restrictions on ciphertexts, which allows
   any user to access any mocked "ciphertext." On a real network, such operations could fail.
 - Decrypts during Gas Estimations: When performing a decrypt (or other data revealing operations) during gas estimation
-  on the Helium testnet or Localfhenix, the operation returns a default value, as the gas estimation process does not
+  on the Nitrogen testnet or Localfhenix, the operation returns a default value, as the gas estimation process does not
   have access to the precise decrypted data. This can cause the transaction to fail at this stage, if the decrypted data
   is used in a way that would trigger a transaction revert (e.g., when a require statement depends on it).
 - Security – The security provided by the mocked FHE operations does not represent the high level of security offered by

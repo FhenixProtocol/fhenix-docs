@@ -6,10 +6,9 @@ To get up and running with Remix, you should follow a few easy steps:
 2. Import `FHE.sol` from your contract
 3. Optionally, use the Fhenix Remix Plugin to make your life a bit easier
 
-
 ## 1. Add Fhenix to Metamask
 
-Follow the instructions in the [Fhenix Helium Testnet](../Fhenix%20Testnet/Connecting-To.md) to add Fhenix to Metamask.
+Follow the instructions in the [Fhenix Nitrogen Testnet](../Fhenix%20Testnet/Connecting-To.md) to add Fhenix to Metamask.
 
 ## 2. Import FHE.sol
 
