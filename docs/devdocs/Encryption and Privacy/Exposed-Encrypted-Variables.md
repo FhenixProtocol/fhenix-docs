@@ -1,4 +1,4 @@
-# Exposed Encrypted Variables
+# 🔎 Encrypted Variables - Preventing Exposure
 
 Ensuring that encrypted data and variables are not leaked is important when working with Fhenix. A common oversight when working with encrypted variables is revealing them to other contracts. Lets take a look at a scenario that leaks encrypted data:
 
@@ -32,11 +32,13 @@ All contracts on the Fhenix network share an encryption key, therefore an encryp
 
 This is not inherently wrong, and many operations will require encrypted variables to be shared between contracts, but care must be taken to prevent open access to encrypted variables.
 
-### Checking for Exposed Variables
+### Hardhat Task
 
-We have built a hardhat task in the `fhenix-hardhat-plugin` package. If you are using this plugin, your contracts will automatically be analyzed when they are compiled to check for any exposed encrypted variables.
+The `fhenix-hardhat-plugin` package contains a task that checks your contracts for any exposed encrypted variables. This task is run automatically when your contracts are compiled, but can also be run manually.
 
-The following contract exposes encrypted variables in 3 ways. Below is the output of the encrypted variable checker in `fhenix-hardhat-plugin`
+#### Task Example
+
+The following contract exposes encrypted variables in 3 ways.
 
 ```solidity
 pragma solidity >=0.8.13 <0.9.0;
@@ -77,6 +79,10 @@ contract ContractWithExposedVariables {
 }
 ```
 
+#### Output
+
+Below is the output of the task when analyzing the above `ContractWithExposedVariables.sol`
+
 <pre>
 <b>fhenix-hardhat-plugin:CheckExposedEncryptedVars</b> checking for exposed encrypted variables....
 
@@ -95,3 +101,17 @@ contract ContractWithExposedVariables {
         dealer - struct ContractWithExposedVariables.Dealer
           eFlopCards - <b style="color:orangered">euint8[]</b>
 </pre>
+
+#### Manual Task Execution
+
+The task can be run manually with the command:
+
+```
+npx hardhat task:fhenix:checkExposedEncryptedVars
+```
+
+Or as a part of a hardhat compilation:
+
+```
+npx hardhat compile
+```
