@@ -115,8 +115,7 @@ function play() external payable {
     require(msg.value > 0, "You need to send some FHE");
     require(userAmount[msg.sender] == 0, "Already playing")
 
-    // Store the amount played and the outcome
-    userAmount[msg.sender] = msg.value;
+    // Store the amount played and the outcome to be revealed later
     userData[msg.sender] = UserData({
         amount: msg.value,
         outcome: FHE.randomEuint8(),
