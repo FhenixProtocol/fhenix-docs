@@ -102,8 +102,14 @@ function play() callerIsUser {
 If your randomness consumer function _must_ be callable by another contract, it is recommended to split the consumption and reveal into separate functions:
 
 ```solidity
-mapping (address => ebool) private userAmount;
-mapping (address => euint8) private userOutcome;
+struct UserData {
+    uint256 amount;
+    euint8 outcome;
+    uint256 block;
+    bool revealed;
+}
+
+mapping (address => UserData) private userData;
 
 function play() external payable {
     require(msg.value > 0, "You need to send some FHE");
@@ -111,20 +117,29 @@ function play() external payable {
 
     // Store the amount played and the outcome
     userAmount[msg.sender] = msg.value;
-    userOutcome[msg.sender] = FHE.randomEuint8();
+    userData[msg.sender] = UserData({
+        amount: msg.value,
+        outcome: FHE.randomEuint8(),
+        block: block.number,
+        revealed: false
+    });
 }
 
 function reveal() external {
-    uint8 outcomeDecrypted = userOutcome[msg.sender].decrypt();
+    UserData storage data = userData[msg.sender];
 
-    // If the outcome is even, send double the value back to the sender
+    // Ensure that random number cannot be consumed and revealed in the same block
+    require(block.number > data.block, "Cannot reveal in same block");
+    require(!data.revealed, "Already revealed");
+
+    uint8 outcomeDecrypted = data.outcome.decrypt();
     if (outcomeDecrypted % 2 == 0) {
-        uint prize = userAmount[msg.sender] * 2;
-        require(address(this).balance >= prize, "Contract does not have enough balance");
+        uint256 prize = data.amount * 2;
+        require(address(this).balance >= (prize), "Contract does not have enough balance");
         payable(msg.sender).transfer(prize);
-        userAmount[msg.sender] = 0;
-        userOutcome[msg.sender] = FHE.asEbool(false);
     }
+
+    data.revealed = true;
 }
 ```
 
