@@ -113,7 +113,7 @@ mapping (address => UserData) private userData;
 
 function play() external payable {
     require(msg.value > 0, "You need to send some FHE");
-    require(userAmount[msg.sender] == 0, "Already playing")
+    require(userData[msg.sender].amount == 0, "Already playing")
 
     // Store the amount played and the outcome to be revealed later
     userData[msg.sender] = UserData({
@@ -138,6 +138,7 @@ function reveal() external {
         payable(msg.sender).transfer(prize);
     }
 
+    data.amount = 0;
     data.revealed = true;
 }
 ```
