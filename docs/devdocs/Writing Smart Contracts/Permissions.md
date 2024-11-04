@@ -10,7 +10,7 @@ The `Permissioned` contract is an abstract Solidity contract that leverages EIP-
 
 ## Use Cases
 
-One of the common use cases for such access control is in scenarios where sensitive information must be retrieved from a contract but should not be publicly accessible. For example, a contract managing private user data may implement view functions which require a signature to confirm the identity of the requester. This ensures that only the user or an authorized party can access that user's data.
+One of the common use cases for such access control is in scenarios where sensitive information must be retrieved from a contract but should not be publicly accessible. For example, a contract managing private user data may implement view functions that require a signature to confirm the identity of the requester. This ensures that only the user or an authorized party can access that user's data.
 
 ## How to Use
 

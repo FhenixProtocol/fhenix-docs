@@ -14,7 +14,7 @@ The library provides a type system that is checked both at compile time and at r
 
 We currently support encrypted integers of bit length up to 256 bits and special types such as `ebool` and `eaddress`.
 
-The encrypted integers behave as much as possible as Solidity's integer types. However, behaviour such as "revert on overflow" is not supported as this would leak some information of the encrypted integers. Therefore, arithmetic on `euint` types is [unchecked](https://docs.soliditylang.org/en/latest/control-structures.html#checked-or-unchecked-arithmetic), i.e. there is wrap-around on overlow.
+The encrypted integers behave as much as possible as Solidity's integer types. However, behavior such as "revert on overflow" is not supported as this would leak some information of the encrypted integers. Therefore, arithmetic on `euint` types is [unchecked](https://docs.soliditylang.org/en/latest/control-structures.html#checked-or-unchecked-arithmetic), i.e. there is wrap-around on overlow.
 
 In the back-end, encrypted integers are FHE ciphertexts. The library abstracts away the ciphertexts and presents pointers to ciphertexts, or ciphertext handles, to the smart contract developer. The `euint`, `ebool` and `eaddress` types are _wrappers_ over these handles.
 <table>
@@ -95,7 +95,7 @@ The `ebool` type is not a real boolean type. It is implemented as a `euint8`
 
 
 :::tip
-A documented documentation of each and every function in FHE.sol (including inputs and outputs) can be found in [FHE.sol](../Solidity%20API/FHE.md)
+A documentation of every function in FHE.sol (including inputs and outputs) can be found in [FHE.sol](../Solidity%20API/FHE.md)
 :::
 
 All operations supported by FHE.sol are listed in the table below. For performance reasons, not all operations are supported for all types.
@@ -115,8 +115,11 @@ Note that all functions are supported in both direct function calls and library 
 | Bitwise Xor           | `xor`             |    `^`    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    | <g>✔</g> |     n/a     |
 | Division              | `div`             |    `/`    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <r>✘</r>  |  <r>✘</r>   |   <r>✘</r>    |   n/a    |     n/a     |
 | Remainder             | `rem`             |    `%`    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <r>✘</r>  |  <r>✘</r>   |   <r>✘</r>    |   n/a    |     n/a     |
+| Square                | `square`          |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <r>✔</r>  |  <r>✘</r>   |   <r>✘</r>    |   n/a    |     n/a     |
 | Shift Right           | `shr`             |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
 | Shift Left            | `shl`             |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
+| Rotate Right          | `ror`             |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
+| Rotate Left           | `rol`             |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
 | Equal                 | `eq`              |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <g>✔</g>    | <g>✔</g> |  <g>✔</g>   |
 | Not equal             | `ne`              |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <g>✔</g>    | <g>✔</g> |  <g>✔</g>   |
 | Greater than or equal | `gte`             |    n/a    | <g>✔</g> | <g>✔</g> | <g>✔</g> | <g>✔</g>  |  <g>✔</g>   |   <r>✘</r>    |   n/a    |     n/a     |
