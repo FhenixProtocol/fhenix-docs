@@ -35,6 +35,13 @@ const config: Config = {
       'classic',
       {
         docs: {
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: 'Nitrogen',
+              path: '.'
+            }
+          },
           sidebarPath: './sidebars.ts',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -71,7 +78,7 @@ const config: Config = {
         alt: 'Fhenix',
         src: 'img/logo-black.svg',
         srcDark: 'img/logo-white.svg',
-        href: 'https://fhenix.io',        
+        href: 'https://fhenix.io',
       },
       items: [
         {
@@ -93,6 +100,10 @@ const config: Config = {
           sidebarId: 'docsSidebar',
           position: 'left',
           label: 'Developer Docs',
+        },
+        {
+          type: "docsVersionDropdown",
+          position: 'right'
         },
         // {
         //   type: 'docSidebar',
@@ -176,7 +187,7 @@ const config: Config = {
 
       // Public API key: it is safe to commit it
       apiKey: '7053edb0c71f9da5171b05b1836adf78',
-      
+
       indexName: 'fhenix',
 
       // Optional: see doc section below
