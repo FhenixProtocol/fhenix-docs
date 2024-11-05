@@ -88,7 +88,7 @@ Below is the output of the task when analyzing the above `ContractWithExposedVar
 
   <b style="color:orangered">contracts/ContractWithExposedVariables.sol:ContractWithExposedVariables</b>
 
-    <b/>eUserBalances(address)</b> exposes 1 encrypted variables:
+    <b>eUserBalances(address)</b> exposes 1 encrypted variables:
       pos-0 - <b style="color:orangered">euint8</b>
 
     <b/>getUserBalance(address)</b> exposes 1 encrypted variables:
