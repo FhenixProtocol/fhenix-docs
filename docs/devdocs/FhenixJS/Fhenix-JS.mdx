@@ -6,6 +6,32 @@ title: Installation & Basics
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
+## Overview
+
+Fhenix.js is a TypeScript package designed to enable seamless interaction between clients and the Fhenix blockchain. It is an essential component for engineers working with Fhenix-enabled smart contracts, as it facilitates the encryption and decryption processes required for secure data handling in decentralized applications (dApps). Fhenix.js ensures that data remains private throughout its journey from input to output in the blockchain ecosystem.
+Fhenix-enabled contracts require three primary modifications to the client/frontend:
+
+* Encrypting Input Data: Before passing data to the smart contract, input must be encrypted to ensure its confidentiality. To read more about encrypted inputs, go [here](./../Writing%20Smart%20Contracts/User-Inputs.md).
+* Creating Permits and Permissions: The client must generate permits and permissions that determine who can interact with or view the data. Read more about [Permissions](./../Writing%20Smart%20Contracts/Permissions.md).
+* Unsealing Output Data: After the contract processes the data, the client must decrypt the output for it to be used or displayed. For more, refer to our page on [Outputs](./../Writing%20Smart%20Contracts/Returning-Data.md).
+
+Fhenix.js allows encryption to begin and end privately in a dApp, while FHE-enabled contracts do work on and with these encrypted values.
+
+## Mental Model
+
+To understand how **fhenix.js** fits into the Fhenix framework, we will create a simple mental model to show how data moves through Fhenix-powered dApps.
+
+Consider a smart contract called "**Counter**". Each user has an individual counter, and users increment and read their own counters with complete privacy. In this example, a **public key** is like a lock, and a **private key** is the corresponding key to unlock it.
+
+### Adding to the User’s Counter
+
+When users want to add a value to their counter, say "5," they first place this value inside a sort-of "box". Using fhenix.js, this box is secured by locking it with Fhenix blockchain’s **public key** (encryption). The locked box is then sent to the smart contract. Thanks to Fully Homomorphic Encryption (FHE), Fhenix can perform mathematical operations directly on these sealed boxes—without accessing the raw data inside. So, the user's encrypted value, "5," can be added to the user’s encrypted counter while remaining private.
+
+### Retrieving the User’s Counter
+
+To retrieve the counter value, the user needs to read the data inside the box without breaking the encryption. Here’s the clever part: the user sends a second “lock” (their own public key) along with the request to read its data. This second lock is applied to the box (now the box has two locks). Fhenix can now remove its own lock (the blockchain’s public key), leaving the box secured by only the user’s public key. The box remains locked and the data remains private, but now only the user can open it using its private key.
+
+
 ## Installation
 
 To get started with fhenix.js, you need to install it as a dependency in your JavaScript project. You can do this using npm (Node Package Manager) or Yarn. Open your terminal and navigate to your project's directory, then run the following:
@@ -22,10 +48,10 @@ To get started with fhenix.js, you need to install it as a dependency in your Ja
   </TabItem>
 </Tabs>
 
-## Usage
+## Setup
 
-When initializing a new Fhenix Client we need to inject it with a provider - this can be a provider from any of your favorite web3 libraries -
-ethers, hardhat, web3js, etc.
+To use **fhenix.js** for interacting with FHE-enabled Fhenix smart contracts, the `FhenixClient` must be initialized. This client handles key operations such as encrypting input data, creating permits, and decrypting output data from the blockchain.
+First, the client must be initialized. Below is an example setup:
 
 ```javascript
 import { FhenixClient } from "fhenixjs";
@@ -37,21 +63,170 @@ const provider = new JsonRpcProvider("https://api.nitrogen.fhenix.zone");
 // initialize Fhenix Client
 const client = new FhenixClient({ provider });
 
-// to encrypt data for a Fhenix contract
-let encrypted = await client.encrypt(5, EncryptionTypes.uint8);
-
-// ...
-// contract logic goes here
-// ...
-
-// to unseal data returned from a Fhenix contract
-const cleartext = client.unseal(contractAddress, sealed);
 ```
 
-## Full Documentation
+## Encrypting Input Data
 
-For a full list of all fhenix.js methods and classes please visit the fhenixjs documentation [here](https://fhenixjs.fhenix.zone).
+This step secures the data before sending it to the smart contract. Remember--all data sent to a smart contract on a blockchain is inherently public, which means that anyone can see it. However, Fhenix operates differently. To maintain user confidentiality and protect sensitive input data, Fhenix utilizes **fhenix.js** to provide built-in encryption methods that must be applied before sending any data to an FHE-enabled contract (Learn more [here](https://docs.fhenix.zone/docs/devdocs/FhenixJS/Encryption).
 
-:::danger[Help!]
-If you experience any issues, or for general questions, support, or anything else join our Discord!
-:::
+For example, if you want to send a value of “5” to a smart contract, you need to encrypt it before passing it along. Here’s sample code for that process:
+
+```javascript
+const value = 5;
+const eValue = await client.encryptUint8(value);
+
+// Solidity FHE function (note inEuint8)
+// Counter.sol
+// function add(inEuint8 value) public;
+
+// Contract logic pseudocode
+ethereum.send({
+  contract: "Counter",
+  functionName: "add",
+  args: [eValue]
+});
+```
+
+The `FhenixClient` can expose encryption functions for inEuint8, inEuint256, inEbool, and inEaddress (this example used inEuint8).
+
+By encrypting user data before sending it to a contract, Fhenix ensures that data remains private throughout its lifecycle in the blockchain environment.
+
+## Creating Permits
+
+After encryption, values can be passed into FHE-enabled smart contracts, and the contract can operate on this data securely, within its own logic. However, to ensure that only the respective user can view the processed (encrypted) data, **permissions** and **sealing** mechanisms are used. These ensure that data remains private and viewable exclusively by the user who owns it. Learn more at [link](https://docs.fhenix.zone/docs/devdocs/Writing%20Smart%20Contracts/Permissions) and [link](https://docs.fhenix.zone/docs/devdocs/Writing%20Smart%20Contracts/Returning-Data).
+
+Permissions serve two main purposes:
+- **Verify User Identity**: They ensure that the data access request comes from the correct user by verifying that the message is signed with the user’s private key.
+- **Sealing User Data**: They provide a **public key** to "seal" the encrypted data, meaning it is encrypted in such a way that only the user holding the corresponding **private key** (stored securely on the user's client) can decrypt it later.
+
+**Note**: Fhenix uses **EIP712**, a widely used Ethereum standard for signing structured data. This means: first, a user must sign a permit in their wallet to authenticate themselves and authorize the creation of the permit; second, permits are stored locally in local storage and can be reused for future interactions with the same contract. Currently, each contract that the user interacts with requires its own unique permit (subject to change).
+
+Permits are created with the `FhenixClient`. Here's the code for this process:
+
+```javascript
+// Address of the contract to create the permit for:
+const counterAddress = 0x....;
+
+// The permit is generated by the client
+const permit = await client.generatePermit(counterAddress);
+
+// The permission to be sent to the contract is generated from the permit
+const permission = client.extractPermitPermission(permit);
+
+// Counter.sol solidity
+// Example read function using Permissions
+// function getUserCounter(Permission calldata perm) public view onlySender(perm) returns (string memory) {
+//     return userCounter[msg.sender].seal(perm.publicKey);
+// }
+
+// dApp pseudocode
+const result = await ethereum.read({
+  contract: "Counter",
+  functionName: "getUserCounter",
+  args: [permission]
+});
+// result -> sealed uint8 (see unsealing below)
+
+```
+
+## Unsealing Data
+
+After encryption, the data can be securely processed by the contract and sealed with the user’s **public key** (from their permit), and it is returned to the user when the user requests it. To access and interpret this data, the user must **unseal** it using their private key, which is securely stored on their device. The unsealing process is essential to ensure that only the intended user can view the final result.
+
+When the contract returns the encrypted data to the user, it remains sealed. This means the data is still encrypted with the user’s **public key** and cannot be read until the corresponding **private key** is used to unlock it. **Fhenix.js** provides a simple method to handle this.
+
+Here’s example code to show how the unsealing process works:
+
+```javascript
+const counterAddress = 0x....;
+
+const result = await ethereum.read({
+  contract: "Counter",
+  functionName: "getUserCounter",
+  args: [permission]
+});
+
+const unsealed = client.unseal(counterAddress, result);
+
+```
+
+## End-to-End Example Explanation
+
+This example demonstrates a full interaction between a dApp and an FHE-enabled smart contract using the `FhenixClient`. It walks through how to set up the client, encrypt data, send it to the contract, create a permit for accessing sealed data, and finally unseal the returned data for the user.
+
+```javascript
+// == Setup ==
+
+import { FhenixClient } from 'fhenixjs';
+import { JsonRpcProvider } from 'ethers'
+
+const provider = new JsonRpcProvider('https://api.helium.fhenix.zone');
+const client = new FhenixClient({provider});
+
+// == Input ==
+
+const value = 5;
+const eValue = await client.encryptUint8(value);
+
+// pseudocode
+await ethereum.send({
+  contract: "Counter",
+  functionName: "add",
+  args: [eValue]
+});
+
+// == Permit / Permission ==
+
+const counterAddress = 0x....;
+const permit = await client.generatePermit(counterAddress);
+const permission = client.extractPermitPermission(permit);
+
+// pseudocode
+const result = await ethereum.read({
+  contract: "Counter",
+  functionName: "getUserCounter",
+  args: [permission]
+});
+
+// == Unseal ==
+
+const unsealed = client.unseal(counterAddress, result);
+
+```
+
+## Troubleshoot
+
+a. Getting a wasm error when using Fhenix.js with Node.js:
+
+```javascript
+
+node:internal/modules/esm/get_format:160
+  throw new ERR_UNKNOWN_FILE_EXTENSION(ext, filepath);
+        ^
+
+TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".wasm" for .../node_modules/.pnpm/fhenixjs@0.4.0/node_modules/fhenixjs/lib/esm/sdk/fhe/tfhe_bg.wasm
+    at Object.getFileProtocolModuleFormat [as file:] (node:internal/modules/esm/get_format:160:9)
+    at defaultGetFormat (node:internal/modules/esm/get_format:203:36)
+    at defaultLoad (node:internal/modules/esm/load:143:22)
+    at async ModuleLoader.load (node:internal/modules/esm/loader:396:7)
+    at async ModuleLoader.moduleProvider (node:internal/modules/esm/loader:278:45) {
+  code: 'ERR_UNKNOWN_FILE_EXTENSION'
+}
+
+```
+
+You need to run your node application with experimental-modules flag :
+
+```javascript
+node --experimental-modules --experimental-wasm-modules your_file_here.js
+```
+
+b. If you are using Vue / Nuxt 3, you might get an error about loading the tfhe_bg.wasm.
+
+You can try to load the esm file:
+
+```javascript
+import { FhenixClient } from "~/node_modules/fhenixjs/dist/fhenix.esm.js";
+```
+
+or use the fhenix.umd.min.js file inside the dist folder.
