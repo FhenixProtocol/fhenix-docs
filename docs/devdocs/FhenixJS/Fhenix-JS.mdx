@@ -10,10 +10,12 @@ import TabItem from "@theme/TabItem";
 
 Fhenix.js is a TypeScript package designed to enable seamless interaction between clients and the Fhenix blockchain. It is an essential component for engineers working with Fhenix-enabled smart contracts, as it facilitates the encryption and decryption processes required for secure data handling in decentralized applications (dApps). Fhenix.js ensures that data remains private throughout its journey from input to output in the blockchain ecosystem.
 Fhenix-enabled contracts require three primary modifications to the client/frontend:
-Encrypting Input Data: Before passing data to the smart contract, input must be encrypted to ensure its confidentiality. Refer to <link: FHEContracts:Inputs .>
-Creating Permits and Permissions: The client must generate permits and permissions that determine who can interact with or view the data. Refer to <link: FHEContracts:Permissions >.
-Unsealing Output Data: After the contract processes the data, the client must decrypt the output for it to be used or displayed. Refer to <link: FHEContracts:Outputs >.
-Fhenix.js bookends the fully encrypted pipeline, allowing encryption to begin and end privately in a dApp, while FHE-enabled contracts do work on and with these encrypted values.
+
+* Encrypting Input Data: Before passing data to the smart contract, input must be encrypted to ensure its confidentiality. To read more about encrypted inputs, go [here](./../Writing%20Smart%20Contracts/User-Inputs.md).
+* Creating Permits and Permissions: The client must generate permits and permissions that determine who can interact with or view the data. Read more about [Permissions](./../Writing%20Smart%20Contracts/Permissions.md).
+* Unsealing Output Data: After the contract processes the data, the client must decrypt the output for it to be used or displayed. For more, refer to our page on [Outputs](./../Writing%20Smart%20Contracts/Returning-Data.md).
+
+Fhenix.js allows encryption to begin and end privately in a dApp, while FHE-enabled contracts do work on and with these encrypted values.
 
 ## Mental Model
 
@@ -21,9 +23,9 @@ To understand how **fhenix.js** fits into the Fhenix framework, we will create a
 
 Consider a smart contract called "**Counter**". Each user has an individual counter, and users increment and read their own counters with complete privacy. In this example, a **public key** is like a lock, and a **private key** is the corresponding key to unlock it.
 
-### Adding to the User’s Counter 
+### Adding to the User’s Counter
 
-When users want to add a value to their counter, say "5," they first place this value inside a sort-of "box". Using Fhenix.js, this box is secured by locking it with Fhenix blockchain’s **public key** (encryption). The locked box is then sent to the smart contract. Thanks to Fully Homomorphic Encryption (FHE), Fhenix can perform mathematical operations directly on these sealed boxes—without accessing the raw data inside. So, the user's encrypted value, "5," can be added to the user’s encrypted counter while remaining private.
+When users want to add a value to their counter, say "5," they first place this value inside a sort-of "box". Using fhenix.js, this box is secured by locking it with Fhenix blockchain’s **public key** (encryption). The locked box is then sent to the smart contract. Thanks to Fully Homomorphic Encryption (FHE), Fhenix can perform mathematical operations directly on these sealed boxes—without accessing the raw data inside. So, the user's encrypted value, "5," can be added to the user’s encrypted counter while remaining private.
 
 ### Retrieving the User’s Counter
 
