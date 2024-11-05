@@ -91,10 +91,10 @@ Below is the output of the task when analyzing the above `ContractWithExposedVar
     <b>eUserBalances(address)</b> exposes 1 encrypted variables:
       pos-0 - <b style="color:orangered">euint8</b>
 
-    <b/>getUserBalance(address)</b> exposes 1 encrypted variables:
+    <b>getUserBalance(address)</b> exposes 1 encrypted variables:
       pos-0 - <b style="color:orangered">euint8</b>
 
-    <b/>getGameState()</b> exposes 1 encrypted variables:
+    <b>getGameState()</b> exposes 1 encrypted variables:
       pos-0 - struct ContractWithExposedVariables.HoldEmGameState
         players - struct ContractWithExposedVariables.Player[]
           eCards - <b style="color:orangered">euint8[]</b>
