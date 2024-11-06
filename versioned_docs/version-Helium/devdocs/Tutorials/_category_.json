@@ -1,0 +1,8 @@
+{
+  "label": "Tutorials",
+  "position": 100000,
+  "link": {
+    "type": "generated-index",
+    "description": "Step-by-step tutorial in writing an Encrypted ERC20 contract"
+  }
+}
