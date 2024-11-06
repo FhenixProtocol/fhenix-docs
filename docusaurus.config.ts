@@ -38,7 +38,7 @@ const config: Config = {
           lastVersion: 'current',
           versions: {
             current: {
-              label: 'Nitrogen',
+              label: 'Helium',
               path: '.'
             }
           },
