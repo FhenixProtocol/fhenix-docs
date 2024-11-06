@@ -39,7 +39,13 @@ const config: Config = {
           versions: {
             current: {
               label: 'Nitrogen',
-              path: '.'
+              path: 'nitrogen',
+              banner: 'unreleased',
+              badge: true
+            },
+            Helium: {
+              label: 'Helium',
+              badge: false
             }
           },
           sidebarPath: './sidebars.ts',
