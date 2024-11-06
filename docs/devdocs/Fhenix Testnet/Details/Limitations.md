@@ -14,12 +14,6 @@ real sensitive data or private keys on the testnet.
 The current iteration of the network does not include multiple components (such as input knowledge proofs, threshold decryption, execution proofs, etc.) that are critical for the security of data and network keys.
 These features will be added iteratively as we move towards full release - this should be obvious, but please **do not store any valuable information on the network as long as it is in the testnet phase**.
 
-## Randomness
-
-Randomness as a service is planned as a future addition. Until we can guarantee a secure source of randomness, we do not 
-want to make such a function available as a network service. For demos and development that require a source of randomness, we encourage 
-the use of external oracles, or usage of a [mock random number generator](../../Writing%20Smart%20Contracts/Useful-Tips.md#randomness).
-
 ## Gas Costs
 
 All gas costs are subject to change, and are being evaluated for optimization. The current gas costs are not final, and may change.
