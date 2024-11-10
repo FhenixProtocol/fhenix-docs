@@ -1,4 +1,9 @@
-# Randomness
+---
+sidebar_position: 9
+title: 🎲 Randomness
+description: How to generate random numbers in Fhenix
+---
+# 🎲 Randomness
 
 Randomness was introduced in the Nitrogen testnet.
 Contracts in Fhenix can get random numbers by calling one of the randomness functions in `FHE.sol`.

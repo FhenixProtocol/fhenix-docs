@@ -1,3 +1,9 @@
+---
+sidebar_position: 901
+title: 🔥 Gas and Benchmarks
+description: Gas costs for FHE operations
+---
+
 # 🔥 Gas and Benchmarks
 
 This section will list the gas costs for every operation based on its inputs.
