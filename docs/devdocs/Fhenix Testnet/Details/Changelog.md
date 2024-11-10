@@ -7,7 +7,12 @@ Here you can find a list of changes between different versions of the Fhenix Tes
 
 ### Nitrogen
 
-TBD
+- Fixed casts between eaddress and different euints
+- Introduced Security zones
+- Introduced Threshold Network as default for security zone 0
+- Introduced Parallel decryptions
+- Introduced new precompiles for operations with encrypted uints: random, rotate right, rotate left, square
+- General bug fixes and stability improvements 
 
 ### Helium
 
