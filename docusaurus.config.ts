@@ -40,7 +40,6 @@ const config: Config = {
             current: {
               label: 'Nitrogen',
               path: 'nitrogen',
-              banner: 'unreleased',
               badge: true
             },
             Helium: {
