@@ -35,7 +35,7 @@ const config: Config = {
       'classic',
       {
         docs: {
-          lastVersion: 'Helium',
+          lastVersion: 'Nitrogen',
           versions: {
             current: {
               label: 'Nitrogen',
