@@ -51,5 +51,56 @@ Since Fhenix is an L2 solution with a sequencer, no traditional mempool is in pl
 :::
 
 ```javascript
-<code example TBD>
+// Example of handling parallel decryption transactions in a frontend application
+async function handleDecryptTransaction(contract, methodName, ...args) {
+  try {
+    // Send the transaction that includes decryption
+    const tx = await contract[methodName](...args);
+    
+    // Get initial transaction receipt
+    let receipt = await tx.wait();
+    
+    // If the receipt times out, periodically check the transaction status
+    if (!receipt || receipt.status === 'pending') {
+      receipt = await pollTransactionStatus(tx.hash);
+    }
+    
+    return receipt;
+  } catch (error) {
+    console.error('Transaction failed:', error);
+    throw error;
+  }
+}
+
+// Helper function to poll transaction status
+async function pollTransactionStatus(txHash, maxAttempts = 20) {
+  let attempts = 0;
+  
+  while (attempts < maxAttempts) {
+    const receipt = await provider.getTransactionReceipt(txHash);
+    
+    if (receipt && receipt.status === 1) {
+      return receipt;
+    }
+    
+    // Wait 3 seconds before next attempt
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    attempts++;
+  }
+  
+  throw new Error('Transaction timeout: Decryption taking longer than expected');
+}
+
+// Usage example
+const contract = new ethers.Contract(address, abi, signer);
+
+try {
+  const receipt = await handleDecryptTransaction(
+    contract,
+    'decryptInFhenix'
+  );
+  console.log('Transaction completed:', receipt);
+} catch (error) {
+  console.log('Failed to process decryption:', error);
+}
 ```
