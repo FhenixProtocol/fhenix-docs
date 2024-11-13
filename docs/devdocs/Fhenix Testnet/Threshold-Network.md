@@ -1,6 +1,6 @@
 ---
 sidebar_position: 5
-title: 🔒 Treshold Network
+title: 🔒 Threshold Network
 ---
 
 In principle, a Threshold Network is a cryptographic system designed to enhance security and trust by distributing control and decision-making across multiple parties. In such a network, sensitive operations, such as decryption or signing, require collaboration among a subset of participants, rather than relying on a single entity.
