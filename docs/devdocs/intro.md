@@ -19,6 +19,28 @@ The integration of the FHE with Solidity means you can continue to write your sm
 
 In this documentation, you'll find guidance on operating on encrypted data, understanding patterns in FHE-friendly code writing, and access control in FHE-based smart contracts. Let's get started.
 
+## Version compatibility table
+
+We encourage you to use Nitrogen as your main testnet, however if you wish to develop for Helium - then the following version compatibility table will interest you:
+
+
+### Helium testnet
+| Package               | Version Range               |
+|-----------------------|-----------------------------|
+| **fhenix.js**         | v0.3.x                      |
+| **fhenix-contracts**  | v0.2.x                      |
+| **fhenix-hardhat-plugin** | v0.2.2                 |
+| **localfhenix**       | v0.2.x                      |
+
+
+### Nitrogen testnet
+| Package               | Version Range               |
+|-----------------------|-----------------------------|
+| **fhenix.js**         | v0.4.1+                     |
+| **fhenix-contracts**  | v0.3.0+                     |
+| **fhenix-hardhat-plugin** | v0.3.2+               |
+| **localfhenix**       | v0.3.2+                     |
+
 ## Quick links
 
 * [Fhenix and FHE](Fhenix%20Testnet/Fhenix-T-FHE.md)
