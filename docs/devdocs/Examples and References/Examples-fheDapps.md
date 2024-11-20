@@ -18,7 +18,7 @@ Here you can find a list of some cool apps that you can use as a reference
 <tr>
 <td>FHERC-20</td>
 <td><a href="https://github.com/FhenixProtocol/example-contracts/blob/master/wrapping-ERC20/WrappingERC20.sol">View on Github</a><br /></td>
-<td><a href="http://fhenix-demo.pages.dev/">FHERC-20 Demo</a></td>
+<td><a href="https://demo.nitrogen.fhenix.zone/">FHERC-20 Demo</a></td>
 <td>A token in which balances are encrypted and viewable only to the holder.</td>
 </tr>
 <tr>
