@@ -246,6 +246,10 @@
   filter: invert(100%);
 }
 
+[data-theme='light'] .tutorial-button img {
+  filter: invert(100%);
+}
+
 [data-theme='dark'] .tutorial-button img {
   filter: invert(100%);
 }
