@@ -169,7 +169,7 @@ const config: Config = {
               href: 'https://discord.gg/FuVgxrvJMY',
             },
             {
-              label: 'X',
+              label: 'X / Twitter',
               href: 'https://x.com/FhenixIO',
             },
           ],
