@@ -4,7 +4,7 @@ title: (Un)Sealing
 ---
 
 
-When an app wants to read some piece of encrypted data from a Fhenix smart contract, that data must be converted from its encrypted form on chain to an encryption that the app or user can read.
+When an app wants to read some piece of encrypted data from a Fhenix smart contract, that data must be converted from its encrypted form on chain to encryption that the app or user can read.
 
 The process of taking an FHE-encrypted ciphertext and converting it to standard encryption is called **sealing.**
 

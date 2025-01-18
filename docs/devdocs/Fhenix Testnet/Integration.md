@@ -50,7 +50,7 @@ If you require specialized endpoints, or higher rate limits than the default ple
 
 ## Cross Chain Messaging Contracts
 
-The following contracts are deployed on Ethereum Sepolia and may be used by developers that wish to interact with Fhenix in a similar way to Arbitrum
+The following contracts are deployed on Ethereum Sepolia and may be used by developers who wish to interact with Fhenix in a similar way to Arbitrum
 
 <table>
     <tr>
