@@ -13,7 +13,7 @@ As a result of this analysis and the insights gained, structure your smart contr
 ##### A Simple Example
 A simple example of metadata leakage is gas usage. Consider a smart contract coded in Solidity that contains a conditional statement. In this case, the path taken by the condition, though encrypted, may still reveal information. A typical scenario is a conditional branch based on the value of a private variable, where gas usage, events, or other metadata could reveal the branch taken.
 
-```Javascript
+```JavaScript
 function performActionBasedOnBalance(uint256 amount) public {
     if (balance[msg.sender] >= amount) {
         // perform some operation
@@ -23,7 +23,7 @@ function performActionBasedOnBalance(uint256 amount) public {
 }
 ```
 
-In the above Solidity example, someone observing the transaction could potentially infer the chosen branch based on gas usage, events or metadata, which would, in turn, indirectly reveal whether the sender's balance was greater than or equal to the specified amount.
+In the above Solidity example, someone observing the transaction could potentially infer the chosen branch based on gas usage, events, or metadata, which would, in turn, indirectly reveal whether the sender's balance was greater than or equal to the specified amount.
 
 This example might seem insignificant, but it is important to remember that transactions can often be cheaply simulated with different input parameters. In the above example, performing a logarithmic search would reveal the exact balance fairly quickly.
 
