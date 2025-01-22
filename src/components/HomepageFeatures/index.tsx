@@ -146,7 +146,7 @@ export default function HomepageFeatures(): JSX.Element {
               <div style={{ display: 'flex', gap: '20px' }}>
                 <Link
                     className='tutorial-button'
-                    to={"https://twitter.com/FhenixIO"}>
+                    to={"https://x.com/FhenixIO"}>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: "center", gap: '10px' }}> 
                       X / Twitter <img src="img/x.svg" style={{ width: '15px'}}/>
                     </div>
