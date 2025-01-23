@@ -58,11 +58,11 @@ contract MyTestContract is Test, FheEnabled {
 }
 ```
 
-During test setup, `initializeFhe` the FHE environment using the initializeFhe function:
+During test setup, `initializeFHE` the FHE environment using the initializeFHE function:
 
 ```solidity
 function setUp() public {
-    initializeFhe();
+    initializeFHE();
 }
 ```
 
@@ -121,8 +121,8 @@ operations are performed on plaintext data, which enables seamless development a
 operational FHE network. However, there are important differences between these mocked FHE operations and actual FHE
 operations:
 
-- Gas Costs – Gas costs associated with the mocked FHE operations do not accurately reflect those of real FHE
-  operations. Instead, they are based on gas costs of equivalent non-FHE operations.
+- Gas costs – Gas costs associated with the mocked FHE operations do not accurately reflect those of real FHE
+  operations. Instead, they are based on Gas costs of equivalent non-FHE operations.
 - Security Zones – In this mocked environment, security zones are not enforced. Thus, any user can perform operations
   between ciphertexts, which would otherwise fail in a real FHE setting.
 - Ciphertext Access – The mocked FHE operations do not enforce access control restrictions on ciphertexts, which allows
