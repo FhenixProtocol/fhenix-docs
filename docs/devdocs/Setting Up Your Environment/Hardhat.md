@@ -8,10 +8,10 @@
 
 ## Clone Hardhat Template
 
-We provide a hardhat template available that comes "batteries included", with everything you need to hit the ground running. The template is [available here](https://github.com/fhenixprotocol/fhenix-hardhat-example). You can create a new repository, or clone it locally:
+We provide a Hardhat template available that comes "batteries included", with everything you need to hit the ground running. The template is [available here](https://github.com/fhenixprotocol/fhenix-Hardhat-example). You can create a new repository, or clone it locally:
 
 ```
-git clone https://github.com/fhenixprotocol/fhenix-hardhat-example
+git clone https://github.com/fhenixprotocol/fhenix-Hardhat-example
 ```
 
 You'll also probably want to set an .env file with your mnemonics:
@@ -38,10 +38,10 @@ To start a LocalFhenix instance, run the following command:
 pnpm localfhenix:start
 ```
 
-This will start a LocalFhenix instance in a docker container, managed by the `fhenix-hardhat-docker` plugin for Hardhat. 
-If this worked you should see a `LocalFhenix started` message in your console.
+This will start a LocalFhenix instance in a docker container, managed by the `fhenix-Hardhat-docker` plugin for Hardhat. 
+If this worked you should see a `LocalFhenix started!` message in your console.
 
-You've now officially created a LocalFhenix testnet. 🎉
+You've now officially set up a LocalFhenix testnet!. 🎉
 
 After you're done, you can stop the LocalFhenix instance with:
 
@@ -54,7 +54,7 @@ pnpm localfhenix:stop
 To deploy the contracts to LocalFhenix, run the following command:
 
 ```sh
-pnpm hardhat deploy
+pnpm Hardhat deploy
 ```
 
 This will compile the contracts in the `contracts` directory and deploy them to the LocalFhenix network.
