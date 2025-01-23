@@ -8,7 +8,7 @@ When an app wants to read some piece of encrypted data from a Fhenix smart contr
 
 The process of taking an FHE-encrypted ciphertext and converting it to standard encryption is called **sealing.**
 
-The data is returned to the user using [sealed box encryption ](https://bitbeans.gitbooks.io/libsodium-net/content/public-key\_cryptography/sealed\_boxes.html)from NaCL. The gist of it is that the user provides a public key to the contract during a view function call, which the contract then uses to encrypt the data in such a way that only the owner of the private key associated with the provided public key can decrypt and read the data.
+The data is returned to the user using [sealed box encryption](https://bitbeans.gitbooks.io/libsodium-net/content/public-key\_cryptography/sealed\_boxes.html)from NaCl. The gist of it is that the user provides a public key to the contract during a view function call, which the contract then uses to encrypt the data in such a way that only the owner of the private key associated with the provided public key can decrypt and read the data.
 
 :::tip[Don't Want to Seal?]
 Fhenix supports standard decryption as well. Mostly suited for public data, an unsealed plaintext value can be returned from a contract.
@@ -26,9 +26,9 @@ The main difference with inEuint* is that you can be explicit with what is the e
 A `Permit` is a data structure that helps contracts know who is trying to call a specific function. 
 
 The fhenix.js Javascript library includes methods to support creating parameters for values that require [Permits & Access Control](../Encryption%20and%20Privacy/Permits-Access-Control.md). These methods can help creating ephemeral transaction keys, which are used by the smart contract to create a secure encryption channel to the caller.
-Similarly to decryption, this usage can be implemented by any compliant library, but we include direct support in fhenix.js.&#x20;
+Similar to decryption, this can be implemented by any compliant library, but direct support is included in fhenix.js.&#x20;
 
-This is done in 3 steps: generating a permit, querying the contract and unsealing the data.
+This process involves three steps: generating a permit, querying the contract, and unsealing the data.
 
 #### 1. Creating a Permit
 
@@ -91,7 +91,7 @@ const plaintext = client.unseal(contractAddress, response);
 console.log(`My Balance: ${plaintext}`)
 ```
 :::tip[Did you know?]
-You have tools that can ease the process of interacting with the contract and decrypting values. If you want to use them please refer to
+There are tools available to simplify interacting with contracts and decrypting values. If you want to use them please refer to
 [Tools and Utilities](../Tools%20and%20Utilities/Fhenix-Encryption-UI) 
 :::
 

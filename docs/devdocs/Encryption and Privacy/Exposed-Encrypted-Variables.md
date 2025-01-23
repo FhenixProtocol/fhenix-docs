@@ -1,6 +1,6 @@
 # 🔎 Encrypted Variables - Preventing Exposure
 
-Ensuring that encrypted data and variables are not leaked is important when working with Fhenix. A common oversight when working with encrypted variables is revealing them to other contracts. Lets take a look at a scenario that leaks encrypted data:
+Ensuring that encrypted data and variables are not leaked is important when working with Fhenix. A common oversight when working with encrypted variables is revealing them to other contracts. Let's take a look at a scenario that leaks encrypted data:
 
 ```solidity
 contract UserBalanceVulnerable {
@@ -14,7 +14,7 @@ contract UserBalanceVulnerable {
 }
 ```
 
-This seems secure enough and no decrypted data is directly exposed, however the `public` access to `eUserBalances` leaks sensitive data. A malicious contract is able to fetch this data and then decrypt it:
+This seems secure enough and no decrypted data is directly exposed; however the `public` access to `eUserBalances` leaks sensitive data. A malicious contract is able to fetch this data and then decrypt it:
 
 ```solidity
 contract UserBalanceAttack {
@@ -72,7 +72,7 @@ contract ContractWithExposedVariables {
   }
 
   HoldEmGameState private gameState;
-  // Encrypted card values is the Player and Dealer structs are leaked and can be exploited
+  // Encrypted card values in the Player and Dealer structs are leaked and can be exploited
   function getGameState() public view returns (HoldEmGameState memory) {
     return gameState;
   }
