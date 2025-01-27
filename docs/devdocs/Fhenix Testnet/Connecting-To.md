@@ -52,7 +52,7 @@ Fhenix Nitrogen is the first publicly available FHE-based blockchain, and it is 
 
 ## Faucet
 
-To get some test tokens, use the faucet at [https://get-nitrogen.fhenix.zone/](https://get-nitrogen.fhenix.zone/).
+To get some test tokens, use the faucet at the Discord - see Bots commands.
 You may receive 0.1 tokens once every five minutes. If you need more tokens, please reach out to us on Discord, or bridge some Sepolia!
 
 ## Bridge
