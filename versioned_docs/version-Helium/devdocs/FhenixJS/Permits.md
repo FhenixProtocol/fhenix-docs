@@ -8,9 +8,9 @@ title: Permits
 
 ## Overview
 
-Permits are a mechanism that allows the contract to cryptographically verify that the caller is who he says he is.
+Permits are a mechanism that allows the contract to cryptographically verify that the caller is who they claim to be.
 
-Simply, they are a signed message that contains the caller's public key, which the contract can then use to verify that the caller is who he says he is.
+Simply put, a permit is a signed message that contains the caller's public key, which the contract can then use to verify that the caller is who they claim to be.
 
 ## Usage
 
@@ -18,7 +18,7 @@ Permits are meant to be used together with the interfaces exposed by [`Permissio
 parameter, that's a good sign that we should use a `permit` to manage and create user permissions.
 
 
-Out-of-the-box, Fhenix Solidity libraries come with a basic access control scheme. This helps contracts perform a basic check for ownership of an account.
+The Fhenix Solidity libraries include a built-in access control scheme. This helps contracts perform a basic check for ownership of an account.
 
 To confirm whether the recipient is authorized, EIP712 signatures are employed. EIP712 is a standard for Ethereum signed messages that makes it easier to understand the information being signed. This allows us to verify that the signer of a given piece of data is the owner of the account they claim to be.
 

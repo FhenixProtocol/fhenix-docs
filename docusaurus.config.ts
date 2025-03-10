@@ -128,7 +128,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://twitter.com/FhenixIO',
+          href: 'https://x.com/FhenixIO',
           className: 'header-twitter-link',
           position: 'right',
         },
@@ -170,7 +170,7 @@ const config: Config = {
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/FhenixIO',
+              href: 'https://x.com/FhenixIO',
             },
           ],
         },

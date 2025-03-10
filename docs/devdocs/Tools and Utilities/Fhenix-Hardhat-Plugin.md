@@ -111,7 +111,7 @@ await hre.fhenixjs.getFunds("your_wallet_address");
 ### Encryption
 
 ```javascript
-const encyrptedAmount = await fhenixjs.encrypt_uint32(15);
+const encryptedAmount = await fhenixjs.encrypt_uint32(15);
 ```
 
 ### Creating a Permit
