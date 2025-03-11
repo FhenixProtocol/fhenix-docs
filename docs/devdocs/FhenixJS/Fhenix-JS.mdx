@@ -69,7 +69,7 @@ const client = new FhenixClient({ provider });
 
 This step secures the data before sending it to the smart contract. Remember--all data sent to a smart contract on a blockchain is inherently public, which means that anyone can see it. However, Fhenix operates differently. To maintain user confidentiality and protect sensitive input data, Fhenix utilizes **fhenix.js** to provide built-in encryption methods that must be applied before sending any data to an FHE-enabled contract (Learn more [here](https://docs.fhenix.zone/docs/devdocs/FhenixJS/Encryption).
 
-For example, if you want to send a value of “5” to a smart contract, you need to encrypt it before passing it along. Here’s sample code for that process:
+For example, if you want to send a value of “5” to a smart contract, you need to encrypt it before passing it along. Here’s a sample code for that process:
 
 ```javascript
 const value = 5;
@@ -135,7 +135,7 @@ After encryption, the data can be securely processed by the contract and sealed 
 
 When the contract returns the encrypted data to the user, it remains sealed. This means the data is still encrypted with the user’s **public key** and cannot be read until the corresponding **private key** is used to unlock it. **Fhenix.js** provides a simple method to handle this.
 
-Here’s example code to show how the unsealing process works:
+Here’s an example code to show how the unsealing process works:
 
 ```javascript
 const counterAddress = 0x....;
@@ -215,7 +215,7 @@ TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".wasm" for .../n
 
 ```
 
-You need to run your node application with experimental-modules flag :
+You need to run your node application with the experimental-modules flag :
 
 ```javascript
 node --experimental-modules --experimental-wasm-modules your_file_here.js
