@@ -10,6 +10,10 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
     env:
       PR_PATH: pull/${{github.event.number}}
       DOMAIN: docs.fhenix.zone
