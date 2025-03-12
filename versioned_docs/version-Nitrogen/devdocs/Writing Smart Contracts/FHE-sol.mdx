@@ -1,0 +1,131 @@
+---
+sidebar_position: 1
+description: Installation of contracts and creation of a basic contract
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 🐤 Getting Started
+
+A core component of the Fhenix ecosystem is the `FHE.sol` Solidity library.
+
+`FHE.sol` is a Solidity library designed to facilitate the use of Fully Homomorphic Encryption (FHE) within Ethereum smart contracts. FHE enables computations to be performed on encrypted data (ciphertexts) without needing to decrypt them first. The results of such computations, when decrypted, are identical to what would have been obtained if the operations had been performed on the unencrypted data (plaintexts).
+
+A full list and description of Fhenix functions are provided in [FHE.sol documentation](../Solidity%20API/FHE.md).
+
+## Installation
+
+To get started with `FHE.sol`, first install FHE.sol as a dependency in your Solidity project. Do this using npm, yarn or pnpm. Open the terminal and navigate to the project's directory. Now, run one of the following:
+
+<Tabs>
+<TabItem value="npm" label="npm">
+```bash
+npm install @fhenixprotocol/contracts;
+```
+</TabItem>
+<TabItem value="yarn" label="yarn">
+```bash
+yarn install @fhenixprotocol/contracts;
+```
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+```bash
+pnpm install @fhenixprotocol/contracts;
+```
+</TabItem>
+</Tabs>
+
+## Usage
+
+### Key Concepts and Types
+
+### `euintxx` - Encrypted Unsigned Integers
+- **Description**: Represents an encrypted unsigned integer. This type is used for encrypted variables within smart contracts.
+The currently supported types are: `euint8`, `euint16`, `euint32`, `euint64`, `euint128` & `euint256`.
+- **Usage**: Store and manipulate encrypted values within smart contracts.
+### `ebool` - Encrypted Boolean
+- **Description**: Represents an encrypted boolean value. This type can be used as an encrypted variable and for encrypted logical
+operations upon other encrypted variables e.g. by using `select`.
+- **Usage**: Store and manipulate encrypted values within smart contracts. Use in encrypted conditional statements.
+### `eaddress` - Encrypted Address
+- **Description**: Represents an encrypted address. This type can be used to hide the address variables within contracts.
+- **Usage**: Store and compare encrypted addresses.
+
+### `inEuintxx` - Input Encrypted Unsigned Integers
+- **Description**: A type used for passing encrypted values as function arguments. It's the format in which encrypted data is input into the smart contract functions that process encrypted values.
+The currently supported types are `inEuint8`, `inEuint16`, `inEuint32`, `inEuint64`, `inEuint128` & `inEuint256`.
+- **Usage**: Pass typed encrypted values as function arguments.
+
+### `inEbool` - Input Encrypted Boolean
+- **Description**: Similarly as with `inEuint` the `inEbool` type is used for passing encrypted boolean values as function arguments.
+- **Usage**: Pass typed encrypted boolean values as function arguments.
+
+### `inEaddress` - Input Encrypted Address
+- **Description**: Similarly as with `inEuint` the `inEaddress` type is used for passing encrypted address values as function arguments
+- **Usage**: Pass typed encrypted address values as function arguments.
+
+## Core Functions of FHE.sol
+
+### `asEuint` - Convert to Encrypted Unsigned Integer
+- **Purpose**: Converts a plaintext number, encrypted variable or an `inEuint` encrypted input into an `euint` type.
+### `asEbool` - Convert to Encrypted Boolean
+- **Purpose**: Converts a plaintext number, encrypted variable or an `inEbool` encrypted input into an `ebool` type.
+### `asEaddress` - Convert to Encrypted Address
+- **Purpose**: Converts a plaintext number, encrypted variable or an `inEaddress` encrypted input into an `eaddress` type.
+
+### `decrypt` - Decrypt Encrypted Data
+- **Purpose**: Decrypts `euint`, `ebool` or `eaddress` encrypted value back to its plaintext form. If the value should only be revealed to a specific address, the `sealoutput` function should be used instead. Learn more abut sealing [here](./Returning-Data.md).
+
+### Arithmetic Operations
+FHE.sol supports encrypted arithmetic operations like addition and subtraction. These operations can be performed directly on `euint` types, enabling encrypted computations.
+
+### Comparison Operations
+- **Purpose**: Perform comparisons between encrypted values (e.g., greater than, less than).
+- **Usage Example**: Make decisions based on encrypted values without revealing their contents.
+
+## Example Use Cases
+
+### Encrypting a Value
+To encrypt a value, convert a plaintext `uint32` into an `euint32`:
+
+```solidity
+uint32 plaintextValue = 123;
+euint32 encryptedValue = FHE.asEuint32(plaintextValue);
+```
+
+### Decrypting a Value
+To decrypt an encrypted value back to plaintext, use the following syntax:
+
+```solidity
+uint32 decryptedValue = FHE.decrypt(encryptedValue);
+```
+
+:::warning
+Decrypt data with caution. Be careful not to expose decrypted data to unauthorized parties.
+:::
+
+### Performing Encrypted Arithmetic
+You can perform arithmetic operations directly on encrypted values. For example, adding two encrypted values:
+
+```solidity
+euint32 sum = encryptedValue1 + encryptedValue2;
+```
+
+### Conditional Logic with Encrypted Values
+
+Use a comparison operation to implement logic based on encrypted values. Consider the following code:
+
+```solidity
+euint32 result = FHE.select(encryptedValue1.gt(encryptedValue2), encryptedValue1, encryptedValue2);
+```
+
+This example chooses between encryptedValue1 and encryptedValue2 by comparing their encrypted values with the `gt` function.
+
+## Integrating FHE into Smart Contracts
+
+When incorporating `FHE.sol` into your smart contracts, consider the following:
+
+- **Privacy vs. Gas Cost**: FHE provides strong privacy guarantees but is computationally intensive and can lead to high gas costs. Balance the need for privacy with its cost.
+- **Data Types**: Ensure that your use cases are compatible with the data types and operations supported by FHE.sol.
+- **Security**: Understand the security model of FHE and how it fits into the overall security posture of your application.

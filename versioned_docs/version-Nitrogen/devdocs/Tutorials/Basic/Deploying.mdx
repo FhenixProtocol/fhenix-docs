@@ -1,0 +1,162 @@
+---
+sidebar_position: 5
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Deploying
+
+Now that we have our completed WrappingERC20 token, the next step is to see if our code actually works!
+
+To do this, we'll be writing tests in typescript using hardhat, and deploying them on our [LocalFhenix](../../Setting%20Up%20Your%20Environment/Hardhat.md#start-localfhenix) environment which we set up earlier.
+
+:::tip[Note]
+At this stage, using hardhat network is not supported, as Fhenix uses custom extensions to the EVM that enable FHE operations
+:::
+
+### Compiling the Contract
+
+#### Compiling your contracts
+
+First, let's see that our current contract is even valid. Let's run the following:
+
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        ```bash
+        npm run compile
+        ```
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        ```bash
+        yarn compile
+        ```
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        ```bash
+        pnpm compile
+        ```
+    </TabItem>
+</Tabs>
+
+This will compile our Solidity contract into bytecode, and generate helper components that we'll be able to use for testing and deployment. If everything works, you should see something like this:
+
+```
+> cross-env TS_NODE_TRANSPILE_ONLY=true hardhat compile
+
+Generating typings for: 5 artifacts in dir: types for target: ethers-v6
+Successfully generated 28 typings!
+Compiled 5 Solidity files successfully
+```
+
+### Deploying the Contract
+
+#### Tasks
+
+To help us deploy and perform actions you can make use of tasks. We'll add deployment and usage tasks for our new contract. We'll replace the deployment of the default contract with our WrappedERC20. Notice that the differences are mostly just the naming and constructor arguments that are different. Replace the `deploy/deploy.ts` with the following content:
+
+```javascript
+import { DeployFunction } from "hardhat-deploy/types";
+const hre = require("hardhat");
+
+const func: DeployFunction = async function () {
+  const { ethers } = hre;
+  const { deploy } = hre.deployments;
+  const [signer] = await ethers.getSigners();
+
+  const counter = await deploy("WrappingERC20", {
+    from: signer.address,
+    args: ["Test Token", "TST"],
+    log: true,
+    skipIfAlreadyDeployed: false
+  });
+
+  console.log(`Counter contract: `, counter.address);
+};
+
+export default func;
+func.id = "deploy_counter";
+func.tags = ["WrappingERC20"];
+```
+
+Now we can use this task to deploy our contract to either LocalFhenix, or the Devnet chain.
+
+
+<Tabs>
+    <TabItem value="localfhenix" label="LocalFhenix" default>
+        <Tabs groupId="package-managers">
+            <TabItem value="npm" label="npm">
+                ```bash
+                # get tokens from localfhenix faucet
+                npm run faucet
+                # if this doesn't work, try running it directly
+                # with "node getFromFaucet"
+                # deploy the contract
+                npm run deploy:contracts
+                ```
+            </TabItem>
+            <TabItem value="yarn" label="yarn">
+                ```bash
+                # get tokens from localfhenix faucet
+                yarn faucet
+                # if this doesn't work, try running it directly
+                # with "node getFromFaucet"
+                # deploy the contract
+                yarn deploy:contracts
+                ```
+            </TabItem>
+            <TabItem value="pnpm" label="pnpm">
+                ```bash
+                # get tokens from localfhenix faucet
+                pnpm faucet
+                # if this doesn't work, try running it directly
+                # with "node getFromFaucet"
+                # deploy the contract
+                pnpm deploy:contracts
+                ```
+            </TabItem>
+        </Tabs>
+    </TabItem>
+    <TabItem value="fhenix-frontier" label="Fhenix Frontier">
+        Make sure your deployer address has some tokens, which you can get from []
+        <Tabs groupId="package-managers">
+            <TabItem value="npm" label="npm">
+                ```bash
+                npm run deploy:contracts --network devnet
+                ```
+            </TabItem>
+            <TabItem value="yarn" label="yarn">
+                ```bash
+                yarn deploy:contracts --network devnet
+                ```
+            </TabItem>
+            <TabItem value="pnpm" label="pnpm">
+                ```bash
+                pnpm deploy:contracts --network devnet
+                ```
+            </TabItem>
+        </Tabs>
+    </TabItem>
+</Tabs>
+
+Okay, now we know how to create programmatic actions. You can find a few other examples of tasks that interact with the deployed contract in the [`tasks` ](https://github.com/FhenixProtocol/werc20-example/tree/main/tasks)folder.
+
+
+
+:::tip[Making Changes?]
+When deploying a contract hardhat creates a static deployment. If you want to make changes and redeploy using this method run
+<Tabs groupId="package-managers">
+    <TabItem value="npm" label="npm">
+        **`npm run clean`**
+    </TabItem>
+    <TabItem value="yarn" label="yarn">
+        **`yarn clean`**
+    </TabItem>
+    <TabItem value="pnpm" label="pnpm">
+        **`pnpm clean`**
+    </TabItem>
+</Tabs>
+
+:::
+
+Let's move on to writing a few unit tests!
