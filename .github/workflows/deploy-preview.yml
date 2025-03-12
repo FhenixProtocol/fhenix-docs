@@ -51,7 +51,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Build output to publish to the `gh-pages` branch:
           publish_dir: ./build
-          destination_dir: ${{ env.PR_PATH }}
+          destination_dir: "docs/${{ env.PR_PATH }}"
           cname: ${{ env.DOMAIN }}
           # The following lines assign commit authorship to the official
           # GH-Actions bot for deploys to `gh-pages` branch:
