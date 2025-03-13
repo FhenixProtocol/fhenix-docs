@@ -1,0 +1,8 @@
+{
+  "label": "Research and Publications",
+  "position": 10,
+  "link": {
+    "type": "generated-index",
+    "description": "Academic research and publications related to CoFHE"
+  }
+} 
