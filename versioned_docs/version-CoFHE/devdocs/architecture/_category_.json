@@ -1,0 +1,8 @@
+{
+  "label": "Architecture",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Comprehensive overview of CoFHE architecture and components"
+  }
+} 
