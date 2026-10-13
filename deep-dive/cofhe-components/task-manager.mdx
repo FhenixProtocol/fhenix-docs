@@ -8,7 +8,8 @@ description: "Onchain entry point for CoFHE integration that initiates FHE opera
 | **Type** | Contract deployed on every host chain, UUPS-upgradeable behind a proxy. |
 | **Function** | Acts as the onchain entry point for CoFHE integration. |
 | **Responsibilities** | • Initiates FHE operations requested through the `FHE.sol` library. <br/>• Generates the unique handles that reference future FHE results. <br/>• Emits structured task events for the offchain components. <br/>• Verifies the signatures on encrypted inputs and published decrypt results. |
-| **Deployment** | A separate TaskManager contract is deployed on each supported host chain, enabling chain-specific integrations. |
+| **Deployment** | A separate TaskManager contract is deployed on each supported host chain. Its address differs between mainnet and testnet. |
+| **How to find it** | Call `getTm(1)` on the CoFHEAddressBook at `0xC0F4e00E531a2B086492Ae3DCC1515038307196b`, the same address on every supported chain. `FHE.sol` and `@cofhe/sdk` (`getTaskManagerAddress`) resolve it the same way, so do not hard-code a TaskManager address. |
 
 ## Two signers
 
