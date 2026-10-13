@@ -25,7 +25,7 @@ The check says nothing about plaintexts. You never learn what any value decrypts
 
 | Item | Value |
 | --- | --- |
-| TaskManager | `0xeA30c4B8b44078Bbf8a6ef5b9f1eC1626C7848D9`, the same address on every supported chain |
+| CoFHEAddressBook | `0xC0F4e00E531a2B086492Ae3DCC1515038307196b`, the same address on every supported chain. `getTm(1)` returns that chain's TaskManager |
 | Host chain RPC | Any endpoint for the chain your contract runs on |
 | CommitmentRegistry | `0x4B82F827C03fad5739EFEcfcF743E65E732be695` on Arbitrum One, one address for every host chain |
 | Verified input archive | The [fhenix-mainnet-zee-k-inputs](https://storage.googleapis.com/fhenix-mainnet-zee-k-inputs?prefix=cofhe/) bucket, public. See [Fetch the inputs](#fetch-the-inputs) |
@@ -63,9 +63,12 @@ Color marks the zone, and the boxes group what runs where. Only the last box is 
 
 The TaskManager publishes every operation it schedules. `TaskCreated` carries the result handle, the operation name, and up to three input handles.
 
+The TaskManager address differs between mainnet and testnet, so read it from the CoFHEAddressBook. `FHE.sol` resolves it the same way. The examples below run on Arbitrum Sepolia. For another chain, change `RPC` only.
+
 ```bash
 RPC=https://arbitrum-sepolia-rpc.publicnode.com
-TASK_MANAGER=0xeA30c4B8b44078Bbf8a6ef5b9f1eC1626C7848D9
+ADDRESS_BOOK=0xC0F4e00E531a2B086492Ae3DCC1515038307196b
+TASK_MANAGER=$(cast call --rpc-url $RPC $ADDRESS_BOOK "getTm(uint256)(address)" 1)
 LATEST=$(cast block-number --rpc-url $RPC)
 
 cast logs --rpc-url $RPC --address $TASK_MANAGER \

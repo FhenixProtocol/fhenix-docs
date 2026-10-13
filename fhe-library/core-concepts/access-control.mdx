@@ -131,6 +131,16 @@ FHE.allowPublic(burnedAmount); // Anyone can decrypt and publish this value
 
 ---
 
+## Who you trust when you grant access
+
+Access to a handle is full access. A contract that holds it, including the contract that created it, can compute on the value, pass access on to others, or allow public decryption.
+
+<Warning>
+Pass a handle only to a contract you trust, and check its upgrade path if it is a proxy. A transient grant needs the same trust as a persistent one.
+</Warning>
+
+---
+
 ## Decryption and access control
 
 Decryption is a multi-step process: a client requests the plaintext and its signature offchain via `decryptForTx`, then publishes or verifies the result onchain.
@@ -177,8 +187,8 @@ When calling other contracts within a transaction, use `allowTransient()` instea
 Keep track of which addresses have access to which ciphertexts, especially in complex multi-contract systems.
 </Card>
 
-<Card title="Clean Up When Possible" icon="broom">
-Consider the lifecycle of your encrypted data and whether permissions should be revoked after certain operations.
+<Card title="Grant Only to Trusted Contracts" icon="handshake">
+A grant cannot be revoked, and the receiver can pass access on. See [who you trust when you grant access](#who-you-trust-when-you-grant-access).
 </Card>
 </CardGroup>
 
