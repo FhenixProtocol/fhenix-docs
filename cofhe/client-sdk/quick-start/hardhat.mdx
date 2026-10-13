@@ -1,0 +1,156 @@
+---
+title: "Quick Start: Hardhat"
+description: "Set up a Hardhat project with @cofhe/sdk, write a contract, and test the encrypt to store to decrypt flow"
+---
+
+Set up a Hardhat project with `@cofhe/hardhat-plugin`, write a contract that stores an encrypted `uint32`, and test the encrypt to store to decrypt flow.
+
+<Tip>
+Want to skip the setup? Clone the [cofhe-hardhat-starter](https://github.com/FhenixProtocol/cofhe-hardhat-starter) template to get a pre-configured project with everything ready to go.
+</Tip>
+
+## Prerequisites
+
+- Node.js 18+
+- An existing Hardhat project (or run `npx hardhat init` to create one)
+- `@nomicfoundation/hardhat-toolbox` or `@nomicfoundation/hardhat-ethers` installed
+
+## 1. Install dependencies
+
+<CodeGroup>
+
+```bash npm
+npm install @cofhe/hardhat-plugin@^0.8.0 @cofhe/sdk@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0
+```
+
+```bash pnpm
+pnpm add @cofhe/hardhat-plugin@^0.8.0 @cofhe/sdk@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0
+```
+
+```bash yarn
+yarn add @cofhe/hardhat-plugin@^0.8.0 @cofhe/sdk@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0
+```
+
+</CodeGroup>
+
+## 2. Configure Hardhat
+
+Import the plugin and set `evmVersion` to `cancun` (required for the transient storage opcodes used by FHE contracts).
+
+```typescript hardhat.config.ts
+import { HardhatUserConfig } from 'hardhat/config';
+import '@nomicfoundation/hardhat-toolbox';
+import '@cofhe/hardhat-plugin';
+
+const config: HardhatUserConfig = {
+  solidity: {
+    version: '0.8.28',
+    settings: {
+      evmVersion: 'cancun',
+    },
+  },
+};
+
+export default config;
+```
+
+<Warning>
+Without `evmVersion: 'cancun'`, compilation will fail with errors from `@fhenixprotocol/cofhe-contracts`.
+</Warning>
+
+## 3. Write a contract
+
+Create a minimal contract that accepts an encrypted input and stores it onchain.
+
+```solidity contracts/MyContract.sol
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.28;
+
+import '@fhenixprotocol/cofhe-contracts/FHE.sol';
+
+contract MyContract {
+  euint32 public storedValue;
+
+  function setValue(externalEuint32 inValue, bytes calldata inputProof) external {
+    storedValue = FHE.asEuint32(inValue, inputProof);
+    FHE.allowThis(storedValue);
+    FHE.allowSender(storedValue);
+  }
+}
+```
+
+- `euint32`: an encrypted `uint32` stored onchain as a ciphertext handle.
+- `externalEuint32`: the encrypted input handle produced by the SDK, paired with a `bytes` proof.
+- `FHE.allowThis` / `FHE.allowSender`: grant the contract and caller permission to read the encrypted value (required by the ACL).
+
+## 4. Write a test
+
+Use `hre.cofhe.createClientWithBatteries` to get a fully configured SDK client with a self-ACP, then encrypt to send to decrypt.
+
+```typescript test/MyContract.test.ts
+import hre from 'hardhat';
+import { CofheClient, Encryptable, FheTypes } from '@cofhe/sdk';
+import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
+import { expect } from 'chai';
+
+describe('MyContract', () => {
+  let cofheClient: CofheClient;
+  let signer: HardhatEthersSigner;
+
+  before(async () => {
+    [signer] = await hre.ethers.getSigners();
+    cofheClient = await hre.cofhe.createClientWithBatteries(signer);
+  });
+
+  it('stores and decrypts an encrypted value', async () => {
+    const Factory = await hre.ethers.getContractFactory('MyContract');
+    const contract = await Factory.deploy();
+
+    // 1. Encrypt the input, bound to the contract that will consume it
+    const [valueHash, signature] = await cofheClient
+      .encryptInputs([Encryptable.uint32(42n)])
+      .setConsumingContract(await contract.getAddress())
+      .execute();
+
+    // 2. Send to contract
+    await (await contract.setValue(valueHash, signature)).wait();
+
+    // 3. Read the stored handle and decrypt
+    const ctHash = await contract.storedValue();
+    const decrypted = await cofheClient
+      .decryptForView(ctHash, FheTypes.Uint32)
+      .execute();
+
+    expect(decrypted).to.equal(42n);
+  });
+});
+```
+
+## 5. Run
+
+```bash
+npx hardhat test
+```
+
+The plugin deploys mock contracts automatically, no extra setup needed.
+
+```text
+  MyContract
+    ✓ stores and decrypts an encrypted value
+
+  1 passing (1s)
+```
+
+## What just happened?
+
+1. The **Hardhat plugin** deployed mock versions of the CoFHE coprocessor contracts (TaskManager, ACL, ZK verifier, threshold network) before the test ran.
+2. `createClientWithBatteries` created an SDK client connected to the Hardhat network, with a self-ACP ready to go.
+3. `encryptInputs` encrypted the plaintext `42` into an FHE ciphertext with a ZK proof (simulated by the mock verifier).
+4. The contract stored the ciphertext handle onchain and set ACL permissions.
+5. `decryptForView` used the ACP to decrypt the handle back to `42n` locally.
+
+## Next steps
+
+- [Hardhat Plugin](/cofhe/client-sdk/hardhat-plugin/getting-started): full plugin configuration and features.
+- [Mock Contracts](/cofhe/client-sdk/hardhat-plugin/mock-contracts): read plaintext directly and assert encrypted state in tests.
+- [Logging](/cofhe/client-sdk/hardhat-plugin/logging): inspect every FHE operation your contracts perform.

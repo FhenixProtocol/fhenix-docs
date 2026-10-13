@@ -1,0 +1,287 @@
+---
+title: Verify a commitment
+description: "Recompute a CoFHE ciphertext from public inputs and check your result against the commitment recorded onchain."
+---
+
+Every ciphertext CoFHE produces or verifies is anchored by a hash commitment. This page shows you how to check one without trusting the coprocessor: read the public inputs, run the same computation yourself, and compare your hash to the recorded one. Nothing here needs an account, a key, or permission from anyone.
+
+## What the check proves
+
+A commitment is `keccak256` over a ciphertext's stored bytes. Those bytes are deterministic. The same inputs, the same keys, and the same FHE parameters produce the same ciphertext, byte for byte, on your machine as on ours.
+
+So the audit is a recomputation:
+
+1. Read the operation and its input handles from the host chain.
+2. Fetch the input ciphertexts from the public archive.
+3. Fetch the public key material the network computes with.
+4. Re-run the operation with those inputs.
+5. Hash your result and compare it to the recorded commitment.
+
+A match means the coprocessor ran the operation the contract asked for, and did not substitute a result. A mismatch means it did not, but read [When the hashes do not match](#when-the-hashes-do-not-match) before you draw that conclusion.
+
+The check says nothing about plaintexts. You never learn what any value decrypts to, because you never hold a decryption key. That is the point: the computation is auditable while the data stays confidential.
+
+## What you need
+
+| Item | Value |
+| --- | --- |
+| CoFHEAddressBook | `0xC0F4e00E531a2B086492Ae3DCC1515038307196b`, the same address on every supported chain. `getTm(1)` returns that chain's TaskManager |
+| Host chain RPC | Any endpoint for the chain your contract runs on |
+| CommitmentRegistry | `0x4B82F827C03fad5739EFEcfcF743E65E732be695` on Arbitrum One, one address for every host chain |
+| Verified input archive | The [fhenix-mainnet-zee-k-inputs](https://storage.googleapis.com/fhenix-mainnet-zee-k-inputs?prefix=cofhe/) bucket, public. See [Fetch the inputs](#fetch-the-inputs) |
+| Key store | The [fhenix-mainnet-keys](https://storage.googleapis.com/fhenix-mainnet-keys?prefix=generator/keys/) bucket, public. See [Fetch the public key material](#fetch-the-public-key-material) |
+| tfhe-rs | `1.5.1` |
+| Tools | Foundry's `cast`, and a Rust toolchain for the recomputation |
+
+You need one CommitmentRegistry address, not one per chain. A handle is derived from the ciphertext bytes, or from the operation and its input handles, and neither derivation mixes in a chain id. So handles are global, one registry records them all, and your host chain never appears in the lookup.
+
+Both stores are publicly readable. The input archive fills as the network processes inputs. The bucket links above show the live listing.
+
+## How a ciphertext is committed
+
+Every ciphertext in CoFHE, whether an encrypted input or a computed result, is stored in one format: the tfhe-rs value, compressed with `compress()`, then written with tfhe's `safe_serialize`. The commitment is `keccak256` over exactly those bytes. The security zone is not in the preimage.
+
+A handle is not the commitment, and the two relate differently depending on where the ciphertext came from.
+
+| Ciphertext | Handle | Where its commitment lives |
+| --- | --- | --- |
+| Encrypted input | The commitment with its last two bytes replaced by metadata: byte 30 carries the type and the trivial-encrypt flag, byte 31 carries the security zone | `InputVerified` on the host chain, and the registry |
+| Computed result | A placeholder the TaskManager derives from the operation and its inputs, before the result exists | The registry only |
+
+That difference is why the registry exists. A result's handle is fixed onchain the moment the task is created, so it cannot carry a hash of bytes nobody has computed yet.
+
+{/* Diagram source: verify-commitments.mmd, beside this page. Edit it first, then re-run the archify build. */}
+<Frame>
+<img src="/cofhe/images/verify-commitments.svg" alt="The TaskManager on the host chain, the verified input archive and the key store inside CoFHE, and the CommitmentRegistry on the registry chain, all feeding a recomputation and a hash comparison on your own machine" />
+</Frame>
+
+<Tip>
+Color marks the zone, and the boxes group what runs where. Only the last box is yours: everything else is a public read, and none of it needs an account or a key.
+</Tip>
+
+## Read the computation graph
+
+The TaskManager publishes every operation it schedules. `TaskCreated` carries the result handle, the operation name, and up to three input handles.
+
+The TaskManager address differs between mainnet and testnet, so read it from the CoFHEAddressBook. `FHE.sol` resolves it the same way. The examples below run on Arbitrum Sepolia. For another chain, change `RPC` only.
+
+```bash
+RPC=https://arbitrum-sepolia-rpc.publicnode.com
+ADDRESS_BOOK=0xC0F4e00E531a2B086492Ae3DCC1515038307196b
+TASK_MANAGER=$(cast call --rpc-url $RPC $ADDRESS_BOOK "getTm(uint256)(address)" 1)
+LATEST=$(cast block-number --rpc-url $RPC)
+
+cast logs --rpc-url $RPC --address $TASK_MANAGER \
+  --from-block $((LATEST - 40000)) --to-block $LATEST \
+  "TaskCreated(uint256 ctHash, string operation, uint256 input1, uint256 input2, uint256 input3)"
+```
+
+One real event from Arbitrum Sepolia, decoded:
+
+| Field | Value |
+| --- | --- |
+| `operation` | `add` |
+| `input1` | `0x4e6570aadde2d096ceb8214bcb54cc0aac9fa1af1d6640e9cae40052a23c0500` |
+| `input2` | `0x4765f9b1760b9612da755387f067d04051c2821bb4defc33ba58cbf940f00500` |
+| `ctHash` | `0xf0a73bae25878afcc52cf176616b3e3aa93f3ef6fa701ed61282cdd17df70500` |
+
+Operation names come from `Utils.functionIdToString` in [`ICofhe.sol`](https://github.com/FhenixProtocol/cofhe-contracts/blob/master/contracts/ICofhe.sol), which also defines the type constants. Byte 30 holds the type in its low seven bits. Its high bit is set when the value was [trivially encrypted](/cofhe/fhe-library/core-concepts/trivial-encryption), so mask the byte with `0x7f` before you compare it to those constants. Here every handle ends in `05 00`, which is `EUINT64_TFHE` in security zone 0. The same type, trivially encrypted, ends `85 00` and matches no constant until you mask it.
+
+An input handle is either another task's result, in which case you follow it and recurse, or an encrypted input. Encrypted inputs terminate the graph, and each one has its commitment onchain:
+
+```bash
+cast logs --rpc-url $RPC --address $TASK_MANAGER \
+  --from-block $((LATEST - 40000)) --to-block $LATEST \
+  "InputVerified(uint256 indexed ctHash, bytes32 commitment)"
+```
+
+The indexed topic is the handle, and the data word is the commitment. From a real event, unrelated to the task above:
+
+```text
+handle      0x1b2cd55ff9b0cbef294dfdc4cfb80ea6450bf0a272e45f9b3715a27bed350500
+commitment  0x1b2cd55ff9b0cbef294dfdc4cfb80ea6450bf0a272e45f9b3715a27bed35c582
+```
+
+The first 30 bytes are identical, and the handle's last two are the type byte and the zone. That relation is worth checking as you go, because it catches a mistyped handle before you spend a recomputation on it.
+
+## Read the commitment
+
+`getCommitment` takes the version tag and the handle, and returns the recorded hash. `bytes32(0)` means nothing is posted for that pair.
+
+```bash
+REGISTRY=0x4B82F827C03fad5739EFEcfcF743E65E732be695
+REGISTRY_RPC=https://arbitrum-one-rpc.publicnode.com
+VERSION=0x0000000000000000000000000000000000000000000000000000000000000002
+HANDLE=0xf0a73bae25878afcc52cf176616b3e3aa93f3ef6fa701ed61282cdd17df70500
+
+cast call $REGISTRY "getCommitment(bytes32,bytes32)(bytes32)" \
+  $VERSION $HANDLE --rpc-url $REGISTRY_RPC
+```
+
+The handle here is the step 1 example; put the handle you are auditing in its place.
+
+<Warning>
+The version tag is the number 2 encoded as `bytes32`, so `0x00...02`. It is not the ASCII character `2`. `cast format-bytes32-string "2"` returns `0x3200...00`, and every lookup under that value comes back zero.
+</Warning>
+
+A recorded hash on its own is not enough. Every version carries a status, and the registry accepts new commitments only while that status is `Active`. Read the status before you trust a match:
+
+```bash
+cast call $REGISTRY "getVersionStatus(bytes32)(uint8)" $VERSION --rpc-url $REGISTRY_RPC
+```
+
+The answer is `0` for Unset, `1` for Active, `2` for Deprecated, and `3` for Revoked. A status only moves forward: Active to Deprecated or Revoked, and Deprecated to Revoked. `Deprecated` means the version was superseded and its commitments stay readable. `Revoked` means the opposite. Do not trust a match under a revoked version.
+
+A zero answer is not proof of tampering, and it has two ordinary causes.
+
+The first is timing: a result that is still being computed has no commitment yet, because the coprocessor posts the commitment after the compute stage finishes.
+
+The second is the version. More than one version can be Active at once, and a handle committed before a cutover resolves only under the version it was posted with. Read the status of each version you know of, and retry the lookup under the earlier one before you conclude anything.
+
+To audit in bulk rather than one handle at a time, enumerate the version. `getSize` reports the total, and `getHandles` pages through it, clamping `offset + limit` at the total and returning an empty array once `offset` runs past the end.
+
+```bash
+cast call $REGISTRY "getSize(bytes32)(uint256)" $VERSION --rpc-url $REGISTRY_RPC
+
+cast call $REGISTRY "getHandles(bytes32,uint256,uint256)(bytes32[])" \
+  $VERSION 0 100 --rpc-url $REGISTRY_RPC
+```
+
+Keep `limit` small. See [CommitmentRegistry](/cofhe/deep-dive/cofhe-components/commitment-registry) for the write rules, the version state machine, and the rest of the read surface.
+
+## Fetch the inputs
+
+The [ZK Verifier](/cofhe/deep-dive/cofhe-components/zk-verifier) archives every input it verifies, together with the proof that covered it. This store holds inputs and proofs only, not the keys. Objects are laid out by chain and security zone, sharded by the first four hex characters of the handle:
+
+```text
+cofhe/v1/chain/{chainId}/security-zone/{zone}/verified-inputs/{shard}/{handle}
+cofhe/v1/chain/{chainId}/security-zone/{zone}/verification-proofs/{shard}/{proofId}
+```
+
+The handle is written without its `0x` prefix, and `{shard}` is its first four characters. Fetch an object anonymously: append its path to the archive base URL, with your handle and chain id from step 1. The archive holds an object once the network verified that input. The `-f` flag makes a missing object fail loudly instead of saving the error page.
+
+```bash
+# Mainnet archive
+ARCHIVE=https://storage.googleapis.com/fhenix-mainnet-zee-k-inputs
+curl -fsSO $ARCHIVE/cofhe/v1/chain/{chainId}/security-zone/{zone}/verified-inputs/{shard}/{handle}
+
+# The verified input above lives on testnet; this fetch runs as is.
+ARCHIVE=https://storage.googleapis.com/testnet-v2-inputs
+curl -fsSO $ARCHIVE/cofhe/v1/chain/421614/security-zone/0/verified-inputs/1b2c/1b2cd55ff9b0cbef294dfdc4cfb80ea6450bf0a272e45f9b3715a27bed350500
+```
+
+Each object is a bincode-encoded record holding the ciphertext bytes and its metadata. The metadata carries the handle, the proof it belongs to, the submitting account, the security zone, the chain, the index within the proof, and the type. Take the ciphertext bytes out of that record. They are the same `safe_serialize` of a compressed value as everything else, so `keccak256` over them reproduces the commitment you read from `InputVerified`. Check that before going further.
+
+The metadata also gives you the proof id, which is where you find the matching object under `verification-proofs`. Verifying that proof is a separate check, and it tells you the input was well formed rather than that the computation was honest.
+
+## Fetch the public key material
+
+Recomputation needs three artifacts, all public and all specific to a security zone. They live in the key store, which is separate from the verified input archive. The object paths below append to its base URL, `https://storage.googleapis.com/fhenix-mainnet-keys/generator/`.
+
+| Artifact | tfhe-rs type | Object in the key store |
+| --- | --- | --- |
+| Evaluation key | `CompressedServerKey` | `keys/versionized/{zone}/computation_key` |
+| Network public key | `CompactPublicKey` | `keys/versionized/{zone}/public_key`, or `GetNetworkPublicKey` |
+| CRS | `CompactPkeCrs` | `keys/versionized/{zone}/crs`, or `GetCrs` |
+
+A manifest sits alongside them at `keys/versionized/{zone}/public-material`, carrying a SHA-256 digest of each artifact. Check the artifacts you downloaded against it.
+
+Two of the three are also served over HTTP by the coprocessor, at the CoFHE URL your chain's SDK config already holds. Both take a security zone and return hex:
+
+```bash
+COFHE_URL=$(node -e "import('@cofhe/sdk/chains').then(c => console.log(c.arbSepolia.coFheUrl))")
+
+curl -s -X POST $COFHE_URL/GetNetworkPublicKey \
+  -H 'Content-Type: application/json' \
+  -d '{"securityZone": 0}' | jq -r .publicKey | head -c 64
+
+curl -s -X POST $COFHE_URL/GetCrs \
+  -H 'Content-Type: application/json' \
+  -d '{"securityZone": 0}' | jq -r .crs | head -c 64
+```
+
+<Note>
+Neither HTTP endpoint serves the evaluation key, and you cannot compute without it. Only the key store has it, at `keys/versionized/{zone}/computation_key` under the base URL.
+</Note>
+
+## Re-run the operation
+
+Start from a crate that pins tfhe-rs to the version the network runs:
+
+```toml Cargo.toml
+[dependencies]
+tfhe = { version = "=1.5.1", features = ["shortint", "integer", "boolean", "zk-pok"] }
+tiny-keccak = { version = "2.0", features = ["keccak"] }
+hex = "0.4"
+```
+
+<Warning>
+A fresh resolve picks `tfhe-zk-pok` 0.8.3, which pulls a `tfhe-versionable` that tfhe 1.5.1 does not build against. The build fails inside tfhe itself with over a hundred trait-bound errors. Pin it back with `cargo update -p tfhe-zk-pok --precise 0.8.0`.
+</Warning>
+
+Then decompress the evaluation key, deserialize both inputs, apply the operation the event named, and serialize the result the way the coprocessor does:
+
+```rust src/main.rs
+use tfhe::safe_serialization::{safe_deserialize, safe_serialize};
+use tfhe::{CompressedFheUint64, CompressedServerKey};
+use tiny_keccak::{Hasher, Keccak};
+
+const SIZE_LIMIT: u64 = 1 << 30;
+
+fn recompute_add(computation_key: &[u8], input1: &[u8], input2: &[u8]) -> Result<[u8; 32], String> {
+    let server_key: CompressedServerKey = safe_deserialize(computation_key, SIZE_LIMIT)?;
+    tfhe::set_server_key(server_key.decompress());
+
+    let lhs: CompressedFheUint64 = safe_deserialize(input1, SIZE_LIMIT)?;
+    let rhs: CompressedFheUint64 = safe_deserialize(input2, SIZE_LIMIT)?;
+
+    let result = lhs.decompress() + rhs.decompress();
+
+    // The coprocessor commits to the compressed, safe-serialized form. Any other
+    // encoding of the same ciphertext hashes to something else.
+    let mut stored = Vec::new();
+    safe_serialize(&result.compress(), &mut stored, SIZE_LIMIT).map_err(|e| e.to_string())?;
+
+    let mut hasher = Keccak::v256();
+    hasher.update(&stored);
+    let mut commitment = [0u8; 32];
+    hasher.finalize(&mut commitment);
+    Ok(commitment)
+}
+```
+
+Compression is deterministic. It is a modulus switch whose noise-reduction step picks its candidate by a fixed measure, with no randomness. The same inputs give the same bytes on every run and every machine.
+
+If the value this returns equals what `getCommitment` gave you for the result handle, the coprocessor computed honestly for that task. Walk the graph up from the encrypted inputs and you have checked the whole computation.
+
+### Parameters the keyset uses
+
+You do not need these to recompute, because the evaluation key carries them. They are here so you can confirm the keyset you downloaded is the one you expect:
+
+| Role | tfhe-rs parameter set |
+| --- | --- |
+| Compute keys | `PARAM_MESSAGE_2_CARRY_2_KS_PBS` |
+| Compact public key | <code style={{ whiteSpace: "nowrap" }}>V0_11_PARAM_PKE_MESSAGE_2_CARRY_2_KS_PBS_TUNIFORM_2M64</code> |
+| Key switching | <code style={{ whiteSpace: "nowrap" }}>V0_11_PARAM_KEYSWITCH_MESSAGE_2_CARRY_2_KS_PBS_TUNIFORM_2M64</code> |
+
+## When the hashes do not match
+
+A mismatch is a serious claim, and the first ones are almost always a setup problem rather than a dishonest coprocessor. Work through these before you conclude anything:
+
+- **The type.** Mask byte 30 of the handle with `0x7f`, and confirm it matches the type you deserialized as. Reading a `euint32` handle as a `CompressedFheUint64` gives bytes that hash to something else.
+- **The security zone.** Byte 31 names the zone. The evaluation key, the public key, and the CRS are all per zone, so a keyset from the wrong zone produces a plausible result with the wrong bytes.
+- **The serialized form.** Hash `safe_serialize` of the compressed value. The expanded value and the compressed one are the same ciphertext and different bytes. The size limit you pass is only a guard, and never reaches the hash.
+- **The version and the task.** Confirm `getVersionStatus` returns `Active`, and that `getCommitment` returned a non-zero hash. A result still in the compute stage has no commitment yet.
+- **The tfhe-rs version.** Confirm your pin is `=1.5.1`, the version the network runs.
+
+If all of these hold and the hashes still differ, you have a real discrepancy between what the contract asked for and what the network recorded.
+
+## Where this check runs in production
+
+[Teecryptor](/cofhe/deep-dive/cofhe-components/teecryptor) makes the same comparison inside its enclave on every decryption request. It hashes the ciphertext bytes it is about to decrypt and refuses any that do not match the commitment anchored onchain. Your audit and its gate read the same record, so a commitment you can check yourself is the same one that gates every decryption.
+
+## Source
+
+- [`CommitmentRegistry.sol`](https://github.com/FhenixProtocol/cofhe-contracts/blob/master/contracts/internal/registry-chain/contracts/commitment-registry/CommitmentRegistry.sol), the registry contract.
+- [`TaskManager.sol`](https://github.com/FhenixProtocol/cofhe-contracts/blob/master/contracts/internal/host-chain/contracts/TaskManager.sol), which emits `TaskCreated` and `InputVerified`.
+- [`ICofhe.sol`](https://github.com/FhenixProtocol/cofhe-contracts/blob/master/contracts/ICofhe.sol), for operation names and type constants.

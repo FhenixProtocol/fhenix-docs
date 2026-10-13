@@ -1,0 +1,55 @@
+---
+title: "Require"
+description: "Understanding require statements with encrypted data in FHE"
+---
+
+## Overview
+
+The `require` statement in FHE contracts works similarly to [Conditions (if .. else)](/cofhe/fhe-library/core-concepts/conditions) because both involve conditional logic on encrypted data. Just like you can't use traditional `if...else` statements with encrypted values, you also can't use standard `require` statements that depend on encrypted conditions.
+
+<Warning>
+Traditional `require` statements that check encrypted conditions will leak information about your encrypted values through execution paths.
+</Warning>
+
+---
+
+## Why Require is Like Conditions
+
+Both `require` and conditional statements face the same fundamental challenge in FHE:
+
+<CardGroup cols={2}>
+<Card title="Encrypted Evaluation" icon="lock">
+The condition being checked is encrypted, so the contract can't directly evaluate it to decide whether to revert.
+</Card>
+
+<Card title="Information Leakage" icon="shield-exclamation">
+If a transaction reverts based on an encrypted condition, observers can infer information about the encrypted data.
+</Card>
+</CardGroup>
+
+---
+
+## The Solution
+
+Instead of using `require` with encrypted conditions, you should:
+
+1. **Use `FHE.select`** to handle the conditional logic (see [Conditions (if .. else)](/cofhe/fhe-library/core-concepts/conditions))
+2. **Only use `require` for non-encrypted conditions** like access control checks, address validation, or other plaintext values
+
+```solidity
+// Good - require on plaintext condition
+require(msg.sender == owner, "Not authorized");
+
+// Good - use select for encrypted logic
+euint32 result = FHE.select(encryptedCondition, valueA, valueB);
+
+// Bad - require on encrypted condition is not possible!
+// FHE.decrypt was removed — decryption is now offchain only
+// require(FHE.decrypt(encryptedValue.gt(threshold)), "Value too low");
+```
+
+---
+
+## Learn More
+
+For detailed guidance on handling conditional logic with encrypted data, see the [Conditions (if .. else)](/cofhe/fhe-library/core-concepts/conditions) page.

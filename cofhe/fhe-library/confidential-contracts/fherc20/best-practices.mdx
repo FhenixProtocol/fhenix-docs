@@ -1,0 +1,40 @@
+---
+title: "FHERC20 best practices"
+description: "Checks to make when you build on, integrate with, or deploy an FHERC20 token"
+---
+
+These are the mistakes that cost the most when you work with FHERC20 tokens. Each item says what to do and links to the page that explains why.
+
+## Transfers
+
+**Use the amount that moved, not the amount you asked for.** A transfer that exceeds the sender's balance moves zero and does not revert. Every transfer function returns the amount that actually moved, as a `sharedEuint64`. A contract that credits users, settles trades, or counts deposits must work from that returned amount. See [transfers](/cofhe/fhe-library/confidential-contracts/fherc20/core-features).
+
+**Expect a revert from accounts that never held tokens.** A transfer from an account whose balance was never set reverts with `FHERC20ZeroBalance`. That revert is public, so it reveals that the account has never received the token. An account that held tokens and spent them all does not revert.
+
+**Do not read `balanceOf` or `totalSupply` as amounts.** On an FHERC20 token they return an indicator that moves by one tick per transfer, not a balance. Read `confidentialBalanceOf` and decrypt it. The indicator still shows each account's transfer activity, even though it hides the amounts. See [FHERC20 overview](/cofhe/fhe-library/confidential-contracts/fherc20/overview).
+
+## Encrypted inputs
+
+**Encrypt with the account that sends the transaction.** An input proof is bound to the account and the consuming contract it was created for. If an operator submits a transfer, the operator's client encrypts the amount, not the holder's. See [encrypting inputs](/cofhe/client-sdk/guides/encrypting-inputs).
+
+**Name the contract that converts the input.** The consuming contract is the one that calls `FHE.asEuint64`. For a direct transfer, that is the token. For a call through your own contract, that is your contract. Anything else fails with `InvalidSigner`.
+
+## Contracts that call the token
+
+**Receive returned values from the token by name.** Read a token's return value with `FHE.receiveEuint64FromCall(result, address(token))`, naming the token you called. See [call a token from your contract](/cofhe/fhe-library/confidential-contracts/calling-from-contracts).
+
+**Persist what you keep.** A received handle is usable for the current transaction only. Call `FHE.allowThis` on any value you store, and `FHE.allow` for each account that should decrypt it. See [access control](/cofhe/fhe-library/core-concepts/access-control).
+
+**Check who calls your receiver.** `onConfidentialTransferReceived` is an external function, and any contract can call it. Check that `msg.sender` is the token you accept, and receive the amount with `FHE.receiveEuint64Param`. Every confidential transfer is `nonReentrant`, so your callback cannot start another transfer on the same token. See [transfer callbacks](/cofhe/fhe-library/confidential-contracts/fherc20/transfer-callbacks).
+
+## Operators
+
+**Keep operator windows short.** An operator can move any amount until its `until` timestamp, because there is no per-amount allowance. Grant the shortest window the flow needs, and revoke with `setOperator(operator, 0)` when it is done. See [operators](/cofhe/fhe-library/confidential-contracts/fherc20/operators).
+
+## Wrappers
+
+**Look up claims by ID.** `claimUnshielded` takes the claim ID from `getUserClaims` or `getClaim`. The ciphertext handle is what you decrypt, not what you claim with. See [wrap ERC-20 tokens and ETH](/cofhe/fhe-library/confidential-contracts/fherc20/fherc20-wrapper).
+
+**Treat unshielded amounts as public.** Unshielding makes the burned amount publicly decryptable, and the claim publishes it in plaintext. The `uint64` overload of `unshield` also shows it in calldata before that. Only the balances that remain stay confidential.
+
+**Do not wrap fee-on-transfer tokens.** The ERC-20 wrapper mints the full amount it requests, so a token that delivers less leaves the wrapper holding less than it owes.

@@ -1,0 +1,54 @@
+---
+title: TaskManager
+description: "Onchain entry point for CoFHE integration that initiates FHE operations, generates unique handles, and verifies decrypt result signatures"
+---
+
+| Aspect | Description |
+|---------|-------------|
+| **Type** | Contract deployed on every host chain, UUPS-upgradeable behind a proxy. |
+| **Function** | Acts as the onchain entry point for CoFHE integration. |
+| **Responsibilities** | • Initiates FHE operations requested through the `FHE.sol` library. <br/>• Generates the unique handles that reference future FHE results. <br/>• Emits structured task events for the offchain components. <br/>• Verifies the signatures on encrypted inputs and published decrypt results. |
+| **Deployment** | A separate TaskManager contract is deployed on each supported host chain. Its address differs between mainnet and testnet. |
+| **How to find it** | Call `getTm(1)` on the CoFHEAddressBook at `0xC0F4e00E531a2B086492Ae3DCC1515038307196b`, the same address on every supported chain. `FHE.sol` and `@cofhe/sdk` (`getTaskManagerAddress`) resolve it the same way, so do not hard-code a TaskManager address. |
+
+## Two signers
+
+The TaskManager holds two distinct signer addresses, one per trust boundary:
+
+| Signer | Verifies |
+|--------|----------|
+| <code style={{ whiteSpace: "nowrap" }}>verifierSigner</code> | Encrypted inputs: the ZK Verifier signs each verified batch, and `batchVerifyInputs` checks that signature before emitting `InputVerified(ctHash, commitment)` per input. The signature binds the consuming contract, so a batch cannot be replayed elsewhere. |
+| <code style={{ whiteSpace: "nowrap" }}>decryptResultSigner</code> | Decrypt results: [Teecryptor](/cofhe/deep-dive/cofhe-components/teecryptor) signs each plaintext it returns, and the publish path checks that signature before storing the result. |
+
+## Decrypt result signature verification
+
+The TaskManager supports **permissionless publishing of decrypt results**. Anyone holding a valid signature from the decryption component can publish the result onchain. Today that signature comes from Teecryptor; a decentralized [Threshold Network](/cofhe/deep-dive/research/future-plans) is the planned successor.
+
+Verified results are stored in the [PlaintextsStorage](/cofhe/deep-dive/cofhe-components/plaintext-storage) contract, where any contract can read them back with `getDecryptResult` (reverts with `DecryptionResultNotReady` if pending) or `getDecryptResultSafe` (returns a ready flag).
+
+### Functions
+
+All take `(ctHash, result, signature)`; the batch variants take parallel arrays.
+
+| Function | Description |
+|----------|-------------|
+| <code style={{ whiteSpace: "nowrap" }}>publishDecryptResult</code> | Verify the signature and store the decrypt result onchain. Emits `DecryptionResult`. |
+| <code style={{ whiteSpace: "nowrap" }}>publishDecryptResultBatch</code> | Batch publish multiple results in one transaction for gas efficiency. |
+| <code style={{ whiteSpace: "nowrap" }}>verifyDecryptResult</code> | Verify a signature without publishing (view). Reverts on failure. |
+| <code style={{ whiteSpace: "nowrap" }}>verifyDecryptResultSafe</code> | Verify a signature without publishing (view). Returns `false` on failure. |
+| <code style={{ whiteSpace: "nowrap" }}>verifyDecryptResultBatch</code> | Batch verify (view). Reverts on the first failure. |
+| <code style={{ whiteSpace: "nowrap" }}>verifyDecryptResultBatchSafe</code> | Batch verify (view). Returns a `bool[]` of per-item outcomes. |
+| <code style={{ whiteSpace: "nowrap" }}>setDecryptResultSigner</code> | Admin-only. Takes an address; sets the authorized signer. |
+
+### Signature message format
+
+The signed message is a fixed **76-byte** buffer:
+
+| Field | Size | Encoding |
+|-------|------|----------|
+| `result` | 32 bytes | uint256, big-endian, left-padded with zeros |
+| `enc_type` | 4 bytes | i32, big-endian (extracted from ctHash metadata) |
+| `chain_id` | 8 bytes | u64, big-endian (from `block.chainid`) |
+| `ct_hash` | 32 bytes | uint256, big-endian |
+
+The message is hashed with `keccak256` and verified using OpenZeppelin's `ECDSA.tryRecover`. The `enc_type` and `chain_id` are derived onchain, binding each signature to a specific ciphertext type and chain.

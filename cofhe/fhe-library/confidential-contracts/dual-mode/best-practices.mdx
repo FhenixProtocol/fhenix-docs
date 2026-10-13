@@ -1,0 +1,40 @@
+---
+title: "ERC20Confidential best practices"
+description: "What to check before you ship a token built on ERC20Confidential"
+---
+
+These are the mistakes that are easiest to make with `ERC20Confidential`. Each one links to the page that explains the behavior behind it.
+
+## Treat shield and unshield amounts as public
+
+Privacy covers balances and transfers inside the confidential layer, not the boundary. The amount passed to `shield` is in the call data and in the `TokensShielded` event. The amount passed to `unshield(uint64)` is in the call data, and every claim reveals its amount when it settles.
+
+Tell users that what they move in and out is visible. A user who shields 1,000 tokens and later unshields 1,000 links the two. See [shield and unshield](/cofhe/fhe-library/confidential-contracts/dual-mode/shield-unshield).
+
+## Check the amount that actually moved
+
+A confidential transfer or unshield of more than the balance does not revert. It moves zero. Every transfer returns the amount that moved as a `sharedEuint64`, so a contract that credits a user should credit that returned amount, never the amount it asked for. See [call a token from your contract](/cofhe/fhe-library/confidential-contracts/calling-from-contracts).
+
+## Work in confidential units
+
+Transfers, `unshield`, and `_confidentialMint` take confidential units, while `shield` and every ERC-20 function take public base units. For an 18-decimal token one confidential unit is 10^12 base units, and `shield` leaves anything below that in the public balance. Read `confidentialDecimals()` instead of assuming 6. See [decimals and units](/cofhe/fhe-library/confidential-contracts/dual-mode/overview#decimals-and-units).
+
+## Use the plaintext supply, or sync before reading the handle
+
+`confidentialTotalSupplyPlaintext()` is always current. The `confidentialTotalSupply()` handle goes stale when someone transfers public tokens straight to the pool, and stays stale until anyone calls `syncConfidentialTotalSupply()`. It is also the zero handle until the first shield. See [what total supply counts](/cofhe/fhe-library/confidential-contracts/dual-mode/dual-balance-model#what-total-supply-counts).
+
+## Gate both balances if you freeze accounts
+
+`_beforeConfidentialMove` covers confidential transfers and unshield only. A freeze built on it alone still lets the account use its public balance, shield, and receive claim payouts. Override `_update` as well. See [freeze accounts](/cofhe/fhe-library/confidential-contracts/dual-mode/extending#freeze-accounts).
+
+## Backfill the observer when you set it
+
+A compliance observer only gets access to handles created after it is set. Call `grantObserverPast` with the existing balance handles, or the observer cannot read balances that have not moved since. See [add a compliance observer](/cofhe/fhe-library/confidential-contracts/dual-mode/extending#add-a-compliance-observer).
+
+## Keep operators short-lived
+
+A confidential operator can move any amount of the holder's confidential balance until its deadline. It is separate from the public allowance: `approve` grants nothing on the confidential side, and `setOperator` grants nothing on the public side. Set a deadline that covers the action you need, and set it to `0` when you are done. See [operators](/cofhe/fhe-library/confidential-contracts/dual-mode/confidential-operations#operators).
+
+## Link the library and enable the optimizer
+
+Deploy `ERC20ConfidentialLib` from `fhenix-confidential-contracts@0.4.0` and link every token to it; the address cannot change after deployment. Compile with the optimizer on, so added functions do not push the token past the 24 KB contract size limit. See [link the shared library](/cofhe/fhe-library/confidential-contracts/overview#link-the-shared-library).

@@ -1,0 +1,145 @@
+---
+title: "Decryption"
+description: "publishDecryptResult, verifyDecryptResult, getDecryptResult: onchain decryption result handling"
+---
+
+Decryption in CoFHE is a two-phase process:
+
+1. **Onchain**: Mark a value as decryptable with `FHE.allowPublic(ctHash)`
+2. **Offchain**: Client calls `decryptForTx(ctHash)` via the SDK to get `{ plaintext, signature }`
+3. **Onchain**: Submit the result via `publishDecryptResult` or `verifyDecryptResult`
+
+---
+
+## Publishing Results
+
+### publishDecryptResult
+
+Publishes a decrypted result onchain by verifying the signature from [Teecryptor](/cofhe/deep-dive/cofhe-components/teecryptor). The plaintext is stored and can be read via `getDecryptResultSafe`.
+
+<ParamField body="ctHash" type="ebool | euint8 | euint16 | euint32 | euint64 | euint128 | eaddress" required>
+Ciphertext handle
+</ParamField>
+
+<ParamField body="plaintext" type="bool | uint8 | uint16 | uint32 | uint64 | uint128 | address" required>
+Decrypted value from `decryptForTx`
+</ParamField>
+
+<ParamField body="signature" type="bytes" required>
+Teecryptor signature returned by `decryptForTx`
+</ParamField>
+
+<Warning>
+Reverts if the signature is invalid. The value must have been granted public access via `allowPublic` before decryption was requested offchain.
+</Warning>
+
+```solidity
+FHE.publishDecryptResult(encryptedBid, bidPlaintext, bidSignature);
+```
+
+### publishDecryptResultBatch
+
+Publishes multiple results in a single call. Typed overloads exist for every encrypted type:
+
+| Handle array type | Result array type |
+| --- | --- |
+| `ebool[]` | `bool[]` |
+| `euint8[]` | `uint8[]` |
+| `euint16[]` | `uint16[]` |
+| `euint32[]` | `uint32[]` |
+| `euint64[]` | `uint64[]` |
+| `euint128[]` | `uint128[]` |
+| `eaddress[]` | `address[]` |
+
+```solidity
+euint64[] memory handles = new euint64[](2);
+handles[0] = encryptedBid1;
+handles[1] = encryptedBid2;
+
+uint64[] memory values = new uint64[](2);
+values[0] = bid1Plaintext;
+values[1] = bid2Plaintext;
+
+bytes[] memory sigs = new bytes[](2);
+sigs[0] = sig1;
+sigs[1] = sig2;
+
+FHE.publishDecryptResultBatch(handles, values, sigs);
+```
+
+<Note>
+The compiler resolves the overload from the handle array's element type. There is also a "raw" overload that takes `uint256[]` ctHashes if you only have raw handles to hand.
+</Note>
+
+---
+
+## Verifying Results
+
+### verifyDecryptResult
+
+Verifies a Teecryptor signature **without** storing the plaintext onchain. Returns `bool`.
+
+<Tip>
+Use this when you only need to act on the decrypted value within the transaction without making it permanently public.
+</Tip>
+
+```solidity
+require(
+    FHE.verifyDecryptResult(encryptedAmount, amount, signature),
+    "Invalid decrypt proof"
+);
+```
+
+### verifyDecryptResultSafe
+
+Like `verifyDecryptResult`, but returns `false` instead of reverting on invalid signature.
+
+```solidity
+bool valid = FHE.verifyDecryptResultSafe(encryptedAmount, amount, signature);
+if (valid) {
+    // proceed
+}
+```
+
+### verifyDecryptResultBatch
+
+Verifies multiple signatures in a single call. Returns `true` only if every entry is valid; reverts if any signature fails to recover (consistent with the single-entry `verifyDecryptResult`). Typed overloads exist for every encrypted type, same handle/result type table as [`publishDecryptResultBatch`](#publishdecryptresultbatch).
+
+```solidity
+bool allValid = FHE.verifyDecryptResultBatch(handles, values, sigs);
+```
+
+### verifyDecryptResultBatchSafe
+
+Returns a `bool[]` indicating which entries are valid instead of reverting. Typed overloads cover every encrypted type, same handle/result type table as [`publishDecryptResultBatch`](#publishdecryptresultbatch).
+
+```solidity
+bool[] memory results = FHE.verifyDecryptResultBatchSafe(handles, values, sigs);
+```
+
+<Note>
+The batch verify functions (`verifyDecryptResultBatch`, `verifyDecryptResultBatchSafe`) were added in `cofhe-contracts@v0.1.2`. Earlier versions only exposed the single-entry `verifyDecryptResult` / `verifyDecryptResultSafe`.
+</Note>
+
+---
+
+## Reading Results
+
+### getDecryptResult
+
+Retrieves a published decryption result. Reverts if not yet available.
+
+```solidity
+uint256 result = FHE.getDecryptResult(ctHash);
+```
+
+### getDecryptResultSafe
+
+Non-reverting version. Returns a tuple with the result and a boolean flag.
+
+```solidity
+(uint256 result, bool decrypted) = FHE.getDecryptResultSafe(ctHash);
+if (decrypted) {
+    // use result
+}
+```

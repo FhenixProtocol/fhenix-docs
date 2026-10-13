@@ -1,0 +1,111 @@
+---
+title: Getting Started
+description: "Set up @cofhe/hardhat-plugin for local FHE contract development and testing"
+---
+
+`@cofhe/hardhat-plugin` extends Hardhat with everything you need to build and test FHE-enabled contracts locally: mock contracts, a pre-configured CoFHE client, and test utilities.
+
+## What the plugin provides
+
+- **Mock contracts** deployed automatically on every `npx hardhat test` / `npx hardhat node` run, simulating the full CoFHE coprocessor stack on the Hardhat network.
+- **`hre.cofhe`**: a namespaced API for creating and connecting CoFHE clients with Hardhat signers.
+- **`hre.cofhe.mocks`**: utilities for reading raw plaintext values and interacting with mock contracts directly in tests.
+- **Pre-configured networks**: `localcofhe`, `eth-sepolia`, and `arb-sepolia` are injected automatically.
+
+## Installation
+
+<Steps>
+
+<Step title="Install the package">
+
+<CodeGroup>
+
+```bash npm
+npm install @cofhe/hardhat-plugin @cofhe/sdk @cofhe/mock-contracts @fhenixprotocol/cofhe-contracts
+```
+
+```bash pnpm
+pnpm add @cofhe/hardhat-plugin @cofhe/sdk @cofhe/mock-contracts @fhenixprotocol/cofhe-contracts
+```
+
+```bash yarn
+yarn add @cofhe/hardhat-plugin @cofhe/sdk @cofhe/mock-contracts @fhenixprotocol/cofhe-contracts
+```
+
+</CodeGroup>
+
+</Step>
+
+<Step title="Import in your Hardhat config">
+
+```typescript hardhat.config.ts
+import '@cofhe/hardhat-plugin';
+
+export default {
+  solidity: '0.8.28',
+};
+```
+
+That's it. The plugin automatically deploys the mock contracts before every test run.
+
+</Step>
+
+</Steps>
+
+## Configuration
+
+The plugin adds an optional `cofhe` key to your Hardhat config:
+
+```typescript hardhat.config.ts
+import '@cofhe/hardhat-plugin';
+
+export default {
+  solidity: '0.8.28',
+  cofhe: {
+    gasWarning: true,               // warn when mock gas usage is high (default: false)
+    mocksDeployVerbosity: 'v',      // mock deployment log verbosity (default: 'v')
+  },
+};
+```
+
+`mocksDeployVerbosity` controls how much output the plugin prints while deploying the mock contracts at the start of each `npx hardhat test` / `npx hardhat node` run:
+
+| Value | Output |
+| --- | --- |
+| `''` | Silent, no deploy lines. |
+| `'v'` | Single summary line per mock (default since `0.5.0`). |
+| `'vv'` | Full per-contract deployment log, including each contract's deployed address. |
+
+This is separate from **runtime** FHE-op logging, the entries printed when your tests actually call `FHE.*`. That is controlled onchain rather than from this config; see [Logging](/cofhe/client-sdk/hardhat-plugin/logging).
+
+## Pre-configured networks
+
+The following networks are injected automatically. You can override any of them by defining the same key under `networks` in your config.
+
+| Network | URL | Chain ID |
+| --- | --- | --- |
+| `localcofhe` | `http://127.0.0.1:42069` | `420105` |
+| `eth-sepolia` | Ethereum Sepolia public RPC | `11155111` |
+| `arb-sepolia` | Arbitrum Sepolia public RPC | `421614` |
+
+For testnets, set `PRIVATE_KEY` (and optionally `SEPOLIA_RPC_URL` / `ARBITRUM_SEPOLIA_RPC_URL`) in your environment.
+
+## Auto-deployment
+
+Mock contracts are deployed automatically before:
+
+- `npx hardhat test`
+- `npx hardhat node`
+
+To skip auto-deployment (e.g., when running tests only against an external RPC):
+
+```bash
+COFHE_SKIP_MOCKS_DEPLOY=1 npx hardhat test
+```
+
+## Next steps
+
+- [Client](/cofhe/client-sdk/hardhat-plugin/client): create and connect a CoFHE client in tests.
+- [Mock Contracts](/cofhe/client-sdk/hardhat-plugin/mock-contracts): read plaintext values and interact with mock contracts.
+- [Logging](/cofhe/client-sdk/hardhat-plugin/logging): inspect FHE operations in test output.
+- [Testing](/cofhe/client-sdk/hardhat-plugin/testing): end-to-end test patterns.

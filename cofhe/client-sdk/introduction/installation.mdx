@@ -1,0 +1,120 @@
+---
+title: Installation
+description: "Install and configure @cofhe/sdk for your project"
+---
+
+## Prerequisites
+
+- Node.js 18+
+- TypeScript 5+
+- viem 2.38.6+
+
+## Install packages
+
+<CodeGroup>
+
+```bash npm
+npm install @cofhe/sdk@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0
+```
+
+```bash pnpm
+pnpm add @cofhe/sdk@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0
+```
+
+```bash yarn
+yarn add @cofhe/sdk@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0
+```
+
+</CodeGroup>
+
+| Package | Version | Purpose |
+| --- | --- | --- |
+| `@cofhe/sdk` | `^0.8.0` | Client-side encryption, decryption, and ACP management |
+| `@fhenixprotocol/cofhe-contracts` | `^1.0.0` | `FHE.sol`, the Solidity library imported by your contracts |
+
+<Note>
+`@cofhe/sdk` `0.7.x` pairs with `@fhenixprotocol/cofhe-contracts` `0.2.0`. Keep every `@cofhe/*` package on the same version. They are released together and pin each other exactly. The [compatibility page](/cofhe/get-started/introduction/compatibility) carries the full table.
+</Note>
+
+## For Hardhat projects
+
+If you are using Hardhat for development and testing, also install the plugin:
+
+<CodeGroup>
+
+```bash npm
+npm install @cofhe/hardhat-plugin@^0.8.0 @cofhe/sdk@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0
+```
+
+```bash pnpm
+pnpm add @cofhe/hardhat-plugin@^0.8.0 @cofhe/sdk@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0
+```
+
+```bash yarn
+yarn add @cofhe/hardhat-plugin@^0.8.0 @cofhe/sdk@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0
+```
+
+</CodeGroup>
+
+| Package | Version | Purpose |
+| --- | --- | --- |
+| `@cofhe/hardhat-plugin` | `^0.8.0` | Extends Hardhat with `hre.cofhe`, deploys mock contracts automatically |
+| `@cofhe/sdk` | `^0.8.0` | Client-side encryption, decryption, and ACP management |
+| `@fhenixprotocol/cofhe-contracts` | `^1.0.0` | `FHE.sol`, the Solidity library imported by your contracts |
+
+See the [Hardhat Plugin Getting Started](/cofhe/client-sdk/hardhat-plugin/getting-started) guide for configuration details.
+
+## For Foundry projects
+
+If you are using Foundry for development and testing, install the Foundry plugin and its peer packages as dev dependencies:
+
+<CodeGroup>
+
+```bash npm
+npm install -D @cofhe/foundry-plugin@^0.8.0 @cofhe/mock-contracts@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0 @openzeppelin/contracts
+forge install foundry-rs/forge-std
+```
+
+```bash pnpm
+pnpm add -D @cofhe/foundry-plugin@^0.8.0 @cofhe/mock-contracts@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0 @openzeppelin/contracts
+forge install foundry-rs/forge-std
+```
+
+```bash yarn
+yarn add -D @cofhe/foundry-plugin@^0.8.0 @cofhe/mock-contracts@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0 @openzeppelin/contracts
+forge install foundry-rs/forge-std
+```
+
+</CodeGroup>
+
+| Package | Version | Purpose |
+| --- | --- | --- |
+| `@cofhe/foundry-plugin` | `^0.8.0` | `CofheTest` and `CofheClient`, the Solidity test base and per-user SDK shim |
+| `@cofhe/mock-contracts` | `^0.8.0` | Mock CoFHE contracts used by the Foundry plugin |
+| `@fhenixprotocol/cofhe-contracts` | `^1.0.0` | `FHE.sol`, the Solidity library imported by your contracts |
+
+<Note>
+The Foundry plugin uses Solidity-only abstractions, so tests need no `@cofhe/sdk` (JS).
+</Note>
+
+See the [Foundry Plugin Getting Started](/cofhe/client-sdk/foundry-plugin/getting-started) guide for `foundry.toml` and `remappings.txt` setup.
+
+## Runtime entrypoints
+
+Import from the entrypoint that matches your runtime:
+
+```typescript
+// Browser apps (React, Next.js, etc.)
+import { createCofheConfig, createCofheClient } from '@cofhe/sdk/web';
+
+// Node.js scripts, backends, Hardhat tests
+import { createCofheConfig, createCofheClient } from '@cofhe/sdk/node';
+
+// Shared types (works in any runtime)
+import { Encryptable, FheTypes } from '@cofhe/sdk';
+```
+
+## Next steps
+
+- [Quick start](/cofhe/client-sdk/quick-start/javascript): write your first FHE contract and test.
+- [Client setup](/cofhe/client-sdk/guides/client-setup): configure and connect the SDK client.

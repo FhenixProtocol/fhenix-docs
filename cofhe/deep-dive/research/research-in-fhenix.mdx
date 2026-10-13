@@ -1,0 +1,13 @@
+---
+title: Research in Fhenix
+sidebar_position: 10
+description: "Research into novel cryptographic techniques and optimization of Fully Homomorphic Encryption for blockchain applications"
+---
+
+Our research explores novel cryptographic techniques to push the boundaries of Fully Homomorphic Encryption (FHE). We mainly work on optimizing the latency of FHE-based smart contracts using the latest published schemes, keeping them both efficient and secure. Ultimately, the aim is to broaden the practical viability of FHE by delivering protocols that meet real-world performance needs.
+
+## Threshold decryption for FHE
+
+Decryption in CoFHE is currently served by [Teecryptor](/cofhe/deep-dive/cofhe-components/teecryptor), a TEE-based component. The research below is the path to its planned decentralized successor, the [Threshold Network](/cofhe/deep-dive/research/future-plans).
+
+We designed a new threshold FHE decryption protocol that improves throughput by roughly 20,000x and cuts latency by up to 37x relative to the prior state of the art. This is achieved by securely removing ciphertext noise with an efficient MPC-based approach, eliminating the need for noise flooding while maintaining strong simulation-based security.

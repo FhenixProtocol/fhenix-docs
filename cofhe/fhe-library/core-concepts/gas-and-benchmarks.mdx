@@ -1,0 +1,27 @@
+---
+title: "Gas Costs and Benchmarks"
+description: "The gas an FHE operation and a confidential transfer take, and where to find operation latency benchmarks"
+---
+
+An FHE operation costs gas onchain to request it. The encrypted math itself runs offchain in the [compute pipeline](/cofhe/deep-dive/cofhe-components/compute-pipeline) and costs no gas.
+
+## Gas per confidential transfer
+
+Whole transactions on the reference [FHERC20](/cofhe/fhe-library/confidential-contracts/fherc20/overview) token, with an encrypted input amount where the call takes one:
+
+| Action | Gas |
+|---|---|
+| `confidentialTransfer` to an existing holder | 421,500 |
+| `confidentialTransfer` to a new holder | 474,400 |
+| <code style={{ whiteSpace: "nowrap" }}>confidentialTransferFrom</code> by an operator | 424,800 |
+| `setOperator`, a one-time approval | 46,700 |
+
+## Gas per operation
+
+The [gas per operation reference](/cofhe/fhe-library/reference/gas-costs) lists the expected gas of every `FHE.sol` operation. Most operations take 40,000 to 55,000 gas as the first FHE call in a transaction, and about 20,000 less as a later call.
+
+## Performance benchmarks
+
+The compute pipeline executes operations with [TFHE-rs](https://github.com/zama-ai/tfhe-rs), Zama's FHE library. For operation-level latency, use Zama's published numbers: [TFHE-rs benchmarks](https://docs.zama.ai/tfhe-rs/tfhe-rs/1.5/get-started/benchmarks).
+
+Read them as the cost of the raw operation on reference hardware. End-to-end latency in CoFHE adds the steps around the operation: event pickup, validation, and commitment posting.

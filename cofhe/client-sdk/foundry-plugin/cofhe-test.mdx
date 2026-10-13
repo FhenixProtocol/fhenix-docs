@@ -1,0 +1,144 @@
+---
+title: CofheTest
+description: "The CofheTest abstract base contract: deploys CoFHE mocks and exposes plaintext assertions"
+---
+
+`CofheTest` is the abstract test base shipped by `@cofhe/foundry-plugin`. It already inherits `forge-std/Test`, so inherit `CofheTest` directly; inheriting both is a redeclaration error.
+
+```solidity
+import { CofheTest } from "@cofhe/foundry-plugin/contracts/CofheTest.sol";
+
+contract MyTest is CofheTest {
+    function setUp() public {
+        deployMocks();
+        // ... your contract deploys
+    }
+}
+```
+
+## `deployMocks()`
+
+Call once in `setUp()`. Deploys the full CoFHE mock stack and wires the contracts together:
+
+| Mock | Role | Address |
+| --- | --- | --- |
+| <code style={{ whiteSpace: "nowrap" }}>MockCoFHEAddressBook</code> | Resolves the TaskManager, at the address `FHE.sol` reads | `0xC0F4…196b` (fixed) |
+| `MockTaskManager` | Manages FHE operations; stores plaintext values onchain | `0x…5000` (fixed) |
+| `MockACL` | Access control list for encrypted handles | (deployed) |
+| `MockZkVerifier` | Verifies encrypted-input ZK proofs | `0x…5001` (fixed) |
+| `MockZkVerifierSigner` | Signs encrypted inputs (for the mock verifier) | (funded with 10 ether) |
+| `MockThresholdNetwork` | Handles decryption requests | `0x…5002` (fixed) |
+| `MockThresholdNetworkSigner` | Signs decrypt-result outputs | (deployed) |
+
+After `deployMocks()` runs, the following public state vars are available on `CofheTest`:
+
+```solidity
+mockAddressBook
+mockTaskManager
+mockAcl
+mockZkVerifier
+mockZkVerifierSigner
+mockThresholdNetwork
+mockThresholdNetworkSigner
+```
+
+Reach into them when you need behavior `expectPlaintext` doesn't cover (e.g. permission-denied assertions: see [Testing](/cofhe/client-sdk/foundry-plugin/testing#deny-path)).
+
+## `createCofheClient()`
+
+Returns a fresh [`CofheClient`](/cofhe/client-sdk/foundry-plugin/cofhe-client). You typically follow it with `connect(pkey)`:
+
+```solidity
+CofheClient bob = createCofheClient();
+bob.connect(0xB0B);
+```
+
+One client per scenario address. Connecting with a deterministic plaintext private key keeps test output debuggable.
+
+## Reading plaintext values
+
+Because `MockTaskManager` stores plaintext values onchain, you can read the underlying plaintext of any encrypted handle directly, with no ACP needed.
+
+### `getPlaintext(handle)`
+
+Returns the onchain plaintext from `MockTaskManager.mockStorage`. Typed overloads exist for every encrypted Solidity type:
+
+```solidity
+bytes32 plaintext   = getPlaintext(handle);            // raw
+bool    flag        = getPlaintext(eboolHandle);
+uint8   v8          = getPlaintext(euint8Handle);
+uint16  v16         = getPlaintext(euint16Handle);
+uint32  v32         = getPlaintext(euint32Handle);
+uint64  v64         = getPlaintext(euint64Handle);
+uint128 v128        = getPlaintext(euint128Handle);
+address addr        = getPlaintext(eaddressHandle);
+```
+
+Reverts if the handle isn't in mock storage.
+
+### `expectPlaintext(handle, value)` and `(handle, value, "msg")`
+
+Assertion variant, with typed overloads for the same type set. Faster than `decryptForView` (no SDK round-trip, no ACP needed). Use it whenever you only care about the value, not the SDK code path.
+
+```solidity
+expectPlaintext(counter.count(), uint32(42));
+expectPlaintext(counter.count(), uint32(42), "after increment");
+```
+
+<Tip>
+Prefer `expectPlaintext` over `decryptForView` for state assertions. Reserve the SDK path for tests where the SDK behavior itself is under test.
+</Tip>
+
+## Logging
+
+The mocks log every FHE operation to the console when log mode is on. Toggle it locally with:
+
+| Function | Effect |
+| --- | --- |
+| `enableLogs()` | Calls `mockTaskManager.setLogOps(true)` |
+| `disableLogs()` | Calls `mockTaskManager.setLogOps(false)` |
+
+Logging is verbose, so enable it only around the operation you're investigating.
+
+```solidity
+function test_DebuggingIncrement() public {
+    enableLogs();
+    vm.prank(bob.account());
+    counter.increment();
+    disableLogs();
+}
+```
+
+Each operation prints in a formatted block:
+
+```text
+├ FHE.add          | euint32(4473..3424)[0] + euint32(1157..3648)[1]  =>  euint32(1106..1872)[1]
+├ FHE.allowThis    | euint32(1106..1872)[1] -> 0x663f..6602
+```
+
+## Common pitfalls
+
+<AccordionGroup>
+<Accordion title="IDE Solidity LSP errors but `forge test` is green" icon="triangle-exclamation">
+Solidity LSPs (Wake, Cursor, etc.) often resolve imports from the monorepo root rather than the package's `node_modules`. The plugin's remappings are package-local, so the LSP may flag valid imports. **`forge` is authoritative.** If `forge build` and `forge test` succeed, the test is correct.
+</Accordion>
+
+<Accordion title="`@cofhe/mock-contracts/foundry/CoFheTest.sol` import" icon="circle-xmark">
+That import path is the **old** API from `@cofhe/mock-contracts@0.4.x`. Migrate to:
+
+```solidity
+import { CofheTest } from "@cofhe/foundry-plugin/contracts/CofheTest.sol";
+```
+
+See the [migration mapping](/cofhe/client-sdk/foundry-plugin/testing#migration-from-the-old-mock-contracts-api) for the full rename table.
+</Accordion>
+
+<Accordion title="Don't run `forge test` cross-monorepo" icon="folder">
+The remappings are relative to the foundry package's root. Running `forge test` from a parent monorepo directory won't resolve them; `forge` resolves from the working directory.
+</Accordion>
+</AccordionGroup>
+
+## Next steps
+
+- [CofheClient](/cofhe/client-sdk/foundry-plugin/cofhe-client): per-user encrypt, decrypt, and ACP shim.
+- [Testing](/cofhe/client-sdk/foundry-plugin/testing): canonical test-writing patterns and migration mapping.

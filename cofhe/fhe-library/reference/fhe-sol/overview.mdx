@@ -1,0 +1,70 @@
+---
+title: "FHE.sol Overview"
+description: "Encrypted data types, imports, and general usage of the FHE Solidity library"
+---
+
+The FHE library provides functions for working with Fully Homomorphic Encryption (FHE) in Solidity smart contracts. It enables computations on encrypted data without decrypting it, ensuring privacy throughout your contract's execution.
+
+## Import
+
+```solidity
+import '@fhenixprotocol/cofhe-contracts/FHE.sol';
+```
+
+<Info>
+All functions are prefixed with `FHE.` when called. For example: `FHE.add(a, b)` or `FHE.allowPublic(value)`.
+</Info>
+
+## Encrypted Data Types
+
+| Type | Description |
+|------|-------------|
+| `ebool` | Encrypted boolean value |
+| `euint8` | Encrypted 8-bit unsigned integer |
+| `euint16` | Encrypted 16-bit unsigned integer |
+| `euint32` | Encrypted 32-bit unsigned integer |
+| `euint64` | Encrypted 64-bit unsigned integer |
+| `euint128` | Encrypted 128-bit unsigned integer |
+| `eaddress` | Encrypted Ethereum address |
+
+## Input Types
+
+Each encrypted type has a corresponding input type, used when receiving encrypted data from the client SDK. An input arrives as a handle plus a `bytes` proof, and `FHE.asEuintXX(handle, proof)` converts the pair into the encrypted type:
+
+| Input Type | Encrypted Type |
+|------------|---------------|
+| `externalEbool` | `ebool` |
+| `externalEuint8` | `euint8` |
+| `externalEuint16` | `euint16` |
+| `externalEuint32` | `euint32` |
+| `externalEuint64` | `euint64` |
+| `externalEuint128` | `euint128` |
+| `externalEaddress` | `eaddress` |
+
+## Shared Types
+
+A value handed over by another contract arrives as a shared type instead. `FHE.shareEuintXX(value, receiver)` produces one, and the receiver unwraps it with `FHE.receiveEuintXXParam` or `FHE.receiveEuintXXFromCall`:
+
+| Shared Type | Encrypted Type |
+|-------------|---------------|
+| `sharedEbool` | `ebool` |
+| `sharedEuint8` | `euint8` |
+| `sharedEuint16` | `euint16` |
+| `sharedEuint32` | `euint32` |
+| `sharedEuint64` | `euint64` |
+| `sharedEuint128` | `euint128` |
+| `sharedEaddress` | `eaddress` |
+
+See [inputs](/cofhe/fhe-library/core-concepts/inputs) for when to use each.
+
+## Security Considerations
+
+1. **Initialization**: All FHE functions check if their inputs are initialized and set them to 0 if not.
+
+2. **Decryption**: Decryption is a two-phase process. Mark values with `allowPublic` onchain, decrypt offchain via the Client SDK, then publish/verify the result with `publishDecryptResult` or `verifyDecryptResult`. Only reveal values when absolutely necessary.
+
+3. **Security Zones**: Some functions accept a `securityZone` parameter to isolate different encrypted computations. FHE operations can only be performed between ciphertexts that share the same security zone.
+
+4. **Access Control**: The library provides fine-grained access control through the `allow*` functions. Always set proper permissions before accessing encrypted values.
+
+5. **Type Safety**: Ensure encrypted values use compatible types when performing operations. Type mismatches will cause errors.

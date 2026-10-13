@@ -1,0 +1,136 @@
+---
+title: "Overview"
+description: "What the fhenix-confidential-contracts package provides, which token to build on, and how to install and link it"
+---
+
+`fhenix-confidential-contracts` is a Solidity package of confidential ERC-20 tokens built on [`FHE.sol`](/cofhe/fhe-library/reference/fhe-sol/overview). Balances and transfer amounts are stored as encrypted handles (`euint64`), so only the accounts the token grants access to can decrypt them. Read this page to pick a contract, install the package, and deploy a token that needs the shared library.
+
+The source is public at [FhenixProtocol/fhenix-confidential-contracts](https://github.com/FhenixProtocol/fhenix-confidential-contracts/tree/v0.4.0/contracts), under the MIT license. These docs cover version `0.4.0`.
+
+## Which contract do you need?
+
+The package ships two families. FHERC20 tokens hold only encrypted balances. `ERC20Confidential` is a normal public ERC-20 with an encrypted balance added next to it.
+
+| Contract | What a holder has | Use it when |
+| --- | --- | --- |
+| <code style={{ whiteSpace: "nowrap" }}>FHERC20</code> | An encrypted balance only | You issue a new token that is confidential from the start |
+| <code style={{ whiteSpace: "nowrap" }}>FHERC20ERC20Wrapper</code> | An encrypted balance, backed by an ERC-20 the wrapper holds | You want a confidential version of a token that already exists, such as USDC |
+| <code style={{ whiteSpace: "nowrap" }}>FHERC20NativeWrapper</code> | An encrypted balance, backed by ETH the wrapper holds | You want confidential ETH, shielded from ETH or WETH |
+| <code style={{ whiteSpace: "nowrap" }}>ERC20Confidential</code> | A public ERC-20 balance and an encrypted balance, in one contract | Your token must keep working with every ERC-20 integration, and holders opt in to privacy |
+
+On an FHERC20 token, `balanceOf` and `totalSupply` return an indicator value, not a balance, and `transfer`, `transferFrom`, `approve`, and `allowance` revert with `FHERC20IncompatibleFunction`. The indicator exists so wallets and explorers show activity without seeing amounts. On `ERC20Confidential`, the ERC-20 functions behave normally on the public balance.
+
+Every contract above has an upgradeable variant with the `Upgradeable` suffix, which you set up from an initializer instead of a constructor. If your token already has its own ERC-20 implementation, `ERC20ConfidentialCoreUpgradeable` adds only the confidential layer and reaches your ledger through three hooks: `_ledgerMint`, `_ledgerTransfer`, and `_ledgerBalanceOf`.
+
+## What all of them have in common
+
+- **Amounts are 64-bit.** Encrypted amounts are `euint64`. The wrappers and `ERC20Confidential` cap the confidential side at 6 decimals and convert at a fixed rate, so an 18-decimal token moves in steps of 10^12 base units.
+- **Operators replace allowances.** `setOperator(operator, until)` lets `operator` move any amount for you until the `until` timestamp. There is no per-amount allowance, so keep `until` short.
+- **Two ways to pass an amount.** A wallet calls the overload that takes `externalEuint64` plus `inputProof`, which it gets from the SDK. Another contract calls the overload that takes `sharedEuint64`, created with `FHE.shareEuint64(amount, token)`.
+- **A failed transfer moves zero instead of reverting.** If the encrypted amount exceeds the balance, the transfer completes with an amount of zero. A revert would reveal that the balance was too low. Every transfer returns the amount that actually moved.
+- **Leaving the confidential side takes two transactions.** `unshield` burns the encrypted amount and opens a claim. Once the amount is decrypted, `claimUnshielded` pays out the public token.
+
+## Install the package
+
+```bash
+npm install fhenix-confidential-contracts@0.4.0
+```
+
+The package depends on `@fhenixprotocol/cofhe-contracts@1.0.0` exactly, plus `@openzeppelin/contracts` and `@openzeppelin/contracts-upgradeable`. Keep your own `cofhe-contracts` pin on the same version, or npm installs two copies of `FHE.sol`. See the [compatibility page](/cofhe/get-started/introduction/compatibility) for the matching SDK and plugin versions.
+
+Import contracts by their path inside the package:
+
+```solidity ConfidentialToken.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.25;
+
+import { FHE } from "@fhenixprotocol/cofhe-contracts/FHE.sol";
+import { FHERC20 } from "fhenix-confidential-contracts/contracts/FHERC20/FHERC20.sol";
+
+contract ConfidentialToken is FHERC20 {
+    constructor() FHERC20("Confidential Token", "eTKN", 6, "") {
+        _mint(msg.sender, FHE.asEuint64(1_000_000 * 10 ** 6));
+    }
+}
+```
+
+`FHERC20` takes a name, a symbol, the decimals, and a contract URI. It deploys like any other contract.
+
+To send tokens from a wallet, encrypt the amount with the SDK and name the token as the consuming contract. ethers needs the full signature to choose between the transfer overloads:
+
+```typescript
+import { Encryptable } from '@cofhe/sdk';
+
+const [amount, inputProof] = await client
+  .encryptInputs([Encryptable.uint64(250_000_000n)])
+  .setConsumingContract(await token.getAddress())
+  .execute();
+
+await token['confidentialTransfer(address,bytes32,bytes)'](recipient, amount, inputProof);
+```
+
+`externalEuint64` is `bytes32` in the ABI, which is why the signature reads `bytes32`. See [encrypting inputs](/cofhe/client-sdk/guides/encrypting-inputs) for setting up `client`.
+
+## Link the shared library
+
+The wrappers, `ERC20Confidential`, and their upgradeable variants call into `ERC20ConfidentialLib`, an external library. Keeping that logic in a separately deployed library is what holds these tokens under the 24 KB contract size limit. `FHERC20` and `FHERC20Upgradeable` do not use it.
+
+The library address is written into the token's bytecode when you deploy, not passed to the constructor, so it cannot change afterwards. Deploy the library once on each chain, then link every token on that chain to it:
+
+```typescript deploy.ts
+const LIB =
+  'fhenix-confidential-contracts/contracts/ERC20Confidential/ERC20ConfidentialLib.sol:ERC20ConfidentialLib';
+
+const lib = await ethers.deployContract(LIB);
+await lib.waitForDeployment();
+
+const Factory = await ethers.getContractFactory('ConfidentialUSDC', {
+  libraries: { [LIB]: await lib.getAddress() },
+});
+const token = await Factory.deploy(usdcAddress);
+```
+
+Use the fully qualified name exactly as shown. The repository README writes it starting at `contracts/`, which only resolves inside that repository. If you forget the `libraries` option, `getContractFactory` throws `missing links for the following libraries` before anything is sent.
+
+For an upgradeable token, the OpenZeppelin upgrades plugin refuses linked libraries unless you allow them:
+
+```typescript
+const token = await upgrades.deployProxy(Factory, [], { unsafeAllowLinkedLibraries: true });
+```
+
+<Warning>
+Beta builds published before `0.4.0` shipped an `ERC20ConfidentialLib` with a different ABI but the same function selectors. A token linked to one of those deploys, then fails at runtime. Deploy the library from `0.4.0`.
+</Warning>
+
+<Warning>
+Turn the Solidity optimizer on before you deploy a wrapper. With it off, `FHERC20NativeWrapper` and `FHERC20ERC20WrapperUpgradeable` compile past the 24,576-byte limit and the deployment reverts. With `runs: 200`, both come in near 15,000 bytes.
+</Warning>
+
+## Upgrading from 0.3
+
+Version `0.4.0` follows the `0.7` CoFHE release and changes every function that takes an encrypted amount:
+
+- `InEuint64` parameters are now `externalEuint64` plus `bytes inputProof`. On the `AndCall` functions, `inputProof` comes before `data`.
+- Overloads that took a bare `euint64` from another contract now take `sharedEuint64`, and every transfer returns `sharedEuint64`. A calling contract reads the result with `FHE.receiveEuint64FromCall(result, token)`.
+- `IERC7984Receiver.onConfidentialTransferReceived` receives a `sharedEuint64` and returns a `sharedEbool`.
+- Wrappers and `ERC20Confidential` must be linked to `ERC20ConfidentialLib`.
+- Claims are keyed by a claim ID, not by the ciphertext handle. Read the ID from `getUserClaims` before you call `claimUnshielded`.
+
+A contract that passed a bare handle still compiles against `0.4.0`, because `sharedEuint64` has the same ABI encoding as `euint64`. It fails at runtime with `NotShared`. The [changelog](https://github.com/FhenixProtocol/fhenix-confidential-contracts/blob/v0.4.0/CHANGELOG.md) lists every change. For the client side, see [migrating to 0.7](/cofhe/client-sdk/introduction/migrating-to-0-7).
+
+## Next steps
+
+<CardGroup cols={2}>
+<Card title="FHERC20" icon="lock" href="/cofhe/fhe-library/confidential-contracts/fherc20/overview">
+Tokens with encrypted balances only.
+</Card>
+<Card title="Wrap ERC-20 tokens and ETH" icon="box" href="/cofhe/fhe-library/confidential-contracts/fherc20/fherc20-wrapper">
+Shield an existing token into a confidential one, and claim it back.
+</Card>
+<Card title="ERC20Confidential" icon="layer-group" href="/cofhe/fhe-library/confidential-contracts/dual-mode/overview">
+A public ERC-20 with an encrypted balance next to it.
+</Card>
+<Card title="Call a token from your contract" icon="code" href="/cofhe/fhe-library/confidential-contracts/calling-from-contracts">
+Pass encrypted amounts between your contract and a token.
+</Card>
+</CardGroup>

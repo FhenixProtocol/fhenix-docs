@@ -1,0 +1,194 @@
+---
+title: Testing
+description: "Canonical test-writing patterns for FHE contracts under Foundry"
+---
+
+This page shows the load-bearing patterns for writing FHE contract tests under Foundry with `@cofhe/foundry-plugin`. Hardhat counterpart: [Hardhat Plugin: Testing](/cofhe/client-sdk/hardhat-plugin/testing).
+
+## Skeleton
+
+```solidity test/Counter.t.sol
+import { CofheTest } from "@cofhe/foundry-plugin/contracts/CofheTest.sol";
+import { CofheClient } from "@cofhe/foundry-plugin/contracts/CofheClient.sol";
+import { externalEuint32 } from "@fhenixprotocol/cofhe-contracts/FHE.sol";
+import { Counter } from "../src/Counter.sol";
+
+contract CounterTest is CofheTest {
+    Counter public counter;
+    CofheClient bob;
+    CofheClient alice;
+
+    uint256 constant BOB_PKEY   = 0xB0B;
+    uint256 constant ALICE_PKEY = 0xA11CE;
+
+    function setUp() public {
+        deployMocks();
+
+        bob   = createCofheClient();   bob.connect(BOB_PKEY);
+        alice = createCofheClient();   alice.connect(ALICE_PKEY);
+
+        vm.prank(bob.account());
+        counter = new Counter();
+    }
+
+    function test_Increments() public {
+        vm.prank(bob.account());
+        counter.increment();
+        expectPlaintext(counter.count(), uint32(1));
+    }
+}
+```
+
+That's the load-bearing shape. Everything below is what to add as the contract grows more complex.
+
+## Rules
+
+### 1. Inherit `CofheTest`, not `Test`
+
+`CofheTest` already inherits `forge-std/Test` and exposes the mock state vars (`mockTaskManager`, `mockAcl`, `mockThresholdNetwork`, …) you'll occasionally reach into. Inheriting both is a redeclaration error.
+
+### 2. One `CofheClient` per scenario address
+
+Each user with their own ACP and encrypted inputs gets their own client. Connect with a deterministic plaintext private key. Don't recycle real keys; these are visible in test output.
+
+```solidity
+CofheClient bob = createCofheClient();
+bob.connect(0xB0B);         // bob.account() == vm.addr(0xB0B)
+```
+
+You don't pass `account` to `createExternalEuintN`; the client is bound at `connect`.
+
+### 3. `vm.prank(client.account())` to act onchain as that user
+
+```solidity
+vm.prank(bob.account());
+(externalEuint32 hash, bytes memory proof) = bob.createExternalEuint32(2000, address(counter));
+counter.reset(hash, proof);
+```
+
+Mismatching the prank address and the client that produced the input fails the ZK-verifier signature check.
+
+### 4. Assert with `expectPlaintext` whenever possible
+
+```solidity
+expectPlaintext(counter.count(), uint32(2000));    // typed overload
+```
+
+Faster than `decryptForView` and needs no ACP. Reserve the SDK path for tests where the SDK behavior itself is under test.
+
+### 5. Test the public-decrypt 3-step flow with `decryptForTx_withoutACP`
+
+When the contract calls `FHE.publishDecryptResult`:
+
+```solidity
+// Step 1: contract grants public decrypt permission
+vm.prank(bob.account());
+counter.allowCounterPublicly();   // FHE.allowPublic(handle)
+
+// Step 2: SDK fetches plaintext + threshold-network signature
+bytes32 ctHash = euint32.unwrap(counter.count());
+(, uint256 plaintext, bytes memory sig) = bob.decryptForTx_withoutACP(ctHash);
+
+// Step 3: contract verifies signature and stores plaintext
+counter.revealCounter(uint32(plaintext), sig);
+assertEq(counter.getDecryptedValue(), plaintext);
+```
+
+Same shape runs unmodified against real CoFHE on testnet. The mock signature is produced by the same `MockThresholdNetworkSigner` that `FHE.verifyDecryptResult` accepts.
+
+### 6. ACP-based unseal: `decryptForView` for the success path
+
+```solidity
+import { ACP } from "@cofhe/mock-contracts/contracts/Permissioned.sol";
+
+ACP memory bobAcp = bob.ACP_createSelf();
+uint256 value = bob.decryptForView(ctHash, bobAcp);
+assertEq(value, expected);
+```
+
+`ACP_createSelf` builds the EIP-712 typed-data, derives a sealing key from the connected account, and signs, with no manual `signPermissionSelf` boilerplate.
+
+### 7. Deny path: when the caller is not on the ACL {#deny-path}
+
+`decryptForView` reverts when the caller isn't on the ACL. To assert the deny path, drop down to the mock directly:
+
+```solidity
+ACP memory aliceAcp = alice.ACP_createSelf();
+(bool allowed, string memory err, ) = mockThresholdNetwork.querySealOutput(
+    uint256(ctHash), block.chainid, aliceAcp
+);
+assertFalse(allowed, "Alice should NOT be allowed");
+assertEq(err, "NotAllowed");
+```
+
+`mockThresholdNetwork` is a public field on `CofheTest`.
+
+### 8. Fuzz tests inherit normally
+
+```solidity
+function testFuzz_Reset(uint32 v) public {
+    (externalEuint32 enc, bytes memory proof) = bob.createExternalEuint32(v, address(counter));
+    vm.prank(bob.account());
+    counter.reset(enc);
+    expectPlaintext(counter.count(), v);
+}
+```
+
+`createExternalEuintN` accepts the full `uintN` range, so no shaping needed.
+
+## Migration from the old `mock-contracts` API
+
+If you're upgrading from `@cofhe/mock-contracts@0.4.x` (where `CoFheTest` lived inside the mocks package), here's the rename table:
+
+| Old API (mock-contracts ≤ 0.4) | New API (`@cofhe/foundry-plugin`) |
+| --- | --- |
+| `import { CoFheTest } from "@cofhe/mock-contracts/foundry/CoFheTest.sol"` | `import { CofheTest } from "@cofhe/foundry-plugin/contracts/CofheTest.sol"` |
+| `is Test, CoFheTest` | `is CofheTest` (Test already inherited) |
+| `assertHashValue(handle, value)` | `expectPlaintext(handle, value)` |
+| `mockStorage(ctHash)` | `getPlaintext(ctHash)` |
+| `createInEuint32(v, bob)` | `bob.createExternalEuint32(v, address(target))` |
+| `createPermissionSelf(bob)` + `signPermissionSelf(perm, bobKey)` | `bob.ACP_createSelf()` (auto-signs) |
+| `createSealingKey(seed)` | `bob.createSealingKey(seed)` (rarely needed: `ACP_createSelf` derives one) |
+| `queryDecrypt(hash, chainId, permit)` | `bob.decryptForView(hash, acp)` (reverts on deny) |
+| Same, asserting deny | `mockThresholdNetwork.querySealOutput(hash, block.chainid, acp)` |
+| `querySealOutput` + `unseal` | `bob.decryptForView` (does both) |
+| `decryptForTxWithoutPermit(ct)` returns `(allowed, error, plaintext)` | `bob.decryptForTx_withoutACP(ct)` returns `(ctHash, plaintext, signature)` |
+
+## Common pitfalls
+
+<AccordionGroup>
+<Accordion title="IDE Solidity errors but `forge test` passes" icon="triangle-exclamation">
+LSPs like Wake/Cursor often resolve from the monorepo root; the plugin's remappings are package-local. **`forge` is the truth.** If `forge build` and `forge test` succeed, the test is correct.
+</Accordion>
+
+<Accordion title="Forgetting `FHE.allowThis` in the contract" icon="key">
+Tests pass on the first op, then a second op reverts with `ACLNotAllowed` because the contract itself isn't on the ACL. Toggle `enableLogs()` to see the missing grant. Every op prints a line showing whether `allowThis`/`allow` was called.
+</Accordion>
+
+<Accordion title="Wrong client for the prank" icon="user">
+`vm.prank(bob.account())` while the input came from `alice.createExternalEuintN(...)` fails ZK verification. Always match the client to the prank.
+</Accordion>
+
+<Accordion title="Stale handle reads" icon="rotate">
+`euint32.unwrap(counter.count())` returns the *current* handle. Storing it in a local then asserting after a write reads the old handle:
+
+```solidity
+bytes32 oldHandle = euint32.unwrap(counter.count());
+counter.increment();
+expectPlaintext(oldHandle, uint32(0));   // passes by accident
+expectPlaintext(counter.count(), uint32(1)); // ✅ re-fetch
+```
+
+Re-fetch after each state change.
+</Accordion>
+
+<Accordion title="ACP issuer must derive from the connected key" icon="signature">
+The `pkey` passed to `connect` must derive the address used as `acp.issuer`. `bob.ACP_createSelf()` after `bob.connect(0xB0B)` produces `issuer == vm.addr(0xB0B)`. Trying to forge a mismatch fails signature verification.
+</Accordion>
+</AccordionGroup>
+
+## Related
+
+- [CofheTest](/cofhe/client-sdk/foundry-plugin/cofhe-test): the test base contract API.
+- [CofheClient](/cofhe/client-sdk/foundry-plugin/cofhe-client): the per-user shim API.
+- [Testing under Hardhat](/cofhe/client-sdk/hardhat-plugin/testing): the same patterns for Hardhat.

@@ -1,0 +1,76 @@
+---
+title: "How the two balances relate"
+description: "The pool that backs ERC20Confidential's encrypted balances, how total supply is counted, and the indicator token"
+---
+
+Every confidential token on an `ERC20Confidential` contract is backed by public tokens that the contract holds aside. This page explains where those tokens sit, what each supply function counts, and what the indicator token shows. Read it before you build accounting or analytics on top of the token.
+
+## Where the backing tokens sit
+
+Public tokens backing confidential balances sit in the public balance of a fixed address, `CONFIDENTIAL_POOL`:
+
+```text
+0x1011000000000000000000000000000000000000
+```
+
+The contract moves tokens in and out of it with internal transfers:
+
+| Operation | Public balance | Pool | Confidential balance |
+| --- | --- | --- | --- |
+| `shield(amount)` | Caller's balance decreases | Increases | Caller's balance increases by `amount / rate` |
+| `unshield(amount)` | No change | No change | Caller's balance decreases, a claim opens |
+| `claimUnshielded(...)` | Recipient's balance increases | Decreases | No change |
+| `_confidentialMint(to, amount)` | No change | Increases by newly minted tokens | `to`'s balance increases |
+
+`unshield` leaves the pool alone. The pool keeps custody of the tokens until the claim settles, so a pending claim is still backed.
+
+Because the pool is an ordinary address, anyone can send public tokens to it with `transfer`. Those tokens back no confidential balance, and the token has no function that returns them.
+
+## What total supply counts
+
+`totalSupply()` is the OpenZeppelin total of all public balances, and the pool is one of them. Shielding and unshielding move tokens between addresses, so they never change `totalSupply()`. Only public mints and burns change it, including the public mint inside `_confidentialMint`.
+
+The confidential supply is the pool's balance converted to confidential units. The token exposes it two ways:
+
+| Function | Returns | When it updates |
+| --- | --- | --- |
+| <code style={{ whiteSpace: "nowrap" }}>confidentialTotalSupplyPlaintext</code> | `uint256`, the pool's balance divided by the rate | On every read, so it is always current |
+| <code style={{ whiteSpace: "nowrap" }}>confidentialTotalSupply</code> | `euint64` handle that anyone can decrypt | On `shield`, `claimUnshielded`, `_confidentialMint`, and `syncConfidentialTotalSupply` |
+
+The confidential supply is not secret: anyone can compute it from the pool's public balance. `confidentialTotalSupply` exists for contracts that need the value as a ciphertext for FHE operations. The handle is the zero handle until the first shield, claim, or confidential mint.
+
+A transfer straight into the pool raises `confidentialTotalSupplyPlaintext` immediately but leaves the stored handle stale. Anyone can refresh it by calling `syncConfidentialTotalSupply()`.
+
+The stored value saturates at `type(uint64).max` rather than reverting, so a large transfer into the pool cannot block `shield` or claims.
+
+## The indicator token
+
+The `ERC20Confidential` constructor deploys a second contract, `ERC20ConfidentialIndicator`, and records it as `indicatorToken()`. Wallets and block explorers that only understand ERC-20 can track it to see that confidential activity happened, without seeing amounts.
+
+| Property | Value |
+| --- | --- |
+| `name()` | `"1011000 "` followed by the token's name, for example `1011000 Dual Token` |
+| `symbol()` | `"c"` followed by the token's symbol, for example `cDUAL` |
+| `decimals()` | `4` |
+| `balanceOf(account)` | `1011000.0000` before any confidential activity |
+
+Each confidential move updates the indicator for both parties. The first move into an account sets its indicator to `1011000.5001`, and each later one adds `0.0001`, up to `1011000.9999`. The first move out sets it to `1011000.4999`, and each later one subtracts `0.0001`, down to `1011000.0001`. The indicator also emits a `Transfer` event for each move, so the activity shows in transaction history.
+
+The indicator's `transfer`, `transferFrom`, `approve`, and `allowance` revert with `ERC20ConfidentialIndicatorNoOp`. Only the parent token can update it.
+
+## Read both balances
+
+The public balance is a plain view call. The confidential balance is a handle, which the holder decrypts with an Access Control Permission (ACP) through [`decryptForView`](/cofhe/client-sdk/guides/decrypt-to-view):
+
+```typescript
+import { FheTypes } from '@cofhe/sdk';
+
+const publicBalance = await token.balanceOf(account);
+
+const handle = await token.confidentialBalanceOf(account);
+const confidentialBalance = await client
+  .decryptForView(handle, FheTypes.Uint64)
+  .execute();
+```
+
+`confidentialBalance` is in confidential units. Multiply it by the rate to compare it with the public balance.

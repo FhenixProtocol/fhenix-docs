@@ -1,0 +1,158 @@
+---
+title: Testing
+description: "Common patterns for writing Hardhat tests with the CoFHE plugin"
+---
+
+This page shows the common patterns for writing Hardhat tests with the CoFHE plugin.
+
+## Test setup
+
+Use `hre.cofhe.createClientWithBatteries` in a `before` hook. It creates and connects a fully configured `CofheClient`, including a self-ACP, so the client is ready for every test in the suite:
+
+```typescript
+import hre from 'hardhat';
+import { CofheClient } from '@cofhe/sdk';
+import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
+
+let cofheClient: CofheClient;
+let signer: HardhatEthersSigner;
+
+before(async () => {
+  [signer] = await hre.ethers.getSigners();
+  cofheClient = await hre.cofhe.createClientWithBatteries(signer);
+});
+```
+
+See [Client](/cofhe/client-sdk/hardhat-plugin/client) for manual setup options.
+
+## Encrypt to store to decrypt
+
+The core test loop: encrypt a value, pass it to a contract, then decrypt the stored handle.
+
+```typescript
+import { Encryptable, FheTypes } from '@cofhe/sdk';
+import { expect } from 'chai';
+
+// 1. Encrypt the input, bound to the contract that will consume it
+const [valueHash, signature] = await cofheClient
+  .encryptInputs([Encryptable.uint32(100n)])
+  .setConsumingContract(await testContract.getAddress())
+  .execute();
+
+// 2. Send to contract
+const tx = await testContract.setValue(valueHash, signature);
+await tx.wait();
+
+// 3. Read the stored handle
+const ctHash = await testContract.storedValue();
+
+// 4. Decrypt for display
+const decrypted = await cofheClient
+  .decryptForView(ctHash, FheTypes.Uint32)
+  .execute();
+
+expect(decrypted).to.equal(100n);
+```
+
+## Reading plaintext directly
+
+In tests you can bypass the normal decrypt flow and read the raw plaintext stored by the mock contracts. This is useful for asserting contract state without needing an ACP:
+
+```typescript
+import hre from 'hardhat';
+
+// Get raw plaintext value
+const plaintext = await hre.cofhe.mocks.getPlaintext(ctHash);
+
+// Or use the assertion shorthand
+await hre.cofhe.mocks.expectPlaintext(ctHash, 100n);
+```
+
+See [Mock Contracts](/cofhe/client-sdk/hardhat-plugin/mock-contracts) for details.
+
+## Access Control Permissions
+
+`createClientWithBatteries` pre-generates a self-ACP, so `decryptForView` and `decryptForTx().withACP()` work immediately. For tests that need named ACPs or multiple signers, create them explicitly:
+
+```typescript
+import { ACPUtils } from '@cofhe/sdk/acps';
+
+const acp = await cofheClient.acp.createSelf({
+  issuer: signer.address,
+  name: 'My Test ACP',
+});
+
+// Select it as the active ACP
+const acpHash = ACPUtils.getHash(acp);
+cofheClient.acp.selectActiveACP(acpHash);
+```
+
+Alternatively, create a separate client for each signer:
+
+```typescript
+import hre from 'hardhat';
+
+const [bob, alice] = await hre.ethers.getSigners();
+const bobClient = await hre.cofhe.createClientWithBatteries(bob);
+const aliceClient = await hre.cofhe.createClientWithBatteries(alice);
+```
+
+## `decryptForTx` patterns
+
+[`decryptForTx`](/cofhe/client-sdk/guides/decrypt-to-tx) returns a `{ ctHash, decryptedValue, signature }` tuple for onchain submission. The ACP mode must be selected explicitly.
+
+### Globally allowed values (`.withoutACP()`)
+
+When a contract calls `FHE.allowPublic(handle)`, anyone can decrypt without an ACP:
+
+```typescript
+import { expect } from 'chai';
+
+const result = await cofheClient
+  .decryptForTx(publicCtHash)
+  .withoutACP()
+  .execute();
+
+expect(result.decryptedValue).to.equal(55n);
+```
+
+### Access-controlled values (`.withACP()`)
+
+For handles restricted by ACL policy, supply an ACP:
+
+<CodeGroup>
+
+```typescript Explicit ACP
+const result = await cofheClient
+  .decryptForTx(ctHash)
+  .withACP(acp)
+  .execute();
+
+expect(result.decryptedValue).to.equal(99n);
+```
+
+```typescript Active ACP
+// resolves the active ACP automatically
+const result = await cofheClient
+  .decryptForTx(ctHash)
+  .withACP()
+  .execute();
+
+expect(result.decryptedValue).to.equal(99n);
+```
+
+</CodeGroup>
+
+### Submitting the result onchain
+
+Pass the result directly to your contract:
+
+```typescript
+await myContract.revealValue(
+  result.ctHash,
+  result.decryptedValue,
+  result.signature
+);
+```
+
+For a full walkthrough of `decryptForTx`, see [Decrypt to Transact](/cofhe/client-sdk/guides/decrypt-to-tx).

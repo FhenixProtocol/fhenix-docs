@@ -1,0 +1,224 @@
+---
+title: "Access Control"
+description: "Understanding and managing permissions for encrypted data in confidential smart contracts"
+---
+
+## Motivation
+
+Consider the following scenario: Your contract receives an encrypted input that should remain confidential.
+
+```solidity
+// Contract A
+function submitSecretBid(externalEuint32 bid, bytes calldata inputProof) public {
+    euint32 handle = FHE.asEuint32(bid, inputProof);
+    // Perform some operations on the encrypted input
+}
+```
+
+If there were no access control mechanisms, someone could observe the handle value used above and reuse it by initializing a local variable with the same value.
+
+```solidity
+// Contract B
+function attackBid(euint32 seenHandle) public {
+    euint32 doubled = FHE.add(seenHandle, seenHandle); // try to compute on someone else's ciphertext
+    FHE.allowSender(doubled);                          // and hand the result to the attacker
+}
+```
+
+<Warning>
+To prevent misuse, all FHE operations verify that the caller has explicit permission on every input ciphertext handle.
+</Warning>
+
+---
+
+## How access control works
+
+In practice, the code above will revert with an `ACLNotAllowed` error because the calling contract doesn't have permission for that ciphertext handle. Any FHE operation will fail if the caller lacks permission for all input handles.
+
+### Unauthorized operations fail
+
+```solidity
+FHE.add(notAllowedCt, allowedCt); // -> will revert with ACLNotAllowed
+```
+
+By default, newly created ciphertext handles are accessible to the contract that created them, but **only for the duration of the transaction**. Any additional access must be explicitly granted.
+
+### What the ACL does *not* gate
+
+The ACL governs **operation creation**. Computing on a handle, and requesting its decryption. It does not gate the onchain publication of a decrypt result:
+
+```solidity
+// Anyone can call this: it is signature-gated, not ACL-gated
+FHE.publishDecryptResult(seenHandle, plaintext, signature);
+```
+
+`publishDecryptResult` (and `verifyDecryptResult`) only check the signature. The TaskManager recovers the signer of an ECDSA signature over that exact `(result, encType, chainId, ctHash)` message, and accepts the result only if the recovered address equals the registered `decryptResultSigner`. That address belongs to [Teecryptor](/cofhe/deep-dive/cofhe-components/teecryptor). Publication is deliberately permissionless so clients and relayers can settle results onchain.
+
+What protects the value is that an attacker cannot *obtain* that signature. Only Teecryptor can produce it. Its signing key never leaves the enclave, so no other party can sign a result the TaskManager will accept. Teecryptor signs only in response to a decryption request, and that request is ACL-gated. The requester must hold permission on the handle and present a valid ACP. The one exception is a handle marked with `FHE.allowPublic()`, which anyone can request. Without permission, Teecryptor denies the request and produces no signature, so there is nothing valid to publish.
+
+<Warning>
+Treat `FHE.allowPublic()` as the real decision point. Once a handle is marked public, anyone can request its decryption and publish the plaintext onchain, permanently.
+</Warning>
+
+---
+
+## Granting access
+
+CoFHE provides six methods to grant access to ciphertext handles:
+
+<AccordionGroup>
+<Accordion title="FHE.allowThis()" icon="building" defaultOpen>
+**`FHE.allowThis(CIPHERTEXT_HANDLE)`**
+
+Allows the current contract access to the handle. Use this when you want the contract itself to retain access to a ciphertext beyond the current transaction.
+
+```solidity
+euint32 secretValue = FHE.asEuint32(input);
+FHE.allowThis(secretValue); // Contract can access this later
+```
+</Accordion>
+
+<Accordion title="FHE.allowSender()" icon="paper-plane" defaultOpen>
+**`FHE.allowSender(CIPHERTEXT_HANDLE)`**
+
+Allows the transaction sender (`msg.sender`) access to the handle. Use this when you want to grant the caller of the function access to the ciphertext.
+
+```solidity
+euint32 secretValue = FHE.asEuint32(input);
+FHE.allowSender(secretValue); // Grant access to msg.sender
+```
+</Accordion>
+
+<Accordion title="FHE.allow()" icon="user" defaultOpen>
+**`FHE.allow(CIPHERTEXT_HANDLE, ADDRESS)`**
+
+Allows a specific address persistent access to the handle. Use this when you want to grant permanent access to another contract or user.
+
+```solidity
+euint32 secretValue = FHE.asEuint32(input);
+FHE.allow(secretValue, recipientAddress); // Grant access to specific address
+```
+</Accordion>
+
+<Accordion title="FHE.allowTransient()" icon="clock" defaultOpen>
+**`FHE.allowTransient(CIPHERTEXT_HANDLE, ADDRESS)`**
+
+Allows a specific address temporary access to the handle for the duration of the transaction only. Use this for cross-contract calls within the same transaction.
+
+```solidity
+euint32 secretValue = FHE.asEuint32(input);
+FHE.allowTransient(secretValue, otherContract); // Temporary access for this tx
+```
+</Accordion>
+
+<Accordion title="FHE.allowPublic()" icon="lock-open" defaultOpen>
+**`FHE.allowPublic(CIPHERTEXT_HANDLE)`**
+
+Marks a ciphertext handle as eligible for public decryption. Anyone can then request decryption of this value offchain via `decryptForTx` and publish or verify the result onchain.
+
+Use this when a value is intended to become public, for example, the amount burned when you [unshield an FHERC20 token](/cofhe/fhe-library/confidential-contracts/fherc20/fherc20-wrapper).
+
+```solidity
+euint32 burnedAmount = FHE.asEuint32(input);
+FHE.allowPublic(burnedAmount); // Anyone can decrypt and publish this value
+```
+
+<Note>
+`allowPublic` does not reveal the value immediately. It only grants permission for anyone to request decryption. The value is revealed only when someone submits the plaintext and signature onchain via `FHE.publishDecryptResult` or `FHE.verifyDecryptResult`.
+</Note>
+</Accordion>
+</AccordionGroup>
+
+---
+
+## Who you trust when you grant access
+
+Access to a handle is full access. A contract that holds it, including the contract that created it, can compute on the value, pass access on to others, or allow public decryption.
+
+<Warning>
+Pass a handle only to a contract you trust, and check its upgrade path if it is a proxy. A transient grant needs the same trust as a persistent one.
+</Warning>
+
+---
+
+## Decryption and access control
+
+Decryption is a multi-step process: a client requests the plaintext and its signature offchain via `decryptForTx`, then publishes or verifies the result onchain.
+
+Access control governs who can request decryption:
+
+- If the ciphertext was marked with `FHE.allowPublic()`, anyone can request decryption without an ACP (`.withoutACP()`).
+- Otherwise, only addresses with explicit permission on the handle can request decryption, and must provide a valid ACP (`.withACP()`).
+
+<Note>
+If the requester does not have permission on the ciphertext handle, the decryption request will be denied by the access control system. Grant appropriate permissions before attempting to decrypt, use `FHE.allowPublic()` for values intended to become public, or `FHE.allow()` / `FHE.allowSender()` for restricted access.
+</Note>
+
+---
+
+## How the ACL is stored
+
+Every blockchain integrating CoFHE includes a deployed `ACL.sol` contract. This contract manages ownership records for each ciphertext, ensuring that only authorized owners can perform operations on their encrypted data.
+
+### ACL storage structure
+
+The ACL contract contains the following mapping which tracks the ownership of each ciphertext handle:
+
+```solidity
+mapping(uint128 handle => mapping(address account => bool isAllowed)) persistedAllowedPairs;
+```
+
+This two-level mapping allows efficient lookup of whether a specific address has permission to access a specific ciphertext handle.
+
+---
+
+## Best practices
+
+<CardGroup cols={2}>
+<Card title="Principle of Least Privilege" icon="shield-halved">
+Only grant access to addresses that genuinely need it. Avoid using `allowPublic()` unless the data is truly meant to be public.
+</Card>
+
+<Card title="Use Transient for Cross-Contract Calls" icon="arrow-right-arrow-left">
+When calling other contracts within a transaction, use `allowTransient()` instead of permanent access to limit exposure.
+</Card>
+
+<Card title="Track Your Permissions" icon="list-check">
+Keep track of which addresses have access to which ciphertexts, especially in complex multi-contract systems.
+</Card>
+
+<Card title="Grant Only to Trusted Contracts" icon="handshake">
+A grant cannot be revoked, and the receiver can pass access on. See [who you trust when you grant access](#who-you-trust-when-you-grant-access).
+</Card>
+</CardGroup>
+
+---
+
+## Practical examples
+
+For detailed examples on how to explicitly manage ciphertext allowances in contracts, see the [ACL Usage Examples](/cofhe/tutorials/acl-usage-examples) guide.
+
+### A token transfer
+
+```solidity
+function transfer(address to, externalEuint32 inAmount, bytes calldata inputProof) public {
+    euint32 amount = FHE.asEuint32(inAmount, inputProof);
+
+    euint32 fromBalance = _balances[msg.sender];
+    euint32 toBalance = _balances[to];
+
+    euint32 newFromBalance = FHE.sub(fromBalance, amount);
+    euint32 newToBalance = FHE.add(toBalance, amount);
+
+    // Grant contract access to store balances
+    FHE.allowThis(newFromBalance);
+    FHE.allowThis(newToBalance);
+
+    // Optionally grant users access to their own balances
+    FHE.allow(newFromBalance, msg.sender);
+    FHE.allow(newToBalance, to);
+
+    _balances[msg.sender] = newFromBalance;
+    _balances[to] = newToBalance;
+}
+```
