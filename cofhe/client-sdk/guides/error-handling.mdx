@@ -26,15 +26,15 @@ try {
 
 Two fields are always set:
 
-- `code: CofheErrorCode` — the enum value identifying the error type
-- `message: string` — a human-readable description of what went wrong
+- `code: CofheErrorCode`: the enum value identifying the error type
+- `message: string`: a human-readable description of what went wrong
 
 Four more are declared optional on the class. The property always exists; its value is `undefined` unless the code that threw supplied it, so narrow before using it:
 
-- `hint?: string` — an actionable suggestion for fixing the error. Set by most SDK throw sites, but not all
-- `context?: Record<string, unknown>` — the state that produced the error. For a `ZkPackFailed` from oversized inputs this holds `totalBits`, `maxBits`, and the offending `items`
-- `cause?: Error` — the inner error being wrapped. When set, its message is also appended to `message` as `| Caused by: ...`
-- `apiErrorCode?: string` — the raw backend error string. Set only on errors built from a decryption backend response
+- `hint?: string`: an actionable suggestion for fixing the error. Set by most SDK throw sites, but not all
+- `context?: Record<string, unknown>`: the state that produced the error. For a `ZkPackFailed` from oversized inputs this holds `totalBits`, `maxBits`, and the offending `items`
+- `cause?: Error`: the inner error being wrapped. When set, its message is also appended to `message` as `| Caused by: ...`
+- `apiErrorCode?: string`: the raw backend error string. Set only on errors built from a decryption backend response
 
 Because the four are optional, guard each one rather than assuming it is there:
 
