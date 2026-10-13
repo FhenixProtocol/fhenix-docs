@@ -132,7 +132,7 @@ Most of this guide is mechanical, so linters enforce it instead of a reviewer.
 
 - Prose: [Vale](https://vale.sh), with our rules in `styles/Fhenix/` and configuration in `.vale.ini`. It catches em dashes, decorative Unicode, filler phrases, marketing adjectives, "simple" and "easy", idioms, vague link text, non-canonical terminology, Title Case headings, and overlong sentences.
 - Structure: `scripts/lint-docs.py`, which reads what Vale cannot see. It catches missing frontmatter, manual H1 headings, skipped heading levels, code blocks with no language tag, relative or absolute internal links, and images with no alt text.
-- Versions: `scripts/check-versions.py`, which treats the [compatibility page](get-started/introduction/compatibility.mdx) as the single source of truth and fails when any pin elsewhere disagrees with it. Update that page first, then run the script to find every install command and table that has to move with it.
+- Versions (CoFHE): `cofhe/scripts/check-versions.py`, which treats the [compatibility page](cofhe/get-started/introduction/compatibility.mdx) as the single source of truth and fails when any pin elsewhere disagrees with it. Update that page first, then run the script to find every install command and table that has to move with it.
 
 Run both on what you changed, before you open a pull request:
 
@@ -141,7 +141,7 @@ brew install vale
 FILES=$(git diff --name-only --diff-filter=d origin/main...HEAD -- '*.mdx')
 python3 scripts/lint-docs.py $FILES
 vale $FILES
-python3 scripts/check-versions.py --docs
+python3 cofhe/scripts/check-versions.py --docs
 ```
 
 A version that is deliberately old, because the sentence is describing history, opts out with a `<!-- versions:ignore -->` comment on the same line. A version written as `package@v1.2.3` is read as a historical reference and never checked.

@@ -13,8 +13,8 @@ pull request. The npm check needs the network and only tells you the world moved
 which is not a reason to fail an unrelated pull request, so it runs on a schedule.
 
 Usage:
-    python3 scripts/check-versions.py --docs [files...]   # defaults to every .mdx
-    python3 scripts/check-versions.py --npm
+    python3 cofhe/scripts/check-versions.py --docs [files...]   # defaults to every cofhe/ .mdx
+    python3 cofhe/scripts/check-versions.py --npm
 
 Exits 1 if any mismatch is found. See STYLE.md.
 """
@@ -25,7 +25,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-TRUTH = Path("get-started/introduction/compatibility.mdx")
+TRUTH = Path("cofhe/get-started/introduction/compatibility.mdx")
 
 # Historical references name a version to say when something changed, which is a
 # fact about the past rather than a pin that can go stale. They are written with a
@@ -128,7 +128,7 @@ def main(argv):
     failed = False
 
     if mode_docs:
-        paths = [Path(a) for a in args] or sorted(Path(".").rglob("*.mdx"))
+        paths = [Path(a) for a in args] or sorted(Path("cofhe").rglob("*.mdx"))
         paths = [p for p in paths if p.suffix == ".mdx" and p.exists()]
         problems = scan(paths, versions) + scan_workflow(versions)
         for path, n, message in problems:

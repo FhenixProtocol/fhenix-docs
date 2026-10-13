@@ -53,7 +53,7 @@ jobs:
                 },
                 {
                   role: 'user',
-                  content: `Update the CoFHE errors documentation page with these error definitions from @fhenixprotocol/cofhe-errors v${version}:\n\n\`\`\`json\n${errorsJson}\n\`\`\`\n\nCreate/update a reference page with a table: Error Name, Selector, Signature, Source Contract, Parameters. Group by source contract.`
+                  content: `Update the CoFHE errors documentation page with these error definitions from @fhenixprotocol/cofhe-errors v${version}:\n\n\`\`\`json\n${errorsJson}\n\`\`\`\n\nCreate/update a reference page with a table: Error Name, Selector, Signature, Source Contract, Parameters. Group by source contract. The page is cofhe/fhe-library/reference/cofhe-errors-reference.mdx; never create pages outside cofhe/.`
                 }
               ],
               asDraft: false

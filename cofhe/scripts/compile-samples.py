@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Compile the Solidity code samples of the given .mdx pages.
 
-Usage: python3 scripts/compile-samples.py <page.mdx> [<page.mdx> ...]
+Usage: python3 cofhe/scripts/compile-samples.py <page.mdx> [<page.mdx> ...]
 
 The script extracts every ```solidity fenced block, turns each block into a
 .sol file inside a throwaway Foundry project, and runs one `forge build`.
@@ -52,7 +52,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-# Keep in step with FHE.sol's own pragma (see get-started/introduction/compatibility.mdx).
+# Keep in step with FHE.sol's own pragma (see cofhe/get-started/introduction/compatibility.mdx).
 SOLC_VERSION = "0.8.28"
 SCAFFOLD_PRAGMA = "pragma solidity >=0.8.25 <0.9.0;"
 FHE_IMPORT = 'import "@fhenixprotocol/cofhe-contracts/FHE.sol";'

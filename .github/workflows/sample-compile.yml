@@ -3,14 +3,14 @@ name: Sample compile
 on:
   pull_request:
     paths:
-      - '**/*.mdx'
-      - 'scripts/compile-samples.py'
+      - 'cofhe/**/*.mdx'
+      - 'cofhe/scripts/compile-samples.py'
       - '.github/workflows/sample-compile.yml'
   workflow_dispatch:
 
 env:
   # The Solidity dependency versions the docs tell readers to install; see
-  # get-started/introduction/compatibility.mdx. scripts/check-versions.py
+  # cofhe/get-started/introduction/compatibility.mdx. cofhe/scripts/check-versions.py
   # --docs fails when these disagree with that page.
   COFHE_CONTRACTS_VERSION: 1.0.0
   CONFIDENTIAL_CONTRACTS_VERSION: 0.4.0
@@ -35,9 +35,9 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             git diff --name-only --diff-filter=d \
-              "origin/${{ github.base_ref }}...HEAD" -- '*.mdx' > files.txt
+              "origin/${{ github.base_ref }}...HEAD" -- 'cofhe/*.mdx' 'cofhe/**/*.mdx' > files.txt
           else
-            git ls-files '*.mdx' > files.txt
+            git ls-files 'cofhe/*.mdx' 'cofhe/**/*.mdx' > files.txt
           fi
           count=$(wc -l < files.txt | tr -d ' ')
           echo "count=$count" >> "$GITHUB_OUTPUT"
@@ -74,4 +74,4 @@ jobs:
       # checked; this check is Solidity only.
       - name: Compile Solidity samples
         if: steps.files.outputs.count != '0'
-        run: xargs -a files.txt python3 scripts/compile-samples.py
+        run: xargs -a files.txt python3 cofhe/scripts/compile-samples.py

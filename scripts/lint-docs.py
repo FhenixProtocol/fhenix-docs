@@ -16,6 +16,7 @@ import sys
 from pathlib import Path
 
 GUIDE = "STYLE.md"
+OLD_COFHE_LINK = re.compile(r'(\]\(|href="|src=")(/(?:get-started|client-sdk|fhe-library|tutorials|deep-dive|images)(?=[/)"#])[^)"\s]*)')
 
 
 def parse(path: Path):
@@ -80,9 +81,13 @@ def check(path: Path):
             continue
 
         for match in re.finditer(r'\]\((\.\.?/[^)\s]*)\)', line):
-            err(n, "link-path", f"Relative link `{match.group(1)}`. Use a root-relative path, such as `/fhe-library/core-concepts/access-control`.")
-        for match in re.finditer(r'\]\((https?://(?:cofhe-)?docs\.fhenix\.zone[^)\s]*)\)', line):
+            err(n, "link-path", f"Relative link `{match.group(1)}`. Use a root-relative path, such as `/cofhe/fhe-library/core-concepts/access-control`.")
+        for match in re.finditer(r'\]\((https?://(?:(?:cofhe-)?docs\.fhenix\.zone|docs\.fhenix\.io)[^)\s]*)\)', line):
             err(n, "link-path", f"Absolute link to our own site `{match.group(1)}`. Use a root-relative path so preview deployments resolve.")
+        # Pre-move CoFHE paths still resolve through wildcard redirects, so
+        # mint broken-links accepts them and they would pile up unnoticed.
+        for match in OLD_COFHE_LINK.finditer(line):
+            err(n, "link-path", f"Old CoFHE path `{match.group(2)}`. CoFHE pages live under `/cofhe`: use `/cofhe{match.group(2)}`.")
         if re.search(r'!\[\s*\]\(', line):
             err(n, "alt-text", "Image has no alt text. Describe what the image shows.")
         for match in re.finditer(r'<img\b[^>]*>', line):

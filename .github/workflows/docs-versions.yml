@@ -3,8 +3,8 @@ name: Docs versions
 on:
   pull_request:
     paths:
-      - '**/*.mdx'
-      - 'scripts/check-versions.py'
+      - 'cofhe/**/*.mdx'
+      - 'cofhe/scripts/check-versions.py'
       - '.github/workflows/sample-compile.yml'
   # Weekly, so a release upstream surfaces as an issue rather than waiting for
   # someone to notice a stale install command.
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: python3 scripts/check-versions.py --docs
+      - run: python3 cofhe/scripts/check-versions.py --docs
 
   # This one does hit the network, and a new release upstream is not a reason to
   # fail an unrelated pull request, so it never runs on one.
@@ -47,7 +47,7 @@ jobs:
       - name: Check npm
         id: check
         run: |
-          if python3 scripts/check-versions.py --npm > drift.txt 2>&1; then
+          if python3 cofhe/scripts/check-versions.py --npm > drift.txt 2>&1; then
             echo "drifted=false" >> "$GITHUB_OUTPUT"
           else
             echo "drifted=true" >> "$GITHUB_OUTPUT"
@@ -69,8 +69,8 @@ jobs:
               fs.readFileSync('drift.txt', 'utf8').trim(),
               '```',
               '',
-              'Update `get-started/introduction/compatibility.mdx`, then run',
-              '`python3 scripts/check-versions.py --docs` to find every pin that',
+              'Update `cofhe/get-started/introduction/compatibility.mdx`, then run',
+              '`python3 cofhe/scripts/check-versions.py --docs` to find every pin that',
               'needs to move with it, including the package pins in',
               '`.github/workflows/sample-compile.yml`.',
             ].join('\n');

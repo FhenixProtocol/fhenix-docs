@@ -6,6 +6,7 @@ on:
       - '**/*.mdx'
       - '**/*.md'
       - 'docs.json'
+      - '.mintignore'
   workflow_dispatch:
 
 # A force-push supersedes the previous run; the site-wide checks take long
