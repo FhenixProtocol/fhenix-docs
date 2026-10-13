@@ -20,6 +20,8 @@ Every encrypted value in CoFHE is guarded by this contract. A handle is useless 
 | **Global** | `FHE.allowGlobal` (alias `FHE.allowPublic`) | Every account. Also marks the handle publicly decryptable. |
 | **Decryption** | `TaskManager.allowForDecryption` | Adds the handle to the decryption allowlist and emits `AllowedForDecryption`. |
 
+Every tier above requires the requester to hold access to the handle already. Only the transient tier expires, and the ACL has no revoke. So any holder can extend access to anyone. See [who you trust when you grant access](/fhe-library/core-concepts/access-control#who-you-trust-when-you-grant-access).
+
 ## Writes go through the TaskManager
 
 All state-mutating entry points require `msg.sender` to be the TaskManager; direct calls revert with `DirectAllowForbidden`. Contracts grant access through the `FHE.sol` helpers (`allow`, `allowThis`, `allowSender`, `allowGlobal`, `allowTransient`), which route through the TaskManager.
