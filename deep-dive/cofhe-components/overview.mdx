@@ -17,6 +17,7 @@ Color marks the zone, and the boxes group what runs where. Each component is des
 ## The onchain contracts
 
 - **FHE.sol**: the Solidity library your contract imports. It exposes arithmetic, comparison, and logical operations on encrypted values, plus access control (`allow`, `allowGlobal`) and decrypt-result verification.
+- **CoFHEAddressBook**: deployed at `0xC0F4e00E531a2B086492Ae3DCC1515038307196b` on every supported chain, mainnet and testnet. It maps a TaskManager id to that chain's TaskManager, and `FHE.sol` finds the TaskManager through it with id `1`.
 - **[TaskManager](/deep-dive/cofhe-components/task-manager)**: the gateway for all FHE operation requests. It validates requests, emits task events for the offchain components, and manages permissions through the ACL.
 - **[ACL](/deep-dive/cofhe-components/acl)**: the access control contract. It records who may use or decrypt each handle; all writes to it go through the TaskManager.
 - **[PlaintextsStorage](/deep-dive/cofhe-components/plaintext-storage)**: stores decrypted results. The TaskManager writes them during `publishDecryptResult`, only after ECDSA-verifying the result against `decryptResultSigner`.
