@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Fhenix Documentation",
-  "description": "Documentation for CoFHE, Fhenix's Fully Homomorphic Encryption coprocessor: write Solidity contracts that compute on encrypted data.",
+  "description": "Documentation for Fhenix products: CoFHE and the Wallet Module.",
   "seo": {
     "metatags": {
       "og:site_name": "Fhenix Documentation",
@@ -19,6 +19,13 @@
   "favicon": "/favicon.svg",
   "navigation": {
     "products": [
+      {
+        "product": "All products",
+        "icon": "grid-2",
+        "pages": [
+          "index"
+        ]
+      },
       {
         "product": "CoFHE",
         "icon": "lock",
@@ -285,6 +292,18 @@
                   "cofhe/deep-dive/research/research-in-fhenix"
                 ]
               }
+            ]
+          }
+        ]
+      },
+      {
+        "product": "Wallet Module",
+        "icon": "wallet",
+        "groups": [
+          {
+            "group": "Wallet Module",
+            "pages": [
+              "wallet/index"
             ]
           }
         ]
