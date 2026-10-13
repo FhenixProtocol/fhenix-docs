@@ -1,6 +1,6 @@
 extends: existence
 message: "Vague link text: '%s'. Describe the destination."
-link: https://github.com/FhenixProtocol/fhenix-developer-docs/blob/main/STYLE.md#links-images-and-components
+link: https://github.com/FhenixProtocol/fhenix-docs/blob/main/STYLE.md#links-images-and-components
 level: warning
 scope: raw
 ignorecase: true

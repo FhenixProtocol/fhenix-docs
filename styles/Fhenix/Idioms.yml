@@ -1,6 +1,6 @@
 extends: existence
 message: "Idiom: '%s'. Say what happens instead. Idioms cost non-native readers a lookup."
-link: https://github.com/FhenixProtocol/fhenix-developer-docs/blob/main/STYLE.md#words
+link: https://github.com/FhenixProtocol/fhenix-docs/blob/main/STYLE.md#words
 level: warning
 ignorecase: true
 tokens:

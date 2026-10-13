@@ -1,6 +1,6 @@
 extends: existence
 message: "Present tense for how the system works: '%s'. Planned behavior belongs on the future plans page, labeled as planned."
-link: https://github.com/FhenixProtocol/fhenix-developer-docs/blob/main/STYLE.md#voice
+link: https://github.com/FhenixProtocol/fhenix-docs/blob/main/STYLE.md#voice
 level: suggestion
 ignorecase: true
 tokens:

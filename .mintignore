@@ -1,0 +1,10 @@
+AGENTS.md
+CLAUDE.md
+STYLE.md
+**/AGENTS.md
+**/CLAUDE.md
+**/STYLE-*.md
+RELEASE-CHECKLIST.md
+local/
+scripts/
+cofhe/scripts/

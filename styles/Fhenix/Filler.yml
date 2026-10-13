@@ -1,6 +1,6 @@
 extends: existence
 message: "Filler phrase: '%s'. Cut it or say the thing directly."
-link: https://github.com/FhenixProtocol/fhenix-developer-docs/blob/main/STYLE.md#words
+link: https://github.com/FhenixProtocol/fhenix-docs/blob/main/STYLE.md#words
 level: error
 ignorecase: true
 tokens:

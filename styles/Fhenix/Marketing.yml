@@ -1,6 +1,6 @@
 extends: existence
 message: "Marketing adjective: '%s'. Describe the actual behavior instead."
-link: https://github.com/FhenixProtocol/fhenix-developer-docs/blob/main/STYLE.md#words
+link: https://github.com/FhenixProtocol/fhenix-docs/blob/main/STYLE.md#words
 level: error
 ignorecase: true
 tokens:
