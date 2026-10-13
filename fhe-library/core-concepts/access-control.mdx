@@ -131,6 +131,24 @@ FHE.allowPublic(burnedAmount); // Anyone can decrypt and publish this value
 
 ---
 
+## Who you trust when you grant access
+
+Access to a handle is full access. The ACL has no read-only or compute-only grant. Any address that holds access to a handle, including the contract that created it, can:
+
+- Compute on it with any FHE operation. The caller gets access to each result.
+- Grant access to any other address with `FHE.allow()` or `FHE.allowTransient()`.
+- Mark it public with `FHE.allowPublic()`, so anyone can decrypt it.
+
+A persistent grant has no revoke. Once you call `FHE.allow(handle, account)`, that account keeps access for good.
+
+So treat every grant as a decision to trust the receiver with the plaintext. Before you pass a handle to another contract, check that you trust its code, and its upgrade path if it is a proxy. This applies to transient grants too: a contract with transient access can make a persistent grant in the same transaction.
+
+<Warning>
+Do not pass a handle to an untrusted contract. That contract can grant itself or anyone else permanent access, or make the value public.
+</Warning>
+
+---
+
 ## Decryption and access control
 
 Decryption is a multi-step process: a client requests the plaintext and its signature offchain via `decryptForTx`, then publishes or verifies the result onchain.
@@ -177,8 +195,8 @@ When calling other contracts within a transaction, use `allowTransient()` instea
 Keep track of which addresses have access to which ciphertexts, especially in complex multi-contract systems.
 </Card>
 
-<Card title="Clean Up When Possible" icon="broom">
-Consider the lifecycle of your encrypted data and whether permissions should be revoked after certain operations.
+<Card title="Grant Only to Trusted Contracts" icon="handshake">
+A grant cannot be revoked, and the receiver can pass access on. See [who you trust when you grant access](#who-you-trust-when-you-grant-access).
 </Card>
 </CardGroup>
 
