@@ -30,6 +30,7 @@ Create `<slug>/index.mdx`. For a product with no content yet, copy `wallet/index
 ```mdx
 ---
 title: "<Display name>"
+sidebarTitle: "Overview"
 description: "Documentation for the Fhenix <Display name> is coming soon."
 ---
 
@@ -64,6 +65,8 @@ Append the product to `navigation.products`, after the existing products. "All p
   ]
 }
 ```
+
+The group carries the product name, and the first page shows as "Overview" (its `sidebarTitle`). Do not repeat the product name in the sidebar.
 
 A product with sections uses `tabs` instead of `groups`, like CoFHE. Every page path carries the `<slug>/` prefix.
 
