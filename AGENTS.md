@@ -12,6 +12,7 @@ STYLE.md is binding for all content. Each product adds its own terms and diagram
 ## Mechanics
 
 - Navigation lives in `docs.json`, under `navigation.products`: one product per folder. A page not referenced there is invisible; check it when adding, renaming, or removing pages.
+- To add a product, use the `add-product` skill (`.claude/skills/add-product/SKILL.md`). It lists every file a new product touches.
 - Renaming or removing a page requires a redirect entry.
 - Diagrams are Mermaid blocks in the page (see STYLE.md, Diagrams). Each product sets its diagram lanes and colors in its own style file (for CoFHE: `cofhe/STYLE-cofhe.md`, "Sequence diagram lanes"). Do not add or edit SVGs; designed SVGs come from the design pass and keep their Mermaid source in the repo.
 - Code samples must compile or run against the currently published versions before they ship.
