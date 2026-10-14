@@ -18,7 +18,7 @@ Ask for any value the request does not give. Do not invent them.
 | Display name | `Wallet Module` | navigation, card, page titles |
 | Slug | `wallet` | folder and URL. Lowercase, one word or kebab-case. Must not clash with an existing folder or redirect source in `docs.json`. |
 | Icon | `wallet` | a Font Awesome name, as the other products use |
-| One-line description | "The FHE coprocessor. Write Solidity contracts…" | the landing card |
+| One-line description | "The FHE coprocessor. Write Solidity contracts…" | the landing card and the `description` of `<slug>/index.mdx` |
 | Status | `Live` or `Coming soon` | the card badge and the first page |
 | Reviewers | `Yonatan and Alex` | `<slug>/AGENTS.md` |
 | Where work is tracked | a Jira project | `<slug>/AGENTS.md`, optional |
@@ -31,7 +31,7 @@ Create `<slug>/index.mdx`. For a product with no content yet, copy `wallet/index
 ---
 title: "<Display name>"
 sidebarTitle: "Overview"
-description: "Documentation for the Fhenix <Display name> is coming soon."
+description: "<One-line description>"
 ---
 
 ## Coming soon
