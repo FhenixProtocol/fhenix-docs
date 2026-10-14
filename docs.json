@@ -319,6 +319,18 @@
             ]
           }
         ]
+      },
+      {
+        "product": "Litepaper",
+        "icon": "file-lines",
+        "groups": [
+          {
+            "group": "Litepaper",
+            "pages": [
+              "litepaper/index"
+            ]
+          }
+        ]
       }
     ]
   },

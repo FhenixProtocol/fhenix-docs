@@ -1,6 +1,6 @@
 # Working on the Fhenix docs
 
-This repo is the Mintlify site behind docs.fhenix.io. Each product lives in its own folder (`cofhe/`, `wallet/`, `trading/`) and has its own `AGENTS.md` with product facts. Read both: the rules here apply to every product.
+This repo is the Mintlify site behind docs.fhenix.io. Each product lives in its own folder (`cofhe/`, `wallet/`, `trading/`, `litepaper/`) and has its own `AGENTS.md` with product facts. Read both: the rules here apply to every product.
 
 - `/` is the landing page (`index.mdx`), with one card per product.
 - Product pages live under their folder and their URL prefix: `cofhe/...` is served at `/cofhe/...`.

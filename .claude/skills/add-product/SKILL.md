@@ -18,7 +18,7 @@ Ask for any value the request does not give. Do not invent them.
 | Display name | `Wallet Module` | navigation, card, page titles |
 | Slug | `wallet` | folder and URL. Lowercase, one word or kebab-case. Must not clash with an existing folder or redirect source in `docs.json`. |
 | Icon | `wallet` | a Font Awesome name, as the other products use |
-| One-line description | "The FHE coprocessor. Write Solidity contracts…" | the landing card |
+| One-line description | "The FHE coprocessor. Write Solidity contracts…" | the landing card and the `description` of `<slug>/index.mdx` |
 | Status | `Live` or `Coming soon` | the card badge and the first page |
 | Reviewers | `Yonatan and Alex` | `<slug>/AGENTS.md` |
 | Where work is tracked | a Jira project | `<slug>/AGENTS.md`, optional |
@@ -30,7 +30,8 @@ Create `<slug>/index.mdx`. For a product with no content yet, copy `wallet/index
 ```mdx
 ---
 title: "<Display name>"
-description: "Documentation for the Fhenix <Display name> is coming soon."
+sidebarTitle: "Overview"
+description: "<One-line description>"
 ---
 
 ## Coming soon
@@ -65,6 +66,8 @@ Append the product to `navigation.products`, after the existing products. "All p
 }
 ```
 
+The group carries the product name, and the first page shows as "Overview" (its `sidebarTitle`). Do not repeat the product name in the sidebar.
+
 A product with sections uses `tabs` instead of `groups`, like CoFHE. Every page path carries the `<slug>/` prefix.
 
 ## 4. Add the landing-page card
@@ -76,7 +79,14 @@ In `index.mdx`, add an `<a>` card inside the grid. Copy the Wallet Module card f
 - the title and the description
 - the badge and the link text: "Live" with "Read the docs", or "Coming soon" with "See what is coming"
 
-Keep the order of `navigation.products`. With 3 or more cards, change the grid class `sm:grid-cols-2` to `sm:grid-cols-2 lg:grid-cols-3`.
+Keep the order of `navigation.products`. Pick the grid columns so that no card is alone on its last row:
+
+- 2 or 4 cards: `sm:grid-cols-2`
+- 3, 5, or 6 cards: `sm:grid-cols-2 lg:grid-cols-3`
+
+Keep all cards equal: no larger card for a live product. The grid stays until it gets crowded, at about 7 products. Then ask the docs owner about a list layout.
+
+When the product is a document, not a product (a litepaper, a whitepaper), rewrite the template sentences. "Documentation for the Fhenix Litepaper" is wrong: write "The Fhenix Litepaper is coming soon."
 
 ## 5. Update the shared docs
 
