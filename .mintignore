@@ -8,3 +8,4 @@ RELEASE-CHECKLIST.md
 local/
 scripts/
 cofhe/scripts/
+.claude/
