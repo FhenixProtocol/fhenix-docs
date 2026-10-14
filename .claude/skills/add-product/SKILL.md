@@ -81,6 +81,8 @@ Keep the order of `navigation.products`. Pick the grid columns so that no card i
 - 2 or 4 cards: `sm:grid-cols-2`
 - 3, 5, or 6 cards: `sm:grid-cols-2 lg:grid-cols-3`
 
+Keep all cards equal: no larger card for a live product. The grid stays until it gets crowded, at about 7 products. Then ask the docs owner about a list layout.
+
 When the product is a document, not a product (a litepaper, a whitepaper), rewrite the template sentences. "Documentation for the Fhenix Litepaper" is wrong: write "The Fhenix Litepaper is coming soon."
 
 ## 5. Update the shared docs
