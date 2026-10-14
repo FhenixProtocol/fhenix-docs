@@ -76,7 +76,12 @@ In `index.mdx`, add an `<a>` card inside the grid. Copy the Wallet Module card f
 - the title and the description
 - the badge and the link text: "Live" with "Read the docs", or "Coming soon" with "See what is coming"
 
-Keep the order of `navigation.products`. With 3 or more cards, change the grid class `sm:grid-cols-2` to `sm:grid-cols-2 lg:grid-cols-3`.
+Keep the order of `navigation.products`. Pick the grid columns so that no card is alone on its last row:
+
+- 2 or 4 cards: `sm:grid-cols-2`
+- 3, 5, or 6 cards: `sm:grid-cols-2 lg:grid-cols-3`
+
+When the product is a document, not a product (a litepaper, a whitepaper), rewrite the template sentences. "Documentation for the Fhenix Litepaper" is wrong: write "The Fhenix Litepaper is coming soon."
 
 ## 5. Update the shared docs
 

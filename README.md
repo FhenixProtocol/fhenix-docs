@@ -5,6 +5,7 @@ The documentation for Fhenix products, served at [docs.fhenix.io](https://docs.f
 - **CoFHE** (`cofhe/`): the FHE coprocessor. Write Solidity contracts that compute on encrypted data. Covers Get Started, the Client SDK, the FHE library, Tutorials, and the Deep Dive.
 - **Wallet Module** (`wallet/`): coming soon.
 - **Trading** (`trading/`): coming soon.
+- **Litepaper** (`litepaper/`): coming soon.
 
 ## Development
 
@@ -41,6 +42,7 @@ fhenix-docs/
 │   └── STYLE-cofhe.md    # CoFHE terms and diagram rules
 ├── wallet/               # Wallet Module docs, served at /wallet
 ├── trading/              # Trading docs, served at /trading
+├── litepaper/            # Fhenix Litepaper, served at /litepaper
 ├── scripts/              # Shared structure linter (lint-docs.py)
 ├── styles/               # Shared Vale prose rules
 ├── STYLE.md              # Writing style guide, binding for all pages
