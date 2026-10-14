@@ -40,6 +40,8 @@ The <Display name> documentation is in progress.
 For encrypted computation on Fhenix today, see the [CoFHE documentation](/cofhe).
 ```
 
+Fix the article for the name. "The Fhenix Wallet Module" needs "the", but "Fhenix Trading" does not. Check every sentence that names the product, here and in `AGENTS.md`.
+
 Create `<slug>/AGENTS.md` from `wallet/AGENTS.md`: change the heading, the folder, the URL prefix, the reviewers, and the status line. Keep the "Facts" rules as they are. Add a "Workflow" section when the product has a tracker: the root `AGENTS.md` says each product names its own.
 
 Copy it to `<slug>/CLAUDE.md`. The two files are identical, as at the root and in every product.

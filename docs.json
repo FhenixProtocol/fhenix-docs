@@ -307,6 +307,18 @@
             ]
           }
         ]
+      },
+      {
+        "product": "Trading",
+        "icon": "chart-line",
+        "groups": [
+          {
+            "group": "Trading",
+            "pages": [
+              "trading/index"
+            ]
+          }
+        ]
       }
     ]
   },
