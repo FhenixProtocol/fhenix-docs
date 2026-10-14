@@ -1,0 +1,125 @@
+---
+title: "Handles, wrap, and unwrap"
+description: "What a ciphertext handle is, and what wrapping one does and does not give you"
+---
+
+Every encrypted value in a contract is a **handle**: a `bytes32` identifier for a ciphertext that CoFHE holds offchain. `euint32`, `ebool`, and the rest are Solidity user-defined value types over that `bytes32`.
+
+```solidity
+type euint32 is bytes32;
+```
+
+`FHE.unwrap` and `FHE.wrapEuintXX` move between the two spellings. They are the only FHE functions that do no work at all.
+
+## What the two functions do
+
+```solidity
+bytes32 handle = FHE.unwrap(myValue);        // euint32 -> bytes32
+euint32 value  = FHE.wrapEuint32(handle);    // bytes32 -> euint32
+```
+
+Both are `internal pure`. They perform no cryptography, make no call to the TaskManager, touch no storage, and cost nothing beyond the surrounding code. They change how Solidity types the same 32 bytes, and nothing else.
+
+There is one `unwrap` for every encrypted type, and one `wrap` per type because the return type has to differ: `wrapEbool`, `wrapEuint8`, `wrapEuint16`, `wrapEuint32`, `wrapEuint64`, `wrapEuint128`, and `wrapEaddress`.
+
+<Note>
+The bindings give you the same thing in dot form, so `myValue.unwrap()` reads better inside an expression. See [bindings](/cofhe/fhe-library/reference/fhe-sol/bindings).
+</Note>
+
+## Wrapping does not grant permission
+
+**Wrapping a handle grants you nothing.**
+
+The type records what kind of value this is. The [ACL](/cofhe/fhe-library/core-concepts/access-control) decides whether you may use it. Those are separate systems, and `wrap` only touches the first one.
+
+You can wrap any 32 bytes you like. Nothing reverts, because nothing is checked:
+
+```solidity
+euint32 notYours = FHE.wrapEuint32(someHandleYouFoundInAnEvent);
+```
+
+That line succeeds. The first FHE operation on `notYours` is where it fails, because the TaskManager checks whether **this contract** is allowed on that handle:
+
+```solidity
+euint32 doubled = FHE.add(notYours, notYours);   // reverts: not allowed
+```
+
+So `wrap` is a cast, not an acquisition. Holding a typed value is not the same as being permitted to compute on it.
+
+## Handles are public
+
+A handle is not a secret. It sits in contract storage, travels in calldata, and shows up in event logs. Anyone can read one.
+
+That is fine, because a handle reveals nothing about the plaintext. It is an identifier, not the ciphertext and not the value. Knowing that Alice's balance is handle `0x9f3c…` tells you nothing about the balance.
+
+What a handle **does** give its holder is the ability to name that ciphertext in a call. That is why the ACL exists, and why the next section matters.
+
+## When to unwrap
+
+Reach for `unwrap` when you need the value to be plain `bytes32` because something else demands it:
+
+- Storing a handle in a generic `bytes32` slot or struct field.
+- Emitting a handle in an event so a client can read it back.
+- Using a handle as a mapping key.
+- Comparing two handles for identity, which asks "is this the same ciphertext", not "are these values equal". For an encrypted comparison use `FHE.eq`.
+
+```solidity
+event BalanceUpdated(address indexed user, bytes32 handle);
+
+emit BalanceUpdated(msg.sender, FHE.unwrap(_balances[msg.sender]));
+```
+
+## When to wrap
+
+Reach for `wrapEuintXX` when you are recovering a handle **your own contract** already owns and stored as `bytes32`:
+
+```solidity
+mapping(address => bytes32) private _rawBalances;
+
+function balanceOf(address user) internal view returns (euint32) {
+    return FHE.wrapEuint32(_rawBalances[user]);
+}
+```
+
+This is safe because the contract is already allowed on the handle. Wrapping only restores the type the storage slot lost.
+
+## When not to wrap
+
+<Warning>
+Do not wrap a handle that arrived from outside the contract.
+
+A function that accepts a `bytes32` (or a bare `euintXX`) from a caller and computes on it can be turned into a decryption oracle.
+
+FHE operations check the permission of the **contract performing them**, not of whoever called it. A contract is always allowed on its own stored state. So an attacker passes a handle read from your storage or an event. The operation passes the ACL check because *you* hold the value, and the function hands back something derived from a ciphertext they were never meant to read.
+</Warning>
+
+Use a type that carries provenance instead. There is one for every way a value can reach you, so a wrapped `bytes32` parameter is never the right answer:
+
+| Where the value came from | Parameter type | How you convert it |
+| --- | --- | --- |
+| A user, offchain | `externalEuintXX` plus a `bytes` proof | `FHE.asEuintXX(handle, proof)` |
+| Another contract, as an argument | `sharedEuintXX` | `FHE.receiveEuintXXParam(shared)`, which checks the sharer is `msg.sender` |
+| Another contract, as a return value | `sharedEuintXX` | `FHE.receiveEuintXXFromCall(shared, callee)`, which checks the sharer is the contract you called |
+| Your own storage or computation | `euintXX` | `wrapEuintXX` if you stored it as `bytes32` |
+
+Each conversion authenticates the value as part of converting it, which is exactly what wrapping a raw handle skips. The two `receive` forms are not interchangeable: pick by how the value arrived, because naming the wrong party silently weakens the check rather than failing.
+
+All of these are covered in [inputs](/cofhe/fhe-library/core-concepts/inputs).
+
+## Checking a handle is real
+
+`wrap` accepts anything, so a wrapped value can be meaningless. `FHE.isInitialized` tells you whether a handle is non-zero, which catches an unset storage slot:
+
+```solidity
+if (!FHE.isInitialized(balance)) {
+    // never written, treat as zero
+}
+```
+
+It does not tell you the handle refers to a ciphertext that exists, or that you are allowed on it. Only the operation itself can tell you that.
+
+## Related
+
+- [Inputs](/cofhe/fhe-library/core-concepts/inputs): how values arrive from users and from other contracts.
+- [Access control](/cofhe/fhe-library/core-concepts/access-control): what the ACL permits, and how to grant it.
+- [Utility functions](/cofhe/fhe-library/reference/fhe-sol/utility): the reference entries for `unwrap`, `wrap`, and `isInitialized`.

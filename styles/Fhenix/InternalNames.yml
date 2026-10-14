@@ -1,6 +1,6 @@
 extends: existence
 message: "Possible internal name: '%s'. Internal hosts, projects, environments, and flags do not belong in public docs."
-link: https://github.com/FhenixProtocol/fhenix-developer-docs/blob/main/STYLE.md#terminology
+link: https://github.com/FhenixProtocol/fhenix-docs/blob/main/STYLE.md#terminology
 level: warning
 ignorecase: true
 tokens:

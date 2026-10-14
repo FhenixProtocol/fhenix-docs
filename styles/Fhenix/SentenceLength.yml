@@ -1,6 +1,6 @@
 extends: occurrence
 message: "Sentence is over 30 words. Aim for under 25. Split it."
-link: https://github.com/FhenixProtocol/fhenix-developer-docs/blob/main/STYLE.md#sentences-and-paragraphs
+link: https://github.com/FhenixProtocol/fhenix-docs/blob/main/STYLE.md#sentences-and-paragraphs
 level: warning
 scope: sentence
 ignorecase: false

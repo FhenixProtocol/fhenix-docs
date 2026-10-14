@@ -1,0 +1,74 @@
+---
+title: "Confidential transfers and operators"
+description: "How encrypted transfers and operators work on ERC20Confidential, and where they differ from FHERC20"
+---
+
+`ERC20Confidential` moves confidential balances with the same functions as [FHERC20](/cofhe/fhe-library/confidential-contracts/fherc20/core-features). This page lists those functions and the few places where `ERC20Confidential` behaves differently. Read the FHERC20 page for the full behavior of each overload.
+
+## The transfer functions
+
+Every transfer function comes in two overloads: one for a wallet, which passes an encrypted input and its proof, and one for a contract, which passes a `sharedEuint64`.
+
+| Function | Wallet overload | Contract overload |
+| --- | --- | --- |
+| `confidentialTransfer` | `(to, externalEuint64, bytes inputProof)` | `(to, sharedEuint64)` |
+| `confidentialTransferFrom` | `(from, to, externalEuint64, bytes inputProof)` | `(from, to, sharedEuint64)` |
+| `confidentialTransferAndCall` | `(to, externalEuint64, bytes inputProof, bytes data)` | `(to, sharedEuint64, bytes data)` |
+| `confidentialTransferFromAndCall` | `(from, to, externalEuint64, bytes inputProof, bytes data)` | `(from, to, sharedEuint64, bytes data)` |
+
+Each returns a `sharedEuint64` holding the amount that actually moved. From a wallet, encrypt the amount in confidential units and name the token as the consuming contract:
+
+```typescript
+import { Encryptable } from '@cofhe/sdk';
+
+const [amount, inputProof] = await client
+  .encryptInputs([Encryptable.uint64(3_000_000n)])
+  .setConsumingContract(await token.getAddress())
+  .execute();
+
+await token['confidentialTransfer(address,bytes32,bytes)'](recipient, amount, inputProof);
+```
+
+The account that encrypts the input must be the account that sends the transaction. For calls from a contract, see [call a token from your contract](/cofhe/fhe-library/confidential-contracts/calling-from-contracts).
+
+As on FHERC20, a transfer of more than the balance does not revert. It moves zero, and the returned amount decrypts to zero.
+
+## Where it differs from FHERC20
+
+| Behavior | `ERC20Confidential` | `FHERC20` |
+| --- | --- | --- |
+| Sender has never held a confidential balance | The transfer moves zero | Reverts with `FHERC20ZeroBalance` |
+| Caller is not `from` or an operator | `ERC20ConfidentialUnauthorizedSpender(holder, spender)` | `FHERC20UnauthorizedSpender(holder, spender)` |
+| `to` is the zero address | `ConfidentialInvalidReceiver(address(0))` | `FHERC20InvalidReceiver(address(0))` |
+| Hook before each move | `_beforeConfidentialMove(from, to)` | None |
+| Indicator updates | On the separate [indicator token](/cofhe/fhe-library/confidential-contracts/dual-mode/dual-balance-model#the-indicator-token) | On the token's own `balanceOf` |
+
+`_beforeConfidentialMove` runs before all eight transfer functions and both `unshield` overloads. It does nothing by default. Override it to freeze accounts or pause the confidential side; see [extend ERC20Confidential](/cofhe/fhe-library/confidential-contracts/dual-mode/extending).
+
+All eight transfer functions and both `unshield` overloads are `nonReentrant`, so a callback cannot call another transfer or `unshield` on the same token.
+
+## Operators
+
+An operator can move any amount of a holder's confidential balance until a deadline:
+
+```typescript
+const oneHour = Math.floor(Date.now() / 1000) + 3600;
+await token.setOperator(operatorAddress, oneHour);
+```
+
+`isOperator(holder, spender)` returns `true` while `block.timestamp` is at or before the deadline, and always returns `true` when `holder` and `spender` are the same address. Setting the deadline to `0` revokes the operator. Each call emits `OperatorSet(holder, operator, until)`. For the operator model in depth, see [operators](/cofhe/fhe-library/confidential-contracts/fherc20/operators).
+
+Confidential operators and public allowances are separate. `approve` and `transferFrom` keep working on the public balance and have no effect on the confidential one, and `setOperator` grants nothing on the public side.
+
+## Transfers with a callback
+
+`confidentialTransferAndCall` and `confidentialTransferFromAndCall` call `onConfidentialTransferReceived` on the recipient after the transfer, using the same `IERC7984Receiver` interface as FHERC20. If the receiver returns an encrypted `false`, the token moves the amount back to the sender. See [transfer callbacks](/cofhe/fhe-library/confidential-contracts/fherc20/transfer-callbacks) for how to write a receiver.
+
+## Events
+
+| Event | When |
+| --- | --- |
+| `ConfidentialTransfer(from, to, amount)` | Every confidential move, including shield (`from` is zero) and unshield (`to` is zero). `amount` is the handle of the moved amount |
+| `OperatorSet(holder, operator, until)` | `setOperator` |
+
+The sender and the recipient can both decrypt the `amount` handle of a transfer they took part in.

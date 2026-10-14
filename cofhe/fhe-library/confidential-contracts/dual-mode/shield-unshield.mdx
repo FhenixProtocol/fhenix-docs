@@ -1,0 +1,90 @@
+---
+title: "Shield and unshield"
+description: "Move ERC20Confidential tokens from the public balance into the encrypted one and back"
+---
+
+`shield` moves tokens from a holder's public balance into their confidential balance in one transaction. Going back takes two: `unshield` burns the confidential amount and opens a claim, and `claimUnshielded` pays out public tokens once the amount is decrypted. This page covers both directions and the claim lifecycle.
+
+Amounts in this page use the [conversion rate](/cofhe/fhe-library/confidential-contracts/dual-mode/overview#decimals-and-units): for an 18-decimal token, one confidential unit is 10^12 public base units.
+
+## Shield public tokens
+
+`shield(uint256 amount)` takes `amount` in public base units from the caller's public balance:
+
+```typescript
+await token.shield(ethers.parseEther('10'));
+```
+
+The token rounds `amount` down to a multiple of the rate. It moves the rounded amount into the [pool](/cofhe/fhe-library/confidential-contracts/dual-mode/dual-balance-model#where-the-backing-tokens-sit) and credits `amount / rate` confidential units to the caller. The remainder never leaves the public balance. If the rounded amount is zero, `shield` reverts with `AmountTooSmallForConfidentialPrecision`.
+
+`shield` always acts on the caller's own tokens and credits the caller. There is no `shield` for another account and no approval involved.
+
+The shielded amount is public: it appears in the call data and in these events.
+
+| Event | Emitted by | Carries |
+| --- | --- | --- |
+| `Transfer(caller, CONFIDENTIAL_POOL, amount)` | The token | The public amount moved into the pool |
+| `Transfer(address(0), caller, 10110000001)` | The indicator token | A fixed value that marks confidential activity |
+| `ConfidentialTransfer(address(0), caller, handle)` | The token | The handle of the credited amount |
+| `TokensShielded(caller, amount)` | The token | The public amount shielded |
+
+## Unshield confidential tokens
+
+`unshield` has two overloads. Both burn from the caller's confidential balance and open a claim that pays the caller.
+
+| Overload | Called by | The amount is |
+| --- | --- | --- |
+| <code style={{ whiteSpace: "nowrap" }}>unshield(uint64 amount)</code> | A wallet or a contract | Public, in confidential units |
+| <code style={{ whiteSpace: "nowrap" }}>unshield(sharedEuint64 amount)</code> | A contract that holds an encrypted amount | Encrypted until the claim reveals it |
+
+The plaintext overload puts the amount in the call data. The encrypted overload keeps it hidden until the claim, but only a contract can call it, because the caller creates the argument with `FHE.shareEuint64(amount, address(token))`. See [call a token from your contract](/cofhe/fhe-library/confidential-contracts/calling-from-contracts).
+
+The burn follows the same rule as a transfer: if the amount exceeds the confidential balance, nothing is burned and the claim decrypts to zero.
+
+`unshield` emits `ConfidentialTransfer(caller, address(0), handle)` and `TokensUnshielded(caller, handle)`, where `handle` is the burned amount. The token makes that handle publicly decryptable, since the claim reveals it anyway.
+
+## Claim the public tokens
+
+Each `unshield` opens a claim with a unique ID. The ID is not the burned handle. Read it from the token:
+
+| Function | Returns |
+| --- | --- |
+| <code style={{ whiteSpace: "nowrap" }}>getUserClaims(account)</code> | The account's pending claims |
+| <code style={{ whiteSpace: "nowrap" }}>getClaim(id)</code> | One claim, pending or settled |
+
+A claim has five fields: `id`, `to` (the account paid out), `ctHash` (the burned handle), `decryptedAmount` (set when the claim settles), and `claimed`.
+
+Decrypt `ctHash` with [`decryptForTx`](/cofhe/client-sdk/guides/decrypt-to-tx). No ACP is needed, because the handle is publicly decryptable. Then submit the result:
+
+```typescript
+await (await token['unshield(uint64)'](1_000_000n)).wait();
+
+const [claim] = await token.getUserClaims(account);
+const { decryptedValue, signature } = await client
+  .decryptForTx(claim.ctHash)
+  .withoutACP()
+  .execute();
+
+await token.claimUnshielded(claim.id, decryptedValue, signature);
+```
+
+`claimUnshielded` verifies the signature against the burned handle, then moves `decryptedValue * rate` public tokens from the pool to `claim.to`. Anyone can submit the claim, because the payout always goes to `claim.to`. A relayer can pay the gas for a user.
+
+To settle several claims in one transaction, pass parallel arrays:
+
+```typescript
+await token.claimUnshieldedBatch(ids, decryptedValues, signatures);
+```
+
+The batch reverts as a whole if any element is invalid. On success each claim emits `UnshieldedTokensClaimed(to, id, handle, decryptedValue)`, along with the public `Transfer` from the pool.
+
+## Errors
+
+| Error | Cause |
+| --- | --- |
+| `AmountTooSmallForConfidentialPrecision` | `shield` with an amount smaller than the rate |
+| `ClaimNotFound` | No claim has this ID |
+| `AlreadyClaimed` | The claim has settled |
+| `ClaimBatchLengthMismatch` | The three batch arrays differ in length |
+
+A `decryptedValue` or `signature` that does not match the burned handle makes the decryption check revert, and the claim stays pending.

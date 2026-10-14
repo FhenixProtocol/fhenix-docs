@@ -1,58 +1,40 @@
 ---
-title: "Overview"
-description: "Welcome to Fhenix Documentation - Build privacy-preserving smart contracts with Fully Homomorphic Encryption"
+title: "Fhenix Developer Docs"
+sidebarTitle: "All products"
+description: "Guides, references, and tutorials for every Fhenix product."
+mode: "custom"
 ---
 
-## Welcome to Fhenix
+<div className="max-w-5xl mx-auto px-6 pt-20 pb-24">
 
-Fhenix enables developers to build privacy-preserving smart contracts using Fully Homomorphic Encryption (FHE). Create dApps where sensitive data remains encrypted throughout computation, unlocking new possibilities for confidential blockchain applications.
+<div className="text-sm font-semibold uppercase tracking-widest text-primary dark:text-primary-light">Fhenix Developer Docs</div>
 
-## Quick start
+<div className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">Build with Fhenix</div>
 
-Get up and running with Fhenix in minutes.
+<div className="mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">Guides, references, and tutorials for every Fhenix product. Pick a product to start.</div>
 
-<CardGroup cols={2}>
-<Card title="Quick Start" icon="rocket" href="/fhe-library/introduction/quick-start">
-Set up your development environment and build your first FHE-enabled smart contract.
-</Card>
+<div className="mt-12 grid gap-6 sm:grid-cols-2 not-prose">
 
-<Card title="Your First FHE Contract" icon="code" href="/tutorials/your-first-fhe-contract">
-Learn the fundamentals by building an encrypted counter contract.
-</Card>
-</CardGroup>
+<a href="/cofhe" className="group flex flex-col rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 p-7 transition hover:border-primary dark:hover:border-primary-light hover:shadow-lg">
+  <div className="flex items-center justify-between">
+    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10"><Icon icon="lock" size={22} color="#0AD9DC" /></div>
+    <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary dark:text-primary-light">Live</span>
+  </div>
+  <div className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">CoFHE</div>
+  <div className="mt-2 text-gray-600 dark:text-gray-400">The FHE coprocessor. Write Solidity contracts that compute on encrypted data, on the chains you already use.</div>
+  <div className="mt-6 flex items-center text-sm font-semibold text-primary dark:text-primary-light">Read the docs<span className="ml-1 inline-flex transition group-hover:translate-x-1"><Icon icon="arrow-right" size={12} color="#0AD9DC" /></span></div>
+</a>
 
-## Key resources
+<a href="/wallet" className="group flex flex-col rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 p-7 transition hover:border-primary dark:hover:border-primary-light hover:shadow-lg">
+  <div className="flex items-center justify-between">
+    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10"><Icon icon="wallet" size={22} color="#0AD9DC" /></div>
+    <span className="rounded-full bg-gray-100 dark:bg-white/10 px-3 py-1 text-xs font-semibold text-gray-600 dark:text-gray-300">Coming soon</span>
+  </div>
+  <div className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Wallet Module</div>
+  <div className="mt-2 text-gray-600 dark:text-gray-400">Documentation for the Fhenix Wallet Module is in progress.</div>
+  <div className="mt-6 flex items-center text-sm font-semibold text-primary dark:text-primary-light">See what is coming<span className="ml-1 inline-flex transition group-hover:translate-x-1"><Icon icon="arrow-right" size={12} color="#0AD9DC" /></span></div>
+</a>
 
-<CardGroup cols={2}>
-<Card title="Client SDK" icon="puzzle-piece" href="/client-sdk/introduction/overview">
-JavaScript library for encrypting inputs, managing ACPs, and decrypting outputs.
-</Card>
+</div>
 
-<Card title="FHE Library" icon="book" href="/fhe-library/introduction/overview">
-Solidity library for performing operations on encrypted data in smart contracts.
-</Card>
-
-<Card title="API Reference" icon="terminal" href="/fhe-library/reference/fhe-sol/overview">
-Complete API documentation for all FHE library functions and operations.
-</Card>
-
-<Card title="Tutorials" icon="graduation-cap" href="/tutorials/overview">
-Step-by-step guides for building FHE-enabled applications.
-</Card>
-</CardGroup>
-
-## Learn more
-
-<CardGroup cols={3}>
-<Card title="Compatibility" icon="check-circle" href="/get-started/introduction/compatibility">
-Check version compatibility and supported networks.
-</Card>
-
-<Card title="Best Practices" icon="shield" href="/fhe-library/introduction/best-practices">
-Security considerations and optimization techniques.
-</Card>
-
-<Card title="Support" icon="question-circle" href="/get-started/introduction/support-and-feedback">
-Get help and provide feedback to the team.
-</Card>
-</CardGroup>
+</div>

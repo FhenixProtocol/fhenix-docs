@@ -1,0 +1,191 @@
+---
+title: "Wrap ERC-20 tokens and ETH"
+description: "Shield an existing ERC-20 or ETH into an FHERC20 token, and unshield it back with a decrypted claim"
+---
+
+A wrapper turns a public asset into an FHERC20 token (a token whose balances are encrypted) backed one to one by what the wrapper holds. `FHERC20ERC20Wrapper` wraps any standard ERC-20. `FHERC20NativeWrapper` wraps ETH, taken directly or as WETH. Use this page to deploy a wrapper, shield into it, and get the underlying asset back out.
+
+## Deploy a wrapper
+
+Both wrappers are abstract. You inherit one and pass the FHERC20 constructor arguments next to the wrapper's own:
+
+```solidity ConfidentialUSDC.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.25;
+
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { FHERC20 } from "fhenix-confidential-contracts/contracts/FHERC20/FHERC20.sol";
+import { FHERC20ERC20Wrapper } from "fhenix-confidential-contracts/contracts/FHERC20/extensions/FHERC20ERC20Wrapper.sol";
+
+contract ConfidentialUSDC is FHERC20ERC20Wrapper {
+    constructor(IERC20 usdc) FHERC20("Confidential USDC", "eUSDC", 6, "") FHERC20ERC20Wrapper(usdc) {}
+}
+```
+
+```solidity ConfidentialETH.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.25;
+
+import { IWETH } from "fhenix-confidential-contracts/contracts/interfaces/IWETH.sol";
+import { FHERC20 } from "fhenix-confidential-contracts/contracts/FHERC20/FHERC20.sol";
+import { FHERC20NativeWrapper } from "fhenix-confidential-contracts/contracts/FHERC20/extensions/FHERC20NativeWrapper.sol";
+
+contract ConfidentialETH is FHERC20NativeWrapper {
+    constructor(IWETH weth) FHERC20("Confidential Ether", "eETH", 6, "") FHERC20NativeWrapper(weth) {}
+}
+```
+
+The native wrapper takes the WETH address even if you only use `shieldNative`, because it reads its decimals from WETH.
+
+The `6` passed to `FHERC20` does not set the wrapper's decimals. The wrapper overrides `decimals()` with a value derived from the underlying token. The constructor argument only sets the indicator tick, the unit that `balanceOf` reports in. Pass the wrapper's real decimals, which is 6 for any underlying with 6 or more.
+
+Both wrappers call into `ERC20ConfidentialLib`, so you must deploy that library and link it into the wrapper. See [link the shared library](/cofhe/fhe-library/confidential-contracts/overview#link-the-shared-library) for the steps.
+
+<Warning>
+Enable the Solidity optimizer for wrappers. With the optimizer off, `ConfidentialETH` compiles to 24,693 bytes and an upgradeable ERC-20 wrapper to 26,751 bytes. Both exceed the 24,576-byte limit and fail to deploy. With `runs: 200` they compile to 14,839 and 15,730 bytes.
+</Warning>
+
+## How decimals and the rate work
+
+Encrypted amounts are `euint64`, so a wrapper caps its own decimals at 6. When the underlying has more, the wrapper converts at a fixed `rate()`:
+
+| Underlying decimals | Wrapper `decimals()` | `rate()` |
+| --- | --- | --- |
+| 6 (USDC) | 6 | 1 |
+| 18 (DAI, WETH, ETH) | 6 | 10^12 |
+| 4 | 4 | 1 |
+
+One confidential unit is backed by `rate()` units of the underlying. Shielding rounds down to a multiple of `rate()`, and a claim pays `amount * rate()`. If the underlying has no `decimals()` function, the ERC-20 wrapper assumes 18.
+
+## Shield an ERC-20
+
+`shield(to, amount)` pulls the underlying from the caller and mints confidential tokens to `to`. Approve the wrapper first:
+
+```typescript
+await usdc.approve(await eUSDC.getAddress(), 100_000_000n);
+await eUSDC.shield(alice.address, 100_000_000n);
+```
+
+The amount shielded is public: it is a plaintext argument and an ERC-20 transfer. Only the balances that follow are confidential.
+
+- The wrapper pulls `amount - (amount % rate())` and mints `amount / rate()`. The remainder never leaves your account.
+- An `amount` below `rate()` mints zero and pulls nothing. It does not revert.
+- `to` cannot be `address(0)`. The mint reverts with `FHERC20InvalidReceiver`.
+
+### Shield in one transaction with ERC-1363
+
+If the underlying implements ERC-1363, you can skip the approval. Call `transferAndCall` on the underlying with the wrapper as the recipient. The wrapper's `onTransferReceived` mints to the address in the first 20 bytes of `data`, or to the sender when `data` is shorter than 20 bytes:
+
+```typescript
+await pay['transferAndCall(address,uint256,bytes)'](
+  await ePAY.getAddress(),
+  amount,
+  ethers.solidityPacked(['address'], [bob.address]),
+);
+```
+
+Here the full `amount` arrives first, so the wrapper refunds the part below a multiple of `rate()` to the sender. `onTransferReceived` reverts with `FHERC20UnauthorizedCaller` unless the underlying token calls it.
+
+## Shield the native token
+
+`FHERC20NativeWrapper` has two entry points:
+
+- `shieldNative(to)` takes `msg.value`. It refunds the part below a multiple of `rate()` to the caller.
+- `shieldWrappedNative(to, value)` pulls WETH, which you approve first, and unwraps it. The part below a multiple of `rate()` is never pulled.
+
+```typescript
+await eETH.shieldNative(ethers.ZeroAddress, { value: ethers.parseEther('1') });
+
+await weth.approve(await eETH.getAddress(), ethers.parseEther('0.5'));
+await eETH.shieldWrappedNative(bob.address, ethers.parseEther('0.5'));
+```
+
+Unlike the ERC-20 wrapper, both functions treat `to == address(0)` as the caller, and both revert with `AmountTooSmallForConfidentialPrecision` when the value is below `rate()`. With 18-decimal ETH the rate is 10^12, so 1 ETH mints 1,000,000 units.
+
+## Unshield back to the underlying
+
+Getting the underlying back takes two transactions, because the amount is encrypted and the wrapper can only pay out a plaintext:
+
+<Steps>
+<Step title="Unshield">
+Call `unshield(from, to, amount)`. The wrapper burns the amount from `from`, makes the burned amount publicly decryptable, and records a claim for `to`.
+</Step>
+<Step title="Decrypt">
+Read the claim and decrypt its handle with `decryptForTx`. No ACP (Access Control Permission) is needed, because the burned amount is public.
+</Step>
+<Step title="Claim">
+Call `claimUnshielded(id, value, signature)`. The wrapper verifies the decryption and sends `value * rate()` of the underlying to the claim's recipient.
+</Step>
+</Steps>
+
+There are two `unshield` overloads:
+
+| Overload | Caller | Note |
+| --- | --- | --- |
+| `unshield(address from, address to, uint64 amount)` | Any account | `amount` is plaintext, so it is visible in the transaction |
+| `unshield(address from, address to, sharedEuint64 amount)` | A contract | The caller shares an encrypted amount it holds. See [call a token from your contract](/cofhe/fhe-library/confidential-contracts/calling-from-contracts) |
+
+The caller must be `from` or an [operator](/cofhe/fhe-library/confidential-contracts/fherc20/operators) for `from`, or the call reverts with `FHERC20UnauthorizedSpender`. `to` cannot be `address(0)`. If the amount exceeds the balance, the wrapper burns zero, and the claim decrypts to `0`.
+
+### Find and settle the claim
+
+A claim is keyed by a claim ID, not by the ciphertext handle. Two unshields can burn values with the same handle, so the handle cannot identify a claim. Read pending claims with `getUserClaims(to)`, then decrypt `ctHash` and claim by `id`:
+
+```typescript
+await eUSDC['unshield(address,address,uint64)'](alice.address, alice.address, 40_000_000n);
+
+const [claim] = await eUSDC.getUserClaims(alice.address);
+const { decryptedValue, signature } = await client
+  .decryptForTx(claim.ctHash)
+  .withoutACP()
+  .execute();
+
+await eUSDC.claimUnshielded(claim.id, decryptedValue, signature);
+```
+
+Any account can submit the claim. The payout always goes to the claim's `to`, so a relayer can settle claims for your users. `claimUnshieldedBatch(ids, values, signatures)` settles several in one transaction and reverts as a whole if any element is invalid. See [decrypt to transaction](/cofhe/client-sdk/guides/decrypt-to-tx) for the SDK side.
+
+`getUserClaims` returns only pending claims. `getClaim(id)` returns any claim as this struct:
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `id` | `bytes32` | The claim ID you pass to `claimUnshielded` |
+| `to` | `address` | Who receives the payout |
+| `ctHash` | `bytes32` | The burned amount's handle, the value you decrypt |
+| `decryptedAmount` | `uint64` | The verified amount, set when the claim settles |
+| `claimed` | `bool` | Whether the claim has settled |
+
+## Total supply checks
+
+Because the wrapper's holdings are public, it can bound its own supply. `inferredTotalSupply()` returns the underlying balance divided by `rate()`, and every mint reverts with `FHERC20TotalSupplyOverflow` if that exceeds `maxTotalSupply()`, which is `type(uint64).max`. Anyone can raise `inferredTotalSupply()` by sending the underlying to the wrapper directly. It also lags `confidentialTotalSupply()` between an unshield and its claim.
+
+<Warning>
+The ERC-20 wrapper assumes it receives the full amount it pulls. Fee-on-transfer and other deflationary tokens are not supported: the wrapper would mint more than it holds.
+</Warning>
+
+## Errors
+
+| Error | When |
+| --- | --- |
+| `FHERC20InvalidReceiver` | `unshield` targets `address(0)`, or the ERC-20 wrapper's `shield` does |
+| `FHERC20UnauthorizedSpender` | The caller of `unshield` is neither `from` nor its operator |
+| `FHERC20UnauthorizedCaller` | `onTransferReceived` is called by a token other than the underlying |
+| `AmountTooSmallForConfidentialPrecision` | A native shield is below `rate()` |
+| `FHERC20TotalSupplyOverflow` | A mint would push `inferredTotalSupply()` past `maxTotalSupply()` |
+| `NativeTransferFailed` | A dust refund or an ETH payout could not be sent |
+| `ClaimNotFound` | No claim has that ID |
+| `AlreadyClaimed` | The claim has already settled |
+| `ClaimBatchLengthMismatch` | The batch arrays have different lengths |
+| `InvalidSigner` | The decrypted value or signature does not match the claim's handle |
+
+`InvalidSigner` comes from the TaskManager, which verifies the decryption. See [common errors](/cofhe/fhe-library/core-concepts/common-errors) for the other TaskManager errors.
+
+## Events
+
+| Event | Emitted by |
+| --- | --- |
+| `ShieldedNative(from, to, value)` | `shieldNative`, `shieldWrappedNative` |
+| `Unshielded(to, amount)` | Both `unshield` overloads |
+| `ClaimedUnshielded(to, unshieldRequestId, unshieldAmount, unshieldAmountCleartext)` | `claimUnshielded`, `claimUnshieldedBatch` |
+
+Shielding also emits the FHERC20 `Transfer` and `ConfidentialTransfer` events for the mint. The ERC-20 wrapper has no shield event of its own.

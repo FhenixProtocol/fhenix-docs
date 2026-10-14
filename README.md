@@ -1,16 +1,9 @@
 # Fhenix Developer Documentation
 
-Official documentation for Fhenix - the privacy-preserving blockchain platform that enables developers to build confidential smart contracts using Fully Homomorphic Encryption (FHE).
+The documentation for Fhenix products, served at [docs.fhenix.io](https://docs.fhenix.io).
 
-## About This Documentation
-
-This repository contains the complete developer documentation for Fhenix, including:
-
-- **Get Started** - Introduction to Fhenix and CoFHE, compatibility, support, and builder programs
-- **Client SDK** - `@cofhe/sdk` for encrypting inputs, managing Access Control Permissions, and decrypting outputs, plus the Hardhat and Foundry plugins
-- **FHE library** - `FHE.sol`, the Solidity library for working with encrypted data in smart contracts
-- **Tutorials** - Step-by-step guides for building FHE-enabled applications
-- **Deep Dive** - Technical architecture details, CoFHE components, and data flows
+- **CoFHE** (`cofhe/`): the FHE coprocessor. Write Solidity contracts that compute on encrypted data. Covers Get Started, the Client SDK, the FHE library, Tutorials, and the Deep Dive.
+- **Wallet Module** (`wallet/`): coming soon.
 
 ## Development
 
@@ -37,18 +30,23 @@ The documentation will be available at `http://localhost:3000`.
 ## Project Structure
 
 ```
-fhenix-developer-docs/
-├── get-started/          # Introduction and getting started guides
-├── client-sdk/           # @cofhe/sdk, Hardhat plugin, and Foundry plugin docs
-├── fhe-library/          # Solidity FHE library documentation
-├── tutorials/            # Step-by-step tutorials
-├── deep-dive/            # Architecture and technical deep dives
-├── images/               # Images referenced from pages
-├── scripts/              # Structure linter (lint-docs.py)
-├── styles/               # Vale prose rules
+fhenix-docs/
+├── index.mdx             # Landing page, one card per product
+├── cofhe/                # CoFHE docs, served at /cofhe
+│   ├── get-started/  client-sdk/  fhe-library/  tutorials/  deep-dive/
+│   ├── images/
+│   ├── scripts/          # CoFHE checks: versions, sample compile
+│   ├── AGENTS.md         # CoFHE facts for contributors and agents
+│   └── STYLE-cofhe.md    # CoFHE terms and diagram rules
+├── wallet/               # Wallet Module docs, served at /wallet
+├── scripts/              # Shared structure linter (lint-docs.py)
+├── styles/               # Shared Vale prose rules
 ├── STYLE.md              # Writing style guide, binding for all pages
-└── docs.json             # Mintlify configuration
+├── AGENTS.md             # Shared rules for contributors and agents
+└── docs.json             # Mintlify configuration: products, navigation, redirects
 ```
+
+To add a product, create its folder, add it to `navigation.products` in `docs.json`, and add a card to `index.mdx`.
 
 ## Publishing Changes
 
@@ -80,11 +78,11 @@ We welcome contributions to improve the documentation. When making changes:
 ## Resources
 
 - [Mintlify Documentation](https://mintlify.com/docs)
-- [CoFHE documentation live site](https://cofhe-docs.fhenix.zone)
+- [Fhenix documentation live site](https://docs.fhenix.io)
 
 ## Support
 
 For questions and support:
 - Join our [Telegram Support Channel](https://t.me/+OEO4CItQYh8xYzNh)
 - Visit our [Discord](https://discord.com/invite/FuVgxrvJMY)
-- Check the [Support and Feedback](get-started/introduction/support-and-feedback.mdx) documentation
+- Check the [Support and Feedback](cofhe/get-started/introduction/support-and-feedback.mdx) documentation

@@ -1,0 +1,350 @@
+---
+title: "Quick Start"
+description: "Set up your local development environment for building FHE smart contracts with CoFHE"
+---
+
+## Overview
+
+This guide helps you set up your local development environment for building FHE (Fully Homomorphic Encryption) smart contracts with CoFHE. The Fhenix development starter kit provides everything you need to develop, test, and deploy FHE contracts both locally and on test networks.
+
+## Supported networks
+
+CoFHE launches on two mainnet networks. Go-live is in progress: the contracts are deployed, and intake opens when it completes.
+
+- **Ethereum**
+- **Arbitrum One**
+
+Until then, develop and deploy on the testnets:
+
+- **Ethereum Sepolia** - Main Ethereum testnet for FHE development
+- **Arbitrum Sepolia** - Layer 2 testnet with lower gas costs
+- **Base Sepolia** - Coinbase's Layer 2 testnet
+
+<Info>
+You can develop and test locally using mock contracts, then deploy to any of these testnets when ready.
+</Info>
+
+The Fhenix development environment consists of several key components:
+
+{/* @SDK */}
+
+- **cofhe-hardhat-starter**: Template Hardhat project to clone and use as a starting point
+- **cofhe-hardhat-plugin**: Hardhat plugin that deploys mock contracts and exposes utilities
+- **@cofhe/sdk**: JavaScript library for interacting with FHE contracts and the CoFHE coprocessor
+- **cofhe-mock-contracts**: Mock contracts that mimic CoFHE coprocessor behavior for local testing
+- **cofhe-contracts**: Solidity libraries and smart contracts for FHE operations
+
+## Prerequisites
+
+Before starting, ensure you have:
+
+- **Node.js** (v20 or later)
+- **pnpm** (recommended package manager)
+- Basic familiarity with Hardhat and Solidity
+
+<Note>
+If you don't have pnpm installed, you can install it globally with `npm install -g pnpm`.
+</Note>
+
+## Installation
+
+<Steps>
+<Step title="Clone the starter repository">
+Clone the `cofhe-hardhat-starter` repository:
+
+```bash
+git clone https://github.com/fhenixprotocol/cofhe-hardhat-starter.git
+cd cofhe-hardhat-starter
+```
+
+<Check>
+You should now have the starter project in your local directory.
+</Check>
+</Step>
+
+<Step title="Install dependencies">
+Install all required dependencies using pnpm:
+
+```bash
+pnpm install
+```
+
+<Check>
+All dependencies are installed and ready to use.
+</Check>
+</Step>
+</Steps>
+
+## Project Structure
+
+The starter kit provides a well-organized directory structure to help you get started quickly:
+{/* @SDK */}
+- **`contracts/`**: Contains all your Solidity smart contract source files
+  - `Counter.sol`: An example FHE-enabled counter contract demonstrating basic FHE operations
+- **`test/`**: Houses tests that utilize `@cofhe/sdk` and utilities to interact with FHE-enabled contracts
+- **`tasks/`**: Tasks to deploy and interact with the Counter contract on Arbitrum Sepolia
+- **`hardhat.config.ts`**: Imports the CoFHE Hardhat plugin to deploy mock contracts
+
+## Local Development Workflow
+
+### Writing FHE Smart Contracts
+
+FHE contracts use special encrypted types and operations from the FHE library. Here's a basic example:
+
+```solidity contracts/Counter.sol
+import "@fhenixprotocol/cofhe-contracts/FHE.sol";
+
+contract Counter {
+    euint32 public count;  // Encrypted uint32
+
+    function increment() public {
+        count = FHE.add(count, FHE.asEuint32(1));
+        FHE.allowThis(count);
+        FHE.allowSender(count);
+    }
+}
+```
+
+<Tip>
+Key FHE concepts you'll use:
+- `euint32`, `ebool` - Encrypted data types
+- `FHE.add`, `FHE.sub` - FHE operations on encrypted values
+- `FHE.allowThis`, `FHE.allowSender` - Access control management
+</Tip>
+
+### Testing with Mock Environment
+
+For rapid development, use the mock environment to test your contracts:
+
+```bash
+pnpm test
+```
+
+This runs your tests with mock FHE operations, allowing quick iteration without external dependencies.
+
+<CodeGroup>
+```typescript test/Counter.test.ts
+it('Should increment the counter', async function () {
+    const { counter, bob } = await loadFixture(deployCounterFixture)
+
+    // Check initial value
+    const count = await counter.count()
+    await mock_expectPlaintext(bob.provider, count, 0n)
+
+    // Increment counter
+    await counter.connect(bob).increment()
+
+    // Check new value
+    const count2 = await counter.count()
+    await mock_expectPlaintext(bob.provider, count2, 1n)
+})
+```
+
+{/* @SDK */}
+```typescript Full Client SDK Flow
+it('Full Client SDK flow', async function () {
+    const [bob] = await hre.ethers.getSigners()
+
+    const CounterFactory = await hre.ethers.getContractFactory('Counter')
+    const counter = await CounterFactory.connect(bob).deploy()
+
+    // Create a connected client (batteries included)
+    const client = await hre.cofhe.createClientWithBatteries(bob)
+
+    // Encrypt a value
+    const [encryptedInput] = await client
+        .encryptInputs([Encryptable.uint32(5n)])
+        .onStep((step) => console.log(`Encrypt step - ${step}`))
+        .execute()
+
+    // Use the encrypted input to reset the counter
+    await counter.connect(bob).reset(encryptedInput)
+
+    // Fetch the hash of the encrypted counter value
+    const encryptedValue = await counter.count()
+
+    // Decrypt the value (view decryption)
+    const result = await client
+        .decryptForView(encryptedValue, FheTypes.Uint32)
+        .withACP()
+        .execute()
+
+    // Check the decrypted result
+    expect(result).equal(5n)
+})
+```
+</CodeGroup>
+
+### Deploying to testnet
+
+When ready for more realistic testing, deploy to a Sepolia testnet:
+
+<Steps>
+<Step title="Configure environment variables">
+Create a `.env` file with your private key and RPC URLs:
+
+```bash
+PRIVATE_KEY=your_private_key_here
+SEPOLIA_RPC_URL=your_sepolia_rpc_url
+ARBITRUM_SEPOLIA_RPC_URL=your_arbitrum_sepolia_rpc_url
+```
+
+<Warning>
+Never commit your `.env` file to version control. Add it to your `.gitignore` file.
+</Warning>
+</Step>
+
+<Step title="Deploy your contract">
+Deploy your contract to the testnet:
+
+<CodeGroup>
+```bash Ethereum Sepolia
+pnpm eth-sepolia:deploy-counter
+```
+
+```bash Arbitrum Sepolia
+pnpm arb-sepolia:deploy-counter
+```
+
+```bash Base Sepolia
+pnpm base-sepolia:deploy-counter
+```
+</CodeGroup>
+
+The plugin ships presets for the first two networks. Base Sepolia has none, so the starter defines that network in its own `hardhat.config.ts`; the [compatibility page](/cofhe/get-started/introduction/compatibility#supported-networks) shows the block to copy into your own project.
+</Step>
+
+<Step title="Interact with your contract">
+Use tasks to interact with your deployed contract:
+
+<CodeGroup>
+```bash Ethereum Sepolia
+pnpm eth-sepolia:increment-counter
+```
+
+```bash Arbitrum Sepolia
+pnpm arb-sepolia:increment-counter
+```
+
+```bash Base Sepolia
+pnpm base-sepolia:increment-counter
+```
+</CodeGroup>
+</Step>
+</Steps>
+
+## Key Components
+
+### cofhe-hardhat-plugin
+
+This plugin provides essential tools for developing FHE contracts:
+
+- **Network Configuration**: Automatically configures supported networks
+- **Testing Utilities**: Helpers for testing FHE contracts
+- **Mock Integration**: Sets up mock contracts for local testing
+
+{/* @SDK */}
+### Client SDK (`@cofhe/sdk`)
+
+The JavaScript library for working with FHE contracts:
+
+- **Encrypt/Decrypt**: Encrypt data to send to contracts and decrypt results
+- **Querying**: Fetch encrypted values from FHE contracts
+- **Authentication**: Uses [Access Control Permissions](/cofhe/client-sdk/guides/acps) (ACPs) to authenticate connected users when requesting confidential data
+
+### cofhe-mock-contracts
+
+These contracts provide mock implementations for FHE functionality:
+
+- Allows testing without actual FHE operations
+- Simulates the behavior of the real FHE environment
+- Stores plaintext values onchain for testing purposes
+
+<Note>
+In the mock environment, gas costs are higher than in production due to the additional operations needed to simulate FHE behavior. This is especially noticeable when logging is enabled.
+</Note>
+
+### cofhe-contracts
+
+Package of Solidity libraries and smart contracts for FHE operations:
+
+- **FHE.sol Library**: The only import you need to start using FHE functionality in your contracts
+- Complete API reference for all available functions and types
+
+## Development Environments
+
+CoFHE supports multiple development environments:
+
+### MOCK Environment
+
+- Fastest development cycle
+- No external dependencies
+- Uses mock contracts to simulate FHE operations
+
+### Sepolia testnet
+
+- Public testnet for real FHE operations
+- Requires ETH from the Sepolia faucet
+- Available on Ethereum Sepolia, Arbitrum Sepolia, and Base Sepolia
+
+<Info>
+Environment detection happens automatically in most cases. When testing on the Hardhat network with mocks deployed (e.g., in unit tests), `hre.cofhe.createClientWithBatteries` will detect the Hardhat network and configure the client for the mock environment. When using tasks that connect to networks like `arb-sepolia`, the environment will automatically be set to testnet mode. This environment setting is crucial as it determines how the SDK handles encryption and decryption operations.
+</Info>
+
+## Creating Custom Tasks
+
+You can create custom Hardhat tasks for your contracts in the `tasks/` directory:
+
+```typescript tasks/increment-counter.ts
+task("increment-counter", "Increment the counter on the deployed contract")
+  .setAction(async (_, hre: HardhatRuntimeEnvironment) => {
+    const { ethers, network } = hre;
+
+    // Get the signer
+    const [signer] = await ethers.getSigners();
+    console.log(`Using account: ${signer.address}`);
+    await hre.cofhe.createClientWithBatteries(signer);
+
+    // Interact with your contract
+    // ...
+  })
+```
+
+## Development Guidelines
+
+### Start with Mock Environment
+
+Begin development using mock contracts for faster iteration and debugging. This approach eliminates external dependencies and provides immediate feedback.
+
+### Test Thoroughly
+
+Write comprehensive tests covering both mock and testnet environments. Ensure your application behaves consistently across environments and handles edge cases properly.
+
+### Permission Management
+
+Always set proper permissions with `FHE.allowThis()` and `FHE.allowSender()` to control which contracts and addresses can access encrypted data. Proper permission management is crucial for maintaining privacy and security in FHE applications.
+
+### Error Handling
+
+Handle errors from FHE operations explicitly. Be prepared for potential decryption delays and use appropriate retry mechanisms.
+
+### Gas Optimization
+
+Be aware that FHE operations cost more gas than standard operations. Mock environments will simulate higher gas consumption than actual production environments. For accurate gas estimation, always test on the testnet before deployment.
+
+## Next Steps
+
+Now that you have your development environment set up, you can:
+
+- Explore the [FHE Library documentation](/cofhe/fhe-library) to learn about encrypted data types and operations
+- Review the [Counter contract example](https://github.com/FhenixProtocol/cofhe-hardhat-starter/blob/main/contracts/Counter.sol) to see FHE in action
+- Check out the [Client SDK documentation](/cofhe/client-sdk/introduction/overview) for client-side integration
+- Learn about [access control mechanisms](/cofhe/fhe-library) for managing encrypted data permissions
+
+## Resources
+
+- [Fhenix documentation](/cofhe)
+- [Client SDK GitHub](https://github.com/FhenixProtocol/cofhesdk)
+- [CoFHE Contracts GitHub](https://github.com/FhenixProtocol/cofhe-contracts)
+- [cofhe-hardhat-starter GitHub](https://github.com/fhenixprotocol/cofhe-hardhat-starter)
+

@@ -1,0 +1,153 @@
+---
+title: Getting Started
+description: "Set up @cofhe/foundry-plugin for local FHE contract development and testing under Forge"
+---
+
+`@cofhe/foundry-plugin` is the Foundry counterpart to [`@cofhe/hardhat-plugin`](/cofhe/client-sdk/hardhat-plugin/getting-started). It provides two abstract Solidity contracts, `CofheTest` (test base, deploys all CoFHE mocks) and `CofheClient` (per-account encrypt, decrypt, and ACP shim), that let you exercise FHE contracts under `forge test` with **no JS SDK required**.
+
+<Tip>
+Want to skip the setup? Clone the [cofhe-foundry-starter](https://github.com/FhenixProtocol/cofhe-foundry-starter) template to get a pre-configured project ready to go.
+</Tip>
+
+## What the plugin provides
+
+- **`CofheTest`**: abstract test base that inherits `forge-std/Test` and deploys the full CoFHE mock stack (`MockTaskManager`, `MockACL`, `MockZkVerifier`, `MockThresholdNetwork`).
+- **`CofheClient`**: in-Solidity SDK shim. One client per "user" in your scenario; each client carries a private key and produces encrypted inputs and signed ACPs as if it were that user's frontend SDK.
+- **Plaintext assertions**: `expectPlaintext(handle, value)` reads the onchain plaintext from the mock task manager. Faster than `decryptForView` and needs no ACP.
+
+## Prerequisites
+
+- [Foundry](https://book.getfoundry.sh/getting-started/installation) (`forge`, `cast`, `anvil`)
+- Node.js 18+ with npm/pnpm/yarn (for installing the plugin's npm dependencies)
+
+## Installation
+
+<Steps>
+
+<Step title="Install the npm packages">
+
+The plugin and its dependencies are distributed via npm. Install them as dev dependencies in your Foundry project:
+
+<CodeGroup>
+
+```bash npm
+npm install -D @cofhe/foundry-plugin@^0.8.0 @cofhe/mock-contracts@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0 @openzeppelin/contracts
+```
+
+```bash pnpm
+pnpm add -D @cofhe/foundry-plugin@^0.8.0 @cofhe/mock-contracts@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0 @openzeppelin/contracts
+```
+
+```bash yarn
+yarn add -D @cofhe/foundry-plugin@^0.8.0 @cofhe/mock-contracts@^0.8.0 @fhenixprotocol/cofhe-contracts@^1.0.0 @openzeppelin/contracts
+```
+
+</CodeGroup>
+
+</Step>
+
+<Step title="Install forge-std">
+
+```bash
+forge install foundry-rs/forge-std
+```
+
+</Step>
+
+<Step title="Configure foundry.toml">
+
+The CoFHE contracts and mocks have specific Solidity / EVM requirements. Set them in `foundry.toml`:
+
+```toml foundry.toml
+[profile.default]
+src = "src"
+out = "out"
+test = "test"
+script = "script"
+libs = ["node_modules"]
+solc_version = "0.8.25"     # cofhe-contracts target
+auto_detect_remappings = false
+code_size_limit = 100000    # mocks exceed 24 KB
+```
+
+<Warning>
+- `code_size_limit = 100000` is required, the mock contracts exceed the EIP-170 24 KB ceiling.
+- `solc_version = "0.8.25"` matches the compiler used by `@fhenixprotocol/cofhe-contracts`.
+</Warning>
+
+<Note>
+`evm_version = "cancun"` is no longer required as of `@cofhe/mock-contracts@0.8.0`. `MockACL` was migrated off transient storage (`tstore`/`tload`) to block-number-based storage, and the pragma was lowered to `>=0.8.19`. Set it only if your own contracts need cancun-specific opcodes.
+</Note>
+
+</Step>
+
+<Step title="Configure remappings.txt">
+
+```text remappings.txt
+forge-std/=node_modules/forge-std/src/
+hardhat/=node_modules/forge-std/src/
+@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/
+@fhenixprotocol/cofhe-contracts/=node_modules/@fhenixprotocol/cofhe-contracts/
+@cofhe/mock-contracts/=node_modules/@cofhe/mock-contracts/
+@cofhe/foundry-plugin/=node_modules/@cofhe/foundry-plugin/
+```
+
+Two non-obvious shapes worth calling out:
+
+- **`@cofhe/mock-contracts/` points at the package root**, not `…/contracts/`. The plugin's own imports already include the `contracts/` segment (e.g. `@cofhe/mock-contracts/contracts/MockTaskManager.sol`). Pointing at `…/contracts/` will break those imports.
+- **`hardhat/=node_modules/forge-std/src/` is load-bearing.** `MockCoFHE.sol` inside the mock contracts imports `hardhat/console.sol`; this alias resolves it to forge-std's compatible `console.sol`. Drop it and `forge build` errors with `Source "hardhat/console.sol" not found`.
+
+</Step>
+
+</Steps>
+
+## Verify the setup
+
+```bash
+forge build
+forge test
+```
+
+If `forge build` succeeds, your remappings and `foundry.toml` are correct. From here, write a test that inherits `CofheTest`:
+
+```solidity test/MyTest.t.sol
+import { CofheTest } from "@cofhe/foundry-plugin/contracts/CofheTest.sol";
+
+contract MyTest is CofheTest {
+    function setUp() public {
+        deployMocks();
+        // ... your contract deploys
+    }
+}
+```
+
+## Version pinning
+
+The plugin and `@cofhe/mock-contracts` pin `@fhenixprotocol/cofhe-contracts` *exactly* (no caret). Keep the three CoFHE packages aligned, otherwise `npm install` may resolve `cofhe-contracts` to a newer version that the mocks don't implement, producing `MockTaskManager should be marked as abstract` at compile time.
+
+Known-aligned tuple as of writing:
+
+| Package | Version |
+| --- | --- |
+| `@cofhe/foundry-plugin` | `0.8.0` |
+| `@cofhe/mock-contracts` | `0.8.0` |
+| `@fhenixprotocol/cofhe-contracts` | `1.0.0` |
+
+See the [Compatibility](/cofhe/get-started/introduction/compatibility) page for the canonical table.
+
+## Mocks vs production
+
+The mocks are the same `@cofhe/mock-contracts` package the [Hardhat plugin](/cofhe/client-sdk/hardhat-plugin/mock-contracts) uses. Behaviorally:
+
+- Plaintext lives onchain in `MockTaskManager.mockStorage` (so `expectPlaintext` and `getPlaintext` work).
+- No real ZK proving; encrypted inputs are signed by `MockZkVerifierSigner`.
+- Decryption is synchronous. `decryptForTx_withoutACP` returns the result immediately.
+- Mock signatures are accepted by the same `FHE.verifyDecryptResult` your contract uses on testnet.
+
+The same test code runs unchanged against real CoFHE on a deployed network.
+
+## Next steps
+
+- [CofheTest](/cofhe/client-sdk/foundry-plugin/cofhe-test): the test base contract: `deployMocks`, `expectPlaintext`, `getPlaintext`, log toggles.
+- [CofheClient](/cofhe/client-sdk/foundry-plugin/cofhe-client): per-user shim: `createExternalEuintN`, `decryptForTx_withoutACP`, `decryptForView`, ACPs.
+- [Testing](/cofhe/client-sdk/foundry-plugin/testing): canonical test patterns and the migration mapping from the old `@cofhe/mock-contracts/foundry/CoFheTest.sol` API.

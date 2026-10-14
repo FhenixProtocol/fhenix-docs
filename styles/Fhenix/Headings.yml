@@ -1,6 +1,6 @@
 extends: capitalization
 message: "Headings use sentence case: '%s'."
-link: https://github.com/FhenixProtocol/fhenix-developer-docs/blob/main/STYLE.md#page-structure
+link: https://github.com/FhenixProtocol/fhenix-docs/blob/main/STYLE.md#page-structure
 level: warning
 scope: heading
 match: $sentence

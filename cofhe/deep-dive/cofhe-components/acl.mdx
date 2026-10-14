@@ -1,0 +1,50 @@
+---
+title: ACL (Access Control Layer)
+description: "Onchain contract that manages and enforces access control for ciphertexts, ensuring only authorized contracts and accounts can reference or decrypt them"
+---
+
+| Aspect | Description |
+|--------|-------------|
+| **Type** | Contract deployed on every host chain, UUPS-upgradeable behind a proxy. |
+| **Function** | Manages and enforces access control for ciphertexts, for both contracts and user accounts. |
+| **Responsibilities** | • Records who may use each handle in FHE operations. <br/>• Records which handles may be decrypted, and by whom. <br/>• Answers the access queries of the [TaskManager](/cofhe/deep-dive/cofhe-components/task-manager) and the decryption component. |
+
+Every encrypted value in CoFHE is guarded by this contract. A handle is useless to anyone the ACL does not list. The TaskManager rejects operations on inputs the caller cannot access, and [Teecryptor](/cofhe/deep-dive/cofhe-components/teecryptor) refuses to decrypt handles without a matching grant.
+
+## Grant tiers
+
+| Tier | Granted by | Scope |
+|------|------------|-------|
+| **Transient** | `FHE.allowTransient` | Current transaction only. Stored with EIP-1153 transient storage, so it costs no persistent state. |
+| **Persistent** | `FHE.allow(handle, account)` | A specific account (contract or EOA), permanently. |
+| **Global** | `FHE.allowGlobal` (alias `FHE.allowPublic`) | Every account. Also marks the handle publicly decryptable. |
+| **Decryption** | `TaskManager.allowForDecryption` | Adds the handle to the decryption allowlist and emits `AllowedForDecryption`. |
+
+Every tier above requires the requester to hold access to the handle already. Only the transient tier expires, and the ACL has no revoke. So any holder can extend access to anyone. See [who you trust when you grant access](/cofhe/fhe-library/core-concepts/access-control#who-you-trust-when-you-grant-access).
+
+## Writes go through the TaskManager
+
+All state-mutating entry points require `msg.sender` to be the TaskManager; direct calls revert with `DirectAllowForbidden`. Contracts grant access through the `FHE.sol` helpers (`allow`, `allowThis`, `allowSender`, `allowGlobal`, `allowTransient`), which route through the TaskManager.
+
+## ACPs
+
+Offchain reads are authorized by an [ACP](/cofhe/client-sdk/guides/acps), an Access Control Permission: an EIP-712 body signed by its issuer. Beyond the issuer, expiration, and the sealing key used for sealed outputs, an ACP carries a **scope**: global, limited to specific contracts, or limited to specific handles. A scope only narrows what the issuer could already access; it never grants more.
+
+An ACP can be shared with a recipient, revoked through a revoker contract, and handed over onchain through the ACP share registry.
+
+## Read surface
+
+| Function | Answers |
+|----------|---------|
+| `isAllowed(handle, account)` | May this account use the handle? (any tier) |
+| `allowedTransient(handle, account)` | Is there a transient grant in this transaction? |
+| `persistAllowed(handle, account)` | Is there a persistent grant? |
+| `globalAllowed(handle)` | Is the handle globally allowed? |
+| `isAllowedForDecryption(handle)` | Is the handle on the decryption allowlist? |
+| <code style={{ whiteSpace: "nowrap" }}>isAllowedWithPermission</code> | Does this ACP authorize its issuer for the given handle? |
+
+The last two are what the decryption path runs on. For every `decrypt` or `sealoutput` request, Teecryptor queries the ACL through the TaskManager: `isAllowedWithPermission` when an ACP is attached, or `isPubliclyAllowed` (the TaskManager's wrapper over `globalAllowed`) when none is. A future [Threshold Network](/cofhe/deep-dive/research/future-plans) will consume the same interface.
+
+## Upgrades
+
+The contract is UUPS-upgradeable behind a proxy, and storage uses ERC-7201 namespaced slots for upgrade safety.

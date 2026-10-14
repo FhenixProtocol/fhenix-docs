@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Fhenix Documentation",
-  "description": "Documentation for CoFHE, Fhenix's Fully Homomorphic Encryption coprocessor: write Solidity contracts that compute on encrypted data.",
+  "description": "Documentation for Fhenix products: CoFHE and the Wallet Module.",
   "seo": {
     "metatags": {
       "og:site_name": "Fhenix Documentation",
@@ -18,267 +18,292 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "products": [
       {
-        "tab": "Get Started",
-        "global": {
-          "anchors": [
-            {
-              "anchor": "Website",
-              "href": "https://www.fhenix.io/",
-              "icon": "globe"
+        "product": "All products",
+        "icon": "grid-2",
+        "pages": [
+          "index"
+        ]
+      },
+      {
+        "product": "CoFHE",
+        "icon": "lock",
+        "tabs": [
+          {
+            "tab": "Get Started",
+            "global": {
+              "anchors": [
+                {
+                  "anchor": "Website",
+                  "href": "https://www.fhenix.io/",
+                  "icon": "globe"
+                },
+                {
+                  "anchor": "Blog",
+                  "href": "https://www.fhenix.io/blog",
+                  "icon": "newspaper"
+                }
+              ]
             },
-            {
-              "anchor": "Blog",
-              "href": "https://www.fhenix.io/blog",
-              "icon": "newspaper"
-            }
-          ]
-        },
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "index",
-              "get-started/introduction/fhenix",
-              "get-started/introduction/what-is-cofhe",
-              "get-started/introduction/compatibility",
-              "get-started/introduction/support-and-feedback"
-            ]
-          },
-          {
-            "group": "Build with AI",
-            "pages": [
-              "get-started/build-with-ai/build-with-ai",
-              "get-started/build-with-ai/ai-assistant"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Client SDK",
-        "global": {
-          "anchors": [
-            {
-              "anchor": "Github",
-              "href": "https://github.com/FhenixProtocol/cofhesdk",
-              "icon": "github"
-            }
-          ]
-        },
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "client-sdk/introduction/overview",
-              "client-sdk/introduction/mental-model",
-              "client-sdk/introduction/installation",
-              "client-sdk/introduction/migrating-to-0-7",
-              "client-sdk/introduction/migrating-from-cofhejs"
-            ]
-          },
-          {
-            "group": "Quick Start",
-            "pages": [
-              "client-sdk/quick-start/javascript",
-              "client-sdk/quick-start/hardhat",
-              "client-sdk/quick-start/foundry",
-              "client-sdk/quick-start/react"
-            ]
-          },
-          {
-            "group": "Guides",
-            "pages": [
-              "client-sdk/guides/client-setup",
-              "client-sdk/guides/encrypting-inputs",
-              "client-sdk/guides/writing-encrypted-data",
-              "client-sdk/guides/acps",
-              "client-sdk/guides/decrypt-to-view",
-              "client-sdk/guides/decrypt-to-tx",
-              "client-sdk/guides/writing-decrypt-result",
-              "client-sdk/guides/error-handling"
-            ]
-          },
-          {
-            "group": "Hardhat Plugin",
-            "pages": [
-              "client-sdk/hardhat-plugin/getting-started",
-              "client-sdk/hardhat-plugin/client",
-              "client-sdk/hardhat-plugin/mock-contracts",
-              "client-sdk/hardhat-plugin/logging",
-              "client-sdk/hardhat-plugin/testing"
-            ]
-          },
-          {
-            "group": "Hardhat 3 Plugin",
-            "pages": [
-              "client-sdk/hardhat-3-plugin/getting-started",
-              "client-sdk/hardhat-3-plugin/client",
-              "client-sdk/hardhat-3-plugin/mock-contracts",
-              "client-sdk/hardhat-3-plugin/logging",
-              "client-sdk/hardhat-3-plugin/testing"
-            ]
-          },
-          {
-            "group": "Foundry Plugin",
-            "pages": [
-              "client-sdk/foundry-plugin/getting-started",
-              "client-sdk/foundry-plugin/cofhe-test",
-              "client-sdk/foundry-plugin/cofhe-client",
-              "client-sdk/foundry-plugin/testing"
-            ]
-          },
-          {
-            "group": "Examples",
-            "pages": [
-              "client-sdk/examples/end-to-end",
-              "client-sdk/examples/templates"
-            ]
-          },
-          {
-            "group": "Reference",
-            "pages": [
-              "client-sdk/reference/sdk-reference",
-              "client-sdk/reference/hardhat-reference",
-              "client-sdk/reference/foundry-reference"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "FHE library",
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "fhe-library/introduction/overview",
-              "fhe-library/introduction/quick-start",
-              "fhe-library/introduction/best-practices"
-            ]
-          },
-          {
-            "group": "Core Concepts",
-            "pages": [
-              "fhe-library/core-concepts/inputs",
-              "fhe-library/core-concepts/handles",
-              "fhe-library/core-concepts/trivial-encryption",
-              "fhe-library/core-concepts/data-evaluation",
-              "fhe-library/core-concepts/encrypted-operations",
-              "fhe-library/core-concepts/conditions",
-              "fhe-library/core-concepts/require",
-              "fhe-library/core-concepts/access-control",
-              "fhe-library/core-concepts/decryption-operations",
-              "fhe-library/core-concepts/randomness",
-              "fhe-library/core-concepts/gas-and-benchmarks",
-              "fhe-library/core-concepts/common-errors"
-            ]
-          },
-          {
-            "group": "Confidential Contracts",
-            "pages": [
-              "fhe-library/confidential-contracts/overview",
-              "fhe-library/confidential-contracts/calling-from-contracts",
-              "fhe-library/confidential-contracts/upgradeable",
+            "groups": [
               {
-                "group": "FHERC20",
+                "group": "Introduction",
                 "pages": [
-                  "fhe-library/confidential-contracts/fherc20/overview",
-                  "fhe-library/confidential-contracts/fherc20/core-features",
-                  "fhe-library/confidential-contracts/fherc20/operators",
-                  "fhe-library/confidential-contracts/fherc20/transfer-callbacks",
-                  "fhe-library/confidential-contracts/fherc20/fherc20-wrapper",
-                  "fhe-library/confidential-contracts/fherc20/best-practices"
+                  "cofhe/index",
+                  "cofhe/get-started/introduction/fhenix",
+                  "cofhe/get-started/introduction/what-is-cofhe",
+                  "cofhe/get-started/introduction/compatibility",
+                  "cofhe/get-started/introduction/support-and-feedback"
                 ]
               },
               {
-                "group": "ERC20Confidential",
+                "group": "Build with AI",
                 "pages": [
-                  "fhe-library/confidential-contracts/dual-mode/overview",
-                  "fhe-library/confidential-contracts/dual-mode/dual-balance-model",
-                  "fhe-library/confidential-contracts/dual-mode/shield-unshield",
-                  "fhe-library/confidential-contracts/dual-mode/confidential-operations",
-                  "fhe-library/confidential-contracts/dual-mode/extending",
-                  "fhe-library/confidential-contracts/dual-mode/best-practices"
+                  "cofhe/get-started/build-with-ai/build-with-ai",
+                  "cofhe/get-started/build-with-ai/ai-assistant"
                 ]
               }
             ]
           },
           {
-            "group": "Examples",
-            "pages": [
-              "fhe-library/examples/auction-example"
-            ]
-          },
-          {
-            "group": "Reference",
-            "pages": [
+            "tab": "Client SDK",
+            "global": {
+              "anchors": [
+                {
+                  "anchor": "Github",
+                  "href": "https://github.com/FhenixProtocol/cofhesdk",
+                  "icon": "github"
+                }
+              ]
+            },
+            "groups": [
               {
-                "group": "FHE.sol",
+                "group": "Introduction",
                 "pages": [
-                  "fhe-library/reference/fhe-sol/overview",
-                  "fhe-library/reference/fhe-sol/type-conversion",
-                  "fhe-library/reference/fhe-sol/arithmetic",
-                  "fhe-library/reference/fhe-sol/bitwise",
-                  "fhe-library/reference/fhe-sol/comparison",
-                  "fhe-library/reference/fhe-sol/decryption",
-                  "fhe-library/reference/fhe-sol/access-control",
-                  "fhe-library/reference/fhe-sol/utility",
-                  "fhe-library/reference/fhe-sol/bindings"
+                  "cofhe/client-sdk/introduction/overview",
+                  "cofhe/client-sdk/introduction/mental-model",
+                  "cofhe/client-sdk/introduction/installation",
+                  "cofhe/client-sdk/introduction/migrating-to-0-7",
+                  "cofhe/client-sdk/introduction/migrating-from-cofhejs"
                 ]
               },
-              "fhe-library/reference/gas-costs",
-              "fhe-library/reference/cofhe-errors",
-              "fhe-library/reference/cofhe-errors-reference"
+              {
+                "group": "Quick Start",
+                "pages": [
+                  "cofhe/client-sdk/quick-start/javascript",
+                  "cofhe/client-sdk/quick-start/hardhat",
+                  "cofhe/client-sdk/quick-start/foundry",
+                  "cofhe/client-sdk/quick-start/react"
+                ]
+              },
+              {
+                "group": "Guides",
+                "pages": [
+                  "cofhe/client-sdk/guides/client-setup",
+                  "cofhe/client-sdk/guides/encrypting-inputs",
+                  "cofhe/client-sdk/guides/writing-encrypted-data",
+                  "cofhe/client-sdk/guides/acps",
+                  "cofhe/client-sdk/guides/decrypt-to-view",
+                  "cofhe/client-sdk/guides/decrypt-to-tx",
+                  "cofhe/client-sdk/guides/writing-decrypt-result",
+                  "cofhe/client-sdk/guides/error-handling"
+                ]
+              },
+              {
+                "group": "Hardhat Plugin",
+                "pages": [
+                  "cofhe/client-sdk/hardhat-plugin/getting-started",
+                  "cofhe/client-sdk/hardhat-plugin/client",
+                  "cofhe/client-sdk/hardhat-plugin/mock-contracts",
+                  "cofhe/client-sdk/hardhat-plugin/logging",
+                  "cofhe/client-sdk/hardhat-plugin/testing"
+                ]
+              },
+              {
+                "group": "Hardhat 3 Plugin",
+                "pages": [
+                  "cofhe/client-sdk/hardhat-3-plugin/getting-started",
+                  "cofhe/client-sdk/hardhat-3-plugin/client",
+                  "cofhe/client-sdk/hardhat-3-plugin/mock-contracts",
+                  "cofhe/client-sdk/hardhat-3-plugin/logging",
+                  "cofhe/client-sdk/hardhat-3-plugin/testing"
+                ]
+              },
+              {
+                "group": "Foundry Plugin",
+                "pages": [
+                  "cofhe/client-sdk/foundry-plugin/getting-started",
+                  "cofhe/client-sdk/foundry-plugin/cofhe-test",
+                  "cofhe/client-sdk/foundry-plugin/cofhe-client",
+                  "cofhe/client-sdk/foundry-plugin/testing"
+                ]
+              },
+              {
+                "group": "Examples",
+                "pages": [
+                  "cofhe/client-sdk/examples/end-to-end",
+                  "cofhe/client-sdk/examples/templates"
+                ]
+              },
+              {
+                "group": "Reference",
+                "pages": [
+                  "cofhe/client-sdk/reference/sdk-reference",
+                  "cofhe/client-sdk/reference/hardhat-reference",
+                  "cofhe/client-sdk/reference/foundry-reference"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "FHE library",
+            "groups": [
+              {
+                "group": "Introduction",
+                "pages": [
+                  "cofhe/fhe-library/introduction/overview",
+                  "cofhe/fhe-library/introduction/quick-start",
+                  "cofhe/fhe-library/introduction/best-practices"
+                ]
+              },
+              {
+                "group": "Core Concepts",
+                "pages": [
+                  "cofhe/fhe-library/core-concepts/inputs",
+                  "cofhe/fhe-library/core-concepts/handles",
+                  "cofhe/fhe-library/core-concepts/trivial-encryption",
+                  "cofhe/fhe-library/core-concepts/data-evaluation",
+                  "cofhe/fhe-library/core-concepts/encrypted-operations",
+                  "cofhe/fhe-library/core-concepts/conditions",
+                  "cofhe/fhe-library/core-concepts/require",
+                  "cofhe/fhe-library/core-concepts/access-control",
+                  "cofhe/fhe-library/core-concepts/decryption-operations",
+                  "cofhe/fhe-library/core-concepts/randomness",
+                  "cofhe/fhe-library/core-concepts/gas-and-benchmarks",
+                  "cofhe/fhe-library/core-concepts/common-errors"
+                ]
+              },
+              {
+                "group": "Confidential Contracts",
+                "pages": [
+                  "cofhe/fhe-library/confidential-contracts/overview",
+                  "cofhe/fhe-library/confidential-contracts/calling-from-contracts",
+                  "cofhe/fhe-library/confidential-contracts/upgradeable",
+                  {
+                    "group": "FHERC20",
+                    "pages": [
+                      "cofhe/fhe-library/confidential-contracts/fherc20/overview",
+                      "cofhe/fhe-library/confidential-contracts/fherc20/core-features",
+                      "cofhe/fhe-library/confidential-contracts/fherc20/operators",
+                      "cofhe/fhe-library/confidential-contracts/fherc20/transfer-callbacks",
+                      "cofhe/fhe-library/confidential-contracts/fherc20/fherc20-wrapper",
+                      "cofhe/fhe-library/confidential-contracts/fherc20/best-practices"
+                    ]
+                  },
+                  {
+                    "group": "ERC20Confidential",
+                    "pages": [
+                      "cofhe/fhe-library/confidential-contracts/dual-mode/overview",
+                      "cofhe/fhe-library/confidential-contracts/dual-mode/dual-balance-model",
+                      "cofhe/fhe-library/confidential-contracts/dual-mode/shield-unshield",
+                      "cofhe/fhe-library/confidential-contracts/dual-mode/confidential-operations",
+                      "cofhe/fhe-library/confidential-contracts/dual-mode/extending",
+                      "cofhe/fhe-library/confidential-contracts/dual-mode/best-practices"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Examples",
+                "pages": [
+                  "cofhe/fhe-library/examples/auction-example"
+                ]
+              },
+              {
+                "group": "Reference",
+                "pages": [
+                  {
+                    "group": "FHE.sol",
+                    "pages": [
+                      "cofhe/fhe-library/reference/fhe-sol/overview",
+                      "cofhe/fhe-library/reference/fhe-sol/type-conversion",
+                      "cofhe/fhe-library/reference/fhe-sol/arithmetic",
+                      "cofhe/fhe-library/reference/fhe-sol/bitwise",
+                      "cofhe/fhe-library/reference/fhe-sol/comparison",
+                      "cofhe/fhe-library/reference/fhe-sol/decryption",
+                      "cofhe/fhe-library/reference/fhe-sol/access-control",
+                      "cofhe/fhe-library/reference/fhe-sol/utility",
+                      "cofhe/fhe-library/reference/fhe-sol/bindings"
+                    ]
+                  },
+                  "cofhe/fhe-library/reference/gas-costs",
+                  "cofhe/fhe-library/reference/cofhe-errors",
+                  "cofhe/fhe-library/reference/cofhe-errors-reference"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Tutorials",
+            "groups": [
+              {
+                "group": "Tutorials",
+                "pages": [
+                  "cofhe/tutorials/overview",
+                  "cofhe/tutorials/migrating-from-fhe-decrypt",
+                  "cofhe/tutorials/your-first-fhe-contract",
+                  "cofhe/tutorials/adding-fhe-to-existing-contract",
+                  "cofhe/tutorials/acl-usage-examples"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Deep Dive",
+            "groups": [
+              {
+                "group": "CoFHE Components",
+                "pages": [
+                  "cofhe/deep-dive/cofhe-components/overview",
+                  "cofhe/deep-dive/cofhe-components/task-manager",
+                  "cofhe/deep-dive/cofhe-components/acl",
+                  "cofhe/deep-dive/cofhe-components/plaintext-storage",
+                  "cofhe/deep-dive/cofhe-components/commitment-registry",
+                  "cofhe/deep-dive/cofhe-components/verify-commitments",
+                  "cofhe/deep-dive/cofhe-components/zk-verifier",
+                  "cofhe/deep-dive/cofhe-components/compute-pipeline",
+                  "cofhe/deep-dive/cofhe-components/teecryptor",
+                  "cofhe/deep-dive/cofhe-components/key-management"
+                ]
+              },
+              {
+                "group": "Data Flows",
+                "pages": [
+                  "cofhe/deep-dive/data-flows/encryption-request-flow",
+                  "cofhe/deep-dive/data-flows/fhe-operation-request-flow",
+                  "cofhe/deep-dive/data-flows/decryption-request-flow"
+                ]
+              },
+              {
+                "group": "Research",
+                "pages": [
+                  "cofhe/deep-dive/research/future-plans",
+                  "cofhe/deep-dive/research/research-in-fhenix"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "Tutorials",
+        "product": "Wallet Module",
+        "icon": "wallet",
         "groups": [
           {
-            "group": "Tutorials",
+            "group": "Wallet Module",
             "pages": [
-              "tutorials/overview",
-              "tutorials/migrating-from-fhe-decrypt",
-              "tutorials/your-first-fhe-contract",
-              "tutorials/adding-fhe-to-existing-contract",
-              "tutorials/acl-usage-examples"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Deep Dive",
-        "groups": [
-          {
-            "group": "CoFHE Components",
-            "pages": [
-              "deep-dive/cofhe-components/overview",
-              "deep-dive/cofhe-components/task-manager",
-              "deep-dive/cofhe-components/acl",
-              "deep-dive/cofhe-components/plaintext-storage",
-              "deep-dive/cofhe-components/commitment-registry",
-              "deep-dive/cofhe-components/verify-commitments",
-              "deep-dive/cofhe-components/zk-verifier",
-              "deep-dive/cofhe-components/compute-pipeline",
-              "deep-dive/cofhe-components/teecryptor",
-              "deep-dive/cofhe-components/key-management"
-            ]
-          },
-          {
-            "group": "Data Flows",
-            "pages": [
-              "deep-dive/data-flows/encryption-request-flow",
-              "deep-dive/data-flows/fhe-operation-request-flow",
-              "deep-dive/data-flows/decryption-request-flow"
-            ]
-          },
-          {
-            "group": "Research",
-            "pages": [
-              "deep-dive/research/future-plans",
-              "deep-dive/research/research-in-fhenix"
+              "wallet/index"
             ]
           }
         ]
@@ -321,103 +346,127 @@
   "redirects": [
     {
       "source": "/get-started/builder-support/get-funded",
-      "destination": "/get-started/introduction/support-and-feedback"
+      "destination": "/cofhe/get-started/introduction/support-and-feedback"
     },
     {
       "source": "/docs/devdocs/overview",
-      "destination": "/"
+      "destination": "/cofhe"
     },
     {
       "source": "/client-sdk/guides/permits",
-      "destination": "/client-sdk/guides/acps"
+      "destination": "/cofhe/client-sdk/guides/acps"
     },
     {
       "source": "/deep-dive/cofhe-components/threshold-network",
-      "destination": "/deep-dive/cofhe-components/teecryptor"
+      "destination": "/cofhe/deep-dive/cofhe-components/teecryptor"
     },
     {
       "source": "/deep-dive/cofhe-components/slim-listener",
-      "destination": "/deep-dive/cofhe-components/compute-pipeline"
+      "destination": "/cofhe/deep-dive/cofhe-components/compute-pipeline"
     },
     {
       "source": "/deep-dive/cofhe-components/fheos-server",
-      "destination": "/deep-dive/cofhe-components/compute-pipeline"
+      "destination": "/cofhe/deep-dive/cofhe-components/compute-pipeline"
     },
     {
       "source": "/deep-dive/cofhe-components/result-processor",
-      "destination": "/deep-dive/cofhe-components/compute-pipeline"
+      "destination": "/cofhe/deep-dive/cofhe-components/compute-pipeline"
     },
     {
       "source": "/deep-dive/cofhe-components/ct-registry",
-      "destination": "/deep-dive/cofhe-components/commitment-registry"
+      "destination": "/cofhe/deep-dive/cofhe-components/commitment-registry"
     },
     {
       "source": "/deep-dive/data-flows/off-chain-decryption-flow",
-      "destination": "/deep-dive/data-flows/decryption-request-flow"
+      "destination": "/cofhe/deep-dive/data-flows/decryption-request-flow"
     },
     {
       "source": "/deep-dive/cofhe-components/fhe-engine",
-      "destination": "/deep-dive/cofhe-components/compute-pipeline"
+      "destination": "/cofhe/deep-dive/cofhe-components/compute-pipeline"
     },
     {
       "source": "/api-reference/introduction",
-      "destination": "/client-sdk/reference/sdk-reference"
+      "destination": "/cofhe/client-sdk/reference/sdk-reference"
     },
     {
       "source": "/api-reference/endpoint/get",
-      "destination": "/client-sdk/reference/sdk-reference"
+      "destination": "/cofhe/client-sdk/reference/sdk-reference"
     },
     {
       "source": "/api-reference/endpoint/create",
-      "destination": "/client-sdk/reference/sdk-reference"
+      "destination": "/cofhe/client-sdk/reference/sdk-reference"
     },
     {
       "source": "/api-reference/endpoint/delete",
-      "destination": "/client-sdk/reference/sdk-reference"
+      "destination": "/cofhe/client-sdk/reference/sdk-reference"
     },
     {
       "source": "/api-reference/endpoint/webhook",
-      "destination": "/client-sdk/reference/sdk-reference"
+      "destination": "/cofhe/client-sdk/reference/sdk-reference"
     },
     {
       "source": "/cofhejs/introduction/overview",
-      "destination": "/client-sdk/introduction/overview"
+      "destination": "/cofhe/client-sdk/introduction/overview"
     },
     {
       "source": "/cofhejs/introduction/installation",
-      "destination": "/client-sdk/introduction/installation"
+      "destination": "/cofhe/client-sdk/introduction/installation"
     },
     {
       "source": "/cofhejs/introduction/mental-model",
-      "destination": "/client-sdk/introduction/mental-model"
+      "destination": "/cofhe/client-sdk/introduction/mental-model"
     },
     {
       "source": "/cofhejs/guides/encryption",
-      "destination": "/client-sdk/guides/encrypting-inputs"
+      "destination": "/cofhe/client-sdk/guides/encrypting-inputs"
     },
     {
       "source": "/cofhejs/guides/permits-management",
-      "destination": "/client-sdk/guides/acps"
+      "destination": "/cofhe/client-sdk/guides/acps"
     },
     {
       "source": "/cofhejs/guides/sealing-unsealing",
-      "destination": "/client-sdk/guides/decrypt-to-view"
+      "destination": "/cofhe/client-sdk/guides/decrypt-to-view"
     },
     {
       "source": "/cofhejs/guides/error-handling",
-      "destination": "/client-sdk/guides/error-handling"
+      "destination": "/cofhe/client-sdk/guides/error-handling"
     },
     {
       "source": "/cofhejs/examples/end-to-end",
-      "destination": "/client-sdk/examples/end-to-end"
+      "destination": "/cofhe/client-sdk/examples/end-to-end"
     },
     {
       "source": "/cofhejs/resources/templates",
-      "destination": "/client-sdk/examples/templates"
+      "destination": "/cofhe/client-sdk/examples/templates"
     },
     {
       "source": "/fhe-library/reference/fhe-sol",
-      "destination": "/fhe-library/reference/fhe-sol/overview"
+      "destination": "/cofhe/fhe-library/reference/fhe-sol/overview"
+    },
+    {
+      "source": "/get-started/:slug*",
+      "destination": "/cofhe/get-started/:slug*"
+    },
+    {
+      "source": "/client-sdk/:slug*",
+      "destination": "/cofhe/client-sdk/:slug*"
+    },
+    {
+      "source": "/fhe-library/:slug*",
+      "destination": "/cofhe/fhe-library/:slug*"
+    },
+    {
+      "source": "/tutorials/:slug*",
+      "destination": "/cofhe/tutorials/:slug*"
+    },
+    {
+      "source": "/deep-dive/:slug*",
+      "destination": "/cofhe/deep-dive/:slug*"
+    },
+    {
+      "source": "/images/:slug*",
+      "destination": "/cofhe/images/:slug*"
     }
   ],
   "integrations": {

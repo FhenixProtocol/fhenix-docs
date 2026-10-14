@@ -1,0 +1,144 @@
+---
+title: ZK Verifier
+description: "Offchain component that verifies user inputs using Zero-Knowledge Proofs of Knowledge (ZKPoK) to ensure encrypted data is safe to use in smart contracts"
+---
+
+**ZK Verifier** checks every encrypted input before it can enter a confidential smart contract.
+
+| Aspect | Description |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Type** | Offchain component running inside a hardware-attested TEE. |
+| **Function** | Verifies the user's input, ensuring that it is safe to use. |
+| **Responsibilities** | • Receives users' ZKPoKs for their input batches.<br/>• Verifies those proofs.<br/>• Signs one approval per verified batch.<br/>• Stores the verified ciphertext bytes. |
+
+## Why ZKPoK?
+
+A **Zero-Knowledge Proof of Knowledge (ZKPoK)** lets a user prove they know the plaintext behind an encrypted input, without revealing that plaintext.
+
+ZKPoKs protect against potential malicious vectors, including:
+
+1. **Malleability attacks**: Without ZKPoK protection, attackers could transform observed ciphertexts into new valid-looking ones without knowing their contents, for example by combining them with encrypted zeros.
+
+2. **Chosen ciphertext attacks (CCAs)**: Attackers submit modified ciphertexts and observe the results, potentially exploiting homomorphic operations to infer sensitive information or even recover the secret key.
+
+Requiring a ZKPoK for each encrypted input is what makes it safe to run an encryption system in a public runtime like a blockchain. Only someone who knows the original plaintext can produce a valid proof.
+
+## Sending encrypted inputs
+
+When providing ciphertexts as an input to a smart contract, users have to generate a ZKPoK and get a verification approval first. The Client SDK (`@cofhe/sdk`) and `FHE.sol` handle most of this work; the mechanism is described here end to end (also in the diagram below).
+
+{/* Diagram source: zk-verifier.mmd, beside this page. Edit it first, then re-run the archify build. */}
+<Frame>
+<img src="/cofhe/images/zk-verifier.svg" alt="Sequence diagram of the zk verifier path" />
+</Frame>
+
+<Tip>
+Color marks the zone. Your app and the Client SDK run client side, your contract and the TaskManager on the host chain. The ZK Verifier and compute pipeline run offchain inside CoFHE, and the CommitmentRegistry sits on the registry chain. Hover any component or message in the [explorable version](/cofhe/deep-dive/cofhe-components/zk-verifier-explorable).
+</Tip>
+
+The process of sending inputs to a smart contract:
+
+1. Your app encrypts the inputs through the Client SDK, which generates a ZK proof of knowledge for each one.
+2. The Client SDK sends the ciphertexts and proofs to the ZK Verifier, as one batch.
+3. The ZK Verifier verifies each proof. If all are valid, it stores the encrypted values in the CT Server and signs one message approving the whole batch.
+4. The ZK Verifier returns the handles and the batch approval to your app.
+5. Your app sends the handles and the approval as inputs to a contract call.
+6. The TaskManager verifies the batch signature and emits `InputVerified` per input. The [compute pipeline](/cofhe/deep-dive/cofhe-components/compute-pipeline) picks those events up and posts a commitment for each input to the [CommitmentRegistry](/cofhe/deep-dive/cofhe-components/commitment-registry), so the input becomes decryptable later.
+7. The contract performs the actual logic.
+
+Most of this process is abstracted away. Steps 1 to 6 all happen behind the SDK and library calls, while step 7 (the actual logic) is up to you to write.
+
+## Trust model
+
+The ZK Verifier runs inside a hardware-attested TEE (Intel TDX). Its signing key is held as Shamir shares by independent partners and released only to the exact attested code image. Neither the operator nor anyone else can sign approvals outside the reviewed program. See [Key Management](/cofhe/deep-dive/cofhe-components/key-management) for how shares are created and released. After a successful verification, the component stores the ciphertext bytes in the CT Server. It also archives the inputs and their proofs in a public Google Cloud Storage bucket for independent auditing. The repo ships the checking tool: [`verify_stored_ct.rs`](https://github.com/FhenixProtocol/zee-k-verifier/blob/main/zk-verifier/scripts/verify_stored_ct.rs) fetches a stored ciphertext and checks it against its commitment. [Verify a commitment offline](/cofhe/deep-dive/cofhe-components/verify-commitments) covers the full procedure.
+
+The signed message is verified onchain by the TaskManager using `ecrecover`; the verifier's signer address is registered there as `verifierSigner`.
+
+## Signature format
+
+For developers integrating without the SDK, the signature covers a batch digest. Each input is hashed, the hashes are concatenated in input order, and the digest of that concatenation is signed:
+
+```text
+h_i    = keccak256(ct_hash (32 bytes) || utype (1 byte) || security_zone (1 byte)
+         || sender (20 bytes) || chain_id (32 bytes, big-endian) || consuming_contract (20 bytes))
+digest = keccak256(h_0 || h_1 || ... || h_n)
+```
+
+The digest binds the sender and the consuming contract, so a verified batch cannot be replayed by another account or into another contract. The `recid` value the component returns (0 or 1) must be adjusted to 27 or 28 for Solidity's `ecrecover`.
+
+## Verify a batch yourself
+
+The format above is enough to check any verified batch against public data alone. This walkthrough recovers the signer of a real batch on Arbitrum Sepolia and compares it to the `verifierSigner` registered on the TaskManager.
+
+You need the transaction that consumed the batch, plus the 65-byte approval. The approval is in the SDK's encrypt result, and in the transaction's calldata, because your app passed it into the contract call. Everything else comes from the chain:
+
+- Each `InputVerified` event's `commitment` field is the `ct_hash` the signature covers. The indexed `ctHash` is the handle, which replaces the last two bytes with metadata, and is not signed.
+- The handle's byte 30 is the type and byte 31 is the security zone, and both are in the preimage.
+- The batch is bound to your contract's caller and to your contract. When your app calls the contract directly, those are `tx.from` and `tx.to`.
+
+The script runs with Node 22 and [viem](https://viem.sh) 2.x, after `npm install viem`:
+
+```js verify-batch.mjs
+import {
+  createPublicClient,
+  http,
+  keccak256,
+  encodePacked,
+  concat,
+  parseAbi,
+  parseEventLogs,
+  recoverAddress,
+} from "viem";
+
+// A real verified batch of two inputs, and the approval the ZK Verifier
+// returned for it. Both values are yours to replace.
+const txHash =
+  "0xbc05f5731b9dbfff352fb90f8c8cd341a24ca3167c7844eca9c5c2672d5e3463";
+const signature =
+  "0x537a7735ed394dc7bb66868b26ba856afd924ba858acb5149c0d17483f2a58da383ef17ca84d13ef3a9cab878b5a2ac43ab064bf1ab432f2268a57d2597587091c";
+
+const abi = parseAbi([
+  "event InputVerified(uint256 indexed ctHash, bytes32 commitment)",
+  "function verifierSigner() view returns (address)",
+]);
+
+const client = createPublicClient({
+  transport: http("https://arbitrum-sepolia-rpc.publicnode.com"),
+});
+const tx = await client.getTransaction({ hash: txHash });
+const receipt = await client.getTransactionReceipt({ hash: txHash });
+const events = parseEventLogs({ abi, logs: receipt.logs });
+
+// One h_i per input, in event order, which is input order.
+const hashes = events.map(({ args }) =>
+  keccak256(
+    encodePacked(
+      ["uint256", "uint8", "uint8", "address", "uint256", "address"],
+      [
+        BigInt(args.commitment), // the signed ct_hash, not the handle
+        Number((args.ctHash >> 8n) & 0xffn), // utype, from the handle
+        Number(args.ctHash & 0xffn), // security zone, from the handle
+        tx.from,
+        BigInt(tx.chainId),
+        tx.to,
+      ],
+    ),
+  ),
+);
+const digest = keccak256(concat(hashes));
+
+// The TaskManager runs ecrecover on the raw digest: no Ethereum
+// signed-message prefix.
+const signer = await recoverAddress({ hash: digest, signature });
+const registered = await client.readContract({
+  address: events[0].address, // the emitting contract is the TaskManager
+  abi,
+  functionName: "verifierSigner",
+});
+
+console.log(signer === registered ? "verified" : "signer mismatch");
+```
+
+The script prints `verified`. Change any byte of the preimage, including the order of the inputs, and recovery returns a different address. That is the property the TaskManager enforces when it rejects a batch with `InvalidSigner`.
+
+The onchain half of this check is `batchVerifyInputs`, `inputMessageHash`, and `extractBatchSigner` in [`TaskManager.sol`](https://github.com/FhenixProtocol/cofhe-contracts/blob/master/contracts/internal/host-chain/contracts/TaskManager.sol). The signing half is public too: the component's source is [zee-k-verifier](https://github.com/FhenixProtocol/zee-k-verifier).

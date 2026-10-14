@@ -1,0 +1,134 @@
+---
+title: "Upgradeable tokens"
+description: "Deploy FHERC20, the wrappers, and ERC20Confidential behind a proxy, and upgrade them safely"
+---
+
+Every confidential token in `fhenix-confidential-contracts` has an upgradeable variant for deployment behind a proxy. The variants share their logic with the constructor-based contracts and differ only in setup: you call an initializer instead of a constructor. This page covers the initializers, the deploy and upgrade calls, and what to check before you upgrade an existing proxy.
+
+## Which variant and initializer
+
+| Contract | Upgradeable variant | Initializer to call |
+| --- | --- | --- |
+| `FHERC20` | `FHERC20Upgradeable` | `__FHERC20_init(name, symbol, decimals, contractURI)` |
+| `FHERC20ERC20Wrapper` | `FHERC20ERC20WrapperUpgradeable` | `__FHERC20_init(...)`, then `__FHERC20ERC20Wrapper_init(underlying)` |
+| `FHERC20NativeWrapper` | `FHERC20NativeWrapperUpgradeable` | `__FHERC20_init(...)`, then `__FHERC20NativeWrapper_init(weth)` |
+| `ERC20Confidential` | `ERC20ConfidentialUpgradeable` | `__ERC20Confidential_init(name, symbol, decimals)` |
+
+The initializers are `internal` and `onlyInitializing`. You call them from your own `initialize` function marked `initializer`. Disable initializers in the constructor so nobody can initialize the implementation contract itself.
+
+## Write the token
+
+An upgradeable FHERC20:
+
+```solidity ConfidentialTokenUpgradeable.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.25;
+
+import { FHE } from "@fhenixprotocol/cofhe-contracts/FHE.sol";
+import { FHERC20Upgradeable } from "fhenix-confidential-contracts/contracts/FHERC20/FHERC20Upgradeable.sol";
+
+contract ConfidentialTokenUpgradeable is FHERC20Upgradeable {
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize(address holder) public initializer {
+        __FHERC20_init("Confidential Token", "eTKN", 6, "");
+        _mint(holder, FHE.asEuint64(1_000_000 * 10 ** 6));
+    }
+}
+```
+
+A wrapper initializes the FHERC20 part and the wrapper part:
+
+```solidity ConfidentialUSDCUpgradeable.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.25;
+
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { FHERC20ERC20WrapperUpgradeable } from "fhenix-confidential-contracts/contracts/FHERC20/extensions/FHERC20ERC20WrapperUpgradeable.sol";
+
+contract ConfidentialUSDCUpgradeable is FHERC20ERC20WrapperUpgradeable {
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize(IERC20 usdc) public initializer {
+        __FHERC20_init("Confidential USDC", "eUSDC", 6, "");
+        __FHERC20ERC20Wrapper_init(usdc);
+    }
+}
+```
+
+`ERC20ConfidentialUpgradeable` initializes the public ERC-20 and the confidential layer in one call:
+
+```solidity DualTokenUpgradeable.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.25;
+
+import { ERC20ConfidentialUpgradeable } from "fhenix-confidential-contracts/contracts/ERC20Confidential/ERC20ConfidentialUpgradeable.sol";
+
+contract DualTokenUpgradeable is ERC20ConfidentialUpgradeable {
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize() public initializer {
+        __ERC20Confidential_init("Dual Token", "DUAL", 18);
+        _mint(msg.sender, 1_000_000 ether);
+    }
+}
+```
+
+`__ERC20Confidential_init` deploys the token's [indicator token](/cofhe/fhe-library/confidential-contracts/dual-mode/dual-balance-model), so each proxy gets its own.
+
+## Deploy and upgrade
+
+With the OpenZeppelin upgrades plugin for Hardhat, `FHERC20Upgradeable` deploys like any upgradeable contract:
+
+```typescript
+const Token = await ethers.getContractFactory('ConfidentialTokenUpgradeable');
+const token = await upgrades.deployProxy(Token, [holder]);
+```
+
+The wrappers and `ERC20ConfidentialUpgradeable` call into `ERC20ConfidentialLib`, so you link it into the factory and allow linked libraries on both the deploy and every later upgrade:
+
+```typescript
+const LIB =
+  'fhenix-confidential-contracts/contracts/ERC20Confidential/ERC20ConfidentialLib.sol:ERC20ConfidentialLib';
+
+const Wrapper = await ethers.getContractFactory('ConfidentialUSDCUpgradeable', {
+  libraries: { [LIB]: libAddress },
+});
+const wrapper = await upgrades.deployProxy(Wrapper, [usdcAddress], { unsafeAllowLinkedLibraries: true });
+
+await upgrades.upgradeProxy(await wrapper.getAddress(), Wrapper, { unsafeAllowLinkedLibraries: true });
+```
+
+Without the flag, the plugin rejects the implementation as not upgrade safe. The flag tells it you have checked the library yourself. `ERC20ConfidentialLib` holds no storage of its own: it runs against the token's storage through `delegatecall`. See [link the shared library](/cofhe/fhe-library/confidential-contracts/overview#link-the-shared-library) for deploying the library.
+
+## Where state lives
+
+State sits in ERC-7201 namespaced storage slots, so it does not collide with the storage of contracts you inherit alongside:
+
+| Namespace | Holds |
+| --- | --- |
+| `fherc20.storage.FHERC20` | FHERC20 balances, operators, supply, metadata, and indicators |
+| `fherc20.storage.FHERC20ERC20Wrapper` | The underlying token, decimals, and rate |
+| `fherc20.storage.FHERC20NativeWrapper` | WETH, decimals, and rate |
+| `fherc20.storage.ERC20Confidential` | ERC20Confidential encrypted balances, operators, rate, observer, and supply handle |
+| `fherc20.storage.FHERC20WrapperClaimHelper` | Unshield claims, for the wrappers and ERC20Confidential |
+
+The constructor-based contracts use the same slots. The public ERC-20 ledger of `ERC20ConfidentialUpgradeable` lives in OpenZeppelin's `ERC20Upgradeable` storage.
+
+## Before you upgrade an existing proxy
+
+An `FHERC20Upgradeable` proxy from `0.3.x` keeps its balances when you upgrade it to `0.4.0`, because the FHERC20 storage slot did not change. Two cases need action:
+
+- **Wrapper proxies with pending claims.** `0.4.0` keys claims by claim ID instead of by handle, in a layout that is not compatible with the `0.3.x` claim store. Claims still pending at upgrade time cannot be settled afterwards. Have users claim, or claim for them, before you upgrade.
+- **`ERC20ConfidentialUpgradeable` proxies from a pre-release build.** `confidentialTotalSupply()` reads a stored handle that older implementations did not write, and returns a zero handle until something refreshes it. Call `syncConfidentialTotalSupply()` once after the upgrade. Anyone can call it.
+
+Callers also need the `0.4.0` interface after the upgrade. The [confidential contracts overview](/cofhe/fhe-library/confidential-contracts/overview) lists what changed for callers since `0.3`.

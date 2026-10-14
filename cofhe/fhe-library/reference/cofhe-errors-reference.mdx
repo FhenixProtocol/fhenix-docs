@@ -1,0 +1,181 @@
+---
+title: "Error Reference"
+description: "Every custom error the live CoFHE contracts and the FHE library can raise, with selector, signature, and meaning"
+---
+
+This page lists every custom error the CoFHE host-chain contracts (TaskManager, ACL, PlaintextsStorage, and ACPShareRegistry) and `FHE.sol` can raise. Each entry gives the 4-byte selector that appears in an `execution reverted: 0x...` message, the full signature, and what triggers it.
+
+The list is generated from the contract sources as deployed on the public testnets, checked against Sepolia on 2026-09-01, and from `@fhenixprotocol/cofhe-contracts` 0.2.0.
+
+<Warning>
+The `@fhenixprotocol/cofhe-errors` package (1.0.2) predates these contracts. It cannot decode errors added since, such as `NotOnAccessList` or `NotShared`, and it still lists `OnlyAggregatorAllowed`, which the TaskManager no longer raises. Treat this page as the source of truth and see the [package page](/cofhe/fhe-library/reference/cofhe-errors) for what it does cover.
+</Warning>
+
+## Errors by contract
+
+### TaskManager
+
+The TaskManager validates every FHE operation before queueing it. Most errors a contract hits during development come from here.
+
+| Selector | Error | Meaning |
+|---|---|---|
+| `0x4d13139e` | `ACLNotAllowed(uint256,address)` | The caller is not allowed to use the handle. Grant access with `FHE.allow`, `FHE.allowThis`, or `FHE.allowSender` before the value is used in an operation. |
+| `0xd8aba367` | `CofheIsUnavailable()` | An admin has disabled the coprocessor. Task creation and decryption result publishing revert until it is re-enabled. |
+| `0x31a7e7ab` | `DecryptFunctionNotSupported()` | The `decrypt` function id was submitted as a task. Decryption is requested offchain through the SDK and verified onchain with `FHE.verifyDecryptResult`. |
+| `0x70cf6554` | `DecryptionResultNotReady(uint256)` | `getDecryptResult` was called before the decryption result was published for this handle. Use `FHE.getDecryptResultSafe` to check readiness without reverting. |
+| `0xe6c4247b` | `InvalidAddress()` | An admin setter or access list update received the zero address. |
+| `0x91b4b378` | `InvalidInputForFunction(string,uint8)` | The operation does not accept this input type. Arithmetic and comparison functions reject `eaddress`, numeric functions also reject `ebool`, and `trivialEncrypt` rejects a plaintext value that does not fit the target type. |
+| `0x884a0e9d` | `InvalidInputType(uint8,uint8)` | The condition passed to `select` is not an `ebool`. |
+| `0x9a84351c` | `InvalidInputsAmount(string,uint256,uint256)` | The operation received the wrong number of encrypted inputs: one for unary operations, two for binary operations, three for `select`. |
+| `0xb31612aa` | `InvalidOperationInputs(string)` | No encrypted inputs were given for an operation that needs them, or plaintext extra inputs were given for an operation other than `trivialEncrypt` or `cast`. |
+| `0x24cbcf36` | `InvalidSecurityZone(int32,int32,int32)` | A handle, input, or requested zone falls outside the configured security zone range. The last two values are the allowed minimum and maximum. |
+| `0x8baa579f` | `InvalidSignature()` | A decryption result or encrypted input batch carried a signature that does not recover to any signer. |
+| `0x7ba5ffb5` | `InvalidSigner(address,address)` | The signature recovered to the first address, but the second address was expected: the Teecryptor for decryption results, the ZK Verifier for encrypted inputs. A common cause is an input encrypted for a different chain, contract, or account. |
+| `0x52b50ae1` | `InvalidTypeOrSecurityZone(string)` | The two operands of a binary operation, or the two branches of `select`, differ in type or security zone. |
+| `0xff633a38` | `LengthMismatch()` | The handle, result, and signature arrays passed to batch decryption result publishing or verification have different lengths. |
+| `0xb688c6f5` | `NotOnAccessList(address)` | The access list is enabled and the calling contract is not on it. The list is disabled on the public testnets, so this error appears only on a network that has enabled it. |
+| `0x98e08ab0` | `RandomFunctionNotSupported()` | The `random` function id was submitted as an ordinary task. Random values use their own entry point, reached through `FHE.randomEuint8` and the other `randomE*` functions. |
+| `0x2b0399d5` | `TooManyInputs(string,uint256,uint256)` | The operation received more than three inputs in total, counting encrypted handles and plaintext extra inputs. |
+| `0xcabe5ce4` | `UnsupportedType(uint256)` | The requested return type, cast target, or plaintext conversion target is not a valid encrypted type id. |
+
+`InvalidBytesLength` and `OnlyOwnerAllowed` are declared in the TaskManager source but never raised.
+
+### ACL
+
+The ACL records which accounts may use each handle. The first six errors come from the ACL itself. The four `PermissionInvalid_*` errors come from the Access Control Permission (ACP) check that guards its view functions.
+
+| Selector | Error | Meaning |
+|---|---|---|
+| `0xd1860468` | `AlreadyDelegated()` | The same delegation already exists for this delegator, delegatee, and delegatee contract. |
+| `0x3809a243` | `DirectAllowForbidden(address)` | The ACL was called directly. Every ACL write goes through the TaskManager, which is what the `FHE.allow*` helpers do. |
+| `0xa70a958e` | `NotShared(uint256,address)` | `receiveCtHash` found no share for this handle and receiver in the current transaction. The sharing contract must pass the value with `sharedEuintXX` in the same call. |
+| `0xcbd3a966` | `PermissionInvalid_Disabled()` | The revoker contract named in the ACP reports it as revoked. |
+| `0xed0764a1` | `PermissionInvalid_Expired()` | The Access Control Permission (ACP) has expired. Create a new one with a later expiration. |
+| `0x4c40eccb` | `PermissionInvalid_IssuerSignature()` | The issuer signature on the ACP does not verify against the issuer address. |
+| `0x8e143bf7` | `PermissionInvalid_RecipientSignature()` | The recipient signature on a sharing ACP does not verify against the recipient address. |
+| `0x30dc9203` | `SenderCannotBeDelegateeAddress()` | `delegateAccount` was given the TaskManager itself as the delegatee contract. |
+| `0xd0d25976` | `SenderNotAllowed(address)` | The account granting or sharing access does not itself have access to the handle. A contract can only allow handles it is allowed to use. |
+| `0x3a194b4f` | `UnexpectedSharer(address,address)` | The share for this handle came from a different contract than the receiver expected. The first address is the expected sharer, the second the actual one. |
+
+### ACPShareRegistry
+
+The ACPShareRegistry holds sharing ACPs posted onchain for their recipient to pick up.
+
+| Selector | Error | Meaning |
+|---|---|---|
+| `0x70a4b574` | `AlreadyShared()` | An identical share is already posted for this recipient. |
+| `0x393d68fd` | `IssuerSignatureMissing()` | The ACP has no issuer signature. |
+| `0x54ec5063` | `NotIssuer()` | `share` was called by an account other than the ACP issuer. |
+| `0x5f3677bc` | `NotIssuerOrRecipient()` | `removeShare` was called by someone other than the share's issuer or recipient. |
+| `0xc664e64a` | `RecipientMissing()` | The sharing ACP has no recipient. |
+| `0xaea18555` | `SealingKeyMustBeEmpty()` | A sharing ACP posted onchain must not carry a sealing key. |
+| `0xc98374b2` | `ShareExpired()` | The ACP had already expired when it was posted. |
+| `0x3d03aecf` | `UnknownShare()` | `removeShare` was given a share id that does not exist. |
+
+### PlaintextsStorage
+
+PlaintextsStorage holds published decryption results. Only the TaskManager writes to it.
+
+| Selector | Error | Meaning |
+|---|---|---|
+| `0xdce3ec0a` | `OnlyTaskManagerAllowed(address)` | A write to PlaintextsStorage came from an address other than the TaskManager. |
+
+### FHE library
+
+These errors are raised inside your own contract by `FHE.sol` and `ICofhe.sol`, before any call reaches the TaskManager.
+
+| Selector | Error | Meaning |
+|---|---|---|
+| `0x67cf3071` | `InvalidEncryptedInput(uint8,uint8)` | The encrypted input's type (first value) does not match the conversion you called (second value), for example an `externalEuint64` passed to `FHE.asEuint32`. |
+| `0x8f568bf8` | `SecurityZoneOutOfBounds(int32)` | A negative security zone was passed to a plaintext conversion such as `FHE.asEuint32(value, securityZone)`. |
+
+`InvalidHexCharacter(bytes1)` (`0x01d4fab6`) is declared in `FHE.sol` but never raised.
+
+## Inherited OpenZeppelin errors
+
+The host-chain contracts are UUPS proxies administered with OpenZeppelin roles, so their ABIs also carry these errors. They surface only on admin, upgrade, or signature-parsing paths. `NotLegacyOwner` is a CoFHE addition used once, during the migration from the previous owner-based admin.
+
+| Selector | Error | Raised by | Meaning |
+|---|---|---|---|
+| `0x6697b232` | `AccessControlBadConfirmation()` | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `renounceRole` was called with an account other than the caller. |
+| `0x19ca5ebb` | `AccessControlEnforcedDefaultAdminDelay(uint48)` | TaskManager, ACL, PlaintextsStorage | A default admin transfer was accepted before its delay elapsed. The value is the schedule. |
+| `0x3fc3c27a` | `AccessControlEnforcedDefaultAdminRules()` | TaskManager, ACL, PlaintextsStorage | A default admin role change bypassed the two-step transfer rules. |
+| `0xc22c8022` | `AccessControlInvalidDefaultAdmin(address)` | TaskManager, ACL, PlaintextsStorage | The default admin was set to the zero address. |
+| `0xe2517d3f` | `AccessControlUnauthorizedAccount(address,bytes32)` | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | An admin function was called by an account without the required role. The second value is the role id. |
+| `0x9996b315` | `AddressEmptyCode(address)` | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | A delegated call targeted an address with no code. |
+| `0xf645eedf` | `ECDSAInvalidSignature()` | TaskManager | A signature recovered to the zero address. |
+| `0xfce698f7` | `ECDSAInvalidSignatureLength(uint256)` | TaskManager | A signature is not 65 bytes long. |
+| `0xd78bce0c` | `ECDSAInvalidSignatureS(bytes32)` | TaskManager | A signature has an `s` value in the upper half of the curve order. |
+| `0x4c9c8ce3` | `ERC1967InvalidImplementation(address)` | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | The new implementation address has no code. |
+| `0xb398979f` | `ERC1967NonPayable()` | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | An upgrade sent ETH without an initialization call. |
+| `0xd6bda275` | `FailedCall()` | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | A low-level call made during an upgrade reverted without data. |
+| `0xf92ee8a9` | `InvalidInitialization()` | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | An initializer ran outside an initialization phase, or ran twice. |
+| `0xd7e6bcf8` | `NotInitializing()` | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | An `onlyInitializing` function was called outside an initializer. |
+| `0x4953fb7f` | `NotLegacyOwner(address,address)` | TaskManager, ACL, PlaintextsStorage | The one-time migration from the previous owner-based admin to roles was called by an account other than the previous owner. |
+| `0x6dfcc650` | `SafeCastOverflowedUintDowncast(uint8,uint256)` | TaskManager, ACL, PlaintextsStorage | A default admin delay did not fit in 48 bits. |
+| `0xe07c8dba` | `UUPSUnauthorizedCallContext()` | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | An upgrade function was called on the implementation directly instead of through the proxy. |
+| `0xaa1d49a4` | `UUPSUnsupportedProxiableUUID(bytes32)` | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | The new implementation does not report the ERC-1967 implementation slot. |
+
+## All errors alphabetically
+
+57 errors in total.
+
+| Selector | Error | Contract | Signature |
+|---|---|---|---|
+| `0x6697b232` | AccessControlBadConfirmation | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `AccessControlBadConfirmation()` |
+| `0x19ca5ebb` | AccessControlEnforcedDefaultAdminDelay | TaskManager, ACL, PlaintextsStorage | `AccessControlEnforcedDefaultAdminDelay(uint48)` |
+| `0x3fc3c27a` | AccessControlEnforcedDefaultAdminRules | TaskManager, ACL, PlaintextsStorage | `AccessControlEnforcedDefaultAdminRules()` |
+| `0xc22c8022` | AccessControlInvalidDefaultAdmin | TaskManager, ACL, PlaintextsStorage | `AccessControlInvalidDefaultAdmin(address)` |
+| `0xe2517d3f` | AccessControlUnauthorizedAccount | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `AccessControlUnauthorizedAccount(address,bytes32)` |
+| `0x4d13139e` | ACLNotAllowed | TaskManager | `ACLNotAllowed(uint256,address)` |
+| `0x9996b315` | AddressEmptyCode | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `AddressEmptyCode(address)` |
+| `0xd1860468` | AlreadyDelegated | ACL | `AlreadyDelegated()` |
+| `0x70a4b574` | AlreadyShared | ACPShareRegistry | `AlreadyShared()` |
+| `0xd8aba367` | CofheIsUnavailable | TaskManager | `CofheIsUnavailable()` |
+| `0x31a7e7ab` | DecryptFunctionNotSupported | TaskManager | `DecryptFunctionNotSupported()` |
+| `0x70cf6554` | DecryptionResultNotReady | TaskManager | `DecryptionResultNotReady(uint256)` |
+| `0x3809a243` | DirectAllowForbidden | ACL | `DirectAllowForbidden(address)` |
+| `0xf645eedf` | ECDSAInvalidSignature | TaskManager | `ECDSAInvalidSignature()` |
+| `0xfce698f7` | ECDSAInvalidSignatureLength | TaskManager | `ECDSAInvalidSignatureLength(uint256)` |
+| `0xd78bce0c` | ECDSAInvalidSignatureS | TaskManager | `ECDSAInvalidSignatureS(bytes32)` |
+| `0x4c9c8ce3` | ERC1967InvalidImplementation | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `ERC1967InvalidImplementation(address)` |
+| `0xb398979f` | ERC1967NonPayable | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `ERC1967NonPayable()` |
+| `0xd6bda275` | FailedCall | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `FailedCall()` |
+| `0xe6c4247b` | InvalidAddress | TaskManager | `InvalidAddress()` |
+| `0x67cf3071` | InvalidEncryptedInput | FHE library | `InvalidEncryptedInput(uint8,uint8)` |
+| `0xf92ee8a9` | InvalidInitialization | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `InvalidInitialization()` |
+| `0x91b4b378` | InvalidInputForFunction | TaskManager | `InvalidInputForFunction(string,uint8)` |
+| `0x9a84351c` | InvalidInputsAmount | TaskManager | `InvalidInputsAmount(string,uint256,uint256)` |
+| `0x884a0e9d` | InvalidInputType | TaskManager | `InvalidInputType(uint8,uint8)` |
+| `0xb31612aa` | InvalidOperationInputs | TaskManager | `InvalidOperationInputs(string)` |
+| `0x24cbcf36` | InvalidSecurityZone | TaskManager | `InvalidSecurityZone(int32,int32,int32)` |
+| `0x8baa579f` | InvalidSignature | TaskManager | `InvalidSignature()` |
+| `0x7ba5ffb5` | InvalidSigner | TaskManager | `InvalidSigner(address,address)` |
+| `0x52b50ae1` | InvalidTypeOrSecurityZone | TaskManager | `InvalidTypeOrSecurityZone(string)` |
+| `0x393d68fd` | IssuerSignatureMissing | ACPShareRegistry | `IssuerSignatureMissing()` |
+| `0xff633a38` | LengthMismatch | TaskManager | `LengthMismatch()` |
+| `0xd7e6bcf8` | NotInitializing | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `NotInitializing()` |
+| `0x54ec5063` | NotIssuer | ACPShareRegistry | `NotIssuer()` |
+| `0x5f3677bc` | NotIssuerOrRecipient | ACPShareRegistry | `NotIssuerOrRecipient()` |
+| `0x4953fb7f` | NotLegacyOwner | TaskManager, ACL, PlaintextsStorage | `NotLegacyOwner(address,address)` |
+| `0xb688c6f5` | NotOnAccessList | TaskManager | `NotOnAccessList(address)` |
+| `0xa70a958e` | NotShared | ACL | `NotShared(uint256,address)` |
+| `0xdce3ec0a` | OnlyTaskManagerAllowed | PlaintextsStorage | `OnlyTaskManagerAllowed(address)` |
+| `0xcbd3a966` | PermissionInvalid_Disabled | ACL | `PermissionInvalid_Disabled()` |
+| `0xed0764a1` | PermissionInvalid_Expired | ACL | `PermissionInvalid_Expired()` |
+| `0x4c40eccb` | PermissionInvalid_IssuerSignature | ACL | `PermissionInvalid_IssuerSignature()` |
+| `0x8e143bf7` | PermissionInvalid_RecipientSignature | ACL | `PermissionInvalid_RecipientSignature()` |
+| `0x98e08ab0` | RandomFunctionNotSupported | TaskManager | `RandomFunctionNotSupported()` |
+| `0xc664e64a` | RecipientMissing | ACPShareRegistry | `RecipientMissing()` |
+| `0x6dfcc650` | SafeCastOverflowedUintDowncast | TaskManager, ACL, PlaintextsStorage | `SafeCastOverflowedUintDowncast(uint8,uint256)` |
+| `0xaea18555` | SealingKeyMustBeEmpty | ACPShareRegistry | `SealingKeyMustBeEmpty()` |
+| `0x8f568bf8` | SecurityZoneOutOfBounds | FHE library | `SecurityZoneOutOfBounds(int32)` |
+| `0x30dc9203` | SenderCannotBeDelegateeAddress | ACL | `SenderCannotBeDelegateeAddress()` |
+| `0xd0d25976` | SenderNotAllowed | ACL | `SenderNotAllowed(address)` |
+| `0xc98374b2` | ShareExpired | ACPShareRegistry | `ShareExpired()` |
+| `0x2b0399d5` | TooManyInputs | TaskManager | `TooManyInputs(string,uint256,uint256)` |
+| `0x3a194b4f` | UnexpectedSharer | ACL | `UnexpectedSharer(address,address)` |
+| `0x3d03aecf` | UnknownShare | ACPShareRegistry | `UnknownShare()` |
+| `0xcabe5ce4` | UnsupportedType | TaskManager | `UnsupportedType(uint256)` |
+| `0xe07c8dba` | UUPSUnauthorizedCallContext | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `UUPSUnauthorizedCallContext()` |
+| `0xaa1d49a4` | UUPSUnsupportedProxiableUUID | TaskManager, ACL, PlaintextsStorage, ACPShareRegistry | `UUPSUnsupportedProxiableUUID(bytes32)` |

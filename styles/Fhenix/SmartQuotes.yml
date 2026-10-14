@@ -1,6 +1,6 @@
 extends: existence
 message: "Use straight quotes and apostrophes, not '%s'."
-link: https://github.com/FhenixProtocol/fhenix-developer-docs/blob/main/STYLE.md#punctuation-and-symbols
+link: https://github.com/FhenixProtocol/fhenix-docs/blob/main/STYLE.md#punctuation-and-symbols
 level: warning
 nonword: true
 tokens:

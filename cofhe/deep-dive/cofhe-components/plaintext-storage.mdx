@@ -1,0 +1,14 @@
+---
+title: PlaintextsStorage
+description: "Host-chain contract that stores published decryption results so contracts can read them synchronously"
+---
+
+| Aspect | Description |
+|--------|-------------|
+| **Type** | Internal smart contract on the host chain. |
+| **Function** | Stores published decryption results for synchronous reads. |
+| **Responsibilities** | • Holds the plaintext result for every published decryption<br/>• Serves reads through the TaskManager's result getters |
+
+Decryption happens offchain, but contracts need the result onchain. When a signed decrypt result is published through `FHE.publishDecryptResult`, the [TaskManager](/cofhe/deep-dive/cofhe-components/task-manager) verifies the signature and writes the plaintext here. Only the TaskManager can write to this contract.
+
+Contracts read results back with `FHE.getDecryptResult(handle)`, which reverts if the result is not yet published, or `FHE.getDecryptResultSafe(handle)`, which returns a ready flag instead. See the [Decryption Flow](/cofhe/deep-dive/data-flows/decryption-request-flow) for the full path.

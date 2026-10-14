@@ -1,6 +1,6 @@
 extends: existence
 message: "No em dashes. Rewrite with a comma, a period, a colon, or parentheses."
-link: https://github.com/FhenixProtocol/fhenix-developer-docs/blob/main/STYLE.md#punctuation-and-symbols
+link: https://github.com/FhenixProtocol/fhenix-docs/blob/main/STYLE.md#punctuation-and-symbols
 level: error
 nonword: true
 tokens:
