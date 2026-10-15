@@ -1,6 +1,6 @@
 ---
 name: add-product
-description: Add a new Fhenix product to the docs site - its folder, landing-page card, navigation entry, agent docs, and optional product CI. Use when someone asks to add, create, or set up docs for a new product (for example "add the X product", "new product line", "a docs section for Y").
+description: Add a new Fhenix product to the docs site - its folder, landing-page card, navigation entry, agent docs, and optional product CI. Use when someone asks to add, create, or set up docs for a new product (for example "add the X product", "new product line", "a docs section for Y"). Also use it to remove a product ("remove the X product").
 ---
 
 # Add a product to the Fhenix docs
@@ -136,6 +136,25 @@ After you push, open the Mintlify preview from the pull request checks. Check th
 - One commit: `[FEAT] Add <Display name> product`. Commit messages are one line, with no AI attribution.
 - Request review from the reviewers named in step 1.
 - The site goes live on merge. There is nothing to do in Mintlify or DNS.
+
+## Remove a product
+
+Undo every step above, in this order:
+
+1. Delete the `<slug>/` folder, with its `AGENTS.md`, `CLAUDE.md`, and any `STYLE-<slug>.md`.
+2. Remove the product from `navigation.products` in `docs.json`.
+3. Remove its card from `index.mdx`, and pick the grid columns again for the new card count (step 4).
+4. Remove it from `README.md` (the product list and the tree) and from the folder list in the root `AGENTS.md` and `CLAUDE.md`.
+5. Delete its workflows and remove `<slug>/scripts/` from `.mintignore`, if step 6 added them.
+6. Search for leftovers: `grep -rn "<slug>" --include="*.mdx" --include="*.md" --include="*.json" --include="*.yml" .` must find no link or path to the product.
+
+Then decide about redirects:
+
+- **The product was never on the live site** (only in an open pull request, or never merged): add no redirect.
+- **The product was live:** readers and search engines know its URLs. Add a redirect in `docs.json` from `/<slug>/:slug*` to the page that replaces it, or to `/` when nothing replaces it. Ask the docs owner which.
+- **The product comes back later:** remove its redirects from `docs.json` first, or they hide the new pages.
+
+Run the checks in step 7. Commit as `[CHORE] Remove <Display name> product`.
 
 ## Do not
 
