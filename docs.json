@@ -332,7 +332,6 @@
                   "wallet/moving-assets/unshield-tokens",
                   "wallet/moving-assets/claim-unshielded-tokens",
                   "wallet/moving-assets/send-tokens",
-                  "wallet/moving-assets/receive-tokens",
                   "wallet/moving-assets/view-activity"
                 ]
               },
