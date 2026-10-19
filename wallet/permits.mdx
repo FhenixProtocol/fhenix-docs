@@ -1,0 +1,104 @@
+---
+title: "Settings and permits"
+sidebarTitle: "Permits"
+description: "Open Settings, review the permits that authorize viewing encrypted data, and create a new viewing permit."
+---
+
+Use Settings to open the Privacy Center, manage access permits, or find documentation. A permit is a signed authorization that lets the wallet display your encrypted data. This page explains how to review and create permits.
+
+## Settings
+
+Open the wallet's privacy tools, permit management, and help resources from one menu. To open it, select the **Settings** gear in the wallet header.
+
+### Screen components
+
+1. **Back and Settings heading.** Identify the settings menu and use the back arrow to return to the previous screen.
+2. **Privacy Center.** Open the access-permit status, errors affecting balances or transactions, and token allowances. Use this screen when a private balance is masked or a request fails.
+3. **ACP Management.** Review permits, or start creating a new viewing permit. See [Manage access permits](#manage-access-permits).
+4. **Documentation.** Open the wallet's linked help documentation.
+5. **Wallet header.** Check the connected address before you manage access. The copy control copies the address. Close dismisses the wallet panel.
+
+### Steps
+
+<Steps>
+  <Step title="Open Settings">
+    Select the Settings gear in the wallet header.
+  </Step>
+  <Step title="Choose a destination">
+    Choose **Privacy Center** to investigate a balance or transaction error, **ACP Management** to manage viewing permits, or **Documentation** for help.
+  </Step>
+  <Step title="Review before you change anything">
+    On the destination screen, check the affected account, permit, token, or action.
+  </Step>
+  <Step title="Return and verify">
+    Use **Back** to return to the wallet and check the result.
+  </Step>
+</Steps>
+
+<Note>
+Settings is a navigation menu, not a transaction or permit-signing step. Opening ACP Management does not create or renew a permit. Viewing permits and token allowances authorize different things.
+</Note>
+
+## Manage access permits
+
+Review the permits used to view encrypted data. To open the Permits screen, use the wallet controls or the Privacy Center.
+
+<Frame>
+<img src="/wallet/images/manage-access-permits.png" alt="Permits screen with Generated, Delegated, and Received sections, status badges, a default pin, and renew and remove controls" />
+</Frame>
+
+### Screen components
+
+1. **Generated.** Contains your own permits. **New** opens permit creation.
+2. **Status and default pin.** Active and Expired identify permit states. The pin marks the default permit.
+3. **Renew and remove controls.** Renew an expired permit or review the removal action for a listed permit.
+
+### Steps
+
+<Steps>
+  <Step title="Choose a section">
+    Choose **Generated**, **Delegated**, or **Received**.
+  </Step>
+  <Step title="Open a permit">
+    Open the relevant permit or use its available action.
+  </Step>
+  <Step title="Check the details">
+    Check the issuer, recipient, status, and expiration before you use or share access.
+  </Step>
+</Steps>
+
+## Create a viewing permit
+
+Authorize access to your encrypted data using a signed permit. To open it, select **New** in the Generated permits section.
+
+<Frame>
+<img src="/wallet/images/create-viewing-permit.png" alt="Create permit form with an explanation, an optional permit name, an expiration selector, and a Generate New button" />
+</Frame>
+
+### Screen components
+
+1. **Permit explanation.** Describes the signature that proves control of the connected wallet.
+2. **Permit Name.** Add an optional name so you can recognize this permit later.
+3. **Set Expiration.** Choose a preset or enter a custom duration.
+4. **Generate New.** Open the permit-signing request in your connected wallet.
+
+### Steps
+
+<Steps>
+  <Step title="Check the wallet">
+    Confirm that the correct wallet is connected.
+  </Step>
+  <Step title="Set a name and expiration">
+    Name the permit and choose how long it lasts.
+  </Step>
+  <Step title="Generate and review">
+    Select **Generate New** and review the signature request.
+  </Step>
+  <Step title="Sign">
+    Sign to create the permit, then return to your balances.
+  </Step>
+</Steps>
+
+<Note>
+Creating a viewing permit is a message-signing step, not a token transfer. Review the requested access and duration before you sign.
+</Note>
