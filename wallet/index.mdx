@@ -1,11 +1,72 @@
 ---
 title: "Wallet Module"
 sidebarTitle: "Overview"
-description: "Documentation for the Fhenix Wallet Module is coming soon."
+description: "What the Fhenix wallet module does, how it shows confidential balances, and what stays public."
 ---
 
-## Coming soon
+The Fhenix wallet module is an interface for viewing and managing confidential tokens inside an application. Read this page to understand what the wallet shows, what it keeps private, and which guide to open next.
 
-The Wallet Module documentation is in progress.
+<Note>
+The wallet module is in draft and runs on testnet. Screenshots in this guide contain example values and placeholders. Use the addresses, assets, fees, and status shown in your own testnet session.
+</Note>
 
-For encrypted computation on Fhenix today, see the [CoFHE documentation](/cofhe).
+## Why this wallet exists
+
+Confidential tokens keep balance information encrypted onchain. Your connected wallet can sign transactions, but a standard balance display may not show those encrypted holdings. The wallet module gives you a dedicated interface to view and manage supported confidential assets inside the application.
+
+## How it works
+
+Connect your wallet, then sign a viewing permit when the wallet module asks. The module uses that authorization to retrieve and display your permitted private information. Your connected wallet remains the signer for token transactions. Viewing a private balance does not publish that balance onchain.
+
+## What you can do
+
+- Review your portfolio.
+- Inspect public, private, and pending balances.
+- Shield tokens, and unshield and claim them.
+- Send and receive tokens.
+- Inspect recorded activity.
+- Manage permits, shared views, and token allowances.
+
+## What confidentiality means
+
+Private balances and private transfer amounts are encrypted. Wallet addresses and public blockchain metadata remain visible. Public balances and public transfer amounts are visible onchain. Shielding or unshielding crosses the public/private boundary and can expose the converted amount.
+
+## Two token types
+
+The wallet supports two kinds of confidential token. Read both token names and contract addresses before you convert or send.
+
+- **DUAL tokens** hold a public balance and a private balance in one token contract. See [dual-mode tokens](/cofhe/fhe-library/confidential-contracts/dual-mode/overview).
+- **FHERC20 tokens** provide a confidential counterpart to a public asset. See [FHERC20 tokens](/cofhe/fhe-library/confidential-contracts/fherc20/overview).
+
+## Three kinds of authorization
+
+The wallet asks you to authorize three different things. They serve different purposes, and renewing one does not repair the others.
+
+| Authorization | What it allows |
+|---|---|
+| Access permit | Viewing your encrypted data |
+| Allowance | Token use by an address or contract |
+| Transaction signature | The specific transaction shown in your connected wallet |
+
+## Where to go next
+
+<CardGroup cols={2}>
+  <Card title="Get started on testnet" icon="rocket" href="/wallet/get-started">
+    Connect your wallet, sign a permit, and find your assets.
+  </Card>
+  <Card title="Balances and tokens" icon="coins" href="/wallet/balances-and-tokens">
+    Portfolio, token details, and the token selector.
+  </Card>
+  <Card title="Moving assets" icon="arrow-right-arrow-left" href="/wallet/moving-assets">
+    Shield, unshield, claim, send, receive, and activity.
+  </Card>
+  <Card title="Permits" icon="key" href="/wallet/permits">
+    Create and manage viewing permits.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/wallet/troubleshooting">
+    Privacy Center, missing permits, and decryption failures.
+  </Card>
+  <Card title="Common questions" icon="circle-question" href="/wallet/faq">
+    Short answers about balances, permits, and transactions.
+  </Card>
+</CardGroup>
