@@ -1,0 +1,42 @@
+---
+title: "Your portfolio"
+description: "See your supported assets and how much of each is private, public, or pending."
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[36%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/portfolio.png" alt="Wallet portfolio showing total value, a pinned asset, Shield and Send buttons, and a list of token rows with balance bars" />
+</Frame>
+</div>
+<div className="w-full md:w-[64%] md:min-w-0">
+
+See your supported assets and understand how much is private, public, or still pending. To open it, connect your wallet and open the wallet panel. On your first connection, the wallet prompts you to create an ACP.
+
+
+## Screen components
+
+1. **Wallet header.** Check the connected address and network. Use the copy icon to copy the address. The header also contains privacy controls, Settings, and Close.
+2. **Total value.** The summary shows a portfolio value and a change indicator. A masked value or N/A means some information is unavailable. It does not mean your balance is zero.
+3. **Pinned asset.** The card above the main actions gives one asset a prominent place in the panel.
+4. **Shield and Send.** Start shielding an asset or open the transfer screen.
+5. **Tokens and Activity.** Switch between your asset list and recorded wallet activity.
+6. **Token rows.** Each row shows a token, its type badge, balance, value, and a right arrow for token details.
+7. **Balance bar.** The shield segment represents private holdings. The crossed-shield segment represents public holdings. The hourglass marks a pending portion. These percentages describe holdings, not yield.
+
+## Steps
+
+<Steps>
+  <Step title="Check the connected address">
+    Confirm the address in the wallet header.
+  </Step>
+  <Step title="Open a token">
+    Open **Tokens** and select an asset for its details.
+  </Step>
+  <Step title="Start an action">
+    Use **Shield** or **Send**.
+  </Step>
+</Steps>
+
+</div>
+</div>

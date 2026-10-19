@@ -1,0 +1,49 @@
+---
+title: "Unshield tokens"
+description: "Move a private amount back into public form through Unshield, In progress, and Claim."
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[36%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/unshield-tokens.png" alt="Unshield form with an amount, a public You Receive summary, and a three-stage tracker showing Unshield, In progress, and Claim" />
+</Frame>
+</div>
+<div className="w-full md:w-[64%] md:min-w-0">
+
+Move a private amount back into public form. Unshielding has three stages: Unshield, In progress, and Claim. To open it, open **Shield / Unshield** and select **Unshield**.
+
+
+## Screen components
+
+1. **Unshield tab.** Check that Unshield is selected before you enter an amount.
+2. **You unshield.** Choose the confidential asset and enter an amount within its available private balance.
+3. **Amount shortcuts.** Use 25%, 50%, 75%, or max to fill the amount.
+4. **You Receive.** Check the public asset and amount shown by the live application.
+5. **Privacy notice.** Unshielding exposes the selected amount as a public balance. This action is visible onchain.
+6. **Three-stage tracker.** Unshield starts the request. In progress means processing is underway. Claim is the final action.
+7. **Unshield button and fee.** Submit the request through your connected wallet after you review its details.
+
+## Steps
+
+<Steps>
+  <Step title="Enter the unshield details">
+    Select the token and amount, and review the public output.
+  </Step>
+  <Step title="Confirm in your wallet">
+    Confirm **Unshield** in your connected wallet.
+  </Step>
+  <Step title="Wait through In progress">
+    Processing continues until the amount is ready.
+  </Step>
+  <Step title="Claim">
+    When Claim is available, complete it to receive the public balance.
+  </Step>
+</Steps>
+
+<Warning>
+A confirmed Unshield request is not the end of this flow. Complete Claim before you treat the amount as an available public balance.
+</Warning>
+
+</div>
+</div>

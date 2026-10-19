@@ -1,0 +1,44 @@
+---
+title: "Choose a token"
+description: "Select the asset used by the action you are performing."
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[36%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/choose-a-token.png" alt="Token selector listing assets with ticker, type badge, balance, and value, with one row highlighted" />
+</Frame>
+</div>
+<div className="w-full md:w-[64%] md:min-w-0">
+
+Select the asset used by the action you are performing. To open the selector, open the token dropdown in Shield, Unshield, Send, or the custom Receive request.
+
+
+## Screen components
+
+1. **Token rows.** Identify each asset by its icon and ticker.
+2. **Type badges.** DUAL marks a dual-mode token. FHERC marks a confidential token counterpart.
+3. **Balance and value.** Use the displayed balance to choose an asset. Available funds depend on whether the current action uses the public or private balance.
+4. **Highlighted row.** Marks the selected asset.
+5. **Collapse control.** Close the selector and return to the action form.
+
+## Steps
+
+<Steps>
+  <Step title="Open the dropdown">
+    Open the token dropdown.
+  </Step>
+  <Step title="Select the asset">
+    Select the asset you want to use.
+  </Step>
+  <Step title="Recheck the form">
+    Recheck the amount, available balance, and receive summary after you change tokens.
+  </Step>
+</Steps>
+
+<Note>
+The example list is not a supported-assets announcement. Use the assets available on the network in your current session.
+</Note>
+
+</div>
+</div>

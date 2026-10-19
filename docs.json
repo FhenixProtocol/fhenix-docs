@@ -310,15 +310,51 @@
           {
             "group": "Use the wallet",
             "pages": [
-              "wallet/balances-and-tokens",
-              "wallet/moving-assets",
-              "wallet/permits"
+              {
+                "group": "Balances and tokens",
+                "root": "wallet/balances-and-tokens/index",
+                "pages": [
+                  "wallet/balances-and-tokens/your-portfolio",
+                  "wallet/balances-and-tokens/dual-token-details",
+                  "wallet/balances-and-tokens/wrapped-token-details",
+                  "wallet/balances-and-tokens/choose-a-token"
+                ]
+              },
+              {
+                "group": "Moving assets",
+                "root": "wallet/moving-assets/index",
+                "pages": [
+                  "wallet/moving-assets/shield-tokens",
+                  "wallet/moving-assets/unshield-tokens",
+                  "wallet/moving-assets/claim-unshielded-tokens",
+                  "wallet/moving-assets/send-tokens",
+                  "wallet/moving-assets/receive-tokens",
+                  "wallet/moving-assets/view-activity"
+                ]
+              },
+              {
+                "group": "Settings and permits management",
+                "root": "wallet/settings-and-permits/index",
+                "pages": [
+                  "wallet/settings-and-permits/settings",
+                  "wallet/settings-and-permits/manage-access-permits",
+                  "wallet/settings-and-permits/create-viewing-permit"
+                ]
+              }
             ]
           },
           {
             "group": "Help",
             "pages": [
-              "wallet/troubleshooting",
+              {
+                "group": "Troubleshooting",
+                "root": "wallet/troubleshooting/index",
+                "pages": [
+                  "wallet/troubleshooting/use-the-privacy-center",
+                  "wallet/troubleshooting/restore-missing-private-balances",
+                  "wallet/troubleshooting/resolve-decryption-failures"
+                ]
+              },
               "wallet/faq"
             ]
           }

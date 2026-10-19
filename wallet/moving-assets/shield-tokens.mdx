@@ -1,0 +1,49 @@
+---
+title: "Shield tokens"
+description: "Move an amount from a public balance into confidential form."
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[36%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/shield-tokens.png" alt="Shield form with a deposit amount, a You Receive summary, a progress tracker showing Approve, Shield, and Done, and a fee estimate" />
+</Frame>
+</div>
+<div className="w-full md:w-[64%] md:min-w-0">
+
+Move an amount from a public balance into confidential form. To open it, choose **Shield** from the portfolio or token details.
+
+
+## Screen components
+
+1. **Shield and Unshield tabs.** Select Shield for public-to-private conversion.
+2. **You deposit.** Enter the amount and choose the token. The balance label helps you check available funds.
+3. **Amount shortcuts.** 25%, 50%, 75%, and max fill the amount using the available balance.
+4. **You Receive.** Review the confidential asset and amount you receive.
+5. **Privacy notice.** Explains that the resulting balance is encrypted and viewable with the appropriate permission.
+6. **Progress tracker.** Follow the required steps. The wrapped-token flow shown here has Approve, Shield, and Done.
+7. **Shield button and fee.** Start or continue the flow. Review the wallet request and the current fee estimate.
+
+## Steps
+
+<Steps>
+  <Step title="Enter the shield details">
+    Select **Shield**, a token, and an amount.
+  </Step>
+  <Step title="Review the result and fee">
+    Check **You Receive** and the fee.
+  </Step>
+  <Step title="Approve if requested">
+    If the wallet requests an approval, confirm the token approval in your connected wallet.
+  </Step>
+  <Step title="Shield and wait">
+    Continue with **Shield** and wait for completion.
+  </Step>
+</Steps>
+
+<Note>
+Approval authorizes token use. It does not shield tokens. Follow every required step.
+</Note>
+
+</div>
+</div>
