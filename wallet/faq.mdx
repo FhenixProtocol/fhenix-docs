@@ -1,0 +1,32 @@
+---
+title: "Common questions"
+sidebarTitle: "FAQ"
+description: "Short answers about masked balances, permits, shielding, unshielding, and uncertain transactions."
+---
+
+<AccordionGroup>
+  <Accordion title="Why is my balance shown as stars or N/A?">
+    The wallet cannot currently show part of the balance. Check the Privacy Center for a missing or expired permit or a failed query. A masked balance is not a zero balance.
+  </Accordion>
+  <Accordion title="Does signing a permit send my tokens?">
+    No. A viewing-permit signature authorizes access to encrypted information. Sending tokens is a separate transaction through your connected wallet.
+  </Accordion>
+  <Accordion title="Is private the same as anonymous?">
+    No. Private amounts are encrypted, while addresses and public blockchain metadata remain visible.
+  </Accordion>
+  <Accordion title="Why did approval finish but my tokens remain public?">
+    Approval and Shield are separate steps when approval is required. Continue the shielding flow and check for its completion.
+  </Accordion>
+  <Accordion title="Why are my unshielded tokens not available yet?">
+    Unshield starts the request. Wait through In progress and complete Claim once the amount is ready.
+  </Accordion>
+  <Accordion title="Can someone with my shared permit send my tokens?">
+    No. The delegated view is read-only. It provides permitted visibility, not the holder's transaction-signing key.
+  </Accordion>
+  <Accordion title="Does deleting a permit erase data already shared?">
+    No. Information a recipient has already viewed or saved cannot be erased by deleting a permit. Check the application's confirmation for the exact effect on future access.
+  </Accordion>
+  <Accordion title="Where should I check an uncertain transaction?">
+    Check Activity, your connected wallet, and the transaction's network explorer link. Verify its state before you submit the same action again.
+  </Accordion>
+</AccordionGroup>
