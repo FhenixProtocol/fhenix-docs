@@ -301,9 +301,25 @@
         "icon": "wallet",
         "groups": [
           {
-            "group": "Wallet Module",
+            "group": "Get started",
             "pages": [
-              "wallet/index"
+              "wallet/index",
+              "wallet/get-started"
+            ]
+          },
+          {
+            "group": "Use the wallet",
+            "pages": [
+              "wallet/balances-and-tokens",
+              "wallet/moving-assets",
+              "wallet/permits"
+            ]
+          },
+          {
+            "group": "Help",
+            "pages": [
+              "wallet/troubleshooting",
+              "wallet/faq"
             ]
           }
         ]
