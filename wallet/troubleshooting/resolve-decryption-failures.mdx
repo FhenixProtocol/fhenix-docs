@@ -1,0 +1,48 @@
+---
+title: "Resolve decryption failures"
+description: "Find and address a failed private-balance read."
+icon: "triangle-exclamation"
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/decryption-failed.png" alt="Portfolio with a masked private total, a Decryption Failed banner with a Privacy Center button, and token rows that each show a Decryption failed message" />
+</Frame>
+</div>
+<div className="w-full md:flex-1 md:min-w-0">
+
+Find and address a failed private-balance read. To open it, select **Privacy Center** in the Decryption Failed banner.
+
+
+## Screen components
+
+1. **Masked private value.** Shows that part of the balance could not be displayed.
+2. **Decryption Failed banner.** Distinguishes a failed read from a successful balance display.
+3. **Privacy Center action.** Opens details that help identify the affected request and error.
+4. **Inline token error.** Each affected row shows a Decryption failed message in place of its balance bar, and its percentages appear as asterisks.
+5. **Close control.** Dismisses the notice without resolving the underlying failure.
+
+## Steps
+
+<Steps>
+  <Step title="Read the error">
+    Open the Privacy Center and read the specific error.
+  </Step>
+  <Step title="Check the permit and account">
+    Check the active permit and the connected account.
+  </Step>
+  <Step title="Renew or retry">
+    Renew the permit if required, or use the retry control for a timed-out request.
+  </Step>
+  <Step title="Recheck">
+    Recheck the balance. If the error persists, record the token, network, error, and time for support.
+  </Step>
+</Steps>
+
+<Note>
+A failed read does not establish that funds were lost or a transfer failed. Check transaction status separately before you repeat a send.
+</Note>
+
+</div>
+</div>

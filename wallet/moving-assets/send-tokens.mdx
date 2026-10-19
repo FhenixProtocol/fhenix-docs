@@ -1,0 +1,50 @@
+---
+title: "Send tokens"
+description: "Transfer a supported token using either its private or public balance."
+icon: "paper-plane"
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/send-tokens.png" alt="Send form with a privacy mode control, recipient address, amount and token fields, a Recipient receives summary, and a fee" />
+</Frame>
+</div>
+<div className="w-full md:flex-1 md:min-w-0">
+
+Transfer a supported token using either its private or public balance. To open it, choose **Send** from the portfolio or token details.
+
+
+## Screen components
+
+1. **Send and Receive tabs.** Keep Send selected to make a transfer.
+2. **Privacy mode.** The shield controls and the Private transaction label show the selected transfer mode. Check it before you continue.
+3. **Recipient address.** Paste the destination wallet address and verify it.
+4. **Amount and token.** Choose the asset and amount. The balance shown corresponds to the selected mode.
+5. **Amount shortcuts.** Use a percentage or max to fill the amount, then recheck it.
+6. **Recipient receives.** Review the destination asset and amount.
+7. **Send and fee.** Continue to your connected wallet and review its transaction request.
+
+## Steps
+
+<Steps>
+  <Step title="Choose the mode">
+    Choose private or public transfer mode.
+  </Step>
+  <Step title="Enter the transfer details">
+    Enter the recipient, token, and amount.
+  </Step>
+  <Step title="Review">
+    Check **Recipient receives** and the fee.
+  </Step>
+  <Step title="Send">
+    Select **Send**, confirm in your wallet, and monitor completion in Activity.
+  </Step>
+</Steps>
+
+<Note>
+Private transfers protect the amount. They do not make wallet addresses anonymous. Public transfers expose their amounts onchain.
+</Note>
+
+</div>
+</div>

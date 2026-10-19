@@ -1,0 +1,46 @@
+---
+title: "Use the Privacy Center"
+description: "Check viewing permissions, token allowances, and errors in one place."
+icon: "user-shield"
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/privacy-center.png" alt="Privacy Center with ACP status, an Errors and Bugs list, a Permits section with Renew, and an Allowance section" />
+</Frame>
+</div>
+<div className="w-full md:flex-1 md:min-w-0">
+
+Check viewing permissions, token allowances, and errors in one place. To open it, use the wallet privacy controls or an error banner.
+
+
+## Screen components
+
+1. **ACP status.** Shows the reported access-permit status. Check the individual error rows as well as the summary.
+2. **Errors and Bugs.** Each row names the affected balance or action and its error, such as ACP Expired, Time out, or Not enough gas.
+3. **Retry controls.** A retry icon appears for retryable failures such as a timed-out balance request.
+4. **Permits.** Review active and expired permits. Use **Renew** when your viewing authorization needs renewal.
+5. **Allowance.** Review token-use permissions separately from viewing permits. Rows show an asset, address, public/private label, limit, and any expiration.
+6. **Allowance actions.** Use the available action to review removal or renewal. Read its confirmation and any connected-wallet request.
+
+## Steps
+
+<Steps>
+  <Step title="Find the affected item">
+    Find the affected token or action in the error list.
+  </Step>
+  <Step title="Apply the fix">
+    Renew a missing or expired viewing permit, retry a timed-out query, or add gas for a gas error.
+  </Step>
+  <Step title="Recheck">
+    Return to the wallet and check the affected balance or action again.
+  </Step>
+</Steps>
+
+<Note>
+Permits control access to encrypted information. Allowances authorize token use by an address or contract. Renewing one does not necessarily repair the other.
+</Note>
+
+</div>
+</div>

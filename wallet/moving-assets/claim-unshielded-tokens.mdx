@@ -1,0 +1,48 @@
+---
+title: "Claim unshielded tokens"
+description: "Complete an unshielding request once its tokens are ready to claim."
+icon: "hand-holding-dollar"
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/claim-unshielded-tokens.png" alt="Token details with a balance split, a claimable amount, and a Claim now button" />
+</Frame>
+</div>
+<div className="w-full md:flex-1 md:min-w-0">
+
+Complete an unshielding request once its tokens are ready to claim. To open it, open the token details and look for **Claim now** and the claimable amount.
+
+
+## Screen components
+
+1. **Balance split.** Review the private, public, and pending portions of the token.
+2. **Shielded and public rows.** Distinguish the confidential balance from the public balance.
+3. **Claimable amount.** Shows the amount awaiting the final claim action.
+4. **Claim now.** Starts the final step for the available amount.
+5. **Other actions.** Shield and Send remain separate actions. Starting another action does not replace Claim.
+
+## Steps
+
+<Steps>
+  <Step title="Wait until the request is ready">
+    **Claim now** appears when the amount is available.
+  </Step>
+  <Step title="Check the claim">
+    Confirm the claimable asset and amount.
+  </Step>
+  <Step title="Claim">
+    Select **Claim now** and complete any wallet confirmation.
+  </Step>
+  <Step title="Verify">
+    Wait for completion, then check the public balance and activity.
+  </Step>
+</Steps>
+
+<Note>
+The dual-token detail screen also has a **Claim now** action. A pending amount is not a completed claim.
+</Note>
+
+</div>
+</div>

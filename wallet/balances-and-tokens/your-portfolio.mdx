@@ -1,0 +1,43 @@
+---
+title: "Your portfolio"
+description: "See your supported assets and how much of each is private, public, or pending."
+icon: "chart-pie"
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/portfolio.png" alt="Wallet portfolio showing the address header, total value, a pinned ETH card with a balance bar, Shield and Send buttons, Tokens and Activity tabs, and token rows with type badges and balance bars" />
+</Frame>
+</div>
+<div className="w-full md:flex-1 md:min-w-0">
+
+See your supported assets and understand how much is private, public, or still pending. To open it, connect your wallet and open the wallet panel. On your first connection, the wallet prompts you to create an ACP.
+
+
+## Screen components
+
+1. **Wallet header.** Check the connected address and network. Use the copy icon to copy the address. The header also contains privacy controls, Settings, and Close.
+2. **Total value.** The summary shows a portfolio value and a change indicator. A masked value or N/A means some information is unavailable. It does not mean your balance is zero.
+3. **Pinned asset.** The card above the main actions gives one asset a prominent place in the panel. It shows the token, its type badge, its balance and value, and its balance bar.
+4. **Shield and Send.** Start shielding an asset or open the transfer screen.
+5. **Tokens and Activity.** Switch between your asset list and recorded wallet activity.
+6. **Token rows.** Each row shows a token, its type badge, balance, value, a balance bar, and a right arrow for token details.
+7. **Balance bar.** The legend under each bar splits the holding into shielded (private), claim (an unshielded amount waiting to be claimed), and public. These percentages describe holdings, not yield.
+
+## Steps
+
+<Steps>
+  <Step title="Check the connected address">
+    Confirm the address in the wallet header.
+  </Step>
+  <Step title="Open a token">
+    Open **Tokens** and select an asset for its details.
+  </Step>
+  <Step title="Start an action">
+    Use **Shield** or **Send**.
+  </Step>
+</Steps>
+
+</div>
+</div>

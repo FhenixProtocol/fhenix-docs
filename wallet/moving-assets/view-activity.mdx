@@ -1,0 +1,49 @@
+---
+title: "View activity"
+description: "Review actions recorded by the wallet and inspect their transaction references."
+icon: "clock-rotate-left"
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/view-activity.png" alt="Activity list with action labels, statuses, times, token amounts, and transaction reference links" />
+</Frame>
+</div>
+<div className="w-full md:flex-1 md:min-w-0">
+
+Review actions recorded by the wallet and inspect their transaction references. To open it, select **Activity** next to **Tokens** in the portfolio.
+
+
+## Screen components
+
+1. **Tokens and Activity tabs.** Switch between balances and recorded actions.
+2. **Action label.** Identifies the kind of action on each row.
+3. **Status.** Shows the reported state of that action.
+4. **Time.** Shows when the action occurred or how long ago it was recorded.
+5. **Token amount and value.** Shows the amount and any available value for that entry.
+6. **Transaction reference.** Use the copy control or external link to inspect the transaction in the network explorer.
+
+## Steps
+
+<Steps>
+  <Step title="Find the action">
+    Open Activity and locate the relevant action.
+  </Step>
+  <Step title="Read its state">
+    Check its status and time.
+  </Step>
+  <Step title="Inspect the transaction">
+    Use its transaction reference for further inspection.
+  </Step>
+  <Step title="Finish an unshield">
+    For an unshielding request, return to token details and complete Claim when it is ready.
+  </Step>
+</Steps>
+
+<Note>
+A missing entry does not prove that a transaction did not occur. Check the connected wallet and the transaction reference.
+</Note>
+
+</div>
+</div>

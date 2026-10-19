@@ -2,7 +2,7 @@
 
 Pages under `wallet/` document the Fhenix Wallet Module, served at `/wallet/...`. The root `AGENTS.md` and `STYLE.md` apply here too.
 
-The content and layout are not decided yet. Today the product has one "Coming soon" page.
+The guide has one page per screen, grouped as Get started, Use the wallet (Balances and tokens, Moving assets, Settings and permits management), and Help (Troubleshooting, FAQ). Screenshots live in `wallet/images/`.
 
 Yonatan and Alex review wallet changes.
 

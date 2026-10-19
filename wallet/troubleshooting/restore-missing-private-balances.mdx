@@ -1,0 +1,48 @@
+---
+title: "Restore missing private balances"
+description: "Restore your private-balance view when a permit is missing or unusable."
+icon: "rotate-left"
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/permit-missing.png" alt="Portfolio with a masked private total, a Permit missing banner with a Privacy Center button, and token rows with masked amounts and a permit placeholder bar" />
+</Frame>
+</div>
+<div className="w-full md:flex-1 md:min-w-0">
+
+Restore your private-balance view when a permit is missing or unusable. To open it, follow the **Permit missing** banner or an inline **Renew permit to decrypt** message.
+
+
+## Screen components
+
+1. **Masked total.** The private portion appears as a placeholder while any available public value stays visible.
+2. **Permit missing banner.** Explains that a permit is needed to display private balances.
+3. **Privacy Center button.** Opens the place to create or renew the permit.
+4. **Token rows.** Masked amounts and a permit placeholder bar identify balances that cannot currently be displayed. The shielded, claim, and public labels stay in place without values.
+5. **Dismiss control.** Closes the banner. It does not create or renew a permit.
+
+## Steps
+
+<Steps>
+  <Step title="Check the account">
+    Confirm your connected account and network.
+  </Step>
+  <Step title="Open the Privacy Center">
+    Select **Privacy Center**.
+  </Step>
+  <Step title="Create or renew a permit">
+    Create a permit if none is available, or renew the expired permit.
+  </Step>
+  <Step title="Sign and return">
+    Complete the message signature and return to the portfolio.
+  </Step>
+</Steps>
+
+<Warning>
+A masked amount is not zero. It means the wallet cannot currently show that private amount. Do not resend a transfer only because its balance is hidden.
+</Warning>
+
+</div>
+</div>

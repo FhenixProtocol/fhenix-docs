@@ -1,0 +1,47 @@
+---
+title: "Wrapped token details"
+description: "See a confidential FHERC20 token and its underlying public asset together."
+icon: "cube"
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/wallet/images/wrapped-token-details.png" alt="Details screen for an FHERC20 token with separate shielded and public rows, a balance bar, and contract addresses" />
+</Frame>
+</div>
+<div className="w-full md:flex-1 md:min-w-0">
+
+See the confidential token and its underlying public asset together. To open it, select a token with the FHERC badge in your portfolio.
+
+
+## Screen components
+
+1. **Token heading and FHERC badge.** Identify the confidential wrapped token.
+2. **Total value and balance bar.** Review the combined display and its private/public split.
+3. **Shielded row.** Shows the confidential token balance.
+4. **Public row.** Shows the corresponding public asset balance. Check the ticker, because the public and confidential tokens can use different names.
+5. **Shield and Send.** Start a conversion or transfer for this asset.
+6. **Token information.** Explains which confidential actions are supported.
+7. **Resources.** The FHERC20 and ERC20 addresses identify different contracts. Use the copy control for the one you need.
+
+## Steps
+
+<Steps>
+  <Step title="Check both tokens">
+    Confirm both token names and their balances.
+  </Step>
+  <Step title="Shield a public asset">
+    Use **Shield** to move public assets into confidential form.
+  </Step>
+  <Step title="Unshield and claim">
+    Use **Unshield** and complete **Claim** when you need the public asset again.
+  </Step>
+</Steps>
+
+<Note>
+A wrapped token uses a confidential counterpart to a public asset. A DUAL token holds both modes within one token contract.
+</Note>
+
+</div>
+</div>
