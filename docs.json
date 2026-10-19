@@ -302,6 +302,7 @@
         "groups": [
           {
             "group": "Get started",
+            "icon": "play",
             "pages": [
               "wallet/index",
               "wallet/get-started"
@@ -309,9 +310,11 @@
           },
           {
             "group": "Use the wallet",
+            "icon": "mobile-screen",
             "pages": [
               {
                 "group": "Balances and tokens",
+                "icon": "coins",
                 "root": "wallet/balances-and-tokens/index",
                 "pages": [
                   "wallet/balances-and-tokens/your-portfolio",
@@ -322,6 +325,7 @@
               },
               {
                 "group": "Moving assets",
+                "icon": "arrow-right-arrow-left",
                 "root": "wallet/moving-assets/index",
                 "pages": [
                   "wallet/moving-assets/shield-tokens",
@@ -334,6 +338,7 @@
               },
               {
                 "group": "Settings and permits management",
+                "icon": "gear",
                 "root": "wallet/settings-and-permits/index",
                 "pages": [
                   "wallet/settings-and-permits/settings",
@@ -345,9 +350,11 @@
           },
           {
             "group": "Help",
+            "icon": "life-ring",
             "pages": [
               {
                 "group": "Troubleshooting",
+                "icon": "wrench",
                 "root": "wallet/troubleshooting/index",
                 "pages": [
                   "wallet/troubleshooting/use-the-privacy-center",
