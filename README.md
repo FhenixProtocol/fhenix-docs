@@ -3,7 +3,7 @@
 The documentation for Fhenix products, served at [docs.fhenix.io](https://docs.fhenix.io).
 
 - **CoFHE** (`cofhe/`): the FHE coprocessor. Write Solidity contracts that compute on encrypted data. Covers Get Started, the Client SDK, the FHE library, Tutorials, and the Deep Dive.
-- **Wallet Module** (`wallet/`): coming soon.
+- **Wallet Module** (`wallet/`): live.
 - **Trading** (`trading/`): coming soon.
 
 ## Development
