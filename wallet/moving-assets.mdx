@@ -1,0 +1,237 @@
+---
+title: "Moving assets"
+description: "Shield, unshield, claim, send, and receive confidential tokens, and check the result in Activity."
+---
+
+These screens move value between public and private form, and between wallets. Fees in the screenshots are examples, not fixed charges.
+
+## Shield tokens
+
+Move an amount from a public balance into confidential form. To open it, choose **Shield** from the portfolio or token details.
+
+<Frame>
+<img src="/wallet/images/shield-tokens.png" alt="Shield form with a deposit amount, a You Receive summary, a progress tracker showing Approve, Shield, and Done, and a fee estimate" />
+</Frame>
+
+### Screen components
+
+1. **Shield and Unshield tabs.** Select Shield for public-to-private conversion.
+2. **You deposit.** Enter the amount and choose the token. The balance label helps you check available funds.
+3. **Amount shortcuts.** 25%, 50%, 75%, and max fill the amount using the available balance.
+4. **You Receive.** Review the confidential asset and amount you receive.
+5. **Privacy notice.** Explains that the resulting balance is encrypted and viewable with the appropriate permission.
+6. **Progress tracker.** Follow the required steps. The wrapped-token flow shown here has Approve, Shield, and Done.
+7. **Shield button and fee.** Start or continue the flow. Review the wallet request and the current fee estimate.
+
+### Steps
+
+<Steps>
+  <Step title="Enter the shield details">
+    Select **Shield**, a token, and an amount.
+  </Step>
+  <Step title="Review the result and fee">
+    Check **You Receive** and the fee.
+  </Step>
+  <Step title="Approve if requested">
+    If the wallet requests an approval, confirm the token approval in your connected wallet.
+  </Step>
+  <Step title="Shield and wait">
+    Continue with **Shield** and wait for completion.
+  </Step>
+</Steps>
+
+<Note>
+Approval authorizes token use. It does not shield tokens. Follow every required step.
+</Note>
+
+## Unshield tokens
+
+Move a private amount back into public form. Unshielding has three stages: Unshield, In progress, and Claim. To open it, open **Shield / Unshield** and select **Unshield**.
+
+<Frame>
+<img src="/wallet/images/unshield-tokens.png" alt="Unshield form with an amount, a public You Receive summary, and a three-stage tracker showing Unshield, In progress, and Claim" />
+</Frame>
+
+### Screen components
+
+1. **Unshield tab.** Check that Unshield is selected before you enter an amount.
+2. **You unshield.** Choose the confidential asset and enter an amount within its available private balance.
+3. **Amount shortcuts.** Use 25%, 50%, 75%, or max to fill the amount.
+4. **You Receive.** Check the public asset and amount shown by the live application.
+5. **Privacy notice.** Unshielding exposes the selected amount as a public balance. This action is visible onchain.
+6. **Three-stage tracker.** Unshield starts the request. In progress means processing is underway. Claim is the final action.
+7. **Unshield button and fee.** Submit the request through your connected wallet after you review its details.
+
+### Steps
+
+<Steps>
+  <Step title="Enter the unshield details">
+    Select the token and amount, and review the public output.
+  </Step>
+  <Step title="Confirm in your wallet">
+    Confirm **Unshield** in your connected wallet.
+  </Step>
+  <Step title="Wait through In progress">
+    Processing continues until the amount is ready.
+  </Step>
+  <Step title="Claim">
+    When Claim is available, complete it to receive the public balance.
+  </Step>
+</Steps>
+
+<Warning>
+A confirmed Unshield request is not the end of this flow. Complete Claim before you treat the amount as an available public balance.
+</Warning>
+
+## Claim unshielded tokens
+
+Complete an unshielding request once its tokens are ready to claim. To open it, open the token details and look for **Claim now** and the claimable amount.
+
+<Frame>
+<img src="/wallet/images/claim-unshielded-tokens.png" alt="Token details with a balance split, a claimable amount, and a Claim now button" />
+</Frame>
+
+### Screen components
+
+1. **Balance split.** Review the private, public, and pending portions of the token.
+2. **Shielded and public rows.** Distinguish the confidential balance from the public balance.
+3. **Claimable amount.** Shows the amount awaiting the final claim action.
+4. **Claim now.** Starts the final step for the available amount.
+5. **Other actions.** Shield and Send remain separate actions. Starting another action does not replace Claim.
+
+### Steps
+
+<Steps>
+  <Step title="Wait until the request is ready">
+    **Claim now** appears when the amount is available.
+  </Step>
+  <Step title="Check the claim">
+    Confirm the claimable asset and amount.
+  </Step>
+  <Step title="Claim">
+    Select **Claim now** and complete any wallet confirmation.
+  </Step>
+  <Step title="Verify">
+    Wait for completion, then check the public balance and activity.
+  </Step>
+</Steps>
+
+<Note>
+The dual-token detail screen also has a **Claim now** action. A pending amount is not a completed claim.
+</Note>
+
+## Send tokens
+
+Transfer a supported token using either its private or public balance. To open it, choose **Send** from the portfolio or token details.
+
+<Frame>
+<img src="/wallet/images/send-tokens.png" alt="Send form with a privacy mode control, recipient address, amount and token fields, a Recipient receives summary, and a fee" />
+</Frame>
+
+### Screen components
+
+1. **Send and Receive tabs.** Keep Send selected to make a transfer.
+2. **Privacy mode.** The shield controls and the Private transaction label show the selected transfer mode. Check it before you continue.
+3. **Recipient address.** Paste the destination wallet address and verify it.
+4. **Amount and token.** Choose the asset and amount. The balance shown corresponds to the selected mode.
+5. **Amount shortcuts.** Use a percentage or max to fill the amount, then recheck it.
+6. **Recipient receives.** Review the destination asset and amount.
+7. **Send and fee.** Continue to your connected wallet and review its transaction request.
+
+### Steps
+
+<Steps>
+  <Step title="Choose the mode">
+    Choose private or public transfer mode.
+  </Step>
+  <Step title="Enter the transfer details">
+    Enter the recipient, token, and amount.
+  </Step>
+  <Step title="Review">
+    Check **Recipient receives** and the fee.
+  </Step>
+  <Step title="Send">
+    Select **Send**, confirm in your wallet, and monitor completion in Activity.
+  </Step>
+</Steps>
+
+<Note>
+Private transfers protect the amount. They do not make wallet addresses anonymous. Public transfers expose their amounts onchain.
+</Note>
+
+## Receive tokens
+
+Share your receiving address or prepare a request for a specific token amount. To open it, open the transfer screen and select **Receive**.
+
+<Frame>
+<img src="/wallet/images/receive-tokens.png" alt="Receive screen with a Custom Amount toggle, a QR code area, the wallet address with a copy control, and a Generate QR button" />
+</Frame>
+
+### Screen components
+
+1. **Receive tab.** Switches from sending funds to receiving them.
+2. **Custom Amount.** Enables the amount-specific request controls.
+3. **Amount to ask and token.** Set the requested amount and asset when Custom Amount is enabled.
+4. **QR area.** Displays the generated receive code. Share or scan the code produced in your session.
+5. **Wallet address and copy.** Copy your full receiving address for the sender.
+6. **Generate QR.** Create the receive code for the selected request.
+7. **Tap to Pay.** An additional receive option shown in the design. If it is available in your environment, follow its on-screen instructions.
+
+### Steps
+
+<Steps>
+  <Step title="Check the address">
+    Confirm the connected address is the intended recipient.
+  </Step>
+  <Step title="Share it">
+    Copy the address, or set an optional custom amount and generate the QR code.
+  </Step>
+  <Step title="Tell the sender what to use">
+    Give the sender the network and token to use.
+  </Step>
+  <Step title="Check your balance">
+    Check your balance after the transfer settles.
+  </Step>
+</Steps>
+
+<Warning>
+A payment request is not a completed transfer. The QR area and address in the screenshot are examples. Do not send funds to them.
+</Warning>
+
+## View activity
+
+Review actions recorded by the wallet and inspect their transaction references. To open it, select **Activity** next to **Tokens** in the portfolio.
+
+<Frame>
+<img src="/wallet/images/view-activity.png" alt="Activity list with action labels, statuses, times, token amounts, and transaction reference links" />
+</Frame>
+
+### Screen components
+
+1. **Tokens and Activity tabs.** Switch between balances and recorded actions.
+2. **Action label.** Identifies the kind of action on each row.
+3. **Status.** Shows the reported state of that action.
+4. **Time.** Shows when the action occurred or how long ago it was recorded.
+5. **Token amount and value.** Shows the amount and any available value for that entry.
+6. **Transaction reference.** Use the copy control or external link to inspect the transaction in the network explorer.
+
+### Steps
+
+<Steps>
+  <Step title="Find the action">
+    Open Activity and locate the relevant action.
+  </Step>
+  <Step title="Read its state">
+    Check its status and time.
+  </Step>
+  <Step title="Inspect the transaction">
+    Use its transaction reference for further inspection.
+  </Step>
+  <Step title="Finish an unshield">
+    For an unshielding request, return to token details and complete Claim when it is ready.
+  </Step>
+</Steps>
+
+<Note>
+A missing entry does not prove that a transaction did not occur. Check the connected wallet and the transaction reference.
+</Note>
