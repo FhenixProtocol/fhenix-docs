@@ -1,0 +1,144 @@
+---
+title: "Balances and tokens"
+description: "Read your portfolio, the details of DUAL and FHERC20 tokens, and the token selector."
+---
+
+These screens show how much of each asset is private, public, or pending. Example balances and percentage changes in the screenshots are illustrative. Check the actual values in your session.
+
+## Your portfolio
+
+See your supported assets and understand how much is private, public, or still pending. To open it, connect your wallet and open the wallet panel. On your first connection, the wallet prompts you to create an ACP.
+
+<Frame>
+<img src="/wallet/images/portfolio.png" alt="Wallet portfolio showing total value, a pinned asset, Shield and Send buttons, and a list of token rows with balance bars" />
+</Frame>
+
+### Screen components
+
+1. **Wallet header.** Check the connected address and network. Use the copy icon to copy the address. The header also contains privacy controls, Settings, and Close.
+2. **Total value.** The summary shows a portfolio value and a change indicator. A masked value or N/A means some information is unavailable. It does not mean your balance is zero.
+3. **Pinned asset.** The card above the main actions gives one asset a prominent place in the panel.
+4. **Shield and Send.** Start shielding an asset or open the transfer screen.
+5. **Tokens and Activity.** Switch between your asset list and recorded wallet activity.
+6. **Token rows.** Each row shows a token, its type badge, balance, value, and a right arrow for token details.
+7. **Balance bar.** The shield segment represents private holdings. The crossed-shield segment represents public holdings. The hourglass marks a pending portion. These percentages describe holdings, not yield.
+
+### Steps
+
+<Steps>
+  <Step title="Check the connected address">
+    Confirm the address in the wallet header.
+  </Step>
+  <Step title="Open a token">
+    Open **Tokens** and select an asset for its details.
+  </Step>
+  <Step title="Start an action">
+    Use **Shield** or **Send**.
+  </Step>
+</Steps>
+
+## Dual token details
+
+Understand the public and private portions of one dual-mode token. To open it, select a token with the DUAL badge in your portfolio.
+
+<Frame>
+<img src="/wallet/images/dual-token-details.png" alt="Details screen for a DUAL token with private and public amounts, a balance bar, and Shield and Send buttons" />
+</Frame>
+
+### Screen components
+
+1. **Back and token heading.** Return to the portfolio or identify the selected asset. The DUAL badge marks a token with public and private balances in the same token contract.
+2. **Total value.** Review the displayed value for this token. It is a valuation, not a separate spendable balance.
+3. **Private and public amounts.** Read the two amounts above the bar to see how your holdings are divided.
+4. **Balance bar.** The shielded side is private and the crossed-shield side is public.
+5. **Shield and Send.** Open the balance-mode flow or send this token.
+6. **Information panel.** Read the supported actions for this token type.
+7. **Resources.** Copy the displayed contract address or open the token website and whitepaper.
+
+### Steps
+
+<Steps>
+  <Step title="Check the balance split">
+    Confirm the token name and how its balance divides between private and public.
+  </Step>
+  <Step title="Choose an action">
+    Choose **Shield** to change the balance mode, or **Send** to transfer.
+  </Step>
+  <Step title="Review before you confirm">
+    Check the selected mode and amount.
+  </Step>
+</Steps>
+
+<Note>
+Moving tokens into the public balance makes that amount public. It does not make the remaining private balance public.
+</Note>
+
+## Wrapped token details
+
+See the confidential token and its underlying public asset together. To open it, select a token with the FHERC badge in your portfolio.
+
+<Frame>
+<img src="/wallet/images/wrapped-token-details.png" alt="Details screen for an FHERC20 token with separate shielded and public rows, a balance bar, and contract addresses" />
+</Frame>
+
+### Screen components
+
+1. **Token heading and FHERC badge.** Identify the confidential wrapped token.
+2. **Total value and balance bar.** Review the combined display and its private/public split.
+3. **Shielded row.** Shows the confidential token balance.
+4. **Public row.** Shows the corresponding public asset balance. Check the ticker, because the public and confidential tokens can use different names.
+5. **Shield and Send.** Start a conversion or transfer for this asset.
+6. **Token information.** Explains which confidential actions are supported.
+7. **Resources.** The FHERC20 and ERC20 addresses identify different contracts. Use the copy control for the one you need.
+
+### Steps
+
+<Steps>
+  <Step title="Check both tokens">
+    Confirm both token names and their balances.
+  </Step>
+  <Step title="Shield a public asset">
+    Use **Shield** to move public assets into confidential form.
+  </Step>
+  <Step title="Unshield and claim">
+    Use **Unshield** and complete **Claim** when you need the public asset again.
+  </Step>
+</Steps>
+
+<Note>
+A wrapped token uses a confidential counterpart to a public asset. A DUAL token holds both modes within one token contract.
+</Note>
+
+## Choose a token
+
+Select the asset used by the action you are performing. To open the selector, open the token dropdown in Shield, Unshield, Send, or the custom Receive request.
+
+<Frame>
+<img src="/wallet/images/choose-a-token.png" alt="Token selector listing assets with ticker, type badge, balance, and value, with one row highlighted" />
+</Frame>
+
+### Screen components
+
+1. **Token rows.** Identify each asset by its icon and ticker.
+2. **Type badges.** DUAL marks a dual-mode token. FHERC marks a confidential token counterpart.
+3. **Balance and value.** Use the displayed balance to choose an asset. Available funds depend on whether the current action uses the public or private balance.
+4. **Highlighted row.** Marks the selected asset.
+5. **Collapse control.** Close the selector and return to the action form.
+
+### Steps
+
+<Steps>
+  <Step title="Open the dropdown">
+    Open the token dropdown.
+  </Step>
+  <Step title="Select the asset">
+    Select the asset you want to use.
+  </Step>
+  <Step title="Recheck the form">
+    Recheck the amount, available balance, and receive summary after you change tokens.
+  </Step>
+</Steps>
+
+<Note>
+The example list is not a supported-assets announcement. Use the assets available on the network in your current session.
+</Note>
