@@ -7,7 +7,7 @@ icon: "triangle-exclamation"
 <div className="flex flex-col md:flex-row gap-8 items-start">
 <div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
 <Frame>
-<img src="/wallet/images/decryption-failed.png" alt="Portfolio with a masked private value, a Decryption Failed banner, and an inline error on one token" />
+<img src="/wallet/images/decryption-failed.png" alt="Portfolio with a masked private total, a Decryption Failed banner with a Privacy Center button, and token rows that each show a Decryption failed message" />
 </Frame>
 </div>
 <div className="w-full md:flex-1 md:min-w-0">
@@ -20,7 +20,7 @@ Find and address a failed private-balance read. To open it, select **Privacy Cen
 1. **Masked private value.** Shows that part of the balance could not be displayed.
 2. **Decryption Failed banner.** Distinguishes a failed read from a successful balance display.
 3. **Privacy Center action.** Opens details that help identify the affected request and error.
-4. **Inline token error.** Marks the individual token balance that failed.
+4. **Inline token error.** Each affected row shows a Decryption failed message in place of its balance bar, and its percentages appear as asterisks.
 5. **Close control.** Dismisses the notice without resolving the underlying failure.
 
 ## Steps
