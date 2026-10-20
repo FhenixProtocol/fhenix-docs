@@ -5,7 +5,7 @@ description: "What the fhenix-confidential-contracts package provides, which tok
 
 `fhenix-confidential-contracts` is a Solidity package of confidential ERC-20 tokens built on [`FHE.sol`](/cofhe/fhe-library/reference/fhe-sol/overview). Balances and transfer amounts are stored as encrypted handles (`euint64`), so only the accounts the token grants access to can decrypt them. Read this page to pick a contract, install the package, and deploy a token that needs the shared library.
 
-The source is public at [FhenixProtocol/fhenix-confidential-contracts](https://github.com/FhenixProtocol/fhenix-confidential-contracts/tree/v0.4.0/contracts), under the MIT license. These docs cover version `0.4.0`.
+The source is public at [FhenixProtocol/fhenix-confidential-contracts](https://github.com/FhenixProtocol/fhenix-confidential-contracts/tree/v1.0.0/contracts), under the MIT license. These docs cover version `1.0.0`, the release audited by Consensys Diligence.
 
 ## Which contract do you need?
 
@@ -33,7 +33,7 @@ Every contract above has an upgradeable variant with the `Upgradeable` suffix, w
 ## Install the package
 
 ```bash
-npm install fhenix-confidential-contracts@0.4.0
+npm install fhenix-confidential-contracts@1.0.0
 ```
 
 The package depends on `@fhenixprotocol/cofhe-contracts@1.0.0` exactly, plus `@openzeppelin/contracts` and `@openzeppelin/contracts-upgradeable`. Keep your own `cofhe-contracts` pin on the same version, or npm installs two copies of `FHE.sol`. See the [compatibility page](/cofhe/get-started/introduction/compatibility) for the matching SDK and plugin versions.
@@ -99,12 +99,28 @@ const token = await upgrades.deployProxy(Factory, [], { unsafeAllowLinkedLibrari
 ```
 
 <Warning>
-Beta builds published before `0.4.0` shipped an `ERC20ConfidentialLib` with a different ABI but the same function selectors. A token linked to one of those deploys, then fails at runtime. Deploy the library from `0.4.0`.
+Deploy `ERC20ConfidentialLib` from `1.0.0`. Its ABI changed in `1.0.0`: it has new errors and `reassignClaim`. A `1.0.0` token linked to a library deployed from `0.x` deploys, then fails at runtime. Library instances from `0.x` are not the audited code.
 </Warning>
 
 <Warning>
 Turn the Solidity optimizer on before you deploy a wrapper. With it off, `FHERC20NativeWrapper` and `FHERC20ERC20WrapperUpgradeable` compile past the 24,576-byte limit and the deployment reverts. With `runs: 200`, both come in near 15,000 bytes.
 </Warning>
+
+## Upgrading from 0.4
+
+Version `1.0.0` is the audited release. Most `0.4.0` code compiles unchanged. Check these points:
+
+- Deploy `ERC20ConfidentialLib` again from `1.0.0`, and link every token to the new address.
+- A rejected decryption proof in `claimUnshielded`, `claimUnshieldedBatch`, or `discloseEncryptedAmount` now reverts with `InvalidDecryptionProof()`. Before, it reverted with the TaskManager's `InvalidSignature()` or `InvalidSigner(...)`. Update code that matches on those errors.
+- Shield, claim, and `onTransferReceived` paths are now `nonReentrant`. If your override extends `claimUnshielded` or `claimUnshieldedBatch` through `super`, do not add your own `nonReentrant`: the call deadlocks.
+- A receiver whose balance on the token changes during `onConfidentialTransferReceived` makes the transfer revert with `FHERC20ReceiverMovedBalance` or `ConfidentialReceiverMovedBalance`.
+- `_confidentialMint` now calls `_beforeConfidentialMove(address(0), to)`. Your freeze check must treat `from == address(0)` as no account.
+- The `ERC20Confidential` indicator returns `0` for accounts with no confidential activity. Its `totalSupply()` is the sum of the indicated balances.
+- A contract built directly on `FHERC20WrapperClaims` must implement `_isClaimOperator(holder, spender)`. The two wrappers already implement it.
+- `FHESafeMath.trySpend` is removed. Use `tryDecrease`.
+- New: `reassignClaim` on both wrappers, `claimUnshieldedAsWETH` on the native wrapper, and the deployable `FHERC20ERC20WrapperUUPS` and `FHERC20NativeWrapperUUPS`.
+
+To upgrade an existing proxy, see [before you upgrade an existing proxy](/cofhe/fhe-library/confidential-contracts/upgradeable#before-you-upgrade-an-existing-proxy). The [1.0.0 changelog](https://github.com/FhenixProtocol/fhenix-confidential-contracts/blob/v1.0.0/CHANGELOG.md) lists every change.
 
 ## Upgrading from 0.3
 
