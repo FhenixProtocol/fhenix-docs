@@ -56,7 +56,7 @@ code_size_limit = 100000
 </Warning>
 
 <Note>
-`evm_version = "cancun"` is no longer required as of `@cofhe/mock-contracts@1.0.1`. `MockACL` was migrated off transient storage to block-number-based storage. Set it only if your own contracts need cancun-specific opcodes.
+The mocks need the Cancun EVM, because `MockACL` uses transient storage. Solidity `0.8.25` and later target Cancun by default, so leave `evm_version` unset or set it to `cancun`. A pre-Cancun `evm_version` fails to compile.
 </Note>
 
 ## 3. Configure `remappings.txt`
