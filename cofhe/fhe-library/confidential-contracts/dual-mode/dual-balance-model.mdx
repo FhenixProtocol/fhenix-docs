@@ -52,9 +52,11 @@ The `ERC20Confidential` constructor deploys a second contract, `ERC20Confidentia
 | `name()` | `"1011000 "` followed by the token's name, for example `1011000 Dual Token` |
 | `symbol()` | `"c"` followed by the token's symbol, for example `cDUAL` |
 | `decimals()` | `4` |
-| `balanceOf(account)` | `1011000.0000` before any confidential activity |
+| `balanceOf(account)` | `0` before any confidential activity |
 
 Each confidential move updates the indicator for both parties. The first move into an account sets its indicator to `1011000.5001`, and each later one adds `0.0001`, up to `1011000.9999`. The first move out sets it to `1011000.4999`, and each later one subtracts `0.0001`, down to `1011000.0001`. The indicator also emits a `Transfer` event for each move, so the activity shows in transaction history.
+
+`totalSupply()` is the sum of all indicated balances. `balanceOfIsIndicator()` returns `true`, and `indicatorTick()` returns `1`. A wallet shows the indicator only after the account's first confidential move.
 
 The indicator's `transfer`, `transferFrom`, `approve`, and `allowance` revert with `ERC20ConfidentialIndicatorNoOp`. Only the parent token can update it.
 
