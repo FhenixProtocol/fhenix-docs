@@ -25,7 +25,7 @@ Transfers, `unshield`, and `_confidentialMint` take confidential units, while `s
 
 ## Gate both balances if you freeze accounts
 
-`_beforeConfidentialMove` covers confidential transfers and unshield only. A freeze built on it alone still lets the account use its public balance, shield, and receive claim payouts. Override `_update` as well. See [freeze accounts](/cofhe/fhe-library/confidential-contracts/dual-mode/extending#freeze-accounts).
+`_beforeConfidentialMove` covers confidential transfers, `unshield`, and `_confidentialMint` only. A freeze built on it alone still lets the account use its public balance, shield, and receive claim payouts. Override `_update` as well. See [freeze accounts](/cofhe/fhe-library/confidential-contracts/dual-mode/extending#freeze-accounts).
 
 ## Backfill the observer when you set it
 
@@ -37,4 +37,4 @@ A confidential operator can move any amount of the holder's confidential balance
 
 ## Link the library and enable the optimizer
 
-Deploy `ERC20ConfidentialLib` from `fhenix-confidential-contracts@0.4.0` and link every token to it; the address cannot change after deployment. Compile with the optimizer on, so added functions do not push the token past the 24 KB contract size limit. See [link the shared library](/cofhe/fhe-library/confidential-contracts/overview#link-the-shared-library).
+Deploy `ERC20ConfidentialLib` from `fhenix-confidential-contracts@1.0.0` and link every token to it; the address cannot change after deployment. Compile with the optimizer on, so added functions do not push the token past the 24 KB contract size limit. See [link the shared library](/cofhe/fhe-library/confidential-contracts/overview#link-the-shared-library).

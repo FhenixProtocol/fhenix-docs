@@ -15,7 +15,7 @@ Pages under `cofhe/` document CoFHE, served at `/cofhe/...`. The root `AGENTS.md
 The `Sample compile` action compiles every ```solidity block on the pages a pull request touches, with forge, against the `@fhenixprotocol/cofhe-contracts` and `fhenix-confidential-contracts` versions pinned in `.github/workflows/sample-compile.yml`. A complete contract that fails blocks the merge; a fragment that fails only warns. Run it locally before opening a pull request:
 
 ```bash
-npm install --no-save @fhenixprotocol/cofhe-contracts@1.0.0 fhenix-confidential-contracts@0.4.0
+npm install --no-save @fhenixprotocol/cofhe-contracts@1.0.0 fhenix-confidential-contracts@1.0.0
 python3 cofhe/scripts/compile-samples.py $FILES
 ```
 

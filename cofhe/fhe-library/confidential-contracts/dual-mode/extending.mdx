@@ -3,15 +3,15 @@ title: "Extend ERC20Confidential"
 description: "Freeze accounts, add a compliance observer, mint confidentially, auto-shield mints, or add the confidential layer to your own ERC-20"
 ---
 
-`ERC20Confidential` exposes hooks and library functions for the policies a regulated or product-specific token needs. This page shows each one with a contract that compiles against `fhenix-confidential-contracts@0.4.0`. None of them is active unless your contract wires it in.
+`ERC20Confidential` exposes hooks and library functions for the policies a regulated or product-specific token needs. This page shows each one with a contract that compiles against `fhenix-confidential-contracts@1.0.0`. None of them is active unless your contract wires it in.
 
 Every contract here inherits `ERC20Confidential`, so it must be [linked to `ERC20ConfidentialLib`](/cofhe/fhe-library/confidential-contracts/overview#link-the-shared-library) when you deploy it.
 
 ## Freeze accounts
 
-`_beforeConfidentialMove(from, to)` runs before every account-initiated confidential move: the eight transfer functions and both `unshield` overloads. It is empty by default. Override it and revert to block a move.
+`_beforeConfidentialMove(from, to)` runs before every confidential move: the eight transfer functions, both `unshield` overloads, and `_confidentialMint`. On a mint, `from` is `address(0)`. It is empty by default. Override it and revert to block a move.
 
-It does not run on `shield`, on public ERC-20 transfers, on `claimUnshielded`, or on `_confidentialMint`. A freeze that only overrides this hook leaves the public balance, shielding, and pending claims open. To close those too, also override OpenZeppelin's `_update`, which every public balance change goes through, including the pool transfers inside `shield` and `claimUnshielded`:
+It does not run on `shield`, on public ERC-20 transfers, or on `claimUnshielded`. A freeze that only overrides this hook leaves the public balance, shielding, and pending claims open. To close those too, also override OpenZeppelin's `_update`, which every public balance change goes through, including the pool transfers inside `shield` and `claimUnshielded`:
 
 ```solidity FreezableToken.sol
 // SPDX-License-Identifier: MIT
@@ -53,6 +53,8 @@ contract FreezableToken is ERC20Confidential, Ownable {
 ```
 
 With both overrides, a frozen account cannot send or receive in either balance, cannot shield, and cannot be paid out by a claim.
+
+On a confidential mint, the hook receives `from == address(0)`. Treat the zero address as no account in your freeze check. `FreezableToken` does this already, because `frozen[address(0)]` is never set.
 
 ## Add a compliance observer
 
@@ -101,7 +103,7 @@ function mintConfidential(address to, uint64 amount) external onlyOwner {
 }
 ```
 
-`_confidentialMint` raises `totalSupply()` and updates `confidentialTotalSupply`. It does not call `_beforeConfidentialMove`, so it mints to frozen accounts unless your `_update` override blocks the recipient. In `FreezableToken` above it does not, because the public leg goes to the pool, not to `to`.
+`_confidentialMint` raises `totalSupply()` and updates `confidentialTotalSupply`. It calls `_beforeConfidentialMove(address(0), to)`, so the freeze in `FreezableToken` above blocks a mint to a frozen account.
 
 ## Auto-shield minted tokens
 
@@ -194,4 +196,4 @@ contract LedgerToken is ERC20, ERC165, ERC20ConfidentialCoreUpgradeable {
 }
 ```
 
-The confidential decimals you pass are clamped to the public decimals. This host has no indicator token, which is optional: confidential transfers work without one. To add one, deploy an `ERC20ConfidentialIndicator` with your token as its parent and register it with `_setIndicatorToken`. [`ERC20Confidential.sol`](https://github.com/FhenixProtocol/fhenix-confidential-contracts/blob/v0.4.0/contracts/ERC20Confidential/ERC20Confidential.sol) is the reference host to compare against.
+The confidential decimals you pass are clamped to the public decimals. This host has no indicator token, which is optional: confidential transfers work without one. To add one, deploy an `ERC20ConfidentialIndicator` with your token as its parent and register it with `_setIndicatorToken`. [`ERC20Confidential.sol`](https://github.com/FhenixProtocol/fhenix-confidential-contracts/blob/v1.0.0/contracts/ERC20Confidential/ERC20Confidential.sol) is the reference host to compare against.

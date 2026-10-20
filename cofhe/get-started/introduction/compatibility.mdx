@@ -6,6 +6,10 @@ description: "Which package versions, toolchains, and networks work together"
 Use this page to pick versions before you install anything. It lists the current version of every CoFHE package, the toolchain each one requires, and the networks the SDK ships chain definitions for.
 
 <Warning>
+`@cofhe/*` `1.0.0` is deprecated. Install `1.0.1` or later. `1.0.1` binds the consuming contract into the input proof. Once the verifier requires this, a proof from `1.0.0` fails with `ZK_VERIFY_FAILED`.
+</Warning>
+
+<Warning>
 SDK versions `0.7` and later are not compatible with `0.6` contracts or `0.6` plugins. Upgrading from `0.6` is a breaking change that touches both your Solidity and your client code. See [upgrading from 0.6](#upgrading-from-0-6) before you start.
 </Warning>
 
@@ -15,13 +19,13 @@ Every `@cofhe/*` package is released from the same monorepo at the same version,
 
 | Package | Version | What it does |
 | --- | --- | --- |
-| `@cofhe/sdk` | [`0.8.0`](https://github.com/FhenixProtocol/cofhesdk/releases/tag/@cofhe/sdk@0.8.0) | Client library for encrypting inputs, decrypting results, and signing ACPs |
-| `@cofhe/react` | `0.8.0` | React hooks built on the SDK |
-| `@cofhe/abi` | `0.8.0` | ABI definitions for the CoFHE contracts |
-| `@cofhe/hardhat-plugin` | `0.8.0` | Mock deployment and test helpers for Hardhat 2 |
-| `@cofhe/hardhat-3-plugin` | `0.8.0` | Mock deployment and test helpers for Hardhat 3 |
-| `@cofhe/foundry-plugin` | `0.8.0` | Mock deployment and test helpers for Foundry |
-| `@cofhe/mock-contracts` | `0.8.0` | Mock CoFHE contracts for local testing |
+| `@cofhe/sdk` | [`1.0.1`](https://github.com/FhenixProtocol/cofhesdk/releases/tag/@cofhe/sdk@1.0.1) | Client library for encrypting inputs, decrypting results, and signing ACPs |
+| `@cofhe/react` | `1.0.1` | React hooks built on the SDK |
+| `@cofhe/abi` | `1.0.1` | ABI definitions for the CoFHE contracts |
+| `@cofhe/hardhat-plugin` | `1.0.1` | Mock deployment and test helpers for Hardhat 2 |
+| `@cofhe/hardhat-3-plugin` | `1.0.1` | Mock deployment and test helpers for Hardhat 3 |
+| `@cofhe/foundry-plugin` | `1.0.1` | Mock deployment and test helpers for Foundry |
+| `@cofhe/mock-contracts` | `1.0.1` | Mock CoFHE contracts for local testing |
 
 Solidity dependencies version separately from the SDK:
 
@@ -29,7 +33,7 @@ Solidity dependencies version separately from the SDK:
 | --- | --- | --- |
 | `@fhenixprotocol/cofhe-contracts` | [`1.0.0`](https://github.com/FhenixProtocol/cofhe-contracts/tree/v1.0.0) | `FHE.sol` and the onchain CoFHE interfaces |
 | `@fhenixprotocol/cofhe-errors` | `1.0.2` | Shared error definitions for the CoFHE contracts |
-| `fhenix-confidential-contracts` | `0.4.0` | Confidential token primitives, including FHERC20 |
+| `fhenix-confidential-contracts` | `1.0.0` | Confidential token primitives, including FHERC20 |
 
 <Note>
 `fhenix-confidential-contracts` is published unscoped. There is no `@fhenixprotocol/fhenix-confidential-contracts` package, so installing that name fails.
@@ -42,9 +46,9 @@ These are the peer dependencies declared by the published packages.
 | Package | Required | Optional |
 | --- | --- | --- |
 | `@cofhe/sdk` | `viem` ^2.38.6 | `ethers` ^5 or ^6, `@wagmi/core` ^2, `hardhat` ^2, `@nomicfoundation/hardhat-ethers` ^3 |
-| `@cofhe/hardhat-plugin` | `hardhat` ^2, `@nomicfoundation/hardhat-ethers` ^3, `ethers` ^5 or ^6, `@fhenixprotocol/cofhe-contracts` >=1.0.0, `@openzeppelin/contracts` ^5 | None |
+| `@cofhe/hardhat-plugin` | `hardhat` ^2, `@nomicfoundation/hardhat-ethers` ^3, `ethers` ^5 or ^6, `@fhenixprotocol/cofhe-contracts` >=1.0.0, `@openzeppelin/contracts` ^5, `@openzeppelin/contracts-upgradeable` ^5 | None |
 | `@cofhe/hardhat-3-plugin` | `hardhat` ^3 | None |
-| `@cofhe/foundry-plugin` | `@fhenixprotocol/cofhe-contracts` 1.0.0, `@openzeppelin/contracts` 5.4.0 | None |
+| `@cofhe/foundry-plugin` | `@fhenixprotocol/cofhe-contracts` 1.0.0, `@openzeppelin/contracts` 5.4.0, `@openzeppelin/contracts-upgradeable` 5.4.0 | None |
 
 `viem` is the only client library the SDK always needs. The optional entries are adapters: install `ethers` or `@wagmi/core` only if you want to pass those objects to the SDK.
 
@@ -78,9 +82,23 @@ networks: {
 },
 ```
 
+## Upgrading from 0.8
+
+Move every `@cofhe/*` package to `1.0.1` and `fhenix-confidential-contracts` to `1.0.0` in the same change. Keep `@fhenixprotocol/cofhe-contracts` on `1.0.0`: the `1.0.1` mocks and `fhenix-confidential-contracts` `1.0.0` both pin it exactly, so a newer version installs a second copy.
+
+These changes can break a `0.8` project:
+
+- **The mocks need Solidity `0.8.25` or later and `@openzeppelin/contracts-upgradeable`.** Raise your `pragma` and compiler version, and install `@openzeppelin/contracts-upgradeable` `^5`. Foundry users add its remapping.
+- **The mocks behave more like the real network.** For example, `FHE.asEuint8(256)` now reverts with `InvalidInputForFunction` instead of storing a masked value, and `encryptInputs` rejects out-of-range values. A test that relied on the old behavior fails, as it would on a real network.
+- **The onchain ACP share registry has a new layout,** and shared ACPs no longer carry a `name`. See [ACPs](/cofhe/client-sdk/guides/acps).
+- **`CofheProvider` takes `config` or `cofheClient`, not both.**
+- **`fhenix-confidential-contracts` `1.0.0` is the audited release.** Redeploy `ERC20ConfidentialLib`: its ABI changed, and a host built on `1.0.0` must link against a library deployed from `1.0.0`. A rejected decryption proof in a wrapper claim now reverts with `InvalidDecryptionProof()`.
+
+Contract code that uses only `FHE.sol` compiles unchanged.
+
 ## Upgrading from 0.7
 
-Move `@fhenixprotocol/cofhe-contracts` to `1.0.0` and every `@cofhe/*` package to `0.8.0` in the same change. The `0.8.0` plugins require contracts `1.0.0` or later, and contracts `1.0.0` needs the `0.8.0` mocks in tests, so the two upgrades only work together.
+Upgrade to `0.8.0` first, then follow [upgrading from 0.8](#upgrading-from-0-8). Move `@fhenixprotocol/cofhe-contracts` to `1.0.0` and every `@cofhe/*` package to `0.8.0` in the same change. The `0.8.0` plugins require contracts `1.0.0` or later, and contracts `1.0.0` needs the `0.8.0` mocks in tests, so the two upgrades only work together.
 
 Two SDK changes can break your client code:
 
@@ -91,7 +109,7 @@ Contract code compiles unchanged against `1.0.0`: the `FHE.sol` API only gains f
 
 ## Upgrading from 0.6 {#upgrading-from-0-6}
 
-Upgrade to `0.6.1` first, then to `0.8.0`. The `0.7` release changes four things that will break a `0.6` project:
+Upgrade to `0.6.1` first, then to `0.8.0`, then to `1.0.1`. The `0.7` release changes four things that will break a `0.6` project:
 
 - Permits are renamed to ACPs. The `@cofhe/sdk/permits` entry point is now `@cofhe/sdk/acps`.
 - The `InEuintXX` input types are gone, along with `FHE.asEuint32(InEuint32)` and `ITaskManager.verifyInput`.

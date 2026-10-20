@@ -111,26 +111,27 @@ Access Control Permission (ACP) helpers. See [Access Control Permissions](/cofhe
 solc_version = "0.8.25"     # cofhe-contracts target
 auto_detect_remappings = false
 code_size_limit = 100000    # mocks exceed 24 KB
-libs = ["node_modules"]
+libs = ["node_modules", "lib"]
 ```
 
 <Note>
-`evm_version = "cancun"` is no longer required as of `@cofhe/mock-contracts@0.8.0`. `MockACL` was migrated off transient storage to block-number-based storage. Set it only if your own contracts need cancun-specific opcodes.
+The mocks need the Cancun EVM, because `MockACL` uses transient storage. Solidity `0.8.25` and later target Cancun by default, so leave `evm_version` unset or set it to `cancun`. A pre-Cancun `evm_version` fails to compile.
 </Note>
 
 ## `remappings.txt` (canonical shape)
 
 ```text
-forge-std/=node_modules/forge-std/src/
-hardhat/=node_modules/forge-std/src/
+forge-std/=lib/forge-std/src/
+hardhat/=lib/forge-std/src/
 @openzeppelin/contracts/=node_modules/@openzeppelin/contracts/
+@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/
 @fhenixprotocol/cofhe-contracts/=node_modules/@fhenixprotocol/cofhe-contracts/
 @cofhe/mock-contracts/=node_modules/@cofhe/mock-contracts/
 @cofhe/foundry-plugin/=node_modules/@cofhe/foundry-plugin/
 ```
 
 - `@cofhe/mock-contracts/` points at the **package root**, not `…/contracts/`. The plugin's imports include the `contracts/` segment themselves.
-- `hardhat/=node_modules/forge-std/src/` is required so that `MockCoFHE.sol`'s `import "hardhat/console.sol"` resolves to forge-std's compatible console.
+- `hardhat/=lib/forge-std/src/` is required so that `MockCoFHE.sol`'s `import "hardhat/console.sol"` resolves to forge-std's compatible console.
 
 ## Version pinning
 
@@ -138,8 +139,8 @@ hardhat/=node_modules/forge-std/src/
 
 | Package | Version |
 | --- | --- |
-| `@cofhe/foundry-plugin` | `0.8.0` |
-| `@cofhe/mock-contracts` | `0.8.0` |
+| `@cofhe/foundry-plugin` | `1.0.1` |
+| `@cofhe/mock-contracts` | `1.0.1` |
 | `@fhenixprotocol/cofhe-contracts` | `1.0.0` |
 
 See the [Compatibility](/cofhe/get-started/introduction/compatibility) page for the canonical table.
