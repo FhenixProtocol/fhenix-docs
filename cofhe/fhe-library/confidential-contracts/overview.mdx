@@ -112,7 +112,7 @@ Version `1.0.0` is the audited release. Most `0.4.0` code compiles unchanged. Ch
 
 - Deploy `ERC20ConfidentialLib` again from `1.0.0`, and link every token to the new address.
 - A rejected decryption proof in `claimUnshielded`, `claimUnshieldedBatch`, or `discloseEncryptedAmount` now reverts with `InvalidDecryptionProof()`. Before, it reverted with the TaskManager's `InvalidSignature()` or `InvalidSigner(...)`. Update code that matches on those errors.
-- Shield, claim, and `onTransferReceived` paths are now `nonReentrant`. If your override extends `claimUnshielded` or `claimUnshieldedBatch` through `super`, do not add your own `nonReentrant`: the call deadlocks.
+- Shield, claim, and `onTransferReceived` paths are now `nonReentrant`. If your override extends `claimUnshielded` or `claimUnshieldedBatch` through `super`, do not add your own `nonReentrant`: the call reverts with `ReentrancyGuardReentrantCall()`.
 - A receiver whose balance on the token changes during `onConfidentialTransferReceived` makes the transfer revert with `FHERC20ReceiverMovedBalance` or `ConfidentialReceiverMovedBalance`.
 - `_confidentialMint` now calls `_beforeConfidentialMove(address(0), to)`. Your freeze check must treat `from == address(0)` as no account.
 - The `ERC20Confidential` indicator returns `0` for accounts with no confidential activity. Its `totalSupply()` is the sum of the indicated balances.
