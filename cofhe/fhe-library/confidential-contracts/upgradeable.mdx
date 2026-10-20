@@ -14,6 +14,8 @@ Every confidential token in `fhenix-confidential-contracts` has an upgradeable v
 | `FHERC20NativeWrapper` | `FHERC20NativeWrapperUpgradeable` | `__FHERC20_init(...)`, then `__FHERC20NativeWrapper_init(weth)` |
 | `ERC20Confidential` | `ERC20ConfidentialUpgradeable` | `__ERC20Confidential_init(name, symbol, decimals)` |
 
+To deploy a wrapper without writing a host, use `FHERC20ERC20WrapperUUPS` or `FHERC20NativeWrapperUUPS`. See [deploy a ready-made wrapper](/cofhe/fhe-library/confidential-contracts/fherc20/fherc20-wrapper#deploy-a-ready-made-wrapper).
+
 The initializers are `internal` and `onlyInitializing`. You call them from your own `initialize` function marked `initializer`. Disable initializers in the constructor so nobody can initialize the implementation contract itself.
 
 ## Write the token
@@ -126,9 +128,23 @@ The constructor-based contracts use the same slots. The public ERC-20 ledger of 
 
 ## Before you upgrade an existing proxy
 
+### From 0.4.0 to 1.0.0
+
+A proxy deployed from `0.4.0` upgrades in place. No storage struct changed, so balances, operators, claims, and wrapper settings carry over. Pending claims stay valid. Before you upgrade:
+
+- Deploy `ERC20ConfidentialLib` from `1.0.0` and link the new implementation to it. Keep `unsafeAllowLinkedLibraries: true`.
+- Remove `nonReentrant` from any override of `claimUnshielded` or `claimUnshieldedBatch` that calls `super`.
+- Check that your freeze hook accepts `from == address(0)`, because `_confidentialMint` now calls it.
+
+An `ERC20ConfidentialUpgradeable` proxy keeps the indicator token that its initializer deployed. The indicator is a separate contract, not behind the proxy, so it keeps its `0.4.0` code. To use the `1.0.0` indicator, deploy a new `ERC20ConfidentialIndicator` from a reinitializer and register it with `_setIndicatorToken`. The new indicator starts with no activity history.
+
+The UUPS wrappers are for new deployments. An existing proxy cannot run their `initialize`, because it is already initialized.
+
+### From 0.3.x to 0.4.0
+
 An `FHERC20Upgradeable` proxy from `0.3.x` keeps its balances when you upgrade it to `0.4.0`, because the FHERC20 storage slot did not change. Two cases need action:
 
 - **Wrapper proxies with pending claims.** `0.4.0` keys claims by claim ID instead of by handle, in a layout that is not compatible with the `0.3.x` claim store. Claims still pending at upgrade time cannot be settled afterwards. Have users claim, or claim for them, before you upgrade.
 - **`ERC20ConfidentialUpgradeable` proxies from a pre-release build.** `confidentialTotalSupply()` reads a stored handle that older implementations did not write, and returns a zero handle until something refreshes it. Call `syncConfidentialTotalSupply()` once after the upgrade. Anyone can call it.
 
-Callers also need the `0.4.0` interface after the upgrade. The [confidential contracts overview](/cofhe/fhe-library/confidential-contracts/overview) lists what changed for callers since `0.3`.
+Callers also need the `0.4.0` interface after that upgrade. The [confidential contracts overview](/cofhe/fhe-library/confidential-contracts/overview) lists what changed for callers since `0.3`.
