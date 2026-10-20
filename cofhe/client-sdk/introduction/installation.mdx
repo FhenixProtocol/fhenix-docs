@@ -30,7 +30,7 @@ yarn add @cofhe/sdk@^1.0.1 @fhenixprotocol/cofhe-contracts@1.0.0
 | Package | Version | Purpose |
 | --- | --- | --- |
 | `@cofhe/sdk` | `^1.0.1` | Client-side encryption, decryption, and ACP management |
-| `@fhenixprotocol/cofhe-contracts` | `^1.0.0` | `FHE.sol`, the Solidity library imported by your contracts |
+| `@fhenixprotocol/cofhe-contracts` | `1.0.0` | `FHE.sol`, the Solidity library imported by your contracts |
 
 <Note>
 `@cofhe/sdk` `0.7.x` pairs with `@fhenixprotocol/cofhe-contracts` `0.2.0`. Keep every `@cofhe/*` package on the same version. They are released together and pin each other exactly. The [compatibility page](/cofhe/get-started/introduction/compatibility) carries the full table.
@@ -60,7 +60,7 @@ yarn add @cofhe/hardhat-plugin@^1.0.1 @cofhe/sdk@^1.0.1 @fhenixprotocol/cofhe-co
 | --- | --- | --- |
 | `@cofhe/hardhat-plugin` | `^1.0.1` | Extends Hardhat with `hre.cofhe`, deploys mock contracts automatically |
 | `@cofhe/sdk` | `^1.0.1` | Client-side encryption, decryption, and ACP management |
-| `@fhenixprotocol/cofhe-contracts` | `^1.0.0` | `FHE.sol`, the Solidity library imported by your contracts |
+| `@fhenixprotocol/cofhe-contracts` | `1.0.0` | `FHE.sol`, the Solidity library imported by your contracts |
 
 See the [Hardhat Plugin Getting Started](/cofhe/client-sdk/hardhat-plugin/getting-started) guide for configuration details.
 
@@ -91,7 +91,7 @@ forge install foundry-rs/forge-std
 | --- | --- | --- |
 | `@cofhe/foundry-plugin` | `^1.0.1` | `CofheTest` and `CofheClient`, the Solidity test base and per-user SDK shim |
 | `@cofhe/mock-contracts` | `^1.0.1` | Mock CoFHE contracts used by the Foundry plugin |
-| `@fhenixprotocol/cofhe-contracts` | `^1.0.0` | `FHE.sol`, the Solidity library imported by your contracts |
+| `@fhenixprotocol/cofhe-contracts` | `1.0.0` | `FHE.sol`, the Solidity library imported by your contracts |
 
 <Note>
 The Foundry plugin uses Solidity-only abstractions, so tests need no `@cofhe/sdk` (JS).
