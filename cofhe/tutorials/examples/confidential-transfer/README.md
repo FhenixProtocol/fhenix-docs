@@ -15,7 +15,7 @@ npm test
 
 ## Run it on Sepolia
 
-Needs two Sepolia accounts with some Sepolia ETH: one for Alice, one for Bob.
+Needs two Sepolia accounts: one for Alice, one for Bob. Only Alice's account needs Sepolia ETH, to deploy and transfer. Bob only signs.
 
 ```bash
 cp .env.example .env   # then fill in the RPC URL and the two private keys
