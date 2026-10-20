@@ -1,0 +1,28 @@
+{
+  "name": "confidential-transfer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Alice sends Bob a confidential payment with CoFHE: the example for the Fhenix docs tutorial.",
+  "license": "MIT",
+  "scripts": {
+    "test": "hardhat test",
+    "sepolia": "hardhat run scripts/alice-to-bob.ts --network eth-sepolia"
+  },
+  "devDependencies": {
+    "@cofhe/hardhat-plugin": "1.0.1",
+    "@cofhe/sdk": "1.0.1",
+    "@fhenixprotocol/cofhe-contracts": "1.0.0",
+    "@nomicfoundation/hardhat-ethers": "3.1.0",
+    "@nomicfoundation/hardhat-toolbox": "6.1.0",
+    "@openzeppelin/contracts": "5.4.0",
+    "@openzeppelin/contracts-upgradeable": "5.4.0",
+    "@types/chai": "4.3.20",
+    "chai": "4.5.0",
+    "dotenv": "16.4.7",
+    "ethers": "6.15.0",
+    "fhenix-confidential-contracts": "1.0.0",
+    "hardhat": "2.26.3",
+    "ts-node": "10.9.2",
+    "typescript": "5.6.3"
+  }
+}
