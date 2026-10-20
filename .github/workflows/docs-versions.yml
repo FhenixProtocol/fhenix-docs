@@ -5,6 +5,7 @@ on:
     paths:
       - 'cofhe/**/*.mdx'
       - 'cofhe/scripts/check-versions.py'
+      - 'cofhe/tutorials/examples/*/package.json'
       - '.github/workflows/sample-compile.yml'
   # Weekly, so a release upstream surfaces as an issue rather than waiting for
   # someone to notice a stale install command.

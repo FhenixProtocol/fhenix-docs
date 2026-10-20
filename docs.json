@@ -251,6 +251,7 @@
                 "group": "Tutorials",
                 "pages": [
                   "cofhe/tutorials/overview",
+                  "cofhe/tutorials/confidential-payment",
                   "cofhe/tutorials/migrating-from-fhe-decrypt",
                   "cofhe/tutorials/your-first-fhe-contract",
                   "cofhe/tutorials/adding-fhe-to-existing-contract",
