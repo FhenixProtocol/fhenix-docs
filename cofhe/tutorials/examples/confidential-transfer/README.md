@@ -15,10 +15,10 @@ npm test
 
 ## Run it on Sepolia
 
-Needs two Sepolia accounts: one for Alice, one for Bob. Only Alice's account needs Sepolia ETH, to deploy and transfer. Bob only signs.
+Needs one Sepolia test account for Alice, with some Sepolia ETH. Bob only signs, so the script creates a fresh wallet for him.
 
 ```bash
-cp .env.example .env   # then fill in the RPC URL and the two private keys
+cp .env.example .env   # then fill in ALICE_PRIVATE_KEY
 npm run sepolia
 ```
 
