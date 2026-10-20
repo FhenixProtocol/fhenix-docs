@@ -7,7 +7,7 @@ A wrapper turns a public asset into an FHERC20 token (a token whose balances are
 
 ## Deploy a wrapper
 
-Both wrappers are abstract. You inherit one and pass the FHERC20 constructor arguments next to the wrapper's own:
+Both wrappers are abstract. You inherit one and pass the FHERC20 constructor arguments next to the wrapper's own. To deploy without writing a contract, see [deploy a ready-made wrapper](#deploy-a-ready-made-wrapper).
 
 ```solidity ConfidentialUSDC.sol
 // SPDX-License-Identifier: MIT
@@ -40,6 +40,16 @@ The native wrapper takes the WETH address even if you only use `shieldNative`, b
 The `6` passed to `FHERC20` does not set the wrapper's decimals. The wrapper overrides `decimals()` with a value derived from the underlying token. The constructor argument only sets the indicator tick, the unit that `balanceOf` reports in. Pass the wrapper's real decimals, which is 6 for any underlying with 6 or more.
 
 Both wrappers call into `ERC20ConfidentialLib`, so you must deploy that library and link it into the wrapper. See [link the shared library](/cofhe/fhe-library/confidential-contracts/overview#link-the-shared-library) for the steps.
+
+### Deploy a ready-made wrapper
+
+`contracts/Wrappers/` has two concrete wrappers for an `ERC1967Proxy`: `FHERC20ERC20WrapperUUPS` and `FHERC20NativeWrapperUUPS`. Deploy the implementation, then call `initialize(underlying, name, symbol, contractURI, owner)` through the proxy. For the native wrapper, pass WETH as `underlying`. Both read their decimals from the underlying token, capped at 6.
+
+The owner can only authorize upgrades. Ownership moves in two steps: `transferOwnership`, then `acceptOwnership` by the new owner. An upgrade can move every asset the wrapper holds, so make the owner a multisig. Link `ERC20ConfidentialLib` as for any wrapper.
+
+<Warning>
+The audit of `1.0.0` does not cover these two wrappers.
+</Warning>
 
 <Warning>
 Enable the Solidity optimizer for wrappers. With the optimizer off, `ConfidentialETH` compiles to 24,693 bytes and an upgradeable ERC-20 wrapper to 26,751 bytes. Both exceed the 24,576-byte limit and fail to deploy. With `runs: 200` they compile to 14,839 and 15,730 bytes.
@@ -145,6 +155,12 @@ await eUSDC.claimUnshielded(claim.id, decryptedValue, signature);
 
 Any account can submit the claim. The payout always goes to the claim's `to`, so a relayer can settle claims for your users. `claimUnshieldedBatch(ids, values, signatures)` settles several in one transaction and reverts as a whole if any element is invalid. See [decrypt to transaction](/cofhe/client-sdk/guides/decrypt-to-tx) for the SDK side.
 
+### When the recipient cannot accept the payout
+
+The payout always goes to the claim's `to`. Some recipients cannot receive it: a contract with no payable fallback on the native wrapper, or a blocklisted address on an ERC-20 wrapper. In that case, `to` or its operator calls `reassignClaim(id, newTo)`. The claim keeps its ID, so a decryption proof from before stays valid.
+
+On the native wrapper, `to` or its operator can also call `claimUnshieldedAsWETH(id, value, signature)`, which pays the claim in WETH. Unlike `claimUnshielded`, a relayer cannot call either function.
+
 `getUserClaims` returns only pending claims. `getClaim(id)` returns any claim as this struct:
 
 | Field | Type | Meaning |
@@ -167,8 +183,8 @@ The ERC-20 wrapper assumes it receives the full amount it pulls. Fee-on-transfer
 
 | Error | When |
 | --- | --- |
-| `FHERC20InvalidReceiver` | `unshield` targets `address(0)`, or the ERC-20 wrapper's `shield` does |
-| `FHERC20UnauthorizedSpender` | The caller of `unshield` is neither `from` nor its operator |
+| `FHERC20InvalidReceiver` | `unshield` or `reassignClaim` targets `address(0)`, or the ERC-20 wrapper's `shield` does |
+| `FHERC20UnauthorizedSpender` | The caller of `unshield` is neither `from` nor its operator, or the caller of `reassignClaim` or `claimUnshieldedAsWETH` is neither the claim's `to` nor its operator |
 | `FHERC20UnauthorizedCaller` | `onTransferReceived` is called by a token other than the underlying |
 | `AmountTooSmallForConfidentialPrecision` | A native shield is below `rate()` |
 | `FHERC20TotalSupplyOverflow` | A mint would push `inferredTotalSupply()` past `maxTotalSupply()` |
@@ -176,9 +192,9 @@ The ERC-20 wrapper assumes it receives the full amount it pulls. Fee-on-transfer
 | `ClaimNotFound` | No claim has that ID |
 | `AlreadyClaimed` | The claim has already settled |
 | `ClaimBatchLengthMismatch` | The batch arrays have different lengths |
-| `InvalidSigner` | The decrypted value or signature does not match the claim's handle |
+| `InvalidDecryptionProof` | The decrypted value or signature does not match the claim's handle. The claim stays pending |
 
-`InvalidSigner` comes from the TaskManager, which verifies the decryption. See [common errors](/cofhe/fhe-library/core-concepts/common-errors) for the other TaskManager errors.
+Before `1.0.0`, this case reverted with the TaskManager's `InvalidSigner`. See [common errors](/cofhe/fhe-library/core-concepts/common-errors) for the TaskManager errors.
 
 ## Events
 
@@ -186,6 +202,8 @@ The ERC-20 wrapper assumes it receives the full amount it pulls. Fee-on-transfer
 | --- | --- |
 | `ShieldedNative(from, to, value)` | `shieldNative`, `shieldWrappedNative` |
 | `Unshielded(to, amount)` | Both `unshield` overloads |
-| `ClaimedUnshielded(to, unshieldRequestId, unshieldAmount, unshieldAmountCleartext)` | `claimUnshielded`, `claimUnshieldedBatch` |
+| `ClaimedUnshielded(to, unshieldRequestId, unshieldAmount, unshieldAmountCleartext)` | `claimUnshielded`, `claimUnshieldedBatch`, `claimUnshieldedAsWETH` |
+| `ClaimedUnshieldedAsWETH(to, unshieldRequestId, wethAmount)` | `claimUnshieldedAsWETH` |
+| `ClaimReassigned(id, previousTo, newTo)` | `reassignClaim` |
 
 Shielding also emits the FHERC20 `Transfer` and `ConfidentialTransfer` events for the mint. The ERC-20 wrapper has no shield event of its own.
