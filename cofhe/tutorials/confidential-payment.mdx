@@ -184,11 +184,11 @@ expect(aliceBalance).to.equal(1_000n);
 
 ## Run it on Sepolia
 
-The same payment runs on Ethereum Sepolia. You need two accounts: one for Alice, one for Bob. Alice's account needs some Sepolia ETH, because it deploys the token and sends the transfer. Bob only signs messages, so his account needs none.
+The same payment runs on Ethereum Sepolia. You need one test account for Alice, with some Sepolia ETH: she deploys the token and sends the transfer. Bob only signs messages, so the script creates a fresh wallet for him on each run.
 
 <Steps>
 <Step title="Add your keys">
-Copy `.env.example` to `.env`, then fill in `SEPOLIA_RPC_URL`, `ALICE_PRIVATE_KEY`, and `BOB_PRIVATE_KEY`. `.gitignore` already excludes `.env`. Use test accounts only.
+Copy `.env.example` to `.env`, then fill in `ALICE_PRIVATE_KEY`. `SEPOLIA_RPC_URL` is optional: without it, the script uses a public Sepolia endpoint. `.gitignore` already excludes `.env`. Use a test account only.
 </Step>
 <Step title="Run the script">
 ```bash
@@ -202,7 +202,7 @@ On a real network there are no plugin helpers. The script creates each client wi
 
 {/* example: cofhe/tutorials/examples/confidential-transfer/scripts/alice-to-bob.ts#sepolia */}
 ```typescript scripts/alice-to-bob.ts
-async function connectedClient(wallet: ethers.Wallet) {
+async function connectedClient(wallet: ethers.BaseWallet) {
   const client = createCofheClient(createCofheConfig({ supportedChains: [chains.sepolia] }));
   const { publicClient, walletClient } = await Ethers6Adapter(wallet.provider!, wallet);
   await client.connect(publicClient, walletClient);

@@ -14,7 +14,7 @@ function requireEnv(name: string): string {
 }
 
 // #region sepolia
-async function connectedClient(wallet: ethers.Wallet) {
+async function connectedClient(wallet: ethers.BaseWallet) {
   const client = createCofheClient(createCofheConfig({ supportedChains: [chains.sepolia] }));
   const { publicClient, walletClient } = await Ethers6Adapter(wallet.provider!, wallet);
   await client.connect(publicClient, walletClient);
@@ -25,9 +25,10 @@ async function connectedClient(wallet: ethers.Wallet) {
 // #endregion sepolia
 
 async function main() {
-  const provider = new ethers.JsonRpcProvider(requireEnv('SEPOLIA_RPC_URL'));
+  const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL || 'https://ethereum-sepolia.publicnode.com');
   const alice = new ethers.Wallet(requireEnv('ALICE_PRIVATE_KEY'), provider);
-  const bob = new ethers.Wallet(requireEnv('BOB_PRIVATE_KEY'), provider);
+  // Bob only signs, so he needs no ETH: a fresh wallet works.
+  const bob = ethers.Wallet.createRandom().connect(provider);
 
   console.log('Alice deploys the token...');
   const token = await hre.ethers.deployContract('ConfidentialToken', [], alice);
