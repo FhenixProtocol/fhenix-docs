@@ -27,6 +27,9 @@ async function connectedClient(wallet: ethers.BaseWallet) {
 async function main() {
   const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL || 'https://ethereum-sepolia.publicnode.com');
   const alice = new ethers.Wallet(requireEnv('ALICE_PRIVATE_KEY'), provider);
+  if ((await provider.getBalance(alice.address)) === 0n) {
+    throw new Error(`Alice's account ${alice.address} has no Sepolia ETH. Fund it from a Sepolia faucet first.`);
+  }
   // Bob only signs, so he needs no ETH: a fresh wallet works.
   const bob = ethers.Wallet.createRandom().connect(provider);
 
