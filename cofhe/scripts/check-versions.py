@@ -5,7 +5,8 @@ The compatibility page is the single source of truth for package versions.
 This script asserts two things:
 
   --docs   every version pinned anywhere in the docs matches that page, and so
-           do the package pins in the sample-compile workflow
+           do the package pins in the sample-compile workflow and in each tutorial
+           example's package.json
   --npm    the compatibility page itself matches what is published on npm
 
 The two run separately on purpose. The docs check is offline and runs on every
@@ -105,6 +106,24 @@ def scan_workflow(versions):
     return problems
 
 
+# Tutorial example projects install real packages, so their pins must match too.
+EXAMPLES = Path("cofhe/tutorials/examples")
+
+
+def scan_examples(versions):
+    problems = []
+    for manifest in sorted(EXAMPLES.glob("*/package.json")):
+        text = manifest.read_text(encoding="utf-8")
+        deps = {}
+        for section in ("dependencies", "devDependencies"):
+            deps.update(json.loads(text).get(section, {}))
+        for pkg, spec in deps.items():
+            if pkg in versions and spec != versions[pkg]:
+                n = next(i for i, line in enumerate(text.splitlines(), 1) if f'"{pkg}"' in line)
+                problems.append((manifest, n, f"{pkg} {spec} should be exactly {versions[pkg]}"))
+    return problems
+
+
 def npm_latest(pkg):
     out = subprocess.run(
         ["npm", "view", pkg, "version"], capture_output=True, text=True, timeout=120
@@ -130,7 +149,7 @@ def main(argv):
     if mode_docs:
         paths = [Path(a) for a in args] or sorted(Path("cofhe").rglob("*.mdx"))
         paths = [p for p in paths if p.suffix == ".mdx" and p.exists()]
-        problems = scan(paths, versions) + scan_workflow(versions)
+        problems = scan(paths, versions) + scan_workflow(versions) + scan_examples(versions)
         for path, n, message in problems:
             print(f"{path}:{n}: error [version-drift] {message}")
         print(
