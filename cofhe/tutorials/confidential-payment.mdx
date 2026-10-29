@@ -3,23 +3,34 @@ title: "Send a confidential payment"
 description: "Alice pays Bob 100 tokens with an encrypted amount. Run the full example on local mocks, then on Sepolia."
 ---
 
-Alice pays Bob 100 tokens. Everyone can see that Alice paid Bob. Nobody except Alice and Bob can see how much, or what either of them holds. This tutorial builds that payment end to end: the token contract, the encrypted transfer, and Bob reading his balance. You run every step on your machine first, then on Sepolia.
+Alice pays Bob 100 tokens. Everyone can see that Alice paid Bob. Only Alice and Bob can see how much. Each of them can read only their own balance. This tutorial builds that payment end to end: the token contract, the encrypted transfer, and Bob reading his balance. You run every step on your machine first, then on Sepolia.
 
 ## What stays private
 
-| Anyone can see | Only Alice and Bob can see |
+| Information | Who can read it |
 | --- | --- |
-| That Alice sent a transfer to Bob, and when | The amount |
-| The token contract and its code | Alice's balance and Bob's balance |
-| That each account has some activity on the token | |
+| That Alice sent a transfer to Bob, and when | Anyone |
+| That an account sent or received transfers, through a public activity counter | Anyone (see the note below) |
+| The token contract, its code, and the 1,000-token mint in the constructor | Anyone |
+| The amount of the transfer | Alice and Bob |
+| Alice's balance | Alice |
+| Bob's balance | Bob |
 
 The amount travels encrypted from Alice's machine to the chain, and it stays encrypted onchain. The contract adds and subtracts encrypted values. CoFHE decrypts a value only for an account the contract allowed to read it.
 
+<Note>
+This example mints a constant, so its starting supply is public. A real token mints from an encrypted input when the amount must stay private.
+
+Etherscan shows each transfer as `79,840,001 CTK`, and `balanceOf` returns numbers near 79,840,000. These are not amounts. FHERC20 reports an activity counter in place of the public ERC-20 fields, so wallets and explorers can show that something happened without the amount. See [FHERC20](/cofhe/fhe-library/confidential-contracts/fherc20/overview).
+</Note>
+
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Menlo, Monaco, Consolas, monospace", "fontSize": "16px", "primaryColor": "#8FBAF5", "primaryBorderColor": "#2E7CF6", "primaryTextColor": "#0A1626", "lineColor": "#4C8DFF", "signalColor": "#4C8DFF", "signalTextColor": "#8FA3BF", "actorBkg": "#8FBAF5", "actorBorder": "#2E7CF6", "actorTextColor": "#0A1626", "actorLineColor": "#3D4654", "noteBkgColor": "#14171C", "noteBorderColor": "#3D4654", "noteTextColor": "#AFC3DE", "activationBkgColor": "#1E3A5F", "activationBorderColor": "#4C8DFF", "clusterBkg": "#14171C", "clusterBorder": "#3D4654", "titleColor": "#E7EAEE", "edgeLabelBackground": "#8FBAF5", "textColor": "#AFC3DE", "labelTextColor": "#E7EAEE", "tertiaryColor": "#14171C", "loopTextColor": "#AFC3DE", "labelBoxBkgColor": "#1E3A5F", "labelBoxBorderColor": "#4C8DFF"}, "sequence": {"actorFontFamily": "Menlo, Monaco, Consolas, monospace", "messageFontFamily": "Menlo, Monaco, Consolas, monospace", "noteFontFamily": "Menlo, Monaco, Consolas, monospace", "width": 220, "actorFontSize": 16, "messageFontSize": 16, "noteFontSize": 15}}}%%
 sequenceDiagram
     participant App as Your app
     participant SDK as Client SDK
     participant C as Your contract
+    participant TM as TaskManager
     participant CoFHE as CoFHE
 
     Note over App: Alice
@@ -28,19 +39,25 @@ sequenceDiagram
     CoFHE-->>SDK: handle and signature
     SDK-->>App: [amount, proof]
     App->>C: confidentialTransfer(bob, amount, proof)
-    C->>CoFHE: subtract from Alice, add to Bob, on encrypted values
+    C->>TM: verify the input, then FHE tasks on the encrypted balances
+    TM->>CoFHE: compute the new balances
     Note over App: Bob
     App->>C: confidentialBalanceOf(bob)
     C-->>App: handle of Bob's balance
     App->>SDK: decryptForView(handle)
-    SDK->>CoFHE: decrypt for Bob, after the ACL check
-    CoFHE-->>SDK: result sealed to Bob's key
+    SDK->>CoFHE: decrypt request with Bob's ACP
+    CoFHE->>TM: isAllowedWithPermission / isPubliclyAllowed
+    CoFHE-->>SDK: result sealed to the key in Bob's ACP
     SDK-->>App: 100
 ```
 
 ## Run it first
 
 The example is a complete Hardhat project. Download it and run its test before you read any code. The test runs on local mocks, so you need no wallet and no testnet.
+
+<Note>
+You need Node.js 20, 22, or 24. The first run downloads the Solidity compiler, and Hardhat may ask once whether to send anonymous telemetry. The compiler prints two warnings about the CoFHE mock contracts, one about transient storage and one about code size. Both are expected: the mocks run only in local tests.
+</Note>
 
 ```bash
 npx degit FhenixProtocol/fhenix-docs/cofhe/tutorials/examples/confidential-transfer my-payment
@@ -129,7 +146,7 @@ await token.connect(alice)['confidentialTransfer(address,bytes32,bytes)'](bob.ad
 
 ## Bob reads his balance
 
-`confidentialBalanceOf` returns a handle, not a number: a reference to Bob's encrypted balance. Bob's client asks CoFHE to decrypt it. The token allowed Bob to read his own balance during the transfer, so CoFHE returns the result sealed to Bob's key.
+`confidentialBalanceOf` returns a handle, not a number: a reference to Bob's encrypted balance. Bob's client asks CoFHE to decrypt it. The token allowed Bob to read his own balance during the transfer, so CoFHE returns the result sealed to the key in Bob's ACP. Only Bob's client can unseal it.
 
 {/* example: cofhe/tutorials/examples/confidential-transfer/test/alice-to-bob.test.ts#bob-reads */}
 ```typescript test/alice-to-bob.test.ts
@@ -163,7 +180,7 @@ On the mocks, the error message contains `NotAllowed`. See [access control](/cof
 ## What if Alice sends more than she has?
 
 <Warning>
-A confidential transfer larger than the balance does not revert. It moves 0 tokens. A revert would tell everyone that the sender's balance is below the amount, so the token transfers nothing instead. Check the result if your app needs to know.
+A confidential transfer larger than the balance does not revert. It moves 0 tokens. A revert would tell everyone that the sender's balance is below the amount, so the token transfers nothing instead. To learn what moved, Alice decrypts the amount handle in the transfer's `ConfidentialTransfer` event. The one case that does revert is a sender that never held the token: `FHERC20ZeroBalance`.
 </Warning>
 
 {/* example: cofhe/tutorials/examples/confidential-transfer/test/alice-to-bob.test.ts#overdraw */}
@@ -188,13 +205,13 @@ The same payment runs on Ethereum Sepolia. You need one test account for Alice, 
 
 <Steps>
 <Step title="Add your keys">
-Copy `.env.example` to `.env`, then fill in `ALICE_PRIVATE_KEY`. `SEPOLIA_RPC_URL` is optional: without it, the script uses a public Sepolia endpoint. `.gitignore` already excludes `.env`. Use a test account only.
+Copy `.env.example` to `.env`, then fill in `ALICE_PRIVATE_KEY`. `SEPOLIA_RPC_URL` is optional: without it, the script uses a public Sepolia endpoint. If Alice's account has no Sepolia ETH, the script stops before it sends anything. `.gitignore` already excludes `.env`. Use a test account only.
 </Step>
 <Step title="Run the script">
 ```bash
 npm run sepolia
 ```
-The script deploys the token, sends the payment, and prints Bob's and Alice's balances with links to the transactions on Etherscan.
+The script deploys the token, sends the payment, and prints Bob's and Alice's balances, with Etherscan links to the token and the transfer.
 </Step>
 </Steps>
 
