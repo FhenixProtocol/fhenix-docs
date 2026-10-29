@@ -133,7 +133,7 @@ The constructor-based contracts use the same slots. The public ERC-20 ledger of 
 A proxy deployed from `0.4.0` upgrades in place. No storage struct changed, so balances, operators, claims, and wrapper settings carry over. Pending claims stay valid. Before you upgrade:
 
 - Deploy `ERC20ConfidentialLib` from `1.0.0` and link the new implementation to it. Keep `unsafeAllowLinkedLibraries: true`.
-- Remove `nonReentrant` from any override of `claimUnshielded` or `claimUnshieldedBatch` that calls `super`.
+- Remove `nonReentrant` from any override of `shield`, `unshield`, `claimUnshielded`, or `claimUnshieldedBatch` that calls `super`.
 - Check that your freeze hook accepts `from == address(0)`, because `_confidentialMint` now calls it.
 
 An `ERC20ConfidentialUpgradeable` proxy keeps the indicator token that its initializer deployed. The indicator is a separate contract, not behind the proxy, so it keeps its `0.4.0` code. To use the `1.0.0` indicator, deploy a new `ERC20ConfidentialIndicator` from a reinitializer and register it with `_setIndicatorToken`. The new indicator starts with no activity history.

@@ -37,7 +37,7 @@ contract FreezableToken is ERC20Confidential, Ownable {
         if (frozen[account]) revert AccountFrozen(account);
     }
 
-    // Confidential transfers and unshield.
+    // Confidential transfers, unshield, and confidential mints (from is address(0)).
     function _beforeConfidentialMove(address from, address to) internal view override {
         _checkNotFrozen(from);
         _checkNotFrozen(to);
