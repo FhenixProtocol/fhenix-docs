@@ -52,7 +52,7 @@ The audit of `1.0.0` does not cover these two wrappers.
 </Warning>
 
 <Warning>
-Enable the Solidity optimizer for wrappers. With the optimizer off, `ConfidentialETH` compiles to 24,693 bytes and an upgradeable ERC-20 wrapper to 26,751 bytes. Both exceed the 24,576-byte limit and fail to deploy. With `runs: 200` they compile to 14,839 and 15,730 bytes.
+Enable the Solidity optimizer for wrappers. With the optimizer off, `ConfidentialETH` compiles to about 26,900 bytes and an upgradeable ERC-20 wrapper to about 28,200 bytes. Both exceed the 24,576-byte limit and fail to deploy. With `runs: 200` they compile to about 16,500 and 16,800 bytes.
 </Warning>
 
 ## How decimals and the rate work
@@ -184,7 +184,8 @@ The ERC-20 wrapper assumes it receives the full amount it pulls. Fee-on-transfer
 | Error | When |
 | --- | --- |
 | `FHERC20InvalidReceiver` | `unshield` or `reassignClaim` targets `address(0)`, or the ERC-20 wrapper's `shield` does |
-| `FHERC20UnauthorizedSpender` | The caller of `unshield` is neither `from` nor its operator, or the caller of `reassignClaim` or `claimUnshieldedAsWETH` is neither the claim's `to` nor its operator |
+| `FHERC20UnauthorizedSpender` | The caller of `unshield` is neither `from` nor its operator |
+| `FHERC20UnauthorizedSpender` | The caller of `reassignClaim` or `claimUnshieldedAsWETH` is neither the claim's `to` nor its operator |
 | `FHERC20UnauthorizedCaller` | `onTransferReceived` is called by a token other than the underlying |
 | `AmountTooSmallForConfidentialPrecision` | A native shield is below `rate()` |
 | `FHERC20TotalSupplyOverflow` | A mint would push `inferredTotalSupply()` past `maxTotalSupply()` |
@@ -194,7 +195,7 @@ The ERC-20 wrapper assumes it receives the full amount it pulls. Fee-on-transfer
 | `ClaimBatchLengthMismatch` | The batch arrays have different lengths |
 | `InvalidDecryptionProof` | The decrypted value or signature does not match the claim's handle. The claim stays pending |
 
-Before `1.0.0`, this case reverted with the TaskManager's `InvalidSigner`. See [common errors](/cofhe/fhe-library/core-concepts/common-errors) for the TaskManager errors.
+Before `1.0.0`, this case reverted with the TaskManager's `InvalidSignature()` or `InvalidSigner(...)`. See [common errors](/cofhe/fhe-library/core-concepts/common-errors) for the TaskManager errors.
 
 ## Events
 
