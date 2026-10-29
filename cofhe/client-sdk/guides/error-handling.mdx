@@ -58,6 +58,8 @@ Use `isCofheError(err)` to check if a caught error is a `CofheError`.
 | --- | --- |
 | `ZkPackFailed` | `encryptInputs` exceeded the 2048-bit total plaintext limit, or an item had an invalid `utype` |
 | `ConsumingContractUninitialized` | `execute()` was called without `setConsumingContract(...)` |
+| `ConsumingContractInvalid` | `setConsumingContract(...)` got a value that is not a 20-byte address. `execute()` throws before it starts proving |
+| `ZkVerifyFailed` | The ZK verifier rejected the input proof, or returned an error or a malformed response |
 | `ACPNotFound` | No ACP found for the given `chainId + account` |
 | `ACPInvalid` | The ACP signature is invalid |
 | `ACPMalformed` | The decryption backend could not parse the submitted ACP |
