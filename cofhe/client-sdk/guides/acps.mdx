@@ -197,6 +197,8 @@ createCofheConfig({
 });
 ```
 
+Set `app` in the same `acp` block, for example `app: 'my-app.example'`, to scope shares to your app. Every share the client creates then carries the app's key, and `getIncomingShares` lists only the shares posted for that app. Without `app`, it lists every importable share.
+
 <Warning>
 Posting onchain makes the offer's existence public. The registry records that this issuer shared with this recipient, and when. Labels and `metadata` you post are public too. The encrypted values stay confidential, but the relationship does not, which the offline route avoids.
 </Warning>
