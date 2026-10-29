@@ -5,7 +5,8 @@ The compatibility page is the single source of truth for package versions.
 This script asserts two things:
 
   --docs   every version pinned anywhere in the docs matches that page, and so
-           do the package pins in the sample-compile workflow
+           do the package pins in the sample-compile workflow and in each tutorial
+           example's package.json
   --npm    the compatibility page itself matches what is published on npm
 
 The two run separately on purpose. The docs check is offline and runs on every

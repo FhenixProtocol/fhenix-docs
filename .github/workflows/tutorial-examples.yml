@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'cofhe/tutorials/**'
+      - 'cofhe/**/*.mdx'
       - 'cofhe/scripts/check-example-regions.py'
       - '.github/workflows/tutorial-examples.yml'
   workflow_dispatch:
