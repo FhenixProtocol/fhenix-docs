@@ -103,7 +103,7 @@ Deploy `ERC20ConfidentialLib` from `1.0.0`. Its ABI changed in `1.0.0`: it has n
 </Warning>
 
 <Warning>
-Turn the Solidity optimizer on before you deploy a wrapper. With it off, `FHERC20NativeWrapper` and `FHERC20ERC20WrapperUpgradeable` compile past the 24,576-byte limit and the deployment reverts. With `runs: 200`, both come in near 15,000 bytes.
+Turn the Solidity optimizer on before you deploy a wrapper. With it off, `FHERC20NativeWrapper` and `FHERC20ERC20WrapperUpgradeable` compile past the 24,576-byte limit and the deployment reverts. With `runs: 200`, both come in near 16,500 bytes.
 </Warning>
 
 ## Upgrading from 0.4
@@ -112,8 +112,8 @@ Version `1.0.0` is the audited release. Most `0.4.0` code compiles unchanged. Ch
 
 - Deploy `ERC20ConfidentialLib` again from `1.0.0`, and link every token to the new address.
 - A rejected decryption proof in `claimUnshielded`, `claimUnshieldedBatch`, or `discloseEncryptedAmount` now reverts with `InvalidDecryptionProof()`. Before, it reverted with the TaskManager's `InvalidSignature()` or `InvalidSigner(...)`. Update code that matches on those errors.
-- Shield, claim, and `onTransferReceived` paths are now `nonReentrant`. If your override extends `claimUnshielded` or `claimUnshieldedBatch` through `super`, do not add your own `nonReentrant`: the call reverts with `ReentrancyGuardReentrantCall()`.
-- A receiver whose balance on the token changes during `onConfidentialTransferReceived` makes the transfer revert with `FHERC20ReceiverMovedBalance` or `ConfidentialReceiverMovedBalance`.
+- Shield, claim, and `onTransferReceived` paths are now `nonReentrant`. If your override of `shield`, `unshield`, `claimUnshielded`, or `claimUnshieldedBatch` calls `super`, do not add your own `nonReentrant`: the call reverts with `ReentrancyGuardReentrantCall()`.
+- A receiver cannot move its own balance on the token during `onConfidentialTransferReceived`. Every token entry point is `nonReentrant`, so the attempt reverts with `ReentrancyGuardReentrantCall()`. `FHERC20ReceiverMovedBalance` and `ConfidentialReceiverMovedBalance` are a second check, for custom entry points without the guard.
 - `_confidentialMint` now calls `_beforeConfidentialMove(address(0), to)`. Your freeze check must treat `from == address(0)` as no account.
 - The `ERC20Confidential` indicator returns `0` for accounts with no confidential activity. Its `totalSupply()` is the sum of the indicated balances.
 - A contract built directly on `FHERC20WrapperClaims` must implement `_isClaimOperator(holder, spender)`. The two wrappers already implement it.
