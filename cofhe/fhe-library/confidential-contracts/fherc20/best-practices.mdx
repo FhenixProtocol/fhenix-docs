@@ -37,4 +37,6 @@ These are the mistakes that cost the most when you work with FHERC20 tokens. Eac
 
 **Treat unshielded amounts as public.** Unshielding makes the burned amount publicly decryptable, and the claim publishes it in plaintext. The `uint64` overload of `unshield` also shows it in calldata before that. Only the balances that remain stay confidential.
 
+**Give users a way out of a stuck claim.** If the claim's `to` cannot accept the payout, `to` or its operator calls `reassignClaim`. On the native wrapper they can also call `claimUnshieldedAsWETH`. See [wrap ERC-20 tokens and ETH](/cofhe/fhe-library/confidential-contracts/fherc20/fherc20-wrapper#when-the-recipient-cannot-accept-the-payout).
+
 **Do not wrap fee-on-transfer tokens.** The ERC-20 wrapper mints the full amount it requests, so a token that delivers less leaves the wrapper holding less than it owes.

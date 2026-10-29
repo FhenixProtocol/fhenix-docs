@@ -96,7 +96,7 @@ Each step in the callback has a reason:
 Decide in encrypted form. A receiver that branches on the amount in plaintext would have to decrypt it, which it cannot do inside the callback.
 
 <Warning>
-Do not move the tokens back yourself and also return false. The token refunds on false, so a receiver that does both pays twice. If the receiver no longer holds the amount when it returns false, the refund moves zero and the sender gets nothing back.
+Do not change your own balance on the token inside the callback. Every token entry point is `nonReentrant`, so a transfer from inside the callback reverts with `ReentrancyGuardReentrantCall()`. As a second check, the token compares the receiver's balance handle before and after the call. To refuse a transfer, return false and let the token refund it.
 </Warning>
 
 ## When does the transfer revert?
@@ -108,6 +108,7 @@ Do not move the tokens back yourself and also return false. The token refunds on
 | Reverts with no reason | Reverts with `FHERC20InvalidReceiver(to)` |
 | Reverts with a reason | Reverts with the receiver's error |
 | Returns an `ebool` it did not share with the token | Reverts with `NotShared` |
+| Calls the token during the callback, for example to move its balance | Reverts with `ReentrancyGuardReentrantCall()` |
 
 ## What does a callback transfer emit?
 

@@ -78,7 +78,10 @@ All transfer functions are `nonReentrant`. A callback that tries to start a seco
 | <code style={{ whiteSpace: "nowrap" }}>FHERC20ZeroBalance</code> | `from` has never held the token |
 | <code style={{ whiteSpace: "nowrap" }}>FHERC20UnauthorizedSpender</code> | The caller of a `From` function is not an operator for `from` |
 | <code style={{ whiteSpace: "nowrap" }}>FHERC20IncompatibleFunction</code> | The caller used `transfer`, `transferFrom`, `approve`, or `allowance` |
-| <code style={{ whiteSpace: "nowrap" }}>InvalidSigner</code> | The input proof was signed for a different consuming contract or sender, or a decryption result does not match its handle. See [common errors](/cofhe/fhe-library/core-concepts/common-errors) |
+| <code style={{ whiteSpace: "nowrap" }}>InvalidSigner</code> | The input proof was signed for a different consuming contract or sender. See [common errors](/cofhe/fhe-library/core-concepts/common-errors) |
+| <code style={{ whiteSpace: "nowrap" }}>InvalidDecryptionProof</code> | `discloseEncryptedAmount` received a value or signature that does not match the handle |
+| <code style={{ whiteSpace: "nowrap" }}>ReentrancyGuardReentrantCall</code> | The receiver of an `AndCall` transfer called the token again during the callback |
+| <code style={{ whiteSpace: "nowrap" }}>FHERC20ReceiverMovedBalance</code> | The receiver's balance changed during the callback through an entry point without the reentrancy guard. A second check: the guard normally reverts first |
 | <code style={{ whiteSpace: "nowrap" }}>NotShared</code> | A `sharedEuint64` argument was not shared with the token by the caller |
 
 ## How do you make an amount public?
@@ -97,7 +100,7 @@ const { decryptedValue, signature } = await client.decryptForTx(handle).withoutA
 ```
 </Step>
 <Step title="Publish the result">
-Call `discloseEncryptedAmount(handle, decryptedValue, signature)`. The token verifies the signature and emits `AmountDisclosed(handle, amount)`. A value that does not match the handle reverts with `InvalidSigner`.
+Call `discloseEncryptedAmount(handle, decryptedValue, signature)`. The token verifies the signature and emits `AmountDisclosed(handle, amount)`. A value that does not match the handle reverts with `InvalidDecryptionProof`.
 </Step>
 </Steps>
 

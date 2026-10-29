@@ -17,11 +17,11 @@ This is one migration across three independently versioned packages. Bumping a s
 
 | Package | Target | Notes |
 | --- | --- | --- |
-| `@cofhe/*` (every package) | `0.8.0` | Keep them all on one version |
+| `@cofhe/*` (every package) | `1.0.1` | Keep them all on one version |
 | `@fhenixprotocol/cofhe-contracts` | `1.0.0` | Use the stable release, not a beta |
-| `fhenix-confidential-contracts` | `0.4.0` | Only if you use FHERC20 or confidential tokens |
+| `fhenix-confidential-contracts` | `1.0.0` | Only if you use FHERC20 or confidential tokens |
 
-`fhenix-confidential-contracts` `0.4.0` depends on an exact `@fhenixprotocol/cofhe-contracts@1.0.0`. Leaving a beta pin in place resolves two copies of `FHE.sol`, and `sharedEuint64` from one is not the same type as `sharedEuint64` from the other. The resulting errors read like nonsense, so check the pin first.
+`fhenix-confidential-contracts` `1.0.0` depends on an exact `@fhenixprotocol/cofhe-contracts@1.0.0`. Leaving a beta pin in place resolves two copies of `FHE.sol`, and `sharedEuint64` from one is not the same type as `sharedEuint64` from the other. The resulting errors read like nonsense, so check the pin first.
 
 If you are coming from `cofhejs` rather than `@cofhe/sdk`, follow [migrating from cofhejs](/cofhe/client-sdk/introduction/migrating-from-cofhejs) first. If you are on `0.5.x`, the Solidity work below is identical, because the `InEuintXX` structs did not change between `0.5` and `0.6`.
 
@@ -43,10 +43,12 @@ You can also [browse the skill on GitHub](https://github.com/FhenixProtocol/cofh
 Then ask your agent to run it:
 
 ```text
-Migrate this project to @cofhe/sdk 0.8.0
+Migrate this project to @cofhe/sdk 0.7
 ```
 
 It proposes each change as a diff and waits for your approval. Tell it to apply everything if you would rather review at the end.
+
+The skill covers the `0.7` changes only. After it finishes, follow [upgrading from 0.7](/cofhe/get-started/introduction/compatibility#upgrading-from-0-7), then [upgrading from 0.8](/cofhe/get-started/introduction/compatibility#upgrading-from-0-8), to reach `1.0.1`.
 
 It stops and asks on the decisions that are genuinely yours:
 

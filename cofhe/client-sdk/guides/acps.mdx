@@ -105,6 +105,8 @@ const acp = await client.acp.createSharing({
 A scope only ever narrows the issuer's existing access. It cannot grant access the issuer does not already hold, so scoping is not a way to delegate something you were never allowed to read. It also does not retroactively narrow ACPs you already issued.
 </Warning>
 
+The `name` stays on your device. A shared ACP does not carry it: `ACPUtils.export` and `shareOnChain` leave it out.
+
 Handles are bytes32 hex strings here, not bigints. If you are carrying handle values around as bigints, convert before putting them in an ACP.
 
 ## Sharing with another account
@@ -166,12 +168,14 @@ const shares = await client.acp.getIncomingShares();
 const recipientAcp = await client.acp.importFromChain(shares[0]);
 ```
 
-Both sides need a connected wallet. Only `getIncomingShares` is a read; the rest send transactions.
+Both sides need a connected wallet. `getIncomingShares`, `getShareFromChain`, and `verifyShareLabels` are reads; the rest send transactions.
 
 | Method | Who calls it | What it does |
 | --- | --- | --- |
-| `shareOnChain(acp)` | Issuer | Posts a signed sharing ACP to the registry. Returns `{ txHash, shareId }` |
+| `shareOnChain(acp, options?)` | Issuer | Posts a signed sharing ACP to the registry, with optional `labels` or `metadata`. Returns `{ txHash, shareId }` |
 | `getIncomingShares()` | Recipient | Reads the importable shares addressed to the connected account |
+| `getShareFromChain(shareId)` | Anyone | Reads one share by its id |
+| `verifyShareLabels(share)` | Recipient | Checks the share's labels against the chain. Returns `null` when the share has no labels |
 | `importFromChain(share)` | Recipient | Fills in the recipient's sealing key, signs, stores, and makes it the active ACP |
 | `cancelShare(shareId)` | Issuer | Retracts a pending share that has not been imported yet |
 | `dismissShare(shareId)` | Recipient | Declines a share, or clears an entry the recipient no longer wants |
@@ -193,8 +197,10 @@ createCofheConfig({
 });
 ```
 
+Set `app` in the same `acp` block, for example `app: 'my-app.example'`, to scope shares to your app. Every share the client creates then carries the app's key, and `getIncomingShares` lists only the shares posted for that app. Without `app`, it lists every importable share.
+
 <Warning>
-Posting onchain makes the offer's existence public. The registry records that this issuer shared with this recipient, and when. The encrypted values stay confidential, but the relationship does not, which the offline route avoids.
+Posting onchain makes the offer's existence public. The registry records that this issuer shared with this recipient, and when. Labels and `metadata` you post are public too. The encrypted values stay confidential, but the relationship does not, which the offline route avoids.
 </Warning>
 
 ## Revoking access
