@@ -50,20 +50,30 @@ def check_text(text: str, page: str, root: Path):
     errors = []
     lines = text.splitlines()
     for i, line in enumerate(lines):
+        n = i + 1
         m = MARKER.match(line.strip())
         if not m:
+            if "{/* example:" in line:
+                errors.append(f"{page}:{n}: malformed example marker. Use {{/* example: <path>#<region> */}}")
             continue
-        n = i + 1
         file, name = m.group(1), m.group(2)
         fence = FENCE.match(lines[i + 1].strip()) if i + 1 < len(lines) else None
         if not fence:
             errors.append(f"{page}:{n}: example marker is not followed by a code block")
             continue
-        body = []
+        title = lines[i + 1].strip().split()[1:2]
+        if not title or not file.endswith(title[0]):
+            errors.append(f"{page}:{n}: the code block title must name {file.rsplit('/', 1)[-1]}, the file the marker points to")
+            continue
+        body, closed = [], False
         for line in lines[i + 2:]:
             if line.strip().startswith(fence.group(1)):
+                closed = True
                 break
             body.append(line)
+        if not closed:
+            errors.append(f"{page}:{n}: the code block after the marker is never closed")
+            continue
         path = root / file
         if not path.is_file():
             errors.append(f"{page}:{n}: {file} does not exist")
@@ -76,8 +86,12 @@ def check_text(text: str, page: str, root: Path):
     return errors
 
 
+# Marker paths are relative to the repo root, wherever the script runs from.
+REPO = Path(__file__).resolve().parents[2]
+
+
 def main(argv):
-    root = Path(".")
+    root = REPO
     pages = [Path(a) for a in argv[1:]] or sorted(root.glob("cofhe/**/*.mdx"))
     errors = []
     for page in pages:
@@ -105,6 +119,9 @@ def self_test():
             "missing file fails": (good.replace("ex/a.ts", "ex/b.ts"), 1),
             "block without marker is ignored": ("```typescript a.ts\nanything\n```\n", 0),
             "marker not followed by a fence fails": (marker + "\ntext\n", 1),
+            "malformed marker fails": ("{/* example: ex/a.ts#bad.name */}\n```typescript a.ts\nconst a = 1;\n```\n", 1),
+            "unclosed fence fails": (marker + "```typescript a.ts\nconst a = 1;\nconst b = 2;\n", 1),
+            "title naming another file fails": (good.replace("```typescript a.ts", "```typescript other.ts"), 1),
         }
         bad = {}
         for name, (page, want) in cases.items():
