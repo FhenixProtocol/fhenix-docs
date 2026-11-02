@@ -1,0 +1,68 @@
+---
+title: "Troubleshooting"
+description: "Fix masked balances, pending reveals, missing orders, and fills that did not go through."
+icon: "wrench"
+---
+
+Most issues come from a missing permit, a reveal that has not been completed, or the all-or-nothing rule for confidential transfers. A **Needs you** badge on the **My Orders** or **Activity** tab marks anything waiting for you.
+
+<CardGroup cols={2}>
+  <Card title="Unlock your balance" icon="lock-open" href="/trading/troubleshooting/unlock-your-balance">
+    Balances show as masked, or the app asks you to unlock them.
+  </Card>
+  <Card title="Reveal after your fill" icon="eye" href="/trading/troubleshooting/reveal-after-your-fill">
+    Activity shows Size tier reveal needed after a fill.
+  </Card>
+  <Card title="Reveal for a taker" icon="hand-holding-dollar" href="/trading/troubleshooting/reveal-for-a-taker">
+    One of your orders shows Size updating.
+  </Card>
+</CardGroup>
+
+## Your new order is not in the book
+
+The order was created and escrowed but not listed. An order stays pending, and is not visible or fillable, until the **List order** step reveals its tier.
+
+Open **My Orders**, find the order, and complete the listing step. Listing carries no bond.
+
+## A fill went through but nothing moved
+
+Confidential transfers are all or nothing. If your balance could not cover the full payment, nothing was paid and nothing was released.
+
+Check your decrypted balance, lower the amount, and fill again.
+
+## The order does not cover your whole amount
+
+The book row does not show **Covers full amount**, and the **Fill outcome** in the **Fill order** dialog is not **Fills in full**. The order's remaining size is smaller than your amount.
+
+Fill it anyway and pay only for the part that fills, pick another order as well, or lower your amount.
+
+## You do not have enough ETH
+
+Every transaction needs ETH for gas, and a fill also posts the refundable bond shown in the **Fill order** dialog.
+
+Add ETH to your wallet on the test network, then retry. Makers need gas only; listing and top-ups carry no bond.
+
+## An extra Allow or Set operator step appears
+
+The first time you trade a token, the OTC contract needs your permission to move it. Fills show this as **Allow**. Creating and topping up orders show it as **Set operator**.
+
+Confirm the step in your wallet, then continue with the next step in the tracker.
+
+## Only your own orders are on this pair
+
+**Best matches** is empty and says only your own orders are open on the pair.
+
+Pick another pair, using the order counts in the [token selector](/trading/trading-screens/choose-a-token), or post your own order and wait for a taker.
+
+## Your order shows Delisted or Expired
+
+- **Delisted:** the order was filled to nothing. Select **Top up** to relist it, or **Close order** to finish.
+- **Expired:** the order passed its expiry and can no longer be filled. Select **Close order** to return the escrow to your wallet.
+
+## Trading is paused or a token is delisted
+
+You can still close orders, list pending orders, and complete reveals, so escrow and bonds can always be recovered. New orders, fills, and top-ups resume when trading reopens.
+
+## You are on the wrong account or network
+
+Check the connected address and network in the wallet header. Your orders, fills, and permits belong to the connected account.
