@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Fhenix Documentation",
-  "description": "Documentation for Fhenix products: CoFHE and the Wallet Module.",
+  "description": "Documentation for Fhenix products: CoFHE, the Wallet Module, and the Trading Module.",
   "seo": {
     "metatags": {
       "og:site_name": "Fhenix Documentation",
@@ -367,13 +367,71 @@
         ]
       },
       {
-        "product": "Trading",
+        "product": "Trading Module",
         "icon": "chart-line",
         "groups": [
           {
-            "group": "Trading",
+            "group": "Get started",
+            "icon": "play",
             "pages": [
-              "trading/index"
+              "trading/index",
+              "trading/get-started"
+            ]
+          },
+          {
+            "group": "Trade",
+            "icon": "chart-line",
+            "pages": [
+              {
+                "group": "Finding and filling orders",
+                "icon": "chart-column",
+                "root": "trading/find-and-fill/index",
+                "pages": [
+                  "trading/find-and-fill/market",
+                  "trading/find-and-fill/order-book",
+                  "trading/find-and-fill/choose-a-token",
+                  "trading/find-and-fill/fill-an-order"
+                ]
+              },
+              {
+                "group": "Posting and managing orders",
+                "icon": "list-check",
+                "root": "trading/manage-orders/index",
+                "pages": [
+                  "trading/manage-orders/create-an-order",
+                  "trading/manage-orders/my-orders",
+                  "trading/manage-orders/order-history",
+                  "trading/manage-orders/top-up-an-order",
+                  "trading/manage-orders/activity"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Smart contracts",
+            "icon": "file-contract",
+            "pages": [
+              "trading/contracts/source-code",
+              "trading/contracts/audit",
+              "trading/contracts/contract-addresses"
+            ]
+          },
+          {
+            "group": "Help",
+            "icon": "life-ring",
+            "pages": [
+              {
+                "group": "Troubleshooting",
+                "icon": "wrench",
+                "root": "trading/troubleshooting/index",
+                "pages": [
+                  "trading/troubleshooting/unlock-your-balance",
+                  "trading/troubleshooting/reveal-after-your-fill",
+                  "trading/troubleshooting/reveal-for-a-taker"
+                ]
+              },
+              "trading/in-app-help",
+              "trading/faq"
             ]
           }
         ]
