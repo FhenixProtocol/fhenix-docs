@@ -1,0 +1,40 @@
+---
+title: "Reveal after your fill"
+description: "Complete the size tier reveal after a fill to get your bond back."
+icon: "eye"
+---
+
+<div className="flex flex-col md:flex-row gap-8 items-start">
+<div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
+<Frame>
+<img src="/trading/images/reveal-after-fill.png" alt="Activity tab with a Needs you badge and a fill marked Reveal pending, showing a Size tier reveal needed panel and a Reveal size tier button" />
+</Frame>
+</div>
+<div className="w-full md:flex-1 md:min-w-0">
+
+**Activity** shows **Needs you**. The fill is marked **Reveal pending**, with a **Size tier reveal needed** panel and a **Reveal size tier** button.
+
+## Why it happens
+
+Your fill settled, but the order's new size tier has not been published yet. Your bond is held until it is.
+
+## How to fix it
+
+<Steps>
+  <Step title="Find the fill">
+    Open **Activity** and expand the order marked **Needs you**.
+  </Step>
+  <Step title="Reveal">
+    Select **Reveal size tier** and confirm in your wallet.
+  </Step>
+  <Step title="Check">
+    Check that the **Needs you** badge clears.
+  </Step>
+</Steps>
+
+<Note>
+Reveal within the exclusive window to get the whole bond back. Once the window passes, anyone can reveal for you and keep a bounty from your bond; the rest still returns to you. Your traded tokens are not affected either way.
+</Note>
+
+</div>
+</div>
