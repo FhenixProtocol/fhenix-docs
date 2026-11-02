@@ -408,6 +408,15 @@
             ]
           },
           {
+            "group": "Smart contracts",
+            "icon": "file-contract",
+            "pages": [
+              "trading/contracts/source-code",
+              "trading/contracts/audit",
+              "trading/contracts/contract-addresses"
+            ]
+          },
+          {
             "group": "Help",
             "icon": "life-ring",
             "pages": [
