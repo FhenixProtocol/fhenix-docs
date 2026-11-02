@@ -371,9 +371,58 @@
         "icon": "chart-line",
         "groups": [
           {
-            "group": "Trading",
+            "group": "Get started",
+            "icon": "play",
             "pages": [
-              "trading/index"
+              "trading/index",
+              "trading/get-started"
+            ]
+          },
+          {
+            "group": "Trade",
+            "icon": "chart-line",
+            "pages": [
+              {
+                "group": "Trading screens",
+                "icon": "chart-column",
+                "root": "trading/trading-screens/index",
+                "pages": [
+                  "trading/trading-screens/market",
+                  "trading/trading-screens/order-book",
+                  "trading/trading-screens/choose-a-token",
+                  "trading/trading-screens/fill-an-order"
+                ]
+              },
+              {
+                "group": "Posting and managing orders",
+                "icon": "list-check",
+                "root": "trading/manage-orders/index",
+                "pages": [
+                  "trading/manage-orders/create-an-order",
+                  "trading/manage-orders/my-orders",
+                  "trading/manage-orders/order-history",
+                  "trading/manage-orders/top-up-an-order",
+                  "trading/manage-orders/activity"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Help",
+            "icon": "life-ring",
+            "pages": [
+              {
+                "group": "Troubleshooting",
+                "icon": "wrench",
+                "root": "trading/troubleshooting/index",
+                "pages": [
+                  "trading/troubleshooting/unlock-your-balance",
+                  "trading/troubleshooting/reveal-after-your-fill",
+                  "trading/troubleshooting/reveal-for-a-taker"
+                ]
+              },
+              "trading/in-app-help",
+              "trading/faq"
             ]
           }
         ]
