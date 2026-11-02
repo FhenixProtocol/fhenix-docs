@@ -4,13 +4,9 @@ description: "Fix masked balances and the Unlock your balance prompt by signing 
 icon: "lock-open"
 ---
 
-<div className="flex flex-col md:flex-row gap-8 items-start">
-<div className="w-full md:w-[48%] md:shrink-0 md:sticky md:top-28">
 <Frame>
 <img src="/trading/images/unlock-balance.png" alt="Fill order dialog with masked balances and an Unlock your fUSD balance to continue message above an Unlock fUSD balance button" />
 </Frame>
-</div>
-<div className="w-full md:flex-1 md:min-w-0">
 
 Balances and amounts appear masked as `[***]`. The **Fill order** dialog says "Unlock your token balance to continue" and its button reads **Unlock token balance**. In **Activity**, You paid and You received are masked too.
 
@@ -35,6 +31,3 @@ There is no active Access Control Permit (ACP) for this wallet, or it has expire
 <Note>
 A masked amount is not a zero balance. It means the app cannot display it yet.
 </Note>
-
-</div>
-</div>
