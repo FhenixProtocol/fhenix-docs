@@ -1,0 +1,70 @@
+---
+title: "Common questions"
+sidebarTitle: "FAQ"
+description: "Short answers about privacy, size tiers, reveals, bonds, prices, and closing orders."
+icon: "circle-question"
+---
+
+<AccordionGroup>
+  <Accordion title="What is Fhenix Trading?">
+    A peer-to-peer venue for confidential tokens on Fhenix's CoFHE stack. Makers post orders at a public price with an encrypted amount; takers fill them in a single atomic transaction. No counterparty sees how much you hold or trade.
+  </Accordion>
+  <Accordion title="Which tokens can I trade?">
+    Any confidential token the venue has whitelisted. The token selectors on the Market tab list every tradable token on the current chain.
+  </Accordion>
+  <Accordion title="How is my order size kept private?">
+    The amount is encrypted on your device before it is escrowed, and it stays encrypted onchain. The contract computes a size tier from it under FHE and publishes only that. Only you can decrypt your remaining amount.
+  </Accordion>
+  <Accordion title="What is a size tier?">
+    A dollar range, not a number: S is $100 to $1K, M $1K to $10K, L $10K to $100K, XL $100K to $1M, and XXL above $1M. It is the only public signal of an order's size.
+  </Accordion>
+  <Accordion title="Why does every action take two transactions?">
+    Your tokens move in the first transaction. The new tier is encrypted, so a threshold of network nodes decrypts it, and a second transaction, the reveal, publishes it. The reveal never moves tokens.
+  </Accordion>
+  <Accordion title="What do I need in my wallet to trade?">
+    A confidential balance of the token you sell, and ETH for gas. Takers also need ETH for the refundable fill bond.
+  </Accordion>
+  <Accordion title="What is the bond, and can I lose it?">
+    A fill posts a small ETH bond so the reveal happens. Reveal within the exclusive window and the whole bond comes back. After the window, anyone may reveal for you and keep a bounty from the bond; the rest returns to you. Your traded tokens are never at risk.
+  </Accordion>
+  <Accordion title="Can I reveal someone else's fill and earn the bounty?">
+    Yes. When a taker has not revealed within their window, the book row shows "Reveal for" an amount of ETH. Reveal it and the contract pays you that bounty from their bond. You pay only gas.
+  </Accordion>
+  <Accordion title="What if an order cannot fill my whole amount?">
+    The fill is capped to the order's encrypted remaining amount. You pay only for the part that fills; the rest stays in your wallet. The book shows whether a tier can cover your amount in full, in part, or not at all.
+  </Accordion>
+  <Accordion title="What if I cannot afford the whole fill?">
+    Confidential transfers are all or nothing. If your balance cannot cover the full payment, nothing is paid and nothing is released. Size the fill to what you can pay.
+  </Accordion>
+  <Accordion title="Can I change or cancel an order?">
+    You can top up an order at any time; a reveal then updates its tier. You cannot change the price; close the order and post a new one. You can close an order whenever you like, and the remaining escrow returns to your wallet.
+  </Accordion>
+  <Accordion title="What do Listed, Delisted, and Expired mean?">
+    Listed: visible and fillable. Delisted: filled to nothing and removed from the book; a top-up relists it. Expired: past its expiry and no longer fillable; close it to get the escrow back.
+  </Accordion>
+  <Accordion title="Who can close an expired order?">
+    Anyone, but the escrow always returns to the maker. An order without an expiry can only be closed by its maker.
+  </Accordion>
+  <Accordion title="Who sets the price of an order?">
+    The maker does, when opening the order. The price is what the maker asks for each unit of the token they sell. Use the market price shown in the book as your reference.
+
+    Pricing above the market gets you more for each token, but takers have less reason to fill the order, so it may wait a long time or never fill. Pricing at or below the market fills faster, but you receive less. You cannot change the price later; close the order and post a new one.
+  </Accordion>
+  <Accordion title="Is a higher price better or worse for me?">
+    It depends on your side. The price is the amount of the receiving token the maker asks for each unit of the token they sell. For example, an order selling cUSDC for fUSD at 1.02 asks 1.02 fUSD for each cUSDC.
+
+    - **Maker (selling the token):** a higher price is better for you. Above the market price you get more for each token, but the order fills more slowly.
+    - **Taker (buying the token):** a lower price is better for you. Below the market price you pay less for each token you receive.
+
+    The order book shows how far each order's price sits from the market price.
+  </Accordion>
+  <Accordion title="What does the market price mean?">
+    The reference rate the book compares each order against. Where a price feed exists for both tokens it is labeled Live; otherwise the venue's own price is used and labeled Reference. Fills always settle at the maker's price.
+  </Accordion>
+  <Accordion title="What happens if trading is halted?">
+    The venue can delist a single token or pause the venue. Neither traps funds: closing orders, listing pending orders, and revealing tiers stay available, so escrow and bonds can always be recovered.
+  </Accordion>
+  <Accordion title="Is private the same as anonymous?">
+    No. Amounts are encrypted, but maker and taker addresses, tokens, prices, and tiers are public.
+  </Accordion>
+</AccordionGroup>
