@@ -2,7 +2,7 @@
 
 Pages under `trading/` document Fhenix Trading, served at `/trading/...`. The root `AGENTS.md` and `STYLE.md` apply here too.
 
-The content and layout are not decided yet. Today the product has one "Coming soon" page.
+The guide follows the wallet module layout: one page per screen, with the screenshot on the left and the screen components and steps on the right. Pages are grouped as Get started, Trade (Trading screens, Posting and managing orders), and Help (Troubleshooting, Help in the app, FAQ). Screenshots live in `trading/images/`. Trading runs on testnet.
 
 Yonatan and Alex review Trading changes.
 
