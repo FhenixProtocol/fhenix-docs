@@ -2,7 +2,7 @@
 
 Pages under `trading/` document the Fhenix Trading Module, served at `/trading/...`. The root `AGENTS.md` and `STYLE.md` apply here too.
 
-The guide has one page per screen, with a full-width screenshot above the screen components and steps. Pages are grouped as Get started, Trade (Finding and filling orders, Posting and managing orders), and Help (Troubleshooting, Help in the app, FAQ). Screenshots live in `trading/images/`.
+The guide has one page per screen, with a full-width screenshot above the screen components and steps. Pages are grouped as Get started, Trade (Finding and filling orders, Posting and managing orders), Smart contracts (Source code, Audit, Contract addresses), and Help (Troubleshooting, Help in the app, FAQ). Screenshots live in `trading/images/`.
 
 Yonatan and Alex review Trading changes.
 
