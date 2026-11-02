@@ -1,8 +1,8 @@
-# Trading docs
+# Trading Module docs
 
-Pages under `trading/` document Fhenix Trading, served at `/trading/...`. The root `AGENTS.md` and `STYLE.md` apply here too.
+Pages under `trading/` document the Fhenix Trading Module, served at `/trading/...`. The root `AGENTS.md` and `STYLE.md` apply here too.
 
-The guide follows the wallet module layout: one page per screen, with the screenshot on the left and the screen components and steps on the right. Pages are grouped as Get started, Trade (Trading screens, Posting and managing orders), and Help (Troubleshooting, Help in the app, FAQ). Screenshots live in `trading/images/`. Trading runs on testnet.
+The guide follows the wallet module layout: one page per screen, with the screenshot on the left and the screen components and steps on the right. Pages are grouped as Get started, Trade (Finding and filling orders, Posting and managing orders), and Help (Troubleshooting, Help in the app, FAQ). Screenshots live in `trading/images/`.
 
 Yonatan and Alex review Trading changes.
 
