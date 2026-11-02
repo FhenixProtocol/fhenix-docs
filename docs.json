@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Fhenix Documentation",
-  "description": "Documentation for Fhenix products: CoFHE and the Wallet Module.",
+  "description": "Documentation for Fhenix products: CoFHE, the Wallet Module, and the Trading Module.",
   "seo": {
     "metatags": {
       "og:site_name": "Fhenix Documentation",
@@ -367,7 +367,7 @@
         ]
       },
       {
-        "product": "Trading",
+        "product": "Trading Module",
         "icon": "chart-line",
         "groups": [
           {
@@ -383,14 +383,14 @@
             "icon": "chart-line",
             "pages": [
               {
-                "group": "Trading screens",
+                "group": "Finding and filling orders",
                 "icon": "chart-column",
-                "root": "trading/trading-screens/index",
+                "root": "trading/find-and-fill/index",
                 "pages": [
-                  "trading/trading-screens/market",
-                  "trading/trading-screens/order-book",
-                  "trading/trading-screens/choose-a-token",
-                  "trading/trading-screens/fill-an-order"
+                  "trading/find-and-fill/market",
+                  "trading/find-and-fill/order-book",
+                  "trading/find-and-fill/choose-a-token",
+                  "trading/find-and-fill/fill-an-order"
                 ]
               },
               {
