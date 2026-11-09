@@ -13,7 +13,7 @@ env:
   # cofhe/get-started/introduction/compatibility.mdx. cofhe/scripts/check-versions.py
   # --docs fails when these disagree with that page.
   COFHE_CONTRACTS_VERSION: 1.0.0
-  CONFIDENTIAL_CONTRACTS_VERSION: 0.4.0
+  CONFIDENTIAL_CONTRACTS_VERSION: 1.0.0
   # Pinned like Mint and Vale: forge ships often and its diagnostics change,
   # so an unpinned install turns unrelated pull requests red.
   FOUNDRY_VERSION: v1.5.1

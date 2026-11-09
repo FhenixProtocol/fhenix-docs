@@ -76,7 +76,7 @@ To settle several claims in one transaction, pass parallel arrays:
 await token.claimUnshieldedBatch(ids, decryptedValues, signatures);
 ```
 
-The batch reverts as a whole if any element is invalid. On success each claim emits `UnshieldedTokensClaimed(to, id, handle, decryptedValue)`, along with the public `Transfer` from the pool.
+The batch reverts as a whole if any element is invalid. `shield`, `unshield`, `claimUnshielded`, and `claimUnshieldedBatch` are `nonReentrant`. If your override calls `super`, do not add another `nonReentrant`: the call reverts with `ReentrancyGuardReentrantCall()`. On success each claim emits `UnshieldedTokensClaimed(to, id, handle, decryptedValue)`, along with the public `Transfer` from the pool.
 
 ## Errors
 
@@ -86,5 +86,6 @@ The batch reverts as a whole if any element is invalid. On success each claim em
 | `ClaimNotFound` | No claim has this ID |
 | `AlreadyClaimed` | The claim has settled |
 | `ClaimBatchLengthMismatch` | The three batch arrays differ in length |
+| `InvalidDecryptionProof` | The `decryptedValue` or `signature` does not match the burned handle |
 
-A `decryptedValue` or `signature` that does not match the burned handle makes the decryption check revert, and the claim stays pending.
+A `decryptedValue` or `signature` that does not match the burned handle makes the claim revert with `InvalidDecryptionProof()`, and the claim stays pending.

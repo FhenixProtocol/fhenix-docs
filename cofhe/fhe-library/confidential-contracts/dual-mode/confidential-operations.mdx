@@ -43,9 +43,9 @@ As on FHERC20, a transfer of more than the balance does not revert. It moves zer
 | Hook before each move | `_beforeConfidentialMove(from, to)` | None |
 | Indicator updates | On the separate [indicator token](/cofhe/fhe-library/confidential-contracts/dual-mode/dual-balance-model#the-indicator-token) | On the token's own `balanceOf` |
 
-`_beforeConfidentialMove` runs before all eight transfer functions and both `unshield` overloads. It does nothing by default. Override it to freeze accounts or pause the confidential side; see [extend ERC20Confidential](/cofhe/fhe-library/confidential-contracts/dual-mode/extending).
+`_beforeConfidentialMove` runs before all eight transfer functions, both `unshield` overloads, and `_confidentialMint`. It does nothing by default. Override it to freeze accounts or pause the confidential side; see [extend ERC20Confidential](/cofhe/fhe-library/confidential-contracts/dual-mode/extending).
 
-All eight transfer functions and both `unshield` overloads are `nonReentrant`, so a callback cannot call another transfer or `unshield` on the same token.
+All eight transfer functions and both `unshield` overloads are `nonReentrant`, so a callback cannot call another transfer or `unshield` on the same token. `shield` and both claim functions are `nonReentrant` too.
 
 ## Operators
 
