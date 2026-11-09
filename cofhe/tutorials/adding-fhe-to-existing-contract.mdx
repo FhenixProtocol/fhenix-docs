@@ -282,7 +282,7 @@ function vote(uint256 _proposalId, externalEuint8 _optionIndex, bytes calldata i
 Let's break down how this works:
 
 - We iterate through each of the proposal options
-- We _always_ perform an `FHE.add` on every options' vote count, this means that every options' vote count will change any time a user votes
+- We _always_ perform an `FHE.add` on every option's vote count, this means that every option's vote count will change any time a user votes
 - We only want to increment the user's selected choice, so we use `FHE.select`
 - The API for select is `FHE.select(conditional, ifTrue, ifFalse)`
 - Without the FHE syntax, the logic is as follows:

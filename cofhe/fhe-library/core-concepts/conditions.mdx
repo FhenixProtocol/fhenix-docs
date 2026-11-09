@@ -5,9 +5,9 @@ description: "Understanding why if..else isn't possible with FHE and exploring t
 
 ## Overview
 
-Writing smart contracts with Fully Homomorphic Encryption (FHE) changes how you handle conditionals. Since all data is encrypted, you can't use traditional `if...else` statementsthere's no way to view the values being compared.
+Writing smart contracts with Fully Homomorphic Encryption (FHE) changes how you handle conditionals. Since all data is encrypted, you can't use traditional `if...else` statements: there's no way to view the values being compared.
 
-Moreover, conditionals in FHE must evaluate both branches simultaneously. This is similar to constant-time cryptographic programming, where branching can leak information through timing attacksfor example, if one path takes longer to execute, an observer could infer which condition was true.
+Moreover, conditionals in FHE must evaluate both branches simultaneously. This is similar to constant-time cryptographic programming, where branching can leak information through timing attacks. For example, if one path takes longer to execute, an observer could infer which condition was true.
 
 <Warning>
 Using traditional `if...else` on encrypted data might result in **unexpected behavior** and leak information about your encrypted values.
@@ -17,13 +17,13 @@ Using traditional `if...else` on encrypted data might result in **unexpected beh
 
 ## The Select Function
 
-To handle encrypted conditionals, Fhenix uses a concept called a **selector**a function that takes an encrypted condition and two possible values, returning one based on the encrypted result.
+To handle encrypted conditionals, Fhenix uses a concept called a **selector**: a function that takes an encrypted condition and two possible values, returning one based on the encrypted result.
 
 In practice, this is done with the `select` function. It behaves like a ternary operator (`condition ? a : b`) but works entirely on encrypted data.
 
 ### How It Works
 
-`FHE.select` takes the encrypted `ebool` returned by comparison operations like `gt`. If the condition represents encrypted true, it returns the first value; otherwise, it returns the second valueall without revealing which path was taken.
+`FHE.select` takes the encrypted `ebool` returned by comparison operations like `gt`. If the condition represents encrypted true, it returns the first value; otherwise, it returns the second value, all without revealing which path was taken.
 
 ---
 
@@ -43,7 +43,7 @@ if (a.gt(b)) { // gt returns encrypted boolean (ebool)
 }
 ```
 
-```solidity  Do This Instead
+```solidity Do This Instead
 euint32 a = FHE.asEuint32(10);
 euint32 b = FHE.asEuint32(20);
 

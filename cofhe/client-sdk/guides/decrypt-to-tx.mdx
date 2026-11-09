@@ -18,7 +18,7 @@ If you only need to show plaintext in your UI (and you do **not** need an onchai
 
 1. [Create and connect a client](/cofhe/client-sdk/guides/client-setup).
 2. Know the onchain encrypted handle (`ctHash`) you want to decrypt.
-3. Determine whether the contract's ACL policy for this `ctHash` requires a [ACP](/cofhe/client-sdk/guides/acps).
+3. Determine whether the contract's ACL policy for this `ctHash` requires an [ACP](/cofhe/client-sdk/guides/acps).
 
 <Note>
 `decryptForTx` does not take a `utype`. It always returns the plaintext as a `bigint` because the result is intended to be passed into a transaction. If you need UI-friendly decoding, use [`decryptForView`](/cofhe/client-sdk/guides/decrypt-to-view).

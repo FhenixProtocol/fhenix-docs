@@ -21,7 +21,7 @@ Unlike [`decryptForTx`](/cofhe/client-sdk/guides/decrypt-to-tx), this flow does 
 
 1. [Create and connect a client](/cofhe/client-sdk/guides/client-setup).
 2. Know the encrypted handle (`ctHash`) and the encrypted type (`utype`).
-3. Have a [ACP](/cofhe/client-sdk/guides/acps) available for the connected `chainId + account`.
+3. Have an [ACP](/cofhe/client-sdk/guides/acps) available for the connected `chainId + account`.
 
 <Tip>
 **Getting `ctHash`**: In most apps, `ctHash` comes from reading a stored encrypted value, an event arg, or a return value from a `view` call.
@@ -31,9 +31,9 @@ Unlike [`decryptForTx`](/cofhe/client-sdk/guides/decrypt-to-tx), this flow does 
 **Providing `utype`**: `utype` must match the ciphertext's underlying FHE type. The SDK uses it to convert the decrypted `bigint` into a convenient JS type.
 
 Supported `utype`s:
-- `FheTypes.Bool` to returns a `boolean`
+- `FheTypes.Bool` returns a `boolean`
 - `FheTypes.Uint160` (address) to returns a checksummed `0x...` string
-- `FheTypes.Uint8 | Uint16 | Uint32 | Uint64 | Uint128` to returns a `bigint`
+- `FheTypes.Uint8 | Uint16 | Uint32 | Uint64 | Uint128` returns a `bigint`
 </Tip>
 
 ## ACP setup
