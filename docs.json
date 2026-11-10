@@ -423,6 +423,26 @@
       "destination": "/cofhe"
     },
     {
+      "source": "/docs/devdocs",
+      "destination": "/cofhe"
+    },
+    {
+      "source": "/docs/devdocs/quick-start",
+      "destination": "/cofhe/fhe-library/introduction/quick-start"
+    },
+    {
+      "source": "/docs/category/solidityapi",
+      "destination": "/cofhe/fhe-library/reference/fhe-sol/overview"
+    },
+    {
+      "source": "/docs/devdocs/fherc/fherc20",
+      "destination": "/cofhe/fhe-library/confidential-contracts/fherc20/overview"
+    },
+    {
+      "source": "/examples/reference-dapps/wrapped-erc20",
+      "destination": "/cofhe/fhe-library/confidential-contracts/fherc20/fherc20-wrapper"
+    },
+    {
       "source": "/client-sdk/guides/permits",
       "destination": "/cofhe/client-sdk/guides/acps"
     },
