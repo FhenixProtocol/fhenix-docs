@@ -1,0 +1,152 @@
+---
+title: "Factory Registry"
+description: "How an approved factory puts the contracts it deploys on the TaskManager access list, and removes them again"
+---
+
+On a network where the TaskManager access list is enabled, CoFHE accepts FHE operations only from contracts on that list. The `FactoryRegistry` contract lets a factory put each contract it deploys on the list, without a request to Fhenix for each one. Read this page if your protocol deploys many contracts that use FHE, up to 500 per factory.
+
+## How the registry works
+
+Fhenix approves your factory once. After that, your factory calls the registry, and the registry adds and removes addresses on the TaskManager access list.
+
+- **Register:** your factory calls `register` with the addresses it deploys. They can call FHE operations immediately.
+- **Unregister:** `unregister` removes a contract and every contract registered below it, in one call.
+- **Sub-factories:** a registered contract can register contracts of its own. Each contract keeps one parent, so your factory's contracts form a tree with the factory at the root.
+
+Your contracts never call the registry to use FHE. They call `FHE.sol` as usual, and the TaskManager checks the access list. A contract that is not on the list gets [`NotOnAccessList`](/cofhe/fhe-library/core-concepts/common-errors).
+
+## How to get your factory approved
+
+<Steps>
+  <Step title="Send your factory addresses">
+    Send Fhenix the address of your factory on each network, through [support](/cofhe/get-started/introduction/support-and-feedback). Fhenix approves it on testnet first, then on mainnet. The public testnets keep the access list disabled, so a testnet run proves your calls work, not that the list blocks other contracts.
+  </Step>
+  <Step title="Call register from your factory">
+    Register every contract the factory deploys. A contract that uses FHE in its constructor must be on the list before it is deployed, so register its predicted address first.
+  </Step>
+  <Step title="Add unregister, if you need it">
+    An `unregister` function on your factory, behind your own access control, lets you take back access without Fhenix.
+  </Step>
+</Steps>
+
+## The registry interface
+
+The package ships the interface as `IFactoryRegistry.sol`. Approving a factory is a Fhenix-only function, so it is not part of it.
+
+```solidity IFactoryRegistry.sol
+interface IFactoryRegistry {
+    event Registered(address indexed child, address indexed parent, address indexed root);
+    event Unregistered(address indexed target, address indexed caller, uint256 count);
+
+    error NotRegistered();
+    error InvalidChild();
+    error AlreadyRegistered();
+    error AlreadyOnAccessList();
+    error MaxDepthExceeded();
+    error TreeFull();
+    error NotAllowed();
+
+    function register(address[] calldata children) external;
+    function unregister(address target) external;
+    function nodeOf(address account) external view returns (address parent, uint8 depth);
+    function treeSizeOf(address root) external view returns (uint256);
+    function MAX_TREE_SIZE() external view returns (uint256);
+    function MAX_DEPTH() external view returns (uint256);
+}
+```
+
+| Function | What it does |
+|---|---|
+| <code style={{ whiteSpace: "nowrap" }}>register</code> | Registers the addresses under the caller and adds them to the access list. The caller must be an approved factory or a contract registered under one. |
+| <code style={{ whiteSpace: "nowrap" }}>unregister</code> | Removes the target and every contract below it, and takes them off the access list. The caller must be the target itself, a contract above it, or Fhenix. |
+| <code style={{ whiteSpace: "nowrap" }}>nodeOf</code> | The parent and depth of an address. A zero parent means the address is not registered. An approved factory has the registry as its parent and depth 0. |
+| <code style={{ whiteSpace: "nowrap" }}>treeSizeOf</code> | The number of live contracts below an approved factory. |
+
+## Register a contract that uses FHE in its constructor
+
+This factory computes the CREATE2 address of the vault, registers it, and then deploys. The vault's constructor calls `FHE.asEuint64`, which works because the address is already on the access list. If the deploy reverts, the whole transaction reverts, and no address stays registered without a contract.
+
+```solidity VaultFactory.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.25;
+
+import "@fhenixprotocol/cofhe-contracts/FHE.sol";
+import {IFactoryRegistry} from "@fhenixprotocol/cofhe-contracts/IFactoryRegistry.sol";
+import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
+
+contract Vault {
+    address public immutable token;
+    euint64 public balance;
+
+    constructor(address token_) {
+        token = token_;
+        balance = FHE.asEuint64(0);
+        FHE.allowThis(balance);
+    }
+}
+
+contract VaultFactory {
+    IFactoryRegistry public immutable registry;
+    address public immutable owner;
+
+    constructor(IFactoryRegistry registry_) {
+        registry = registry_;
+        owner = msg.sender;
+    }
+
+    function deploy(bytes32 salt, address token) external returns (Vault vault) {
+        // An open deploy lets anyone fill the 500-contract tree.
+        require(msg.sender == owner, "not owner");
+        bytes32 codeHash = keccak256(abi.encodePacked(type(Vault).creationCode, abi.encode(token)));
+        address[] memory children = new address[](1);
+        children[0] = Create2.computeAddress(salt, codeHash);
+        registry.register(children);
+        vault = new Vault{salt: salt}(token);
+    }
+
+    function remove(address vault) external {
+        require(msg.sender == owner, "not owner");
+        registry.unregister(vault);
+    }
+}
+```
+
+A contract that does not use FHE in its constructor can be deployed first and registered after. To save gas, register many addresses in one call.
+
+## What the registry allows
+
+- **Additive:** each `register` call adds new addresses. Earlier registrations stay.
+- **One parent:** an address is registered once. To move it, unregister it first. This also removes every contract below it.
+- **No takeover:** an address that is already on the access list cannot be registered.
+- **No code needed:** you can register an address before a contract exists there.
+- **Tree size:** at most 500 live contracts below one approved factory. Unregistering frees room.
+- **Depth:** at most 8 levels. A level is added only when a registered contract registers contracts of its own. If your factory deploys only plain contracts, they all sit on one level.
+- **Fhenix can remove any contract,** for example after abuse. Removing your factory removes its whole tree.
+
+<Warning>
+A registered contract that makes arbitrary calls for its users, such as a smart wallet, a proxy, or a multicall, lets those users call `register` and `unregister` as that contract. They can give FHE access to any address, or remove the contracts below it. Do not register such contracts, or tell Fhenix before you do.
+</Warning>
+
+## Errors
+
+| Error | Cause |
+|---|---|
+| `NotRegistered` | The caller of `register`, or the target of `unregister`, is not registered. |
+| `InvalidChild` | An address is the zero address or the registry itself. |
+| `AlreadyRegistered` | An address already has a parent. |
+| `AlreadyOnAccessList` | An address is already on the access list. |
+| `MaxDepthExceeded` | The new contracts would sit deeper than 8 levels. |
+| `TreeFull` | The tree would hold more than 500 live contracts. |
+| `NotAllowed` | The caller is not the target, a contract above it, or Fhenix. |
+
+## Gas
+
+Whole transactions, measured in tests without proxy overhead:
+
+| Contracts in one call | `register` | `unregister` |
+|---|---|---|
+| 1 | 141,000 | 87,000 |
+| 5 | 437,000 | 160,000 |
+| 10 | 807,000 | 262,000 |
+
+Each extra contract in a `register` call costs about 75,000 gas. On a network with the 16,777,216 gas limit per transaction, one `register` call holds about 220 contracts. Unregistering a full tree measured at most 11.4 million gas, in its deepest shape, so one call can always remove a whole tree.

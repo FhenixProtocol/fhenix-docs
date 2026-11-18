@@ -178,6 +178,7 @@
                   "cofhe/fhe-library/core-concepts/conditions",
                   "cofhe/fhe-library/core-concepts/require",
                   "cofhe/fhe-library/core-concepts/access-control",
+                  "cofhe/fhe-library/core-concepts/factory-registry",
                   "cofhe/fhe-library/core-concepts/decryption-operations",
                   "cofhe/fhe-library/core-concepts/randomness",
                   "cofhe/fhe-library/core-concepts/gas-and-benchmarks",
