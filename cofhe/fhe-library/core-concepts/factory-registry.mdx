@@ -145,8 +145,8 @@ Whole transactions, measured in tests without proxy overhead:
 
 | Contracts in one call | `register` | `unregister` |
 |---|---|---|
-| 1 | 141,000 | 87,000 |
-| 5 | 437,000 | 160,000 |
-| 10 | 807,000 | 262,000 |
+| 1 | 142,000 | 87,000 |
+| 5 | 438,000 | 160,000 |
+| 10 | 808,000 | 262,000 |
 
 Each extra contract in a `register` call costs about 75,000 gas. On a network with the 16,777,216 gas limit per transaction, one `register` call holds about 220 contracts. Unregistering a full tree measured at most 11.4 million gas, in its deepest shape, so one call can always remove a whole tree.
